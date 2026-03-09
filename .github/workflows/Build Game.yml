@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: godot-builds-${{ env.BUILD_VERSION }}
-          path: build/
+          path: gamon-games/build/
 
       # 9️⃣ Maak GitHub Release
       - name: Create GitHub Release
