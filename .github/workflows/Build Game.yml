@@ -43,13 +43,6 @@ jobs:
 
       - name: List build folder
         run: ls -la build/
-  
-      # 6️⃣ Upload builds als artefacts
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: godot-builds
-          path: build/
 
 
       - name: Upload build artifacts
