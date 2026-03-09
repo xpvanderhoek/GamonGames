@@ -11,13 +11,18 @@ config_version=5
 [application]
 
 config/name="GamonGames"
-run/main_scene="uid://1pnpqphwnw6"
+run/main_scene="uid://dibe1nlseg240"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
-
 [autoload]
 
 NavigationManager="*uid://dnruitng07ior"
+
+[layer_names]
+
+2d_render/layer_1="Environment"
+2d_render/layer_2="Player"
+>>>>>>> Development
 
 [physics]
 
