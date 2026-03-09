@@ -6,16 +6,18 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production  # Dit is de magic voor productie approval
+    environment: production  # Dit zorgt voor de approval knop
 
     defaults:
       run:
-        working-directory: gamon-games  # je build folder
+        working-directory: gamon-games  # alles draait in deze subfolder
 
     steps:
-      - name: Checkout repo
+      # 1️⃣ Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ Download en setup Godot
       - name: Download Godot
         run: |
           wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip
@@ -23,6 +25,7 @@ jobs:
           mv Godot_v4.2.2-stable_linux.x86_64 ../godot
           chmod +x ../godot
 
+      # 3️⃣ Download export templates
       - name: Install export templates
         run: |
           wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz
@@ -30,13 +33,16 @@ jobs:
           unzip Godot_v4.2.2-stable_export_templates.tpz -d templates
           mv templates/templates/* ~/.local/share/godot/export_templates/4.2.2.stable/
 
+      # 4️⃣ Maak build folder aan
       - name: Create build folder
         run: mkdir -p build
 
+      # 5️⃣ Build Windows
       - name: Build Windows
         run: ../godot --headless --export-release "Windows Desktop" build/game.exe
 
-      - name: Upload artifacts
+      # 6️⃣ Upload builds als artefacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: godot-builds
