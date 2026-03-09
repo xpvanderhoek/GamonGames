@@ -71,11 +71,11 @@ jobs:
           body: "Promoted from Non-Production build"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-
+      
       # 3️⃣ Upload Windows build naar Release
       - name: Upload Windows build to Release
         uses: softprops/action-gh-release@v1
         with:
           files: build/game.exe
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # <- gebruik hier ook de PAT
