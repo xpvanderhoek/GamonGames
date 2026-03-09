@@ -41,6 +41,9 @@ jobs:
       - name: Build Windows
         run: ../godot --headless --export-release "Windows Desktop" build/game.exe
 
+      - name: List build folder
+        run: ls -la build/
+  
       # 6️⃣ Upload builds als artefacts
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
