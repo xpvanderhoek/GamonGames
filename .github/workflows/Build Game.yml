@@ -4,11 +4,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    environment: production  # Dit is de magic voor productie approval
+
     defaults:
       run:
-        working-directory: gamon-games  # alle commands draaien in deze folder
+        working-directory: gamon-games  # je build folder
 
     steps:
       - name: Checkout repo
@@ -38,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: godot-builds
-          path: gamon-games/build/
+          path: build/
