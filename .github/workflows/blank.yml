@@ -1,0 +1,45 @@
+name: Build & Deploy Godot Game
+
+on:
+  workflow_dispatch:
+jobs:
+  non-production:
+    runs-on: ubuntu-latest
+    environment: Non-Production
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir -p build
+      - run: ../godot --headless --export-release "Windows Desktop" build/game.exe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: non-prod-build
+          path: build/
+
+  promote-to-production:
+    needs: non-production
+    runs-on: ubuntu-latest
+    environment: Production  # approval knop hier
+    steps:
+      - name: Download build from Non-Prod
+        uses: actions/download-artifact@v4
+        with:
+          name: non-prod-build
+          path: build/
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: v1.0.0
+          release_name: Production Release
+          draft: false
+          prerelease: false
+          body: "Promoted from Non-Production build"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Windows build to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/game.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
