@@ -31,12 +31,15 @@ jobs:
 
       - name: Build Windows
         run: ./godot --headless --export-release "Windows Desktop" build/game.exe
-
+        working-directory: gamon-games
+      
       - name: Build Linux
         run: ./godot --headless --export-release "Linux/X11" build/game.x86_64
-
+        working-directory: gamon-games
+      
       - name: Build Web
         run: ./godot --headless --export-release "Web" build/web
+        working-directory: gamon-games
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
