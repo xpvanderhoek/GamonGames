@@ -51,16 +51,16 @@ jobs:
     needs: build-non-prod
     runs-on: ubuntu-latest
     environment: Production  # approval knop hier
-
+  
     steps:
-      # 1️⃣ Download artefact van Non-Prod
+      # Download artefact (mag subfolder zijn)
       - name: Download build from Non-Prod
         uses: actions/download-artifact@v4
         with:
           name: non-prod-build
           path: gamon-games/build/
-
-      # 2️⃣ Git-tag en push (in root!)
+  
+      # Git-tag en push in root!
       - name: Create Git tag
         run: |
           git config --global user.email "actions@github.com"
@@ -70,8 +70,8 @@ jobs:
           git push origin "$TAG"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-
-      # 3️⃣ Maak GitHub Release (bestand in subfolder)
+  
+      # Maak GitHub Release (bestand in subfolder)
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
