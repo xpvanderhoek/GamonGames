@@ -7,7 +7,7 @@ const scene_room3 = preload("res://scenes/rooms/room_3.tscn")
 @onready var rooms : Array[PackedScene] = [scene_room1, scene_room2, scene_room3]
 
 func go_to_random_room():
-	var destination_scene : PackedScene = rooms[randi() % rooms.size()]
+	var destination_scene : PackedScene = rooms[randi() % rooms.size()] # For debugging, index can be replaced for specific room.
 
 	if destination_scene != null:
-		get_tree().change_scene_to_packed(destination_scene)
+		get_tree().call_deferred("change_scene_to_packed", destination_scene)

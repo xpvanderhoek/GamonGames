@@ -10,13 +10,14 @@ var fallen_enemy_count : int
 func _ready() -> void:
 	fallen_enemy_count = 0
 	locked = true
-	enemy_requirement = randi_range(1, 4)
+	enemy_requirement = randi_range(1, 4) # Placeholder for until after enemies are added
 	requirements_label.text = "Requirement: " + str (enemy_requirement) + " enemies"
 
 func _on_body_entered(body: Node2D) -> void:
-	if locked:
-		set_fallen_enemy_count(fallen_enemy_count + 1)
-		return
+	if body is Character:
+		if locked:
+			set_fallen_enemy_count(fallen_enemy_count + 1) # Placerholder for until after enemies are added.
+			return
 	
 	NavigationManager.go_to_random_room()
 
