@@ -1,4 +1,4 @@
-name: Build & Deploy Godot Game
+name: Deploy to Production
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: non-prod-build
-          path: build/
+          path: gamon-games/build/
 
       - name: Create Release
         uses: actions/create-release@v1
