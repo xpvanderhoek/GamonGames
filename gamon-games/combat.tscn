@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cumnmtylxpgvq"]
+
+[ext_resource type="PackedScene" uid="uid://b1r88pxgxdvwr" path="res://Scenes/combat/combat.tscn" id="1_raif2"]
+
+[node name="Combat" unique_id=238098369 instance=ExtResource("1_raif2")]
+
+[node name="Camera2D2" type="Camera2D" parent="." index="0" unique_id=1354800837]

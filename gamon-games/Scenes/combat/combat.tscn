@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://b1r88pxgxdvwr"]
+
+[ext_resource type="PackedScene" uid="uid://coej4qxba8o7a" path="res://Scenes/combat/enemies/mauler.tscn" id="2_vb3s4"]
+[ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://Scripts/combat/combatManager.gd" id="7_mgr"]
+
+[node name="Combat" type="Node2D" unique_id=2113185565]
+script = ExtResource("7_mgr")
+enemy_entity_path = NodePath("mauler")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=991902612]
+
+[node name="mauler" parent="." unique_id=1681294554 instance=ExtResource("2_vb3s4")]

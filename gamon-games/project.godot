@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="GamonGames"
-run/main_scene="uid://dibe1nlseg240"
+run/main_scene="uid://b1r88pxgxdvwr"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

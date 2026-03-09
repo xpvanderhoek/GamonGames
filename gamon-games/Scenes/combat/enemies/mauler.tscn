@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://coej4qxba8o7a"]
+
+[ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://Scripts/combat/combatEntity.gd" id="1_43sib"]
+[ext_resource type="Texture2D" uid="uid://3ypr3wjdce6w" path="res://Assets/Placeholders/enemies/mauler_torso.png" id="2_0ypl1"]
+[ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://Scripts/combat/combatLimb.gd" id="3_rnyr7"]
+[ext_resource type="Texture2D" uid="uid://cmphv07urw5go" path="res://Assets/Placeholders/enemies/mauler_head.png" id="4_8djhq"]
+[ext_resource type="Texture2D" uid="uid://cu2sdy08pf51y" path="res://Assets/Placeholders/enemies/mauler_legR.png" id="5_ktid0"]
+[ext_resource type="Texture2D" uid="uid://vu18fwguj6gr" path="res://Assets/Placeholders/enemies/mauler_armL.png" id="6_34xek"]
+[ext_resource type="Texture2D" uid="uid://d3s3l7c6exrsj" path="res://Assets/Placeholders/enemies/mauler_armR.png" id="7_lqs23"]
+[ext_resource type="Texture2D" uid="uid://qcrduu28cwmh" path="res://Assets/Placeholders/enemies/mauler_legL.png" id="8_w1bur"]
+
+[node name="mauler" type="Node" unique_id=1681294554]
+script = ExtResource("1_43sib")
+
+[node name="MaulerTorso" type="Sprite2D" parent="." unique_id=1081538787]
+position = Vector2(239, -78)
+texture = ExtResource("2_0ypl1")
+script = ExtResource("3_rnyr7")
+limb_name = "Torso"
+is_vital = true
+
+[node name="MaulerHead" type="Sprite2D" parent="." unique_id=1638871885]
+position = Vector2(211, -159)
+texture = ExtResource("4_8djhq")
+script = ExtResource("3_rnyr7")
+limb_name = "Head"
+max_health = 60
+is_vital = true
+
+[node name="MaulerArmL" type="Sprite2D" parent="." unique_id=99250764]
+position = Vector2(302, -79)
+texture = ExtResource("6_34xek")
+script = ExtResource("3_rnyr7")
+limb_name = "Left Arm"
+max_health = 50
+
+[node name="MaulerArmR" type="Sprite2D" parent="." unique_id=1381969496]
+position = Vector2(186, -91)
+texture = ExtResource("7_lqs23")
+script = ExtResource("3_rnyr7")
+limb_name = "Right Arm"
+max_health = 50
+
+[node name="MaulerLegR" type="Sprite2D" parent="." unique_id=362572229]
+position = Vector2(183, 20)
+texture = ExtResource("5_ktid0")
+script = ExtResource("3_rnyr7")
+limb_name = "Right Leg"
+max_health = 70
+
+[node name="MaulerLegL" type="Sprite2D" parent="." unique_id=1185595755]
+position = Vector2(263, 24)
+texture = ExtResource("8_w1bur")
+script = ExtResource("3_rnyr7")
+limb_name = "Left Leg"
+max_health = 70
