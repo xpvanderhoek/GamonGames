@@ -14,14 +14,14 @@ jobs:
 
       - name: Install Godot
         run: |
-          wget https://downloads.tuxfamily.org/godotengine/4.2.2/Godot_v4.2.2-stable_linux.x86_64.zip
+          wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip
           unzip Godot_v4.2.2-stable_linux.x86_64.zip
           mv Godot_v4.2.2-stable_linux.x86_64 godot
           chmod +x godot
 
       - name: Install export templates
         run: |
-          wget https://downloads.tuxfamily.org/godotengine/4.2.2/Godot_v4.2.2-stable_export_templates.tpz
+          wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz
           mkdir -p ~/.local/share/godot/export_templates/4.2.2.stable
           unzip Godot_v4.2.2-stable_export_templates.tpz -d templates
           mv templates/templates/* ~/.local/share/godot/export_templates/4.2.2.stable/
