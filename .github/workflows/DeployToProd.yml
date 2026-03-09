@@ -61,7 +61,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: non-prod-build
-          path: build/
+          path: gamon-games/build/
 
       # 2️⃣ Git-tag en push (doe dit in root, dus geen working-directory!)
       - name: Create Git tag
