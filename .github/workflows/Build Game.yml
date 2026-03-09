@@ -52,8 +52,8 @@ jobs:
           path: build/
 
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: godot-builds
-          path: build/
+      - name: Debug all build files
+        run: |
+          echo "Current dir: $(pwd)"
+          ls -la
+          ls -la build/
