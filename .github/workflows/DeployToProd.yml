@@ -70,7 +70,7 @@ jobs:
           prerelease: false
           body: "Promoted from Non-Production build"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       # 3️⃣ Upload Windows build naar Release
       - name: Upload Windows build to Release
