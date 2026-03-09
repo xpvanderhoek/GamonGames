@@ -6,18 +6,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: production
+    defaults:
+      run:
+        working-directory: gamon-games  # alle commands draaien in deze folder
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install Godot
+      - name: Download Godot
         run: |
           wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip
           unzip Godot_v4.2.2-stable_linux.x86_64.zip
-          mv Godot_v4.2.2-stable_linux.x86_64 godot
-          chmod +x godot
+          mv Godot_v4.2.2-stable_linux.x86_64 ../godot
+          chmod +x ../godot
 
       - name: Install export templates
         run: |
@@ -27,22 +29,19 @@ jobs:
           mv templates/templates/* ~/.local/share/godot/export_templates/4.2.2.stable/
 
       - name: Create build folder
-        run: mkdir build
+        run: mkdir -p build
 
       - name: Build Windows
-        run: ./godot --headless --export-release "Windows Desktop" build/game.exe
-        working-directory: gamon-games
-      
-      - name: Build Linux
-        run: ./godot --headless --export-release "Linux/X11" build/game.x86_64
-        working-directory: gamon-games
-      
-      - name: Build Web
-        run: ./godot --headless --export-release "Web" build/web
-        working-directory: gamon-games
+        run: ../godot --headless --export-release "Windows Desktop" build/game.exe
 
-      - name: Upload build artifacts
+      - name: Build Linux
+        run: ../godot --headless --export-release "Linux/X11" build/game.x86_64
+
+      - name: Build Web
+        run: ../godot --headless --export-release "Web" build/web
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: godot-builds
-          path: build/
+          path: gamon-games/build/
