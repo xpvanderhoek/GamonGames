@@ -59,10 +59,17 @@ jobs:
         with:
           name: non-prod-build
           path: gamon-games/build/
-  
+      
+      - name: Debug Git
+        run: |
+          echo "Current dir: $(pwd)"
+          ls -la
+          git status
+      
       # Git-tag en push in root!
       - name: Create Git tag
         run: |
+          cd ..
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           TAG="v1.0.${GITHUB_RUN_NUMBER}"
