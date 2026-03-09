@@ -15,6 +15,10 @@ run/main_scene="uid://dibe1nlseg240"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+TransitionManager="*uid://dh7cx5gqjgckf"
+
 [layer_names]
 
 2d_render/layer_1="Environment"
