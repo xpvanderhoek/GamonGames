@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bkkhjm27jgu3x"]
+
+[ext_resource type="Script" uid="uid://cfgvl3x0kox5x" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://d1aswe4ky7ri4" path="res://icon.svg" id="2_qhqgy"]
+
+[node name="Player" type="CharacterBody2D" unique_id=236824385]
+z_index = 2
+script = ExtResource("1_g2els")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1642058304]
+texture = ExtResource("2_qhqgy")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=956029758]
+polygon = PackedVector2Array(59.1, -64, -59, -64, -63.8, -59, -64, 61, -60.3, 64, 59.6, 64, 63.9, 59, 64, -61.1)

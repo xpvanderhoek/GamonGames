@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://biud822dm61pc"]
+
+[ext_resource type="PackedScene" uid="uid://bkkhjm27jgu3x" path="res://scenes/player.tscn" id="1_dk4yb"]
+[ext_resource type="PackedScene" uid="uid://c2d27vcpwdqpj" path="res://scenes/door.tscn" id="2_u63ts"]
+
+[node name="Room3" type="Node2D" unique_id=2112896940]
+
+[node name="Player" parent="." unique_id=236824385 instance=ExtResource("1_dk4yb")]
+position = Vector2(1080, 109)
+
+[node name="Door" parent="." unique_id=395606353 instance=ExtResource("2_u63ts")]
+position = Vector2(90, 533)
+
+[node name="Label" type="Label" parent="." unique_id=446355347]
+offset_left = 402.0
+offset_top = 18.0
+offset_right = 601.0
+offset_bottom = 87.0
+theme_override_font_sizes/font_size = 50
+text = "ROOM 3"
