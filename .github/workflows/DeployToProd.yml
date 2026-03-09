@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: mkdir -p build
-      - run: ../godot --headless --export-release "Windows Desktop" build/game.exe
+      - run: ../godot --headless --export-release "Windows Desktop" gamon-games/build/game.exe
       - uses: actions/upload-artifact@v4
         with:
           name: non-prod-build
