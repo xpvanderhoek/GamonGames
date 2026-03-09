@@ -70,7 +70,9 @@ jobs:
           git config --global user.name "GitHub Actions"
           TAG="v1.0.${GITHUB_RUN_NUMBER}"
           git tag -a "$TAG" -m "Non-Prod → Prod release"
+          echo "Pushing tag $TAG..."
           git push https://xpvanderhoek:${{ secrets.GH_PAT }}@github.com/xpvanderhoek/GamonGames.git "$TAG"
+          
   
       # 4️⃣ Upload Windows build naar Release
       - name: Create Release
