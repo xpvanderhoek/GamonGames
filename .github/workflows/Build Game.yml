@@ -6,7 +6,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production  # Dit zorgt voor de approval knop
+    environment: Non-Production  # Dit zorgt voor de approval knop
 
     defaults:
       run:
