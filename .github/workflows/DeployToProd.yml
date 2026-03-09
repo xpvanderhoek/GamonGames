@@ -47,11 +47,11 @@ jobs:
           path: gamon-games/build/
 
   # ──────────────── Promote to Production ────────────────
-   promote-to-prod:
+  promote-to-prod:
     needs: build-non-prod
     runs-on: ubuntu-latest
     environment: Production  # approval knop hier
-  
+
     steps:
       # Download artefact (mag subfolder zijn)
       - name: Download build from Non-Prod
