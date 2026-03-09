@@ -1,72 +1,50 @@
-name: Build & Release Godot Game
+name: Build & Deploy Godot Game
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'   # trigger alleen op tags als v1.0.0, v1.1.0 etc.
+  workflow_dispatch:
 
 jobs:
-  build-and-release:
+  deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment: production  # Dit zorgt voor de approval knop
+
     defaults:
       run:
-        working-directory: gamon-games  # alles in je project subfolder
+        working-directory: gamon-games  # alles draait in deze subfolder
 
     steps:
       # 1️⃣ Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Zet build versie automatisch van git tag
-      - name: Set build version
-        run: echo "BUILD_VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
-
-      # 3️⃣ Download en setup Godot
+      # 2️⃣ Download en setup Godot
       - name: Download Godot
         run: |
           wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip
           unzip Godot_v4.2.2-stable_linux.x86_64.zip
           mv Godot_v4.2.2-stable_linux.x86_64 ../godot
           chmod +x ../godot
-
-      # 4️⃣ Download export templates
+      # 3️⃣ Download export templates
       - name: Install export templates
         run: |
           wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz
           mkdir -p ~/.local/share/godot/export_templates/4.2.2.stable
           unzip Godot_v4.2.2-stable_export_templates.tpz -d templates
           mv templates/templates/* ~/.local/share/godot/export_templates/4.2.2.stable/
-
-      # 5️⃣ Maak build folder
+      # 4️⃣ Maak build folder aan
       - name: Create build folder
         run: mkdir -p build
 
-      # 6️⃣ Build Windows
+      # 5️⃣ Build Windows
       - name: Build Windows
         run: ../godot --headless --export-release "Windows Desktop" build/game.exe
 
-      # 7️⃣ Debug (optioneel)
       - name: List build folder
         run: ls -la build/
 
-      # 8️⃣ Maak GitHub Release
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ env.BUILD_VERSION }}
-          release_name: ${{ env.BUILD_VERSION }}
-          draft: false
-          prerelease: false
-          body: "Automatic release of Godot game version ${{ env.BUILD_VERSION }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 9️⃣ Upload Windows build naar release
-      - name: Upload Windows to Release
-        uses: softprops/action-gh-release@v1
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
-          files: gamon-games/build/game.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: godot-builds
+          path: gamon-games/build/
