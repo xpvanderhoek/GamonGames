@@ -2,14 +2,43 @@ name: Deploy to Production
 
 on:
   workflow_dispatch:
+
 jobs:
   non-production:
     runs-on: ubuntu-latest
     environment: Non-Production
+    defaults:
+      run:
+        working-directory: gamon-games  # alles draait hier
+
     steps:
       - uses: actions/checkout@v4
-      - run: mkdir -p build
-      - run: ../godot --headless --export-release "Windows Desktop" gamon-games/build/game.exe
+
+      # 1️⃣ Download Godot
+      - name: Download Godot
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip
+          unzip Godot_v4.2.2-stable_linux.x86_64.zip
+          mv Godot_v4.2.2-stable_linux.x86_64 ../godot
+          chmod +x ../godot
+
+      # 2️⃣ Download export templates
+      - name: Install export templates
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/4.2.2.stable
+          unzip Godot_v4.2.2-stable_export_templates.tpz -d templates
+          mv templates/templates/* ~/.local/share/godot/export_templates/4.2.2.stable/
+
+      # 3️⃣ Maak build folder
+      - name: Create build folder
+        run: mkdir -p build
+
+      # 4️⃣ Build Windows
+      - name: Build Windows
+        run: ../godot --headless --export-release "Windows Desktop" build/game.exe
+
+      # 5️⃣ Upload artefact
       - uses: actions/upload-artifact@v4
         with:
           name: non-prod-build
@@ -19,13 +48,19 @@ jobs:
     needs: non-production
     runs-on: ubuntu-latest
     environment: Production  # approval knop hier
+    defaults:
+      run:
+        working-directory: gamon-games
+
     steps:
+      # 1️⃣ Download artefact van Non-Production
       - name: Download build from Non-Prod
         uses: actions/download-artifact@v4
         with:
           name: non-prod-build
-          path: gamon-games/build/
+          path: build/
 
+      # 2️⃣ Maak GitHub Release
       - name: Create Release
         uses: actions/create-release@v1
         with:
@@ -37,9 +72,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # 3️⃣ Upload Windows build naar Release
       - name: Upload Windows build to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: gamon-games/build/game.exe
+          files: build/game.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
