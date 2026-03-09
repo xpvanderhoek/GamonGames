@@ -1,0 +1,41 @@
+name: Build & Deploy Godot Game
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Godot
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/4.2.2/Godot_v4.2.2-stable_linux.x86_64.zip
+          unzip Godot_v4.2.2-stable_linux.x86_64.zip
+          mv Godot_v4.2.2-stable_linux.x86_64 godot
+          chmod +x godot
+
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Build Windows
+        run: |
+          ./godot --headless --export-release "Windows Desktop" build/game.exe
+
+      - name: Build Linux
+        run: |
+          ./godot --headless --export-release "Linux/X11" build/game.x86_64
+
+      - name: Build Web
+        run: |
+          ./godot --headless --export-release "Web" build/web
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-builds
+          path: build/
