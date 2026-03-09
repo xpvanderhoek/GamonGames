@@ -15,14 +15,15 @@ run/main_scene="uid://dibe1nlseg240"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+NavigationManager="*uid://dnruitng07ior"
+
 [layer_names]
 
 2d_render/layer_1="Environment"
 2d_render/layer_2="Player"
-
-[physics]
-
-3d/physics_engine="Jolt Physics"
+">>>>>>>Development[physics]3d/physics_engine"="Jolt Physics"
 
 [rendering]
 
