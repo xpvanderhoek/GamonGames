@@ -47,13 +47,10 @@ jobs:
           path: gamon-games/build/
 
   # ──────────────── Promote to Production ────────────────
-  promote-to-prod:
+   promote-to-prod:
     needs: build-non-prod
     runs-on: ubuntu-latest
     environment: Production  # approval knop hier
-    defaults:
-      run:
-        working-directory: gamon-games  # build folder zit hier
 
     steps:
       # 1️⃣ Download artefact van Non-Prod
@@ -63,10 +60,9 @@ jobs:
           name: non-prod-build
           path: gamon-games/build/
 
-      # 2️⃣ Git-tag en push (doe dit in root, dus geen working-directory!)
+      # 2️⃣ Git-tag en push (in root!)
       - name: Create Git tag
         run: |
-          cd ..
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           TAG="v1.0.${GITHUB_RUN_NUMBER}"
@@ -75,7 +71,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
-      # 3️⃣ Maak GitHub Release
+      # 3️⃣ Maak GitHub Release (bestand in subfolder)
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
