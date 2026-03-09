@@ -1,11 +1,9 @@
-name: Build & Deploy Godot Game
+name: Build & Release Godot Game
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version number for this release (e.g. v1.0.0)'
-        required: true
+  push:
+    tags:
+      - 'v*.*.*'   # trigger alleen op tags als v1.0.0, v1.1.0 etc.
 
 jobs:
   build-and-release:
@@ -13,16 +11,16 @@ jobs:
     environment: production
     defaults:
       run:
-        working-directory: gamon-games
+        working-directory: gamon-games  # alles in je project subfolder
 
     steps:
       # 1️⃣ Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Stel build versie in
+      # 2️⃣ Zet build versie automatisch van git tag
       - name: Set build version
-        run: echo "BUILD_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+        run: echo "BUILD_VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       # 3️⃣ Download en setup Godot
       - name: Download Godot
@@ -48,14 +46,11 @@ jobs:
       - name: Build Windows
         run: ../godot --headless --export-release "Windows Desktop" build/game.exe
 
-      # 8️⃣ Upload als tijdelijke artefacts (optioneel)
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: godot-builds-${{ env.BUILD_VERSION }}
-          path: gamon-games/build/
+      # 7️⃣ Debug (optioneel)
+      - name: List build folder
+        run: ls -la build/
 
-      # 9️⃣ Maak GitHub Release
+      # 8️⃣ Maak GitHub Release
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -68,24 +63,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 🔟 Upload builds naar de Release
+      # 9️⃣ Upload Windows build naar release
       - name: Upload Windows to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: build/game.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Linux to Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: build/game.x86_64
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Web to Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: build/web
+          files: gamon-games/build/game.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
