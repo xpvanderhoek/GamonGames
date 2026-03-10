@@ -1,9 +1,5 @@
 extends CanvasLayer
 
-## to use the transition, call GameManager.change_scene("res://path/to/scene.tscn") from any script, 
-## and the transition will handle the fade in, scene change, and fade out automatically. 
-## So the Transition.tscn will automatically be played in between the scenene changes.
-
 signal transition_midpoint
 signal transition_finished
 
