@@ -12,7 +12,6 @@ enum TransitionType {
 	WIPE = 2
 }
 
-## Paths to transition scenes
 var transition_paths = {
 	TransitionType.FADE: "res://Scenes/Transition/FadeTransition.tscn",
 	TransitionType.SLIDE: "res://Scenes/Transition/SlideTransition.tscn",
