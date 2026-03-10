@@ -18,11 +18,13 @@ config/icon="res://icon.svg"
 [autoload]
 
 TransitionManager="*uid://dh7cx5gqjgckf"
+NavigationManager="*uid://dnruitng07ior"
 
 [layer_names]
 
 2d_render/layer_1="Environment"
 2d_render/layer_2="Player"
+">>>>>>>Development[physics]3d/physics_engine"="Jolt Physics"
 
 [physics]
 
