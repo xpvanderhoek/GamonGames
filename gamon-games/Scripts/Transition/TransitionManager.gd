@@ -1,19 +1,8 @@
 extends Node
 
-# GUIDE FOR THE STUPID AH TRANSITIONS!!!!!
-# Just use them whenever your changing from one scene to another, and they will handle the rest. 
-# You can choose between fade, slide, or wipe transitions.
-#
-# Usage:
-#   TransitionManager.change_scene("res://Scenes/your_scene.tscn", TransitionManager.TransitionType.FADE)
-#   TransitionManager.change_scene("res://Scenes/your_scene.tscn", TransitionManager.TransitionType.SLIDE)
-#   TransitionManager.change_scene("res://Scenes/your_scene.tscn", TransitionManager.TransitionType.WIPE)
-#
-# Transition Types:
-#   FADE  - Fade to black
-#   SLIDE - Slide in/out
-#   WIPE  - Wipe effect
-
+# Transition usage
+# TRANSITIONS - Just use change_scene() with a scene path and transition type (FADE, SLIDE, WIPE)
+# Example: TransitionManager.change_scene("res://Scenes/your_scene.tscn", TransitionManager.TransitionType.FADE)
 
 var transition_layer: CanvasLayer = null
 
