@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdjnvijmf4d5g"
-path="res://.godot/imported/Right - Idle.png-2e97a1fd8764924cdbda801f1eef6f8a.ctex"
+uid="uid://bgghk116s6pl4"
+path="res://.godot/imported/bettersheet.png-5912fcc72a2d1a6ad5e15f34147a3f7e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Placeholders/Right - Idle.png"
-dest_files=["res://.godot/imported/Right - Idle.png-2e97a1fd8764924cdbda801f1eef6f8a.ctex"]
+source_file="res://assets/Placeholders/bettersheet.png"
+dest_files=["res://.godot/imported/bettersheet.png-5912fcc72a2d1a6ad5e15f34147a3f7e.ctex"]
 
 [params]
 
