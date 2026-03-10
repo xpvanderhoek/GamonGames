@@ -21,10 +21,8 @@ func fade_in(duration: float = 0.5) -> void:
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_BACK)
 	
-	# Makes it big
 	tween.tween_property(color_rect, "scale", Vector2(1.5, 1.5), duration * 0.4)
 	
-	# Sick af flash effect
 	var flash_tween = create_tween()
 	flash_tween.tween_property(color_rect, "modulate", Color(0.4, 0.0, 0.0, 1), duration * 0.15)
 	flash_tween.tween_property(color_rect, "modulate", Color(0.2, 0.0, 0.0, 1), duration * 0.1)
