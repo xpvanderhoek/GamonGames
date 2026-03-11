@@ -24,8 +24,6 @@ func _on_body_entered(body: Node2D) -> void:
 			_set_fallen_enemy_count(fallen_enemy_count + 1) # Placeholder for until after enemies are added.
 			if locked: # Check if _set_fallen_enemy_count unlocked the door 
 				return
-			set_fallen_enemy_count(fallen_enemy_count + 1) # Placeholder for until after enemies are added.
-			return
 	else:
 		return
 	
