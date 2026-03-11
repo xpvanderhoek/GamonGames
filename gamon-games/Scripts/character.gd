@@ -43,6 +43,5 @@ func play_animation (prefix: String, dir: Vector2) -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy"):
-		print("Collision with enemy detected")
 		combat_screen.visible = true
 		get_tree().paused = true
