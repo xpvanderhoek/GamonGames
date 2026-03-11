@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://1pnpqphwnw6"]
 
-[ext_resource type="Texture2D" uid="uid://bgghk116s6pl4" path="res://assets/Placeholders/bettersheet.png" id="1_fbq1s"]
+[ext_resource type="Texture2D" uid="uid://bwnhvweqx5eom" path="res://assets/Placeholders/bettersheet.png" id="1_fbq1s"]
 [ext_resource type="PackedScene" uid="uid://c2d27vcpwdqpj" path="res://scenes/door.tscn" id="1_hnbyo"]
 [ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://scenes/character.tscn" id="2_hnbyo"]
 
