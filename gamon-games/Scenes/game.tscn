@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c2d27vcpwdqpj" path="res://Scenes/door.tscn" id="2_yqjtg"]
 
 [node name="Game" type="Node2D" unique_id=1771036447]
+script = ExtResource("1_qxrlw")
 
 [node name="Door" parent="." unique_id=395606353 instance=ExtResource("2_yqjtg")]
 position = Vector2(1060, 505)
