@@ -19,10 +19,10 @@ func interact():
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Character:
-		body = body as Character # Helps with coding
+		body = body as Character
 		if locked:
-			_set_fallen_enemy_count(fallen_enemy_count + 1) # Placerholder for until after enemies are added.
-			if locked: # For when _set_fallen_enemy_count unlocks the door
+			_set_fallen_enemy_count(fallen_enemy_count + 1) # Placeholder for until after enemies are added.
+			if locked: # Check if _set_fallen_enemy_count unlocked the door 
 				return
 	
 		body.current_interactable = self
@@ -30,7 +30,7 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_body_exited(body: Node2D):
 	if body is Character:
-		body = body as Character # Helps with coding
+		body = body as Character
 		
 		body.current_interactable = null
 		body.hide_interaction_label()
