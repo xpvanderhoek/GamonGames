@@ -1,13 +1,28 @@
 class_name Character
 extends CharacterBody2D
 
-
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
 var last_direction: Vector2
 
+var current_interactable = null
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var interaction_label : Label = $Camera2D/InteractionLabel
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_accept"): # I'll change this to E when I work on InputMap
+		if current_interactable != null:
+			current_interactable.interact()
+
+func show_interaction_label(text : String):
+	interaction_label.visible = true
+	interaction_label.text = text
+
+func hide_interaction_label():
+	interaction_label.visible = false
+	interaction_label.text = ""
 
 func _physics_process(delta: float) -> void:
 	process_movement()
