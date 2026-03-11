@@ -1,5 +1,6 @@
-class_name Character
 extends CharacterBody2D
+class_name Character
+
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
@@ -37,8 +38,6 @@ func play_animation (prefix: String, dir: Vector2) -> void:
 		animated_sprite_2d.play(prefix + "_up")
 	elif dir.y > 0:
 		animated_sprite_2d.play(prefix + "_down")
-		
-	
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
