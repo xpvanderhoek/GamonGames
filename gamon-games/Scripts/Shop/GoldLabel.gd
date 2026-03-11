@@ -6,4 +6,3 @@ func _ready() -> void:
 
 func _on_gold_changed(new_amount):
 	text = str(new_amount)
-
