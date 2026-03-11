@@ -1,5 +1,6 @@
-class_name Character
 extends CharacterBody2D
+class_name Character
+
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
@@ -27,7 +28,7 @@ func hide_interaction_label():
 
 func _physics_process(delta: float) -> void:
 	process_movement()
-	process_animation()
+	AnimationManager.process_animation(animated_sprite_2d, velocity, last_direction)
 	move_and_slide()
 
 func process_movement() -> void:
@@ -37,24 +38,6 @@ func process_movement() -> void:
 		last_direction = direction
 	else:
 		velocity = Vector2.ZERO
-
-func process_animation() -> void:
-	if velocity != Vector2.ZERO:
-		play_animation("Walk", last_direction)
-	else:
-		play_animation("Idle", last_direction)
-
-func play_animation (prefix: String, dir: Vector2) -> void:
-	if dir.x > 0:
-		animated_sprite_2d.play(prefix + "_right")
-	elif dir.x < 0:
-		animated_sprite_2d.play(prefix + "_left")
-	elif dir.y < 0:
-		animated_sprite_2d.play(prefix + "_up")
-	elif dir.y > 0:
-		animated_sprite_2d.play(prefix + "_down")
-		
-	
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
