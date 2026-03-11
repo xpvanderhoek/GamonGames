@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 TransitionManager="*uid://dh7cx5gqjgckf"
 NavigationManager="*uid://dnruitng07ior"
+CurrenciesManager="*uid://bwnahuxrnyn6o"
 
 [layer_names]
 

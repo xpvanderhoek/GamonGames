@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://ccjrv1y6hb003"]
+
+[ext_resource type="Script" uid="uid://u67a3erwqvta" path="res://Scripts/Shop/shop_Item.gd" id="1_6j5au"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4rgw3"]
+
+[node name="ShopItem" type="Node2D" unique_id=1373492305]
+script = ExtResource("1_6j5au")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=386328136]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=280988728]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1548185246]
+scale = Vector2(4.98, 4.98)
+shape = SubResource("CircleShape2D_4rgw3")
+
+[node name="Label" type="Label" parent="." unique_id=1458447901]
+offset_left = -15.000008
+offset_top = 44.0
+offset_right = 32.25999
+offset_bottom = 67.0
+scale = Vector2(2.835, 2.835)
