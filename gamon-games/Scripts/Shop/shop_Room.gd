@@ -10,7 +10,7 @@ func _ready():
 	spawn_shop_inventory()
 
 func spawn_shop_inventory():
-	# Shuffle the list so items are random each time you enter
+	# Random items each time
 	possible_items.shuffle()
 	
 	for i in range(spawn_positions.size()):
