@@ -1,12 +1,12 @@
 class_name Character
 extends CharacterBody2D
 
-
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
 var last_direction: Vector2
 
+@export var combat_screen: CanvasLayer
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 func _physics_process(delta: float) -> void:
@@ -37,3 +37,12 @@ func play_animation (prefix: String, dir: Vector2) -> void:
 		animated_sprite_2d.play(prefix + "_up")
 	elif dir.y > 0:
 		animated_sprite_2d.play(prefix + "_down")
+		
+	
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.is_in_group("enemy"):
+		print("Collision with enemy detected")
+		combat_screen.visible = true
+		get_tree().paused = true
