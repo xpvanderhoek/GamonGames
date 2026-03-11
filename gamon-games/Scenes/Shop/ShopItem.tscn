@@ -4,8 +4,17 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4rgw3"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_6j5au"]
+
 [node name="ShopItem" type="Node2D" unique_id=1373492305]
 script = ExtResource("1_6j5au")
+
+[node name="Prompt" type="Label" parent="." unique_id=1566797129]
+offset_left = -53.195
+offset_top = -86.265
+offset_right = 54.805
+offset_bottom = -63.265
+text = "Press E to buy"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=386328136]
 
@@ -16,9 +25,18 @@ scale = Vector2(4.4, 4.4)
 scale = Vector2(0.6, 0.6)
 shape = SubResource("CircleShape2D_4rgw3")
 
-[node name="Label" type="Label" parent="." unique_id=1458447901]
+[node name="PriceLabel" type="Label" parent="." unique_id=1458447901]
 offset_left = -15.000008
 offset_top = 44.0
 offset_right = 32.25999
 offset_bottom = 67.0
 scale = Vector2(2.835, 2.835)
+
+[node name="Buy_Zone" type="Area2D" parent="." unique_id=184301952]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Buy_Zone" unique_id=810062944]
+scale = Vector2(5.105, 5.105)
+shape = SubResource("CircleShape2D_6j5au")
+
+[connection signal="body_entered" from="Buy_Zone" to="." method="_on_buy_zone_body_entered"]
+[connection signal="body_exited" from="Buy_Zone" to="." method="_on_buy_zone_body_exited"]
