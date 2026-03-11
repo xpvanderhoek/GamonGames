@@ -8,5 +8,27 @@ script = ExtResource("7_mgr")
 enemy_entity_path = NodePath("mauler")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=991902612]
+position = Vector2(577, 325)
 
 [node name="mauler" parent="." unique_id=1681294554 instance=ExtResource("2_vb3s4")]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=-2003117295]
+
+[node name="Actions" type="HBoxContainer" parent="UI" unique_id=-2003117294]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -68.0
+offset_right = 400.0
+offset_bottom = -25.0
+grow_vertical = 0
+pivot_offset_ratio = Vector2(5, 5)
+
+[node name="BtnAttack" type="Button" parent="UI/Actions" unique_id=2098855253]
+layout_mode = 2
+text = "attack"
+
+[node name="BtnFireball" type="Button" parent="UI/Actions" unique_id=2016651686]
+layout_mode = 2
+text = "fireball"

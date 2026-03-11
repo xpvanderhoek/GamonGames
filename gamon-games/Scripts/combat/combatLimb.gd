@@ -8,9 +8,10 @@ extends Sprite2D
 var current_health: int
 var is_destroyed: bool = false
 var is_highlighted: bool = false
+var is_aoe_highlighted: bool = false
 
 # Auto generate collision polygon
-var alpha_threshold: float = 0.2 # Threshold for generating collision polygons from texture alpha
+var alpha_threshold: float = 0.1 # Threshold for generating collision polygons from texture alpha
 var epsilon: float = 2.0 # Epsilon for polygon simplification when generating collision polygons
 
 signal limb_damaged(limb: CombatLimb, damage: int, remaining_health: int)
@@ -55,8 +56,8 @@ func _setup_click_area() -> void:
 		print("Error: No polygons generated for limb ", limb_name, ". Check Texture")
 
 	area.input_event.connect(_on_area_input_event)
-	area.mouse_entered.connect(func(): mouse_entered_limb.emit(); set_highlighted())
-	area.mouse_exited.connect(func(): mouse_exited_limb.emit(); set_unhighlighted())
+	area.mouse_entered.connect(func(): mouse_entered_limb.emit())
+	area.mouse_exited.connect(func(): mouse_exited_limb.emit())
 
 func _on_area_input_event(viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if is_destroyed:
@@ -76,7 +77,20 @@ func set_unhighlighted() -> void:
 	if not is_highlighted:
 		return
 	is_highlighted = false
-	modulate = Color.WHITE
+	modulate = Color(1, 0.5, 0) if is_aoe_highlighted else Color.WHITE
+
+func set_aoe_highlighted() -> void:
+	if is_destroyed or is_aoe_highlighted:
+		return
+	is_aoe_highlighted = true
+	if not is_highlighted:
+		modulate = Color(1, 0.5, 0)
+
+func set_aoe_unhighlighted() -> void:
+	if not is_aoe_highlighted:
+		return
+	is_aoe_highlighted = false
+	modulate = Color.GREEN if is_highlighted else Color.WHITE
 
 func take_damage(amount: int) -> void:
 	if is_destroyed:
@@ -112,5 +126,7 @@ func _flash_hit() -> void:
 	if is_highlighted:
 		tween.tween_property(self, "modulate", Color.GREEN, 0.20)
 		return
-
+	if is_aoe_highlighted:
+		tween.tween_property(self, "modulate", Color(1, 0.5, 0), 0.20)
+		return
 	tween.tween_property(self, "modulate", Color.WHITE, 0.20)
