@@ -24,11 +24,11 @@ func _on_body_entered(body: Node2D) -> void:
 			_set_fallen_enemy_count(fallen_enemy_count + 1) # Placeholder for until after enemies are added.
 			if locked: # Check if _set_fallen_enemy_count unlocked the door 
 				return
-	else:
-		return
-	
+		
 		body.current_interactable = self
 		body.show_interaction_label("Enter")
+	else:
+		return
 
 func _on_body_exited(body: Node2D):
 	if body is Character:
