@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://dhexr8smtlsmo"]
 
-[ext_resource type="Script" uid="uid://b4abrvd60h7j6" path="res://scripts/character.gd" id="1_lkv7d"]
-[ext_resource type="Texture2D" uid="uid://cbc2ywqs2a3w2" path="res://assets/Placeholders/Front - Walking.png" id="2_ejsiy"]
-[ext_resource type="Texture2D" uid="uid://ormmttn8fiq8" path="res://assets/Placeholders/Front - Idle.png" id="2_wbia7"]
-[ext_resource type="Texture2D" uid="uid://bfd7fnet3oovu" path="res://assets/Placeholders/Left - Walking.png" id="3_2mse5"]
-[ext_resource type="Texture2D" uid="uid://di827v78fk8vl" path="res://assets/Placeholders/Left - Idle.png" id="3_kq7hj"]
-[ext_resource type="Texture2D" uid="uid://wwrowacdlmxa" path="res://assets/Placeholders/Right - Idle.png" id="4_7iw6i"]
-[ext_resource type="Texture2D" uid="uid://8hqfomcreg6c" path="res://assets/Placeholders/Right - Walking.png" id="4_reotu"]
-[ext_resource type="Texture2D" uid="uid://me0fjyq5kdp0" path="res://assets/Placeholders/Back - Walking.png" id="5_a5ess"]
-[ext_resource type="Texture2D" uid="uid://bp8cof261h7av" path="res://assets/Placeholders/Back - Idle.png" id="5_l1rcp"]
+[ext_resource type="Script" uid="uid://b4abrvd60h7j6" path="res://Scripts/character.gd" id="1_lkv7d"]
+[ext_resource type="Texture2D" uid="uid://cbc2ywqs2a3w2" path="res://Assets/Placeholders/Front - Walking.png" id="2_ejsiy"]
+[ext_resource type="Texture2D" uid="uid://ormmttn8fiq8" path="res://Assets/Placeholders/Front - Idle.png" id="2_wbia7"]
+[ext_resource type="Texture2D" uid="uid://bfd7fnet3oovu" path="res://Assets/Placeholders/Left - Walking.png" id="3_2mse5"]
+[ext_resource type="Texture2D" uid="uid://di827v78fk8vl" path="res://Assets/Placeholders/Left - Idle.png" id="3_kq7hj"]
+[ext_resource type="Texture2D" uid="uid://wwrowacdlmxa" path="res://Assets/Placeholders/Right - Idle.png" id="4_7iw6i"]
+[ext_resource type="Texture2D" uid="uid://8hqfomcreg6c" path="res://Assets/Placeholders/Right - Walking.png" id="4_reotu"]
+[ext_resource type="Texture2D" uid="uid://me0fjyq5kdp0" path="res://Assets/Placeholders/Back - Walking.png" id="5_a5ess"]
+[ext_resource type="Texture2D" uid="uid://bp8cof261h7av" path="res://Assets/Placeholders/Back - Idle.png" id="5_l1rcp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_082uh"]
 atlas = ExtResource("2_wbia7")
@@ -1065,6 +1065,9 @@ animations = [{
 radius = 60.0
 height = 204.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_wbia7"]
+radius = 159.22311
+
 [node name="Character" type="CharacterBody2D" unique_id=48660198]
 light_mask = 2
 scale = Vector2(0.5, 0.5)
@@ -1078,6 +1081,7 @@ animation = &"Idle_down"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=190510597]
 position = Vector2(0, 38)
 shape = SubResource("CapsuleShape2D_wbia7")
+
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2100027953]
 
@@ -1096,3 +1100,11 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 60
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="." unique_id=311827631]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1919771425]
+shape = SubResource("CircleShape2D_wbia7")
+debug_color = Color(3.7541986e-06, 0.64510936, 0.2735894, 0.41960785)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
