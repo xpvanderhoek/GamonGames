@@ -3,8 +3,7 @@
 [ext_resource type="Script" uid="uid://7de357adueeu" path="res://Scripts/enemy.gd" id="1_afpow"]
 [ext_resource type="Texture2D" uid="uid://b73m5mdlb55pi" path="res://Assets/Placeholders/Lich3_Idle_without_shadow.png" id="2_287tu"]
 [ext_resource type="Texture2D" uid="uid://bbhdsf5er88p2" path="res://Assets/Placeholders/Lich3_Walk_without_shadow.png" id="3_0830c"]
-[ext_resource type="Script" uid="uid://pun0w8tlmg56" path="res://Scripts/state_machine.gd" id="4_287tu"]
-[ext_resource type="Script" uid="uid://bxmg07y1dhfsb" path="res://Scripts/patrol.gd" id="5_0830c"]
+[ext_resource type="Script" uid="uid://e5m00ws5a7yr" path="res://Scripts/ai.gd" id="4_287tu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ghaa6"]
 atlas = ExtResource("2_287tu")
@@ -182,7 +181,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_8uf12")
 }],
 "loop": true,
-"name": &"Idle__down",
+"name": &"Idle_down",
 "speed": 5.0
 }, {
 "frames": [{
@@ -199,7 +198,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_ta2yt")
 }],
 "loop": true,
-"name": &"Idle__left",
+"name": &"Idle_left",
 "speed": 5.0
 }, {
 "frames": [{
@@ -216,7 +215,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_tk7xo")
 }],
 "loop": true,
-"name": &"Idle__right",
+"name": &"Idle_right",
 "speed": 5.0
 }, {
 "frames": [{
@@ -256,7 +255,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_iatxd")
 }],
 "loop": true,
-"name": &"Walk__down",
+"name": &"Walk_down",
 "speed": 6.0
 }, {
 "frames": [{
@@ -279,7 +278,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_6jaer")
 }],
 "loop": true,
-"name": &"Walk__left",
+"name": &"Walk_left",
 "speed": 6.0
 }, {
 "frames": [{
@@ -302,7 +301,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_a6sir")
 }],
 "loop": true,
-"name": &"Walk__right",
+"name": &"Walk_right",
 "speed": 6.0
 }, {
 "frames": [{
@@ -329,35 +328,44 @@ animations = [{
 "speed": 6.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_hghv2"]
+radius = 12.333334
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_afpow"]
 radius = 23.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_hghv2"]
-radius = 10.198039
+[sub_resource type="CircleShape2D" id="CircleShape2D_0830c"]
+radius = 70.669815
 
 [node name="Enemy" type="CharacterBody2D" unique_id=1814016211 groups=["enemy"]]
 scale = Vector2(3, 3)
 script = ExtResource("1_afpow")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=1142509301]
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1501076824]
+path_desired_distance = 4.0
+target_desired_distance = 4.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1142509301]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_pyrvc")
-animation = &"Idle__down"
+animation = &"Idle_down"
 frame_progress = 0.8847368
-
-[node name="Area2D" type="Area2D" parent="." unique_id=1499397447]
-
-[node name="CombatTriggerCollision" type="CollisionShape2D" parent="Area2D" unique_id=1963555689]
-shape = SubResource("CircleShape2D_afpow")
-debug_color = Color(0.8961667, 0.00020561457, 0.77754927, 0.41960785)
 
 [node name="EnemyCollision" type="CollisionShape2D" parent="." unique_id=1747175273]
 shape = SubResource("CircleShape2D_hghv2")
 
-[node name="StateMachine" type="Node" parent="." unique_id=614643711]
+[node name="CombatTrigger" type="Area2D" parent="." unique_id=1499397447]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatTrigger" unique_id=1963555689]
+shape = SubResource("CircleShape2D_afpow")
+debug_color = Color(0.8961667, 0.00020561457, 0.77754927, 0.41960785)
+
+[node name="AI" type="Node2D" parent="." unique_id=763960091]
 script = ExtResource("4_287tu")
 
-[node name="Patrol" type="Node" parent="StateMachine" unique_id=269222546]
-script = ExtResource("5_0830c")
+[node name="PlayerDetection" type="Area2D" parent="AI" unique_id=351703190]
 
-[node name="Engage" type="Node" parent="StateMachine" unique_id=1581980558]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AI/PlayerDetection" unique_id=1563660878]
+shape = SubResource("CircleShape2D_0830c")
+
+[connection signal="body_entered" from="AI/PlayerDetection" to="AI" method="_on_player_detection_body_entered"]

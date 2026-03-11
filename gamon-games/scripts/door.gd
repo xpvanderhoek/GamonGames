@@ -18,6 +18,8 @@ func _on_body_entered(body: Node2D) -> void:
 		if locked:
 			set_fallen_enemy_count(fallen_enemy_count + 1) # Placerholder for until after enemies are added.
 			return
+	else:
+		return
 	
 	var current_scene_path = get_tree().current_scene.scene_file_path
 	NavigationManager.go_to_random_room(current_scene_path)

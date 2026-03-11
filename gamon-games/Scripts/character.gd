@@ -12,7 +12,7 @@ var last_direction: Vector2
 
 func _physics_process(delta: float) -> void:
 	process_movement()
-	process_animation()
+	AnimationManager.process_animation(animated_sprite_2d, velocity, last_direction)
 	move_and_slide()
 
 func process_movement() -> void:
@@ -22,22 +22,6 @@ func process_movement() -> void:
 		last_direction = direction
 	else:
 		velocity = Vector2.ZERO
-
-func process_animation() -> void:
-	if velocity != Vector2.ZERO:
-		play_animation("Walk", last_direction)
-	else:
-		play_animation("Idle", last_direction)
-
-func play_animation (prefix: String, dir: Vector2) -> void:
-	if dir.x > 0:
-		animated_sprite_2d.play(prefix + "_right")
-	elif dir.x < 0:
-		animated_sprite_2d.play(prefix + "_left")
-	elif dir.y < 0:
-		animated_sprite_2d.play(prefix + "_up")
-	elif dir.y > 0:
-		animated_sprite_2d.play(prefix + "_down")
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

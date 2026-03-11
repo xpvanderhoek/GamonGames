@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="GamonGames"
-run/main_scene="uid://dibe1nlseg240"
+run/main_scene="uid://1pnpqphwnw6"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 TransitionManager="*uid://dh7cx5gqjgckf"
 NavigationManager="*uid://dnruitng07ior"
+AnimationManager="*uid://car5ovidbulrc"
 
 [layer_names]
 
