@@ -26,7 +26,7 @@ func _on_body_entered(body: Node2D) -> void:
 				return
 	
 		body.current_interactable = self
-		body.show_interaction_label("Press 'Enter' key to Enter")
+		body.show_interaction_label("Enter")
 
 func _on_body_exited(body: Node2D):
 	if body is Character:
