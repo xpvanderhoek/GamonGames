@@ -48,6 +48,7 @@ func apply_buff():
 			##"Speed": player.move_speed += item_data.buff_value
 
 func _on_buy_zone_body_entered(body: Node2D) -> void:
+	print("Player entered buy zone")
 	if body.is_in_group("Player"):
 		player_in_range = true
 		prompt.show()

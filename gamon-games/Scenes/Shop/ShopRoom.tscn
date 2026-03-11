@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://Scenes/character.tscn" id="3_6tcdb"]
 [ext_resource type="Resource" uid="uid://caulqofce0110" path="res://Assets/ShopItems/Resources/AttackSword.tres" id="3_onhuh"]
 [ext_resource type="Resource" uid="uid://d1dojos006lm1" path="res://Assets/ShopItems/Resources/HealthPot.tres" id="4_027ho"]
-[ext_resource type="Texture2D" uid="uid://bbmxwdequnuwr" path="res://Assets/TempShopkeeper.webp" id="4_fh4ca"]
+[ext_resource type="Texture2D" uid="uid://dbyiyb5buyvxl" path="res://Assets/TempShopkeeper.webp" id="4_fh4ca"]
 [ext_resource type="Resource" uid="uid://dqy5xntgugb6f" path="res://Assets/ShopItems/Resources/SpeedBoots.tres" id="5_ps3lo"]
 [ext_resource type="Script" uid="uid://6mklxmfdvwie" path="res://Scripts/Shop/GoldLabel.gd" id="6_6tcdb"]
 
@@ -85,10 +85,10 @@ position = Vector2(634.375, 272.31)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1182942741]
 
 [node name="Label" type="Label" parent="." unique_id=502603041]
-offset_left = 120.035
-offset_top = 45.785
-offset_right = 160.03505
-offset_bottom = 68.785
+offset_left = -127.0
+offset_top = -76.0
+offset_right = -86.999954
+offset_bottom = -52.999996
 scale = Vector2(3.23, 3.23)
 label_settings = SubResource("LabelSettings_cougk")
 script = ExtResource("6_6tcdb")
