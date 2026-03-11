@@ -8,6 +8,7 @@ var last_direction: Vector2
 
 var current_interactable = null
 
+@export var combat_screen: CanvasLayer
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var interaction_label : Label = $Camera2D/InteractionLabel
 
@@ -52,3 +53,11 @@ func play_animation (prefix: String, dir: Vector2) -> void:
 		animated_sprite_2d.play(prefix + "_up")
 	elif dir.y > 0:
 		animated_sprite_2d.play(prefix + "_down")
+		
+	
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.is_in_group("enemy"):
+		combat_screen.visible = true
+		get_tree().paused = true

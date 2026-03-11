@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://4wkgy52xurvv"]
+
+[ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://Scenes/character.tscn" id="1_kq5p8"]
+[ext_resource type="PackedScene" uid="uid://bjsaejikahdsi" path="res://Scenes/enemy.tscn" id="2_0qq7o"]
+[ext_resource type="Script" uid="uid://b5u4wkmlrke7n" path="res://Scripts/combat_screen.gd" id="3_njp31"]
+
+[node name="Test" type="Node2D" unique_id=1446173614]
+
+[node name="Character" parent="." unique_id=48660198 node_paths=PackedStringArray("combat_screen") instance=ExtResource("1_kq5p8")]
+combat_screen = NodePath("../CombatScreen")
+
+[node name="Enemy" parent="." unique_id=1814016211 instance=ExtResource("2_0qq7o")]
+position = Vector2(527, 1)
+
+[node name="CombatScreen" type="CanvasLayer" parent="." unique_id=282238249]
+process_mode = 2
+visible = false
+script = ExtResource("3_njp31")
+
+[node name="ExitButton" type="Button" parent="CombatScreen" unique_id=269202687]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Exit Combat Screen"
+
+[connection signal="pressed" from="CombatScreen/ExitButton" to="CombatScreen" method="_on_exit_button_pressed"]
