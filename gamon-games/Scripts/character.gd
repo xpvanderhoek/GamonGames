@@ -13,13 +13,13 @@ var current_interactable = null
 @onready var interaction_label : Label = $Camera2D/InteractionLabel
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept"): # I'll change this to E when I work on InputMap
+	if event.is_action_pressed("interact"):
 		if current_interactable != null:
 			current_interactable.interact()
 
-func show_interaction_label(text : String):
+func show_interaction_label(action_name : String):
 	interaction_label.visible = true
-	interaction_label.text = text
+	interaction_label.text = "Press 'E' to " + action_name
 
 func hide_interaction_label():
 	interaction_label.visible = false
@@ -31,7 +31,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func process_movement() -> void:
-	var direction := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if direction != Vector2.ZERO:
 		velocity = direction * SPEED
 		last_direction = direction
