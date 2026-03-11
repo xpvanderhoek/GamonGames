@@ -1065,8 +1065,6 @@ animations = [{
 radius = 60.0
 height = 204.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kq7hj"]
-
 [node name="Character" type="CharacterBody2D" unique_id=48660198]
 light_mask = 2
 scale = Vector2(0.5, 0.5)
@@ -1080,11 +1078,3 @@ animation = &"Idle_down"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=190510597]
 position = Vector2(0, 38)
 shape = SubResource("CapsuleShape2D_wbia7")
-
-[node name="Area2D" type="Area2D" parent="." unique_id=1985587016]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1313812670]
-scale = Vector2(15.065922, 12.187319)
-shape = SubResource("CapsuleShape2D_kq7hj")
-
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

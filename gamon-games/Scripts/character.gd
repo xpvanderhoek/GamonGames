@@ -37,8 +37,3 @@ func play_animation (prefix: String, dir: Vector2) -> void:
 		animated_sprite_2d.play(prefix + "_up")
 	elif dir.y > 0:
 		animated_sprite_2d.play(prefix + "_down")
-
-
-func _on_area_2d_body_entered(body):
-	if body.is_in_group("enemy"):
-		print("Player hit enemy")
