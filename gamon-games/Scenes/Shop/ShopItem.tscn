@@ -26,10 +26,10 @@ scale = Vector2(0.6, 0.6)
 shape = SubResource("CircleShape2D_4rgw3")
 
 [node name="PriceLabel" type="Label" parent="." unique_id=1458447901]
-offset_left = -15.000008
-offset_top = 44.0
-offset_right = 32.25999
-offset_bottom = 67.0
+offset_left = -29.0
+offset_top = 47.000004
+offset_right = 18.259998
+offset_bottom = 70.0
 scale = Vector2(2.835, 2.835)
 
 [node name="Buy_Zone" type="Area2D" parent="." unique_id=184301952]
