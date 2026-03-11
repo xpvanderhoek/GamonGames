@@ -6,7 +6,7 @@
 [node name="Room2" type="Node2D" unique_id=952259315]
 
 [node name="Door" parent="." unique_id=395606353 instance=ExtResource("2_ar6ir")]
-position = Vector2(96, 145)
+position = Vector2(520, 269)
 
 [node name="Label" type="Label" parent="." unique_id=1066908816]
 offset_left = 402.0
