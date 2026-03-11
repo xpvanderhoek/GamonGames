@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b73m5mdlb55pi" path="res://Assets/Placeholders/Lich3_Idle_without_shadow.png" id="2_287tu"]
 [ext_resource type="Texture2D" uid="uid://bbhdsf5er88p2" path="res://Assets/Placeholders/Lich3_Walk_without_shadow.png" id="3_0830c"]
 [ext_resource type="Script" uid="uid://pun0w8tlmg56" path="res://Scripts/state_machine.gd" id="4_287tu"]
+[ext_resource type="Script" uid="uid://bxmg07y1dhfsb" path="res://Scripts/patrol.gd" id="5_0830c"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ghaa6"]
 atlas = ExtResource("2_287tu")
@@ -342,7 +343,7 @@ script = ExtResource("1_afpow")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_pyrvc")
 animation = &"Idle__down"
-frame_progress = 0.95670336
+frame_progress = 0.8847368
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1499397447]
 
@@ -357,5 +358,6 @@ shape = SubResource("CircleShape2D_hghv2")
 script = ExtResource("4_287tu")
 
 [node name="Patrol" type="Node" parent="StateMachine" unique_id=269222546]
+script = ExtResource("5_0830c")
 
 [node name="Engage" type="Node" parent="StateMachine" unique_id=1581980558]
