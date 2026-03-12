@@ -1,5 +1,6 @@
 extends Node2D
 
+@onready var room_container: Node2D = $RoomContainer
 @onready var character: Character = $Character
 
 var current_room: Node = null

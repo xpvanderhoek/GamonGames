@@ -7,6 +7,7 @@ var current_room_path: String = scene_room1
 
 @onready var rooms : Array[String] = [scene_room1, scene_room2, scene_room3]
 
+func go_to_random_room(current_room: String):
 	var destination: String = current_room
 
 	while destination == current_room: # Prevent current room appearing repeatedly
