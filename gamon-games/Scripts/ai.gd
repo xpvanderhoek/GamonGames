@@ -17,6 +17,7 @@ var direction: Vector2
 var timer := 0.0
 var patrol_target: Vector2 = Vector2.ZERO
 var patrol_moves_left: int = 0
+var disengage_distance: float = 400.0
 
 func _ready() -> void:
 	enemy = get_parent() as Enemy
@@ -42,7 +43,12 @@ func _process(delta: float) -> void:
 				enemy.navigate_to(patrol_target)
 		State.ENGAGE:
 			if target != null:
-				enemy.navigate_to(target.global_position)
+				var dist := enemy.global_position.distance_to(target.global_position)
+				if dist > disengage_distance:
+					target = null
+					set_state(State.IDLE)
+				else:
+					enemy.navigate_to(target.global_position)
 			else:
 				set_state(State.IDLE)
 		_:
@@ -64,3 +70,9 @@ func _on_player_detection_body_entered(body: Node2D) -> void:
 	if body is Character:
 		set_state(State.ENGAGE)
 		target = body
+
+func _on_player_detection_body_exited(body: Node2D) -> void:
+	if body is Character:
+		if body == target:
+			target = null
+			set_state(State.IDLE)

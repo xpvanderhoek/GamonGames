@@ -1,4 +1,4 @@
-extends Node
+extends Interactable
 
 @onready var requirements_label : Label = $RequirementsLabel
 @onready var lock_image : Sprite2D = $Lock
@@ -8,10 +8,14 @@ var locked : bool
 var fallen_enemy_count : int
 
 func _ready() -> void:
+	super._ready()
 	fallen_enemy_count = 0
 	locked = true
 	enemy_requirement = randi_range(1, 4) # Placeholder for until after enemies are added
 	requirements_label.text = "Requirement: " + str (enemy_requirement) + " enemies"
+
+func get_prompt_text() -> String:
+	return "Enter"
 
 func interact():
 	var current_scene_path = get_tree().current_scene.scene_file_path
@@ -26,16 +30,9 @@ func _on_body_entered(body: Node2D) -> void:
 				return
 		
 		body.current_interactable = self
-		body.show_interaction_label("Enter")
+		body.show_interaction_label(get_prompt_text())
 	else:
 		return
-
-func _on_body_exited(body: Node2D):
-	if body is Character:
-		body = body as Character
-		
-		body.current_interactable = null
-		body.hide_interaction_label()
 
 func _set_fallen_enemy_count(value : int):
 	fallen_enemy_count = value
