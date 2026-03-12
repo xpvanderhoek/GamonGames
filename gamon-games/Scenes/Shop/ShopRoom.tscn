@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dbyiyb5buyvxl" path="res://Assets/TempShopkeeper.webp" id="4_fh4ca"]
 [ext_resource type="Resource" uid="uid://dqy5xntgugb6f" path="res://Assets/ShopItems/Resources/SpeedBoots.tres" id="5_ps3lo"]
 [ext_resource type="Script" uid="uid://6mklxmfdvwie" path="res://Scripts/Shop/GoldLabel.gd" id="6_6tcdb"]
-[ext_resource type="Texture2D" uid="uid://ccjwslu7vub3a" path="res://Assets/coinimage.png" id="10_onhuh"]
+[ext_resource type="Texture2D" uid="uid://k3j8xldpw3a" path="res://Assets/coinimage.png" id="10_onhuh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rto70"]
 texture = ExtResource("2_cougk")
@@ -635,10 +635,87 @@ cache/0/25/0/descent = 0.0
 cache/0/25/0/underline_position = 0.0
 cache/0/25/0/underline_thickness = 0.0
 cache/0/25/0/scale = 1.0
+cache/0/22/0/ascent = 0.0
+cache/0/22/0/descent = 0.0
+cache/0/22/0/underline_position = 0.0
+cache/0/22/0/underline_thickness = 0.0
+cache/0/22/0/scale = 1.0
+cache/0/21/0/ascent = 0.0
+cache/0/21/0/descent = 0.0
+cache/0/21/0/underline_position = 0.0
+cache/0/21/0/underline_thickness = 0.0
+cache/0/21/0/scale = 1.0
+cache/0/20/0/ascent = 0.0
+cache/0/20/0/descent = 0.0
+cache/0/20/0/underline_position = 0.0
+cache/0/20/0/underline_thickness = 0.0
+cache/0/20/0/scale = 1.0
+cache/0/19/0/ascent = 0.0
+cache/0/19/0/descent = 0.0
+cache/0/19/0/underline_position = 0.0
+cache/0/19/0/underline_thickness = 0.0
+cache/0/19/0/scale = 1.0
+cache/0/18/0/ascent = 0.0
+cache/0/18/0/descent = 0.0
+cache/0/18/0/underline_position = 0.0
+cache/0/18/0/underline_thickness = 0.0
+cache/0/18/0/scale = 1.0
+cache/0/17/0/ascent = 0.0
+cache/0/17/0/descent = 0.0
+cache/0/17/0/underline_position = 0.0
+cache/0/17/0/underline_thickness = 0.0
+cache/0/17/0/scale = 1.0
+cache/0/15/0/ascent = 0.0
+cache/0/15/0/descent = 0.0
+cache/0/15/0/underline_position = 0.0
+cache/0/15/0/underline_thickness = 0.0
+cache/0/15/0/scale = 1.0
+cache/0/14/0/ascent = 0.0
+cache/0/14/0/descent = 0.0
+cache/0/14/0/underline_position = 0.0
+cache/0/14/0/underline_thickness = 0.0
+cache/0/14/0/scale = 1.0
+cache/0/13/0/ascent = 0.0
+cache/0/13/0/descent = 0.0
+cache/0/13/0/underline_position = 0.0
+cache/0/13/0/underline_thickness = 0.0
+cache/0/13/0/scale = 1.0
+cache/0/12/0/ascent = 0.0
+cache/0/12/0/descent = 0.0
+cache/0/12/0/underline_position = 0.0
+cache/0/12/0/underline_thickness = 0.0
+cache/0/12/0/scale = 1.0
+cache/0/11/0/ascent = 0.0
+cache/0/11/0/descent = 0.0
+cache/0/11/0/underline_position = 0.0
+cache/0/11/0/underline_thickness = 0.0
+cache/0/11/0/scale = 1.0
+cache/0/10/0/ascent = 0.0
+cache/0/10/0/descent = 0.0
+cache/0/10/0/underline_position = 0.0
+cache/0/10/0/underline_thickness = 0.0
+cache/0/10/0/scale = 1.0
+cache/0/9/0/ascent = 0.0
+cache/0/9/0/descent = 0.0
+cache/0/9/0/underline_position = 0.0
+cache/0/9/0/underline_thickness = 0.0
+cache/0/9/0/scale = 1.0
+cache/0/8/0/ascent = 0.0
+cache/0/8/0/descent = 0.0
+cache/0/8/0/underline_position = 0.0
+cache/0/8/0/underline_thickness = 0.0
+cache/0/8/0/scale = 1.0
+cache/0/30/0/ascent = 0.0
+cache/0/30/0/descent = 0.0
+cache/0/30/0/underline_position = 0.0
+cache/0/30/0/underline_thickness = 0.0
+cache/0/30/0/scale = 1.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_cougk"]
 font = SubResource("FontFile_27i5q")
-font_size = 25
+font_size = 40
+outline_size = 9
+outline_color = Color(0, 0, 0, 0.95686275)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mst2l"]
 
@@ -663,19 +740,20 @@ position = Vector2(344, 369)
 
 [node name="Label" type="Label" parent="Character" unique_id=502603041]
 modulate = Color(0.75202096, 0.74928874, 0, 1)
-offset_left = -972.0
-offset_top = -628.0
-offset_right = -845.065
-offset_bottom = -554.0
+offset_left = -928.0
+offset_top = -632.0
+offset_right = -801.065
+offset_bottom = -558.0
 scale = Vector2(3.23, 3.23)
 theme = SubResource("Theme_onhuh")
+text = "Template"
 label_settings = SubResource("LabelSettings_cougk")
 script = ExtResource("6_6tcdb")
 
 [node name="Sprite2D" type="Sprite2D" parent="Character" unique_id=613486431]
 texture_filter = 1
-position = Vector2(-1048, -566)
-scale = Vector2(0.32061458, 0.32061464)
+position = Vector2(-1038, -532)
+scale = Vector2(0.12493973, 0.124939755)
 texture = ExtResource("10_onhuh")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1449665472]
