@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dqy5xntgugb6f"]
+
+[ext_resource type="Script" uid="uid://b7cli1nhudpxr" path="res://Scripts/Items/ItemData.gd" id="1_tcahv"]
+[ext_resource type="Texture2D" uid="uid://bvv81yo0dnj16" path="res://Assets/ShopItems/Textures/TempBoots.png" id="2_5mjy5"]
+
+[resource]
+script = ExtResource("1_tcahv")
+item_name = "Mythic boots of Dhormur"
+cost = 60
+texture = ExtResource("2_5mjy5")
+metadata/_custom_type_script = "uid://b7cli1nhudpxr"
