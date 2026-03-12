@@ -22,6 +22,10 @@ NavigationManager="*uid://dnruitng07ior"
 CurrenciesManager="*uid://bwnahuxrnyn6o"
 AnimationManager="*uid://car5ovidbulrc"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [global_group]
 
 Player=""
