@@ -3,13 +3,14 @@
 [ext_resource type="Script" uid="uid://mweq4ng0gdhd" path="res://Scripts/Shop/shop_Room.gd" id="1_2g6x2"]
 [ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://Scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
 [ext_resource type="Script" uid="uid://b7cli1nhudpxr" path="res://Scripts/Items/ItemData.gd" id="2_27i5q"]
-[ext_resource type="Texture2D" uid="uid://bwnhvweqx5eom" path="res://Assets/Placeholders/bettersheet.png" id="2_cougk"]
+[ext_resource type="Texture2D" uid="uid://bgghk116s6pl4" path="res://Assets/Placeholders/bettersheet.png" id="2_cougk"]
 [ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://Scenes/character.tscn" id="3_6tcdb"]
 [ext_resource type="Resource" uid="uid://caulqofce0110" path="res://Assets/ShopItems/Resources/AttackSword.tres" id="3_onhuh"]
 [ext_resource type="Resource" uid="uid://d1dojos006lm1" path="res://Assets/ShopItems/Resources/HealthPot.tres" id="4_027ho"]
 [ext_resource type="Texture2D" uid="uid://dbyiyb5buyvxl" path="res://Assets/TempShopkeeper.webp" id="4_fh4ca"]
 [ext_resource type="Resource" uid="uid://dqy5xntgugb6f" path="res://Assets/ShopItems/Resources/SpeedBoots.tres" id="5_ps3lo"]
 [ext_resource type="Script" uid="uid://6mklxmfdvwie" path="res://Scripts/Shop/GoldLabel.gd" id="6_6tcdb"]
+[ext_resource type="Texture2D" uid="uid://ccjwslu7vub3a" path="res://Assets/coinimage.png" id="10_onhuh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rto70"]
 texture = ExtResource("2_cougk")
@@ -36,6 +37,8 @@ tile_size = Vector2i(32, 16)
 physics_layer_0/collision_layer = 4
 physics_layer_0/collision_mask = 0
 sources/1 = SubResource("TileSetAtlasSource_rto70")
+
+[sub_resource type="Theme" id="Theme_onhuh"]
 
 [sub_resource type="FontFile" id="FontFile_27i5q"]
 cache/0/variation_coordinates = {}
@@ -537,10 +540,105 @@ cache/0/56/0/descent = 0.0
 cache/0/56/0/underline_position = 0.0
 cache/0/56/0/underline_thickness = 0.0
 cache/0/56/0/scale = 1.0
+cache/0/51/0/ascent = 0.0
+cache/0/51/0/descent = 0.0
+cache/0/51/0/underline_position = 0.0
+cache/0/51/0/underline_thickness = 0.0
+cache/0/51/0/scale = 1.0
+cache/0/49/0/ascent = 0.0
+cache/0/49/0/descent = 0.0
+cache/0/49/0/underline_position = 0.0
+cache/0/49/0/underline_thickness = 0.0
+cache/0/49/0/scale = 1.0
+cache/0/45/0/ascent = 0.0
+cache/0/45/0/descent = 0.0
+cache/0/45/0/underline_position = 0.0
+cache/0/45/0/underline_thickness = 0.0
+cache/0/45/0/scale = 1.0
+cache/0/41/0/ascent = 0.0
+cache/0/41/0/descent = 0.0
+cache/0/41/0/underline_position = 0.0
+cache/0/41/0/underline_thickness = 0.0
+cache/0/41/0/scale = 1.0
+cache/0/40/0/ascent = 0.0
+cache/0/40/0/descent = 0.0
+cache/0/40/0/underline_position = 0.0
+cache/0/40/0/underline_thickness = 0.0
+cache/0/40/0/scale = 1.0
+cache/0/39/0/ascent = 0.0
+cache/0/39/0/descent = 0.0
+cache/0/39/0/underline_position = 0.0
+cache/0/39/0/underline_thickness = 0.0
+cache/0/39/0/scale = 1.0
+cache/0/38/0/ascent = 0.0
+cache/0/38/0/descent = 0.0
+cache/0/38/0/underline_position = 0.0
+cache/0/38/0/underline_thickness = 0.0
+cache/0/38/0/scale = 1.0
+cache/0/37/0/ascent = 0.0
+cache/0/37/0/descent = 0.0
+cache/0/37/0/underline_position = 0.0
+cache/0/37/0/underline_thickness = 0.0
+cache/0/37/0/scale = 1.0
+cache/0/36/0/ascent = 0.0
+cache/0/36/0/descent = 0.0
+cache/0/36/0/underline_position = 0.0
+cache/0/36/0/underline_thickness = 0.0
+cache/0/36/0/scale = 1.0
+cache/0/35/0/ascent = 0.0
+cache/0/35/0/descent = 0.0
+cache/0/35/0/underline_position = 0.0
+cache/0/35/0/underline_thickness = 0.0
+cache/0/35/0/scale = 1.0
+cache/0/34/0/ascent = 0.0
+cache/0/34/0/descent = 0.0
+cache/0/34/0/underline_position = 0.0
+cache/0/34/0/underline_thickness = 0.0
+cache/0/34/0/scale = 1.0
+cache/0/33/0/ascent = 0.0
+cache/0/33/0/descent = 0.0
+cache/0/33/0/underline_position = 0.0
+cache/0/33/0/underline_thickness = 0.0
+cache/0/33/0/scale = 1.0
+cache/0/32/0/ascent = 0.0
+cache/0/32/0/descent = 0.0
+cache/0/32/0/underline_position = 0.0
+cache/0/32/0/underline_thickness = 0.0
+cache/0/32/0/scale = 1.0
+cache/0/31/0/ascent = 0.0
+cache/0/31/0/descent = 0.0
+cache/0/31/0/underline_position = 0.0
+cache/0/31/0/underline_thickness = 0.0
+cache/0/31/0/scale = 1.0
+cache/0/29/0/ascent = 0.0
+cache/0/29/0/descent = 0.0
+cache/0/29/0/underline_position = 0.0
+cache/0/29/0/underline_thickness = 0.0
+cache/0/29/0/scale = 1.0
+cache/0/28/0/ascent = 0.0
+cache/0/28/0/descent = 0.0
+cache/0/28/0/underline_position = 0.0
+cache/0/28/0/underline_thickness = 0.0
+cache/0/28/0/scale = 1.0
+cache/0/27/0/ascent = 0.0
+cache/0/27/0/descent = 0.0
+cache/0/27/0/underline_position = 0.0
+cache/0/27/0/underline_thickness = 0.0
+cache/0/27/0/scale = 1.0
+cache/0/26/0/ascent = 0.0
+cache/0/26/0/descent = 0.0
+cache/0/26/0/underline_position = 0.0
+cache/0/26/0/underline_thickness = 0.0
+cache/0/26/0/scale = 1.0
+cache/0/25/0/ascent = 0.0
+cache/0/25/0/descent = 0.0
+cache/0/25/0/underline_position = 0.0
+cache/0/25/0/underline_thickness = 0.0
+cache/0/25/0/scale = 1.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_cougk"]
 font = SubResource("FontFile_27i5q")
-font_size = 55
+font_size = 25
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mst2l"]
 
@@ -564,13 +662,21 @@ z_index = 1
 position = Vector2(344, 369)
 
 [node name="Label" type="Label" parent="Character" unique_id=502603041]
-offset_left = -1136.0
-offset_top = -638.0
-offset_right = -978.1052
-offset_bottom = -545.1207
+modulate = Color(0.75202096, 0.74928874, 0, 1)
+offset_left = -972.0
+offset_top = -628.0
+offset_right = -845.065
+offset_bottom = -554.0
 scale = Vector2(3.23, 3.23)
+theme = SubResource("Theme_onhuh")
 label_settings = SubResource("LabelSettings_cougk")
 script = ExtResource("6_6tcdb")
+
+[node name="Sprite2D" type="Sprite2D" parent="Character" unique_id=613486431]
+texture_filter = 1
+position = Vector2(-1048, -566)
+scale = Vector2(0.32061458, 0.32061464)
+texture = ExtResource("10_onhuh")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1449665472]
 position = Vector2(566.365, 106.59)
