@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://1pnpqphwnw6"]
 
 [ext_resource type="Texture2D" uid="uid://bgghk116s6pl4" path="res://Assets/Placeholders/bettersheet.png" id="1_fbq1s"]
-[ext_resource type="PackedScene" uid="uid://c2d27vcpwdqpj" path="res://Scenes/door.tscn" id="1_hnbyo"]
+[ext_resource type="PackedScene" uid="uid://c53jm5tnw6doc" path="res://scenes/door.tscn" id="3_21tkn"]
 [ext_resource type="PackedScene" uid="uid://bjsaejikahdsi" path="res://Scenes/enemy.tscn" id="4_nsq00"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_a0jlh"]
@@ -51,7 +51,7 @@ tile_set = SubResource("TileSet_p8nu4")
 [node name="Enemy" parent="." unique_id=1814016211 instance=ExtResource("4_nsq00")]
 position = Vector2(450, 54)
 
-[node name="SpawnPoint" type="Marker2D" parent="."]
+[node name="SpawnPoint" type="Marker2D" parent="." unique_id=814210741]
 position = Vector2(344, 369)
 
 [node name="Label" type="Label" parent="." unique_id=1645333632]
@@ -61,3 +61,6 @@ offset_right = 222.0
 offset_bottom = 84.0
 theme_override_font_sizes/font_size = 50
 text = "ROOM 1"
+
+[node name="Door" parent="." unique_id=89376507 instance=ExtResource("3_21tkn")]
+position = Vector2(859, 56)
