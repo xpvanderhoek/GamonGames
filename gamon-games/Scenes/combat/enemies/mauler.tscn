@@ -9,7 +9,14 @@
 [ext_resource type="Texture2D" uid="uid://d3s3l7c6exrsj" path="res://Assets/Placeholders/enemies/mauler_armR.png" id="7_lqs23"]
 [ext_resource type="Texture2D" uid="uid://qcrduu28cwmh" path="res://Assets/Placeholders/enemies/mauler_legL.png" id="8_w1bur"]
 
-[node name="mauler" type="Node" unique_id=1659187790]
+[node name="mauler" type="Control" unique_id=1680014499]
+custom_minimum_size = Vector2(220, 330)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 250.0
+offset_bottom = 350.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_43sib")
 
 [node name="MaulerTorso" type="Sprite2D" parent="." unique_id=1081538787]

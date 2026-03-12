@@ -3,7 +3,7 @@ extends Sprite2D
 
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
-@export var is_vital: bool = false # If true, destroying this limb kills the whole entity 
+@export var is_vital: bool = false
 
 var current_health: int
 var is_destroyed: bool = false
@@ -11,7 +11,7 @@ var is_highlighted: bool = false
 var is_aoe_highlighted: bool = false
 
 # Auto generate collision polygon
-var alpha_threshold: float = 0.1 # Threshold for generating collision polygons from texture alpha
+var alpha_threshold: float = 0.2 # Threshold for generating collision polygons from texture alpha
 var epsilon: float = 2.0 # Epsilon for polygon simplification when generating collision polygons
 
 signal limb_damaged(limb: CombatLimb, damage: int, remaining_health: int)

@@ -45,7 +45,6 @@ func _draw() -> void:
 		return
 	var mouse_local := get_local_mouse_position()
 	
-	# Draw circle
 	draw_circle(mouse_local, fireball_radius, Color(1.0, 0.35, 0.0, 0.12))
 	draw_arc(mouse_local, fireball_radius, 0.0, TAU, 64, Color(1.0, 0.5, 0.0, 0.85), 2.0)
 
