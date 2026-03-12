@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://8hqfomcreg6c" path="res://Assets/Placeholders/Right - Walking.png" id="4_reotu"]
 [ext_resource type="Texture2D" uid="uid://me0fjyq5kdp0" path="res://Assets/Placeholders/Back - Walking.png" id="5_a5ess"]
 [ext_resource type="Texture2D" uid="uid://bp8cof261h7av" path="res://Assets/Placeholders/Back - Idle.png" id="5_l1rcp"]
+[ext_resource type="PackedScene" uid="uid://3h1a2ialal4a" path="res://Scenes/UI/CurrencyUI.tscn" id="10_kq7hj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_082uh"]
 atlas = ExtResource("2_wbia7")
@@ -1105,5 +1106,7 @@ vertical_alignment = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1919771425]
 shape = SubResource("CircleShape2D_wbia7")
 debug_color = Color(3.7541986e-06, 0.64510936, 0.2735894, 0.41960785)
+
+[node name="CurrencyUi" parent="." unique_id=2139467543 instance=ExtResource("10_kq7hj")]
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
