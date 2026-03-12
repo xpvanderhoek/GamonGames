@@ -6,7 +6,7 @@ var is_alive: bool = true
 
 var _hovered_limbs: Array[CombatLimb] = []
 var _highlighted_limb: CombatLimb = null
-var _aoe_highlighted_limbs: Array[CombatLimb] = []
+var _aoe_highlighted_limbs: Array[CombatLimb] = [] 
 
 var block_click_emit: bool = false
 var single_highlight_enabled: bool = true
@@ -126,3 +126,5 @@ func die() -> void:
 		if not limb.is_destroyed:
 			limb.destroy_limb()
 	entity_died.emit(self)
+
+	NavigationManager.go_back_to_current_room()

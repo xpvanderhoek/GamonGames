@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b1r88pxgxdvwr"]
 
 [ext_resource type="PackedScene" uid="uid://coej4qxba8o7a" path="res://Scenes/combat/enemies/mauler.tscn" id="2_vb3s4"]
-[ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://Scripts/combat/combatManager.gd" id="7_mgr"]
+[ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://Scripts/combat/CombatManager.gd" id="7_mgr"]
 
 [node name="Combat" type="Node2D" unique_id=2113185565]
 script = ExtResource("7_mgr")
@@ -18,9 +18,9 @@ position = Vector2(577, 325)
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 28.0
+offset_left = 26.0
 offset_top = -68.0
-offset_right = 400.0
+offset_right = 398.0
 offset_bottom = -25.0
 grow_vertical = 0
 pivot_offset_ratio = Vector2(5, 5)

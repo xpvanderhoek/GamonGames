@@ -31,7 +31,6 @@ func _ready() -> void:
 
 	btn_attack.pressed.connect(select_attack)
 	btn_fireball.pressed.connect(select_fireball)
-
 	select_attack()
 
 func _process(_delta: float) -> void:
