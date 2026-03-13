@@ -18,8 +18,7 @@ func get_prompt_text() -> String:
 	return "Enter"
 
 func interact():
-	var current_scene_path = get_tree().current_scene.scene_file_path
-	NavigationManager.go_to_random_room(current_scene_path)
+	NavigationManager.go_to_random_room(NavigationManager.current_room_path)
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Character:

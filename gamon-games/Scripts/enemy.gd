@@ -9,6 +9,7 @@ const SPEED = 100.0
 var last_direction: Vector2 = Vector2.DOWN
 
 func _physics_process(delta: float) -> void:
+	delta = min(delta, 0.1)
 	AnimationManager.process_animation(animated_sprite_2d, velocity, last_direction)
 	move_and_slide()
 
