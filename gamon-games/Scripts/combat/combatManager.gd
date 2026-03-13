@@ -21,8 +21,8 @@ var current_state: CombatState = CombatState.PLAYER_TURN
 var selected_action: CombatAction = CombatAction.ATTACK
 var enemy_entity: CombatEntity
 
-@onready var btn_attack: Button = $UI/Actions/BtnAttack
-@onready var btn_fireball: Button = $UI/Actions/BtnFireball
+@onready var btn_attack: Button = $UI/Panel/Actions/BtnAttack
+@onready var btn_fireball: Button = $UI/Panel/Actions/BtnFireball
 
 func _ready() -> void:
 	enemy_entity = get_node(enemy_entity_path) as CombatEntity
@@ -73,8 +73,12 @@ func select_fireball() -> void:
 	_update_button_states()
 
 func _update_button_states() -> void:
-	btn_attack.modulate = Color.WHITE if selected_action == CombatAction.ATTACK else Color(1, 1, 1, 0.5)
-	btn_fireball.modulate = Color.WHITE if selected_action == CombatAction.FIREBALL else Color(1, 1, 1, 0.5)
+	if selected_action == CombatAction.ATTACK:
+		btn_attack.grab_focus()
+		btn_fireball.release_focus()
+	elif selected_action == CombatAction.FIREBALL:
+		btn_attack.release_focus()
+		btn_fireball.grab_focus()
 
 func _on_enemy_limb_clicked(limb: CombatLimb) -> void:
 	if current_state != CombatState.PLAYER_TURN:
