@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://3ypr3wjdce6w"
-path="res://.godot/imported/mauler_torso.png-9276fa408afea2b003fb181b26f50569.ctex"
+path="res://.godot/imported/mauler_torso.png-caeff422e445c93252f9df05cf02200a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Placeholders/enemies/mauler_torso.png"
-dest_files=["res://.godot/imported/mauler_torso.png-9276fa408afea2b003fb181b26f50569.ctex"]
+source_file="res://assets/Placeholders/enemies/mauler_torso.png"
+dest_files=["res://.godot/imported/mauler_torso.png-caeff422e445c93252f9df05cf02200a.ctex"]
 
 [params]
 
