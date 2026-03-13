@@ -19,6 +19,7 @@ func load_room(scene_path: String) -> void:
 	var room_scene = load(scene_path)
 	current_room = room_scene.instantiate()
 	room_container.add_child(current_room)
+	current_room.add_to_group("room")
 
 	var spawn = current_room.get_node_or_null("SpawnPoint")
 	if spawn:
@@ -34,6 +35,7 @@ func enter_combat(combat_scene_path: String, enemy: Node = null) -> void:
 		combat_node.queue_free()
 		combat_node = null
 	_combat_enemy = enemy
+	get_tree().paused = true
 	var combat_scene = load(combat_scene_path)
 	combat_node = combat_scene.instantiate()
 	room_container.visible = false
@@ -49,8 +51,14 @@ func exit_combat(enemy_killed: bool = false) -> void:
 		combat_node = null
 	if enemy_killed and _combat_enemy and is_instance_valid(_combat_enemy):
 		_combat_enemy.queue_free()
+		signal_kill_to_room()
 	_combat_enemy = null
+	get_tree().paused = false
 	room_container.visible = true
 	character.visible = true
 	character.set_physics_process(true)
 	character.set_process_input(true)
+
+func signal_kill_to_room():
+	var room = room_container.get_tree().get_first_node_in_group("room")
+	room.enemies_kill_count += 1
