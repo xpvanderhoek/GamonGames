@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qcrduu28cwmh"
-path="res://.godot/imported/mauler_legL.png-cdc2e2a808159e0f9d2ae06b689f8a04.ctex"
+path="res://.godot/imported/mauler_legL.png-99d2588fe52c48452a3e70db719f6964.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Placeholders/enemies/mauler_legL.png"
-dest_files=["res://.godot/imported/mauler_legL.png-cdc2e2a808159e0f9d2ae06b689f8a04.ctex"]
+source_file="res://assets/Placeholders/enemies/mauler_legL.png"
+dest_files=["res://.godot/imported/mauler_legL.png-99d2588fe52c48452a3e70db719f6964.ctex"]
 
 [params]
 
