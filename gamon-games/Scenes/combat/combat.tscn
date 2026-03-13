@@ -130,6 +130,19 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_8cw2p")
 
+[node name="PlayerHealth" type="Label" parent="UI/Panel" unique_id=168058055]
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 224.0
+offset_bottom = 52.0
+text = "HP: 0/0"
+
 [node name="Actions" type="HBoxContainer" parent="UI/Panel" unique_id=-2003117294]
 layout_mode = 1
 anchors_preset = 8

@@ -4,6 +4,7 @@ extends Sprite2D
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
 @export var is_vital: bool = false
+@export var attack_damage: int = 0
 
 var current_health: int
 var is_destroyed: bool = false
