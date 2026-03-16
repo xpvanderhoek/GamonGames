@@ -13,17 +13,25 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # 💡 Gebruik een container met Godot 4.6 headless
-      - name: Set up Godot 4.6 container
-        uses: addnab/docker-run-action@v3
-        with:
-          image: ghcr.io/godotengine/godot:4.6-headless
-          options: --entrypoint ""
-          run: |
-            mkdir -p build
-            ./godot --headless --export "HTML5" build/index.html
+      # 📦 Download en installeer Godot 4.6 headless
+      - name: Install Godot 4.6 headless
+        run: |
+          echo "📥 Downloading Godot headless..."
+          wget https://downloads.tuxfamily.org/godotengine/4.6/Godot_v4.6-stable_linux_headless.64.zip -O godot-headless.zip
 
-      # 📤 Deploy naar GitHub Pages (PR-specifieke folder)
+          echo "📂 Unzipping..."
+          unzip godot-headless.zip -d godot-headless
+          
+          chmod +x godot-headless/Godot_v4.6-stable_linux_headless.64
+          mv godot-headless/Godot_v4.6-stable_linux_headless.64 godot
+
+      # 🚀 Build de HTML5 export
+      - name: Build HTML5
+        run: |
+          mkdir -p build
+          ./godot --headless --export "HTML5" build/index.html
+
+      # 📤 Deploy naar GitHub Pages in een PR folder
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -32,12 +40,13 @@ jobs:
           destination_dir: pr-${{ github.event.pull_request.number }}
           keep_files: true
 
-      # 💬 Voeg een comment toe aan de PR met de preview link
+      # 💬 Post een comment in de PR met de preview link
       - name: Comment PR with preview link
         uses: peter-evans/create-or-update-comment@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            🎮 **PR Preview Build is gereed!**
-            👉 [Bekijk de preview](https://<USERNAME>.github.io/<REPO>/pr-${{ github.event.pull_request.number }}/index.html)
+            🎉 **Preview Build Gereed!**
+            Bekijk de live preview van deze PR hier:
+            👉 https://<USERNAME>.github.io/<REPO>/pr-${{ github.event.pull_request.number }}/index.html
