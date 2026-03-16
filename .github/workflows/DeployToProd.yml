@@ -57,10 +57,11 @@ jobs:
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: gamon-games/build/web
-          production-deploy: false
-          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
+          publish-dir: gamon-games/build/web        # je build folder
+          production-deploy: false                   # preview, geen echte prod
+          github-token: ${{ secrets.GITHUB_TOKEN }} # verplicht voor PR comment
+          netlify-config-path: ""                    # optioneel, laat leeg voor default
+          enable-pull-request-comment: true          # comment in PR
 
       # Comment preview link in PR
       - name: Comment preview link
