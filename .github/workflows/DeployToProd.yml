@@ -16,14 +16,14 @@ jobs:
       # 1️⃣ Checkout
       - uses: actions/checkout@v4
 
-      # 2️⃣ Download Godot 4.5 headless
-      - name: Download Godot 4.5 headless
+      # 2️⃣ Download Godot 4.5 full (niet headless)
+      - name: Download Godot 4.5 full
         run: |
-          wget https://downloads.tuxfamily.org/godotengine/4.5/Godot_v4.5-stable_linux_headless.64.zip -O godot-headless.zip
-          unzip godot-headless.zip -d godot
-          chmod +x godot/Godot_v4.5-stable_linux_headless.64
+          wget https://downloads.tuxfamily.org/godotengine/4.5/Godot_v4.5-stable_linux.x86_64.zip -O godot.zip
+          unzip godot.zip -d godot
+          chmod +x godot/Godot_v4.5-stable_linux.x86_64
 
-      # 3️⃣ Download export templates
+      # 3️⃣ Download en installeer export templates
       - name: Install export templates 4.5
         run: |
           wget https://downloads.tuxfamily.org/godotengine/4.5/Godot_v4.5-stable_export_templates.tpz -O templates.tpz
@@ -31,15 +31,15 @@ jobs:
           unzip templates.tpz -d templates
           mv templates/templates/* ~/.local/share/godot/export_templates/4.5.stable/
 
-      # 4️⃣ Maak build map
+      # 4️⃣ Maak build folder
       - name: Create build folder
         run: mkdir -p build
 
       # 5️⃣ Build Windows
       - name: Build Windows
-        run: godot/Godot_v4.5-stable_linux_headless.64 --headless --export-release "Windows Desktop" build/game.exe
+        run: godot/Godot_v4.5-stable_linux.x86_64 --export-release "Windows Desktop" build/game.exe
 
-      # 6️⃣ Artefact upload
+      # 6️⃣ Upload artefact voor later gebruik
       - uses: actions/upload-artifact@v4
         with:
           name: non-prod-build
@@ -52,26 +52,27 @@ jobs:
     environment: Production
 
     steps:
-      # 1️⃣ Checkout
+      # 1️⃣ Checkout repo
       - uses: actions/checkout@v4
 
-      # 2️⃣ Download artefact
+      # 2️⃣ Download artefact van Non-Prod
       - name: Download build from Non-Prod
         uses: actions/download-artifact@v4
         with:
           name: non-prod-build
           path: gamon-games/build/
 
-      # 3️⃣ Push Git tag
+      # 3️⃣ Git-tag en push
       - name: Push Git tag
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           TAG="v1.0.${GITHUB_RUN_NUMBER}"
           git tag -a "$TAG" -m "Non-Prod → Prod release"
+          echo "Pushing tag $TAG..."
           git push https://xpvanderhoek:${{ secrets.GH_PAT }}@github.com/xpvanderhoek/GamonGames.git "$TAG"
 
-      # 4️⃣ Create Release
+      # 4️⃣ Upload Windows build naar Release
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
