@@ -16,30 +16,37 @@ jobs:
       # 1️⃣ Checkout
       - uses: actions/checkout@v4
 
-      # 2️⃣ Download Godot 4.6 headless
-      - name: Download Godot 4.6 headless
+      # 2️⃣ Install Xvfb (virtuele display)
+      - name: Setup Xvfb
         run: |
-          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux_headless.64.zip -O godot.zip
-          unzip godot.zip -d godot
-          chmod +x godot/Godot_v4.6-stable_linux_headless.64
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          Xvfb :99 & export DISPLAY=:99
 
-      # 3️⃣ Install export templates 4.6
+      # 3️⃣ Download Godot 4.6
+      - name: Download Godot 4.6
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux.x86_64.zip -O godot.zip
+          unzip godot.zip -d godot
+          chmod +x godot/Godot_v4.6-stable_linux.x86_64
+
+      # 4️⃣ Install export templates 4.6
       - name: Install export templates
         run: |
-          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz
+          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz -O templates.tpz
           mkdir -p ~/.local/share/godot/export_templates/4.6.stable
-          unzip Godot_v4.6-stable_export_templates.tpz -d templates
+          unzip templates.tpz -d templates
           mv templates/templates/* ~/.local/share/godot/export_templates/4.6.stable/
 
-      # 4️⃣ Maak HTML5 build folder
-      - name: Create build folder
+      # 5️⃣ Create HTML5 build folder
+      - name: Create HTML5 build folder
         run: mkdir -p build/html5
 
-      # 5️⃣ Build HTML5 met headless
+      # 6️⃣ Export HTML5
       - name: Build HTML5
-        run: godot/Godot_v4.6-stable_linux_headless.64 --export-release "HTML5" build/html5/index.html
+        run: godot/Godot_v4.6-stable_linux.x86_64 --export-release "HTML5" build/html5/index.html
 
-      # 6️⃣ Deploy naar GitHub Pages per PR
+      # 7️⃣ Deploy naar GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -48,7 +55,7 @@ jobs:
           destination_dir: pr-${{ github.event.pull_request.number }}
           keep_files: true
 
-      # 7️⃣ Comment PR met preview link
+      # 8️⃣ Comment PR met preview link
       - name: Comment PR with preview link
         uses: peter-evans/create-or-update-comment@v5
         with:
@@ -56,5 +63,5 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             🎮 **PR Preview Build is klaar!**
-            Bekijk de live preview hier:  
+            Klik hier om de preview te openen:
             👉 https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPO_NAME>/pr-${{ github.event.pull_request.number }}/index.html
