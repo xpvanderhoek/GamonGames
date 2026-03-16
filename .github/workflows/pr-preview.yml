@@ -21,6 +21,7 @@ jobs:
         run: |
           wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux.x86_64.zip
           unzip Godot_v4.6-stable_linux.x86_64.zip
+          mkdir -p godot
           mv Godot_v4.6-stable_linux.x86_64 godot/
           chmod +x godot/Godot_v4.6-stable_linux.x86_64
 
