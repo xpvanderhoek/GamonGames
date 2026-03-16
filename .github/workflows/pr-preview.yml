@@ -1,0 +1,29 @@
+name: PR Preview Build
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Godot
+        uses: firebelley/godot-ci@v2
+        with:
+          godot-version: 4.6  # pas aan naar jouw Godot versie
+
+      - name: Build HTML5
+        run: godot --export "HTML5" build/index.html
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          # deploy naar unieke folder per PR
+          destination_dir: pr-${{ github.event.pull_request.number }}
