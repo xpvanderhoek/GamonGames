@@ -16,19 +16,20 @@ jobs:
       # 1️⃣ Checkout
       - uses: actions/checkout@v4
 
-      # 2️⃣ Download Godot 4.6 full (niet headless)
+      # 2️⃣ Download Godot 4.6 full (van GitHub releases)
       - name: Download Godot 4.6 full
         run: |
-          wget https://downloads.tuxfamily.org/godotengine/4.6/Godot_v4.6-stable_linux.x86_64.zip -O godot.zip
-          unzip godot.zip -d godot
+          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux.x86_64.zip
+          unzip Godot_v4.6-stable_linux.x86_64.zip
+          mv Godot_v4.6-stable_linux.x86_64 godot/
           chmod +x godot/Godot_v4.6-stable_linux.x86_64
 
-      # 3️⃣ Install export templates
-      - name: Install export templates 4.6
+      # 3️⃣ Install export templates 4.6 (van GitHub releases)
+      - name: Install export templates
         run: |
-          wget https://downloads.tuxfamily.org/godotengine/4.6/Godot_v4.6-stable_export_templates.tpz -O templates.tpz
+          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz
           mkdir -p ~/.local/share/godot/export_templates/4.6.stable
-          unzip templates.tpz -d templates
+          unzip Godot_v4.6-stable_export_templates.tpz -d templates
           mv templates/templates/* ~/.local/share/godot/export_templates/4.6.stable/
 
       # 4️⃣ Maak HTML5 build folder
