@@ -13,21 +13,17 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Stap 1: Installeer Godot
-      - name: Install Godot
-        run: |
-          wget https://downloads.tuxfamily.org/godotengine/4.3.4/Godot_v4.3.4-stable_linux.x86_64.zip -O godot.zip
-          unzip godot.zip -d godot
-          chmod +x godot/Godot_v4.3.4-stable_linux.x86_64
-          mv godot/Godot_v4.3.4-stable_linux.x86_64 godot/godot
+      # 💡 Gebruik een container met Godot 4.6 headless
+      - name: Set up Godot 4.6 container
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ghcr.io/godotengine/godot:4.6-headless
+          options: --entrypoint ""
+          run: |
+            mkdir -p build
+            ./godot --headless --export "HTML5" build/index.html
 
-      # Stap 2: Build HTML5
-      - name: Build HTML5
-        run: |
-          mkdir -p build
-          ./godot/godot --headless --export "HTML5" build/index.html
-
-      # Stap 3: Deploy naar GitHub Pages in PR-specifieke folder
+      # 📤 Deploy naar GitHub Pages (PR-specifieke folder)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -36,11 +32,12 @@ jobs:
           destination_dir: pr-${{ github.event.pull_request.number }}
           keep_files: true
 
-      # Stap 4: Voeg een comment toe aan de PR met de preview link
+      # 💬 Voeg een comment toe aan de PR met de preview link
       - name: Comment PR with preview link
         uses: peter-evans/create-or-update-comment@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            🎮 Preview van deze PR: [klik hier](https://<USERNAME>.github.io/<REPO>/pr-${{ github.event.pull_request.number }}/index.html)
+            🎮 **PR Preview Build is gereed!**
+            👉 [Bekijk de preview](https://<USERNAME>.github.io/<REPO>/pr-${{ github.event.pull_request.number }}/index.html)
