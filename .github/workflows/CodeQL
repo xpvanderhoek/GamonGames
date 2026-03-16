@@ -1,0 +1,32 @@
+name: "CodeQL"
+
+on:
+  pull_request:
+    paths:
+      - "gamon-games/Scripts/**"   # alleen deze folder scannen
+  push:
+    branches: [ main ]    # optioneel, scan ook bij push naar main
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        language: [ "cpp" ]  # Godot is C++ core, GDScript zelf wordt niet standaard gescand
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild (optioneel)
+        uses: github/codeql-action/autobuild@v3
+        # bij Godot games kun je hier build commando toevoegen als nodig
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
