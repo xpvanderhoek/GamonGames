@@ -16,20 +16,19 @@ jobs:
       # 1️⃣ Checkout
       - uses: actions/checkout@v4
 
-      # 2️⃣ Download Godot 4.6 headless
-      - name: Download Godot headless
+      # 2️⃣ Download Godot 4.6 full (niet headless)
+      - name: Download Godot 4.6 full
         run: |
-          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux.x86_64.zip
-          unzip Godot_v4.6-stable_linux.x86_64.zip
-          mv Godot_v4.6-stable_linux.x86_64 ../godot
-          chmod +x ../godot
+          wget https://downloads.tuxfamily.org/godotengine/4.6/Godot_v4.6-stable_linux.x86_64.zip -O godot.zip
+          unzip godot.zip -d godot
+          chmod +x godot/Godot_v4.6-stable_linux.x86_64
 
       # 3️⃣ Install export templates
-      - name: Install export templates
+      - name: Install export templates 4.6
         run: |
-          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz
+          wget https://downloads.tuxfamily.org/godotengine/4.6/Godot_v4.6-stable_export_templates.tpz -O templates.tpz
           mkdir -p ~/.local/share/godot/export_templates/4.6.stable
-          unzip Godot_v4.6-stable_export_templates.tpz -d templates
+          unzip templates.tpz -d templates
           mv templates/templates/* ~/.local/share/godot/export_templates/4.6.stable/
 
       # 4️⃣ Maak HTML5 build folder
@@ -40,7 +39,7 @@ jobs:
       - name: Build HTML5
         run: godot/Godot_v4.6-stable_linux.x86_64 --export "HTML5" build/html5/index.html
 
-      # 6️⃣ Deploy naar GitHub Pages (per PR folder)
+      # 6️⃣ Deploy naar GitHub Pages per PR
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -58,4 +57,4 @@ jobs:
           body: |
             🎮 **PR Preview Build is klaar!**
             Bekijk de live preview hier:  
-            👉 https://<USERNAME>.github.io/<REPO>/pr-${{ github.event.pull_request.number }}/index.html
+            👉 https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPO_NAME>/pr-${{ github.event.pull_request.number }}/index.html
