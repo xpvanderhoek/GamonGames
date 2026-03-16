@@ -6,47 +6,56 @@ on:
       - main
 
 jobs:
-  build:
+  build-pr-preview:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: gamon-games
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      # 1️⃣ Checkout
+      - uses: actions/checkout@v4
 
-      # 📦 Download en installeer Godot 4.6 headless
-      - name: Install Godot 4.6 headless
+      # 2️⃣ Download Godot 4.6 headless
+      - name: Download Godot headless
         run: |
-          echo "📥 Downloading Godot headless..."
-          wget https://downloads.tuxfamily.org/godotengine/4.6/Godot_v4.6-stable_linux_headless.64.zip -O godot-headless.zip
+          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux.x86_64.zip
+          unzip Godot_v4.6-stable_linux.x86_64.zip
+          mv Godot_v4.6-stable_linux.x86_64 ../godot
+          chmod +x ../godot
 
-          echo "📂 Unzipping..."
-          unzip godot-headless.zip -d godot-headless
-          
-          chmod +x godot-headless/Godot_v4.6-stable_linux_headless.64
-          mv godot-headless/Godot_v4.6-stable_linux_headless.64 godot
+      # 3️⃣ Install export templates
+      - name: Install export templates
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/4.6.stable
+          unzip Godot_v4.6-stable_export_templates.tpz -d templates
+          mv templates/templates/* ~/.local/share/godot/export_templates/4.6.stable/
 
-      # 🚀 Build de HTML5 export
+      # 4️⃣ Maak HTML5 build folder
+      - name: Create build folder
+        run: mkdir -p build/html5
+
+      # 5️⃣ Build HTML5
       - name: Build HTML5
-        run: |
-          mkdir -p build
-          ./godot --headless --export "HTML5" build/index.html
+        run: godot/Godot_v4.6-stable_linux.x86_64 --export "HTML5" build/html5/index.html
 
-      # 📤 Deploy naar GitHub Pages in een PR folder
+      # 6️⃣ Deploy naar GitHub Pages (per PR folder)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./build/html5
           destination_dir: pr-${{ github.event.pull_request.number }}
           keep_files: true
 
-      # 💬 Post een comment in de PR met de preview link
+      # 7️⃣ Comment PR met preview link
       - name: Comment PR with preview link
         uses: peter-evans/create-or-update-comment@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            🎉 **Preview Build Gereed!**
-            Bekijk de live preview van deze PR hier:
+            🎮 **PR Preview Build is klaar!**
+            Bekijk de live preview hier:  
             👉 https://<USERNAME>.github.io/<REPO>/pr-${{ github.event.pull_request.number }}/index.html
