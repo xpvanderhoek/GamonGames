@@ -1,70 +1,74 @@
-name: PR Preview Build
+name: Build & Deploy Godot HTML5
 
 on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
 
 jobs:
-  build-pr-preview:
+  build-and-deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: gamon-games
 
     steps:
-      # 1️⃣ Checkout
+      # 1️⃣ Checkout code
       - uses: actions/checkout@v4
 
-      # 2️⃣ Install Xvfb (virtuele display)
-      - name: Setup Xvfb
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
-          Xvfb :99 & export DISPLAY=:99
-
-      # 3️⃣ Download Godot 4.6
+      # 2️⃣ Download Godot 4.6 full
       - name: Download Godot 4.6
         run: |
           wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux.x86_64.zip -O godot.zip
           unzip godot.zip -d godot
           chmod +x godot/Godot_v4.6-stable_linux.x86_64
 
-      # 4️⃣ Install export templates 4.6
+      # 3️⃣ Install export templates
       - name: Install export templates
         run: |
-          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz -O templates.tpz
+          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz
           mkdir -p ~/.local/share/godot/export_templates/4.6.stable
-          unzip templates.tpz -d templates
+          unzip Godot_v4.6-stable_export_templates.tpz -d templates
           mv templates/templates/* ~/.local/share/godot/export_templates/4.6.stable/
 
-      # 5️⃣ Create HTML5 build folder
+      # 4️⃣ Create build folder
       - name: Create HTML5 build folder
         run: mkdir -p build/html5
 
-      # 6️⃣ Export HTML5 (met Xvfb)
-      - name: Build HTML5
+      # 5️⃣ Export HTML5 build
+      - name: Export HTML5
+        run: godot/Godot_v4.6-stable_linux.x86_64 --headless --export-release "Web" build/html5/index.html
+
+      # 6️⃣ Install Netlify CLI
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      # 7️⃣ Deploy to Netlify
+      - name: Deploy to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run: |
-          Xvfb :99 -screen 0 1024x768x24 &
-          export DISPLAY=:99
-          godot/Godot_v4.6-stable_linux.x86_64 --export-release "Web" build/html5/index.html
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            PR_NUM=${{ github.event.pull_request.number }}
+            DEPLOY_SUBDOMAIN="pr-${PR_NUM}--gamongames"
+            netlify deploy --dir=build/html5 --site=$NETLIFY_SITE_ID --prod --alias=$DEPLOY_SUBDOMAIN
+            echo "Preview URL: https://$DEPLOY_SUBDOMAIN.netlify.app"
+          else
+            # Production deploy from main branch
+            netlify deploy --dir=build/html5 --site=$NETLIFY_SITE_ID --prod
+          fi
 
-      # 7️⃣ Deploy naar GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/html5
-          destination_dir: pr-${{ github.event.pull_request.number }}
-          keep_files: true
-
-      # 8️⃣ Comment PR met preview link
-      - name: Comment PR with preview link
+      # 8️⃣ Comment PR with preview link
+      - name: Comment PR with preview URL
+        if: github.event_name == 'pull_request'
         uses: peter-evans/create-or-update-comment@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             🎮 **PR Preview Build is klaar!**
-            Klik hier om de preview te openen:
-            👉 https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPO_NAME>/pr-${{ github.event.pull_request.number }}/index.html
+            Bekijk de live preview hier:  
+            👉 https://pr-${{ github.event.pull_request.number }}--gamongames.netlify.app
