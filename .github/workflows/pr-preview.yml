@@ -8,22 +8,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup Godot
-        uses: firebelley/godot-ci@v2
-        with:
-          godot-version: 4.6  # pas aan naar jouw Godot versie
+      # Stap 1: Installeer Godot CLI
+      - name: Install Godot
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/4.3.4/Godot_v4.3.4-stable_linux.x86_64.zip -O godot.zip
+          unzip godot.zip -d godot
+          chmod +x godot/Godot_v4.3.4-stable_linux.x86_64
+          mv godot/Godot_v4.3.4-stable_linux.x86_64 godot/godot
 
+      # Stap 2: Build HTML5
       - name: Build HTML5
-        run: godot --export "HTML5" build/index.html
+        run: |
+          mkdir -p build
+          ./godot/godot --headless --export "HTML5" build/index.html
 
+      # Stap 3: Deploy naar GitHub Pages in PR-specifieke folder
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v6
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
-          # deploy naar unieke folder per PR
           destination_dir: pr-${{ github.event.pull_request.number }}
+          keep_files: true
