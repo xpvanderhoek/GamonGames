@@ -28,6 +28,7 @@ var player_health: int = 0
 @onready var btn_attack: Button = $UI/Panel/Actions/BtnAttack
 @onready var btn_fireball: Button = $UI/Panel/Actions/BtnFireball
 @onready var lbl_player_health: Label = $UI/Panel/PlayerHealth
+@onready var ui_layer: CanvasLayer = $UI
 
 func _ready() -> void:
 	enemy_entity = get_node(enemy_entity_path) as CombatEntity
@@ -115,9 +116,14 @@ func _perform_enemy_turn() -> void:
 	if attack_limb == null:
 		_end_enemy_turn()
 		return
+	var attack := attack_limb.choose_attack()
+	if attack == null:
+		_end_enemy_turn()
+		return
 
 	await get_tree().create_timer(0.35).timeout
-	var damage: int = max(0, attack_limb.attack_damage)
+	_play_attack_feedback(attack, enemy_entity.global_position)
+	var damage: int = max(0, attack.damage)
 	_apply_player_damage(damage)
 	_end_enemy_turn()
 
@@ -126,7 +132,7 @@ func _choose_enemy_attack_limb() -> CombatLimb:
 	for limb in enemy_entity.limbs:
 		if limb.is_destroyed:
 			continue
-		if limb.attack_damage > 0:
+		if limb.has_attack_options():
 			candidates.append(limb)
 	if candidates.size() == 0:
 		return null
@@ -135,10 +141,39 @@ func _choose_enemy_attack_limb() -> CombatLimb:
 func _apply_player_damage(amount: int) -> void:
 	if current_state == CombatState.COMBAT_OVER:
 		return
+	print("Player took %d damage — HP: %d/%d" % [amount, player_health, player_max_health])
+	if amount <= 0:
+		return
 	player_health = max(0, player_health - amount)
 	_update_player_health_label()
 	if player_health <= 0:
 		current_state = CombatState.COMBAT_OVER
+
+func _play_attack_feedback(attack: CombatAttack, world_pos: Vector2) -> void:
+	if attack.sfx != null:
+		var player := AudioStreamPlayer.new()
+		player.stream = attack.sfx
+		player.autoplay = false
+		add_child(player)
+		player.finished.connect(player.queue_free)
+		player.play()
+
+	if attack.vfx_scene != null:
+		var vfx := attack.vfx_scene.instantiate()
+		ui_layer.add_child(vfx)
+		# attack.vfx_offset
+
+		if attack.vfx_lifetime > 0.0:
+			get_tree().create_timer(attack.vfx_lifetime).timeout.connect(vfx.queue_free)
+
+func _find_first_node2d(root: Node) -> Node2D:
+	if root is Node2D:
+		return root as Node2D
+	for child in root.get_children():
+		var found := _find_first_node2d(child)
+		if found != null:
+			return found
+	return null
 
 func _end_enemy_turn() -> void:
 	if current_state == CombatState.COMBAT_OVER:

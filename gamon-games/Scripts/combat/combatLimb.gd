@@ -4,7 +4,7 @@ extends Sprite2D
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
 @export var is_vital: bool = false
-@export var attack_damage: int = 0
+@export var attacks: Array[CombatAttack] = []
 
 var current_health: int
 var is_destroyed: bool = false
@@ -20,6 +20,27 @@ signal limb_destroyed(limb: CombatLimb)
 signal limb_clicked(limb: CombatLimb)
 signal mouse_entered_limb
 signal mouse_exited_limb
+
+func has_attack_options() -> bool:
+	return get_attack_options().size() > 0
+
+func get_attack_options() -> Array[CombatAttack]:
+	var options: Array[CombatAttack] = []
+	for atk in attacks:
+		if atk == null:
+			continue
+		options.append(atk)
+	return options
+
+func choose_attack() -> CombatAttack:
+	var options := get_attack_options()
+	if options.size() == 0:
+		return null
+	if options.size() == 1:
+		return options[0]
+
+	# add later weighting based on attacks
+	return options[randi() % options.size()]
 
 func _ready() -> void:
 	current_health = max_health
