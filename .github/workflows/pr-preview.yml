@@ -16,16 +16,14 @@ jobs:
       # 1️⃣ Checkout
       - uses: actions/checkout@v4
 
-      # 2️⃣ Download Godot 4.6 full (van GitHub releases)
-      - name: Download Godot 4.6 full
+      # 2️⃣ Download Godot 4.6 headless
+      - name: Download Godot 4.6 headless
         run: |
-          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux.x86_64.zip
-          unzip Godot_v4.6-stable_linux.x86_64.zip
-          mkdir -p godot
-          mv Godot_v4.6-stable_linux.x86_64 godot/
-          chmod +x godot/Godot_v4.6-stable_linux.x86_64
+          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux_headless.64.zip -O godot.zip
+          unzip godot.zip -d godot
+          chmod +x godot/Godot_v4.6-stable_linux_headless.64
 
-      # 3️⃣ Install export templates 4.6 (van GitHub releases)
+      # 3️⃣ Install export templates 4.6
       - name: Install export templates
         run: |
           wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz
@@ -37,10 +35,10 @@ jobs:
       - name: Create build folder
         run: mkdir -p build/html5
 
-      # 5️⃣ Build HTML5
+      # 5️⃣ Build HTML5 met headless
       - name: Build HTML5
-        run: godot/Godot_v4.6-stable_linux.x86_64 --export-release "HTML5" build/html5/index.html
-  
+        run: godot/Godot_v4.6-stable_linux_headless.64 --export-release "HTML5" build/html5/index.html
+
       # 6️⃣ Deploy naar GitHub Pages per PR
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
