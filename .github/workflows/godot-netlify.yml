@@ -1,0 +1,65 @@
+name: Godot Netlify Preview
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: gamon-games
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Cache Godot
+      - name: Cache Godot
+        id: cache-godot
+        uses: actions/cache@v3
+        with:
+          path: godot
+          key: godot-4.2.2
+
+      # Download Godot
+      - name: Download Godot
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip
+          unzip Godot_v4.2.2-stable_linux.x86_64.zip
+          mv Godot_v4.2.2-stable_linux.x86_64 ../godot
+          chmod +x ../godot
+
+      # Export templates
+      - name: Install export templates
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/4.2.2.stable
+          unzip Godot_v4.2.2-stable_export_templates.tpz -d templates
+          mv templates/templates/* ~/.local/share/godot/export_templates/4.2.2.stable/
+
+      # Build Web
+      - name: Build Web export
+        run: |
+          mkdir -p build/web
+          ../godot --headless --export-release "Web" build/web/index.html
+
+      # Fix SPA routing (Godot + Netlify)
+      - name: Add Netlify redirects
+        run: |
+          echo "/* /index.html 200" > build/web/_redirects
+
+      # Deploy to Netlify
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: gamon-games/build/web
+          production-deploy: false
+          enable-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
