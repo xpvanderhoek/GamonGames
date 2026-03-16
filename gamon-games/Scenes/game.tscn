@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dibe1nlseg240"]
 
-[ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://scenes/character.tscn" id="1_ebmjs"]
-[ext_resource type="Script" uid="uid://cpgo21foq05vw" path="res://scripts/game.gd" id="1_qxrlw"]
+[ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://Scenes/character.tscn" id="1_ebmjs"]
+[ext_resource type="Script" uid="uid://cpgo21foq05vw" path="res://Scripts/game.gd" id="1_qxrlw"]
 
 [node name="Game" type="Node2D" unique_id=1771036447]
 process_mode = 3
@@ -12,3 +12,19 @@ process_mode = 1
 
 [node name="Character" parent="." unique_id=1981490291 instance=ExtResource("1_ebmjs")]
 position = Vector2(400, 300)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1035846177]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=2022152627]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -109.0
+offset_bottom = 50.0
+grow_horizontal = 0
+
+[node name="LevelLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=1611004898]
+layout_mode = 2
+
+[node name="ExpLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=1516745952]
+layout_mode = 2

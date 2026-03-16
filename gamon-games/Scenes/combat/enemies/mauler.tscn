@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://coej4qxba8o7a"]
 
-[ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://Scripts/combat/CombatEntity.gd" id="1_43sib"]
+[ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://Scripts/combat/combatEntity.gd" id="1_43sib"]
 [ext_resource type="Texture2D" uid="uid://3ypr3wjdce6w" path="res://Assets/Placeholders/enemies/mauler_torso.png" id="2_0ypl1"]
-[ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://Scripts/combat/CombatLimb.gd" id="3_rnyr7"]
+[ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://Scripts/combat/combatLimb.gd" id="3_rnyr7"]
 [ext_resource type="Texture2D" uid="uid://cmphv07urw5go" path="res://Assets/Placeholders/enemies/mauler_head.png" id="4_8djhq"]
 [ext_resource type="Texture2D" uid="uid://cu2sdy08pf51y" path="res://Assets/Placeholders/enemies/mauler_legR.png" id="5_ktid0"]
 [ext_resource type="Texture2D" uid="uid://vu18fwguj6gr" path="res://Assets/Placeholders/enemies/mauler_armL.png" id="6_34xek"]

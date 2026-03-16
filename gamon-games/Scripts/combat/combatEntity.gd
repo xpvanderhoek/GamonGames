@@ -116,6 +116,8 @@ func _on_limb_destroyed(limb: CombatLimb) -> void:
 		die()
 
 func die() -> void:
+	if not is_alive:
+		return
 	is_alive = false
 	_hovered_limbs.clear()
 	clear_aoe_preview()
