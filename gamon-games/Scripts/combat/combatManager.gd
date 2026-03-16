@@ -171,7 +171,7 @@ func _find_first_node2d(root: Node) -> Node2D:
 		if found != null:
 			return found
 	return null
-
+ 
 func _end_enemy_turn() -> void:
 	if current_state == CombatState.COMBAT_OVER:
 		return
