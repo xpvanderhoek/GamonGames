@@ -1,15 +1,15 @@
-name: Build & Deploy Godot Game
+name: Godot CI/CD
 
 on:
-  # Trigger op PR events
   pull_request:
-    types: [opened, synchronize, reopened]  # geopend, bijgewerkt, heropend
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  # ──────────────── Non-Production Build ────────────────
-  build-non-prod:
+  build-preview:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     runs-on: ubuntu-latest
-    environment: Non-Production
     defaults:
       run:
         working-directory: gamon-games
@@ -17,59 +17,62 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Cache Godot
+      - uses: actions/cache@v3
+        with:
+          path: godot
+          key: godot-v4.2.2
+
+      # Cache export templates
+      - uses: actions/cache@v3
+        with:
+          path: ~/.local/share/godot/export_templates/4.2.2.stable
+          key: godot-templates-v4.2.2
+
+      # Download Godot if needed
       - name: Download Godot
+        if: steps.cache-godot.outputs.cache-hit != 'true'
         run: |
-          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux.x86_64.zip
-          unzip Godot_v4.6-stable_linux.x86_64.zip
-          mv Godot_v4.6-stable_linux.x86_64 ../godot
+          wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip
+          unzip Godot_v4.2.2-stable_linux.x86_64.zip
+          mv Godot_v4.2.2-stable_linux.x86_64 ../godot
           chmod +x ../godot
 
+      # Install export templates if needed
       - name: Install export templates
+        if: steps.cache-godot-templates.outputs.cache-hit != 'true'
         run: |
-          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz
-          mkdir -p ~/.local/share/godot/export_templates/4.6.stable
-          unzip Godot_v4.6-stable_export_templates.tpz -d templates
-          mv templates/templates/* ~/.local/share/godot/export_templates/4.6.stable/
+          wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/4.2.2.stable
+          unzip Godot_v4.2.2-stable_export_templates.tpz -d templates
+          mv templates/templates/* ~/.local/share/godot/export_templates/4.2.2.stable/
 
+      # Build Web (Threads uit = werkt op Netlify)
       - name: Create build folder
-        run: mkdir -p build
+        run: mkdir -p build/web
+      - name: Build Web
+        run: ../godot --headless --export-release "Web" build/web/index.html
 
-      - name: Build Windows
-        run: ../godot --headless --export-release "Windows Desktop" build/game.exe
-
-      - uses: actions/upload-artifact@v4
+      # Deploy to Netlify
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
         with:
-          name: non-prod-build
-          path: gamon-games/build/
+          publish-dir: gamon-games/build/web        # je build folder
+          production-deploy: false                   # preview, geen echte prod
+          github-token: ${{ secrets.GITHUB_TOKEN }} # verplicht voor PR comment
+          netlify-config-path: ""                    # optioneel, laat leeg voor default
+          enable-pull-request-comment: true          # comment in PR
 
-  # ──────────────── Promote to Production ────────────────
-  promote-to-prod:
-    needs: build-non-prod
-    runs-on: ubuntu-latest
-    environment: Production
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download build from Non-Prod
-        uses: actions/download-artifact@v4
+      # Comment preview link in PR
+      - name: Comment preview link
+        uses: actions/github-script@v7
         with:
-          name: non-prod-build
-          path: gamon-games/build/
-
-      - name: Push Git tag
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          TAG="v1.0.${GITHUB_RUN_NUMBER}"
-          git tag -a "$TAG" -m "Non-Prod → Prod release"
-          echo "Pushing tag $TAG..."
-          git push https://xpvanderhoek:${{ secrets.GH_PAT }}@github.com/xpvanderhoek/GamonGames.git "$TAG"
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: gamon-games/build/game.exe
-          tag_name: v1.0.${{ github.run_number }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          script: |
+            const pr = context.issue.number;
+            const url = `https://your-site-name.netlify.app/?pr=${pr}`;
+            github.rest.issues.createComment({
+              issue_number: pr,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🎮 PR Preview ready!\n\nPlay it here:\n${url}`
+            })
