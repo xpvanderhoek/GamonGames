@@ -22,8 +22,7 @@ enum CombatAction {
 var current_state: CombatState = CombatState.PLAYER_TURN
 var selected_action: CombatAction = CombatAction.ATTACK
 var enemy_entity: CombatEntity
-var player_health: int = 0
-
+var player_health: int = player_max_health
 
 @onready var btn_attack: Button = $UI/Panel/Actions/BtnAttack
 @onready var btn_fireball: Button = $UI/Panel/Actions/BtnFireball
@@ -34,7 +33,6 @@ func _ready() -> void:
 	enemy_entity = get_node(enemy_entity_path) as CombatEntity
 	enemy_entity.entity_died.connect(_on_enemy_died)
 	enemy_entity.highlighted_limb_clicked.connect(_on_enemy_limb_clicked)
-	player_health = player_max_health
 	_update_player_health_label()
 
 	btn_attack.pressed.connect(select_attack)
@@ -161,8 +159,7 @@ func _play_attack_feedback(attack: CombatAttack, world_pos: Vector2) -> void:
 	if attack.vfx_scene != null:
 		var vfx := attack.vfx_scene.instantiate()
 		ui_layer.add_child(vfx)
-		# attack.vfx_offset
-
+		vfx.global_position += attack.vfx_offset
 		if attack.vfx_lifetime > 0.0:
 			get_tree().create_timer(attack.vfx_lifetime).timeout.connect(vfx.queue_free)
 
