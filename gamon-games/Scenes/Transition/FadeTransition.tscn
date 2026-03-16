@@ -1,12 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://bw525pvw3mmbg"]
 
-[ext_resource type="Script" path="res://Scripts/Transition/fade_transition.gd" id="1_fade"]
+[ext_resource type="Script" uid="uid://8dteqx1dk1a1" path="res://Scripts/Transition/fade_transition.gd" id="1_fade"]
 
-[node name="Transition" type="CanvasLayer"]
+[node name="Transition" type="CanvasLayer" unique_id=1370658188]
+process_mode = 3
 layer = 10
 script = ExtResource("1_fade")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=708493043]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -17,6 +17,7 @@ enum CombatAction {
 @export var fireball_radius: float = 100.0
 @export var enemy_entity_path: NodePath
 @export var player_max_health: int = 100
+@export var exp_reward: int = 50
 
 var current_state: CombatState = CombatState.PLAYER_TURN
 var selected_action: CombatAction = CombatAction.ATTACK
@@ -146,3 +147,4 @@ func _end_enemy_turn() -> void:
 
 func _update_player_health_label() -> void:
 	lbl_player_health.text = "HP: %d/%d" % [player_health, player_max_health]
+	RunData.add_exp(exp_reward)
