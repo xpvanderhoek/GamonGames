@@ -39,8 +39,8 @@ jobs:
 
       # 5️⃣ Build HTML5
       - name: Build HTML5
-        run: godot/Godot_v4.6-stable_linux.x86_64 --export "HTML5" build/html5/index.html
-
+        run: godot/Godot_v4.6-stable_linux.x86_64 --export-release "HTML5" build/html5/index.html
+  
       # 6️⃣ Deploy naar GitHub Pages per PR
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
