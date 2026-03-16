@@ -11,11 +11,9 @@ var combat_node: Node = null
 var _combat_enemy: Node = null
 
 func _ready() -> void:
-	# Connect to RunData signals to update labels
 	RunData.level_changed.connect(_on_level_changed)
 	RunData.exp_changed.connect(_on_exp_changed)
 	
-	# Update labels with current values
 	_on_level_changed(RunData.current_level)
 	_on_exp_changed(RunData.current_exp)
 	
