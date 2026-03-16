@@ -2,14 +2,11 @@ name: Godot CI/CD
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
     branches:
       - main
   workflow_dispatch:
 
 jobs:
-
-  # ──────────────── PR Preview Build ────────────────
   build-preview:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
     runs-on: ubuntu-latest
@@ -20,20 +17,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ─── Cache Godot and export templates ───
-      - name: Cache Godot
-        uses: actions/cache@v3
+      # Cache Godot
+      - uses: actions/cache@v3
         with:
           path: godot
           key: godot-v4.2.2
 
-      - name: Cache Godot export templates
-        uses: actions/cache@v3
+      # Cache export templates
+      - uses: actions/cache@v3
         with:
           path: ~/.local/share/godot/export_templates/4.2.2.stable
           key: godot-templates-v4.2.2
 
-      # ─── Download Godot if not cached ───
+      # Download Godot if needed
       - name: Download Godot
         if: steps.cache-godot.outputs.cache-hit != 'true'
         run: |
@@ -42,7 +38,7 @@ jobs:
           mv Godot_v4.2.2-stable_linux.x86_64 ../godot
           chmod +x ../godot
 
-      # ─── Install export templates if not cached ───
+      # Install export templates if needed
       - name: Install export templates
         if: steps.cache-godot-templates.outputs.cache-hit != 'true'
         run: |
@@ -51,106 +47,31 @@ jobs:
           unzip Godot_v4.2.2-stable_export_templates.tpz -d templates
           mv templates/templates/* ~/.local/share/godot/export_templates/4.2.2.stable/
 
-      # ─── Create build folder ───
+      # Build Web (Threads uit = werkt op Netlify)
       - name: Create build folder
         run: mkdir -p build/web
-
-      # ─── Build Web version ───
       - name: Build Web
         run: ../godot --headless --export-release "Web" build/web/index.html
 
-      # ─── Deploy preview to GitHub Pages ───
-      - name: Deploy preview
-        uses: peaceiris/actions-gh-pages@v3
+      # Deploy to Netlify
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: gamon-games/build/web
-          destination_dir: pr-${{ github.event.pull_request.number }}
+          publish-dir: gamon-games/build/web
+          production-deploy: false
+          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
 
-      # ─── Comment preview link in PR ───
+      # Comment preview link in PR
       - name: Comment preview link
-        if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
             const pr = context.issue.number;
-            const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/pr-${pr}`;
+            const url = `https://your-site-name.netlify.app/?pr=${pr}`;
             github.rest.issues.createComment({
               issue_number: pr,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `🎮 Preview build ready!\n\nPlay it here:\n${url}`
-            });
-
-  # ──────────────── Cleanup preview when PR closes ────────────────
-  cleanup-preview:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout gh-pages
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-
-      - name: Remove preview folder
-        run: |
-          PR=${{ github.event.pull_request.number }}
-          rm -rf pr-$PR
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add .
-          git commit -m "Remove preview for PR $PR" || echo "Nothing to commit"
-          git push
-
-  # ──────────────── Windows Release Build ────────────────
-  build-release:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: gamon-games
-
-    steps:
-      - uses: actions/checkout@v4
-
-      # Cache Godot and templates for release too
-      - name: Cache Godot
-        uses: actions/cache@v3
-        with:
-          path: godot
-          key: godot-v4.2.2
-
-      - name: Cache Godot export templates
-        uses: actions/cache@v3
-        with:
-          path: ~/.local/share/godot/export_templates/4.2.2.stable
-          key: godot-templates-v4.2.2
-
-      - name: Download Godot
-        if: steps.cache-godot.outputs.cache-hit != 'true'
-        run: |
-          wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip
-          unzip Godot_v4.2.2-stable_linux.x86_64.zip
-          mv Godot_v4.2.2-stable_linux.x86_64 ../godot
-          chmod +x ../godot
-
-      - name: Install export templates
-        if: steps.cache-godot-templates.outputs.cache-hit != 'true'
-        run: |
-          wget https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz
-          mkdir -p ~/.local/share/godot/export_templates/4.2.2.stable
-          unzip Godot_v4.2.2-stable_export_templates.tpz -d templates
-          mv templates/templates/* ~/.local/share/godot/export_templates/4.2.2.stable/
-
-      - name: Create build folder
-        run: mkdir -p build
-
-      - name: Build Windows
-        run: ../godot --headless --export-release "Windows Desktop" build/game.exe
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-build
-          path: gamon-games/build/game.exe
+              body: `🎮 PR Preview ready!\n\nPlay it here:\n${url}`
+            })
