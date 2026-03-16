@@ -16,6 +16,7 @@ enum CombatAction {
 @export var fireball_damage: int = 40
 @export var fireball_radius: float = 100.0
 @export var enemy_entity_path: NodePath
+@export var exp_reward: int = 50
 
 var current_state: CombatState = CombatState.PLAYER_TURN
 var selected_action: CombatAction = CombatAction.ATTACK
@@ -89,3 +90,5 @@ func _on_enemy_limb_clicked(limb: CombatLimb) -> void:
 
 func _on_enemy_died(_entity: CombatEntity) -> void:
 	current_state = CombatState.COMBAT_OVER
+	RunData.add_exp(exp_reward)
+	print("Level: ", RunData.current_level, " Exp: ", RunData.current_exp)
