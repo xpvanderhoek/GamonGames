@@ -91,4 +91,3 @@ func _on_enemy_limb_clicked(limb: CombatLimb) -> void:
 func _on_enemy_died(_entity: CombatEntity) -> void:
 	current_state = CombatState.COMBAT_OVER
 	RunData.add_exp(exp_reward)
-	print("Level: ", RunData.current_level, " Exp: ", RunData.current_exp)

@@ -54,7 +54,6 @@ func add_buff(buff : Resource):
 	buffs.append(buff)
 
 func add_exp(amount: int) -> void:
-	print("Adding exp: ", amount)
 	current_exp += amount
 	while current_level < EXP_PER_LEVEL.size() - 1 and current_exp >= EXP_PER_LEVEL[current_level + 1]:
 		level_up()
