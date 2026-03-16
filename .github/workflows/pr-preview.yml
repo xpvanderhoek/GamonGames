@@ -47,7 +47,7 @@ jobs:
         run: |
           Xvfb :99 -screen 0 1024x768x24 &
           export DISPLAY=:99
-          godot/Godot_v4.6-stable_linux.x86_64 --export-release "HTML5" build/html5/index.html
+          godot/Godot_v4.6-stable_linux.x86_64 --export-release "Web" build/html5/index.html
 
       # 7️⃣ Deploy naar GitHub Pages
       - name: Deploy to GitHub Pages
