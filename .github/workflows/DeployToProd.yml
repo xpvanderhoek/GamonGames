@@ -1,16 +1,19 @@
 name: Build & Deploy Godot Game
 
 on:
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   # ──────────────── Non-Production Build ────────────────
   build-non-prod:
     runs-on: ubuntu-latest
-    environment: Non-Production  # approval knop kan hier ook als je wilt
+    environment: Non-Production
     defaults:
       run:
-        working-directory: gamon-games  # alles draait in de subfolder
+        working-directory: gamon-games
 
     steps:
       # 1️⃣ Checkout repo
@@ -48,12 +51,13 @@ jobs:
 
   # ──────────────── Promote to Production ────────────────
   promote-to-prod:
+    if: github.event_name == 'workflow_dispatch'
     needs: build-non-prod
     runs-on: ubuntu-latest
-    environment: Production  # approval knop hier
+    environment: Production
   
     steps:
-      # 1️⃣ Checkout repo (om git te hebben)
+      # 1️⃣ Checkout repo
       - uses: actions/checkout@v4
   
       # 2️⃣ Download artefact van Non-Prod
@@ -63,7 +67,7 @@ jobs:
           name: non-prod-build
           path: gamon-games/build/
   
-      # 3️⃣ Git-tag en push in root
+      # 3️⃣ Git-tag en push
       - name: Push Git tag
         run: |
           git config --global user.email "actions@github.com"
@@ -72,7 +76,6 @@ jobs:
           git tag -a "$TAG" -m "Non-Prod → Prod release"
           echo "Pushing tag $TAG..."
           git push https://xpvanderhoek:${{ secrets.GH_PAT }}@github.com/xpvanderhoek/GamonGames.git "$TAG"
-          
   
       # 4️⃣ Upload Windows build naar Release
       - name: Create Release
