@@ -4,6 +4,8 @@ extends Node2D
 @onready var character: Character = $Character
 @onready var level_label: Label = $CanvasLayer/VBoxContainer/LevelLabel
 @onready var exp_label: Label = $CanvasLayer/VBoxContainer/ExpLabel
+@onready var health_label: Label = $CanvasLayer/VBoxContainer/HealthLabel
+@onready var coins_label: Label = $CanvasLayer/VBoxContainer/CoinsLabel
 
 
 var current_room: Node = null
@@ -13,9 +15,13 @@ var _combat_enemy: Node = null
 func _ready() -> void:
 	RunData.level_changed.connect(_on_level_changed)
 	RunData.exp_changed.connect(_on_exp_changed)
+	RunData.hp_changed.connect(_on_hp_changed)
 	
+	print(str(RunData.coins))
 	_on_level_changed(RunData.current_level)
 	_on_exp_changed(RunData.current_exp)
+	_on_hp_changed(RunData.current_hp)
+	_on_coins_changed(RunData.coins)
 	
 	load_room(NavigationManager.current_room_path)
 
@@ -44,6 +50,12 @@ func _on_level_changed(new_level: int) -> void:
 
 func _on_exp_changed(new_exp: int) -> void:
 	exp_label.text = "Current exp: " + str(new_exp)
+
+func _on_hp_changed(new_hp: int):
+	health_label.text = "Current health: " + str(new_hp)	
+
+func _on_coins_changed(new_value: int):
+	coins_label.text = "Current coins: " + str(new_value)	
 
 func enter_combat(combat_scene_path: String, enemy: Node = null) -> void:
 	if combat_node:

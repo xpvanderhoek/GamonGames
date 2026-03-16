@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dibe1nlseg240"]
 
-[ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://Scenes/character.tscn" id="1_ebmjs"]
-[ext_resource type="Script" uid="uid://cpgo21foq05vw" path="res://Scripts/game.gd" id="1_qxrlw"]
+[ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://scenes/character.tscn" id="1_ebmjs"]
+[ext_resource type="Script" uid="uid://cpgo21foq05vw" path="res://scripts/game.gd" id="1_qxrlw"]
 
 [node name="Game" type="Node2D" unique_id=1771036447]
 process_mode = 3
@@ -27,4 +27,10 @@ grow_horizontal = 0
 layout_mode = 2
 
 [node name="ExpLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=1516745952]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=168714927]
+layout_mode = 2
+
+[node name="CoinsLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=706471788]
 layout_mode = 2

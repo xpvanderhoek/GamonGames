@@ -13,12 +13,12 @@ var current_level : int = 1:
 		current_level = value
 		level_changed.emit(value)
 
-var coins : int = 0:
+var coins : int = 100:
 	set(value):
 		coins = value
 		coins_changed.emit(value)
 
-var current_hp : int = 0:
+var current_hp : float = 0.0:
 	set(value):
 		current_hp = value
 		hp_changed.emit(value)
@@ -46,12 +46,17 @@ func new_run():
 	coins = 100
 	entered_rooms.clear()
 	buffs.clear()
-	current_hp = 100
+	current_hp = 100.0
 	current_corruption = 10
 	current_exp = 0
 
-func add_buff(buff : Resource):
+func add_buff(buff : Node):
 	buffs.append(buff)
+	if buff.item_data.buff_type == "Health":
+		current_hp += buff.item_data.buff_value
+	for item in buffs:
+		print(item.item_data.item_name)
+
 
 func add_exp(amount: int) -> void:
 	current_exp += amount

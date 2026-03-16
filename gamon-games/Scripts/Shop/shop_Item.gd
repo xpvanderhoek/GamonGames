@@ -30,9 +30,9 @@ func _on_item_data_assigned():
 			sprite.scale = Vector2(scale_factor, scale_factor)
 
 func buy_item():
-	if CurrenciesManager.gold >= item_data.cost:
-		CurrenciesManager.gold -= item_data.cost
-		apply_buff()
+	if RunData.coins >= item_data.cost:
+		RunData.coins -= item_data.cost
+		RunData.add_buff(self)
 		queue_free() 
 	else:
 		print("You're broke, adventurer.")

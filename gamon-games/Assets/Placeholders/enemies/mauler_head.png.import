@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cmphv07urw5go"
-path="res://.godot/imported/mauler_head.png-0c315e1dcfc75fe88b6c3b46d7acbe15.ctex"
+path="res://.godot/imported/mauler_head.png-2475dc90fa065b8206c091150eb0b901.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Placeholders/enemies/mauler_head.png"
-dest_files=["res://.godot/imported/mauler_head.png-0c315e1dcfc75fe88b6c3b46d7acbe15.ctex"]
+source_file="res://assets/Placeholders/enemies/mauler_head.png"
+dest_files=["res://.godot/imported/mauler_head.png-2475dc90fa065b8206c091150eb0b901.ctex"]
 
 [params]
 
