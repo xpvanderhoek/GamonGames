@@ -2,6 +2,7 @@ name: "CodeQL"
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened]
     paths:
       - "gamon-games/Scripts/**"   # alleen deze folder scannen
   push:
