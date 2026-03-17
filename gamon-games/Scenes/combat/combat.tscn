@@ -1,15 +1,10 @@
 [gd_scene format=3 uid="uid://b1r88pxgxdvwr"]
 
 [ext_resource type="PackedScene" uid="uid://coej4qxba8o7a" path="res://Scenes/combat/enemies/mauler.tscn" id="2_vb3s4"]
+[ext_resource type="Texture2D" uid="uid://cmdoqc1f1ncv7" path="res://Assets/Placeholders/knight1_1_claymore.png" id="3_rnhwr"]
 [ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://Scripts/combat/combatManager.gd" id="7_mgr"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8cw2p"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(1, 1, 1, 1)
+[sub_resource type="Theme" id="Theme_rnhwr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6aonj"]
 content_margin_left = 30.0
@@ -113,6 +108,11 @@ color = Color(0, 0, 0, 1)
 [node name="Camera2D" type="Camera2D" parent="UI" unique_id=991902612]
 position = Vector2(577, 325)
 
+[node name="Knight11Claymore" type="Sprite2D" parent="UI" unique_id=888851307]
+position = Vector2(107, 530)
+scale = Vector2(1.4130435, 1.4130434)
+texture = ExtResource("3_rnhwr")
+
 [node name="HBoxContainer" type="HBoxContainer" parent="UI" unique_id=1990503357]
 anchors_preset = 5
 anchor_left = 0.5
@@ -136,47 +136,42 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -281.0
+offset_left = 225.0
+offset_top = -324.0
+offset_right = -655.0
+offset_bottom = -51.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_8cw2p")
 
 [node name="PlayerHealth" type="Label" parent="UI/Panel" unique_id=168058055]
 layout_mode = 1
-offset_left = 24.0
-offset_top = 18.0
-offset_right = 224.0
-offset_bottom = 52.0
+offset_left = -132.0
+offset_top = 10.0
+offset_right = -23.0
+offset_bottom = 46.0
 text = "HP: 0/0"
 
-[node name="Actions" type="HBoxContainer" parent="UI/Panel" unique_id=-2003117294]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -513.0
-offset_top = -46.5
-offset_right = 513.0
-offset_bottom = 46.5
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset_ratio = Vector2(5, 5)
-theme_override_constants/separation = 38
-alignment = 1
-
-[node name="BtnAttack" type="Button" parent="UI/Panel/Actions" unique_id=2098855253]
-layout_mode = 2
-theme_override_font_sizes/font_size = 53
+[node name="BtnAttack" type="Button" parent="UI/Panel" unique_id=2098855253]
+layout_mode = 0
+offset_left = -20.0
+offset_top = -15.0
+offset_right = 62.0
+offset_bottom = 49.0
+theme = SubResource("Theme_rnhwr")
+theme_type_variation = &"FlatButton"
+theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_6aonj")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pqpfu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_ltalu")
 theme_override_styles/focus = SubResource("StyleBoxFlat_4voa6")
-text = "ATTACK"
+text = "⚔️"
 
-[node name="BtnFireball" type="Button" parent="UI/Panel/Actions" unique_id=2143509788]
-layout_mode = 2
+[node name="BtnFireball" type="Button" parent="UI/Panel" unique_id=2143509788]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 140.0
+offset_right = 314.0
+offset_bottom = 233.0
 theme_override_font_sizes/font_size = 53
 theme_override_styles/normal = SubResource("StyleBoxFlat_6aonj")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pqpfu")
@@ -184,8 +179,12 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_ltalu")
 theme_override_styles/focus = SubResource("StyleBoxFlat_jgg25")
 text = "FIREBALL"
 
-[node name="BtnItem" type="Button" parent="UI/Panel/Actions" unique_id=1423238341]
-layout_mode = 2
+[node name="BtnItem" type="Button" parent="UI/Panel" unique_id=1423238341]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 48.0
+offset_right = 191.0
+offset_bottom = 141.0
 theme_override_font_sizes/font_size = 53
 theme_override_styles/normal = SubResource("StyleBoxFlat_6aonj")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pqpfu")
@@ -193,8 +192,12 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_ltalu")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ijgaf")
 text = "ITEM"
 
-[node name="BtnRun" type="Button" parent="UI/Panel/Actions" unique_id=356364418]
-layout_mode = 2
+[node name="BtnRun" type="Button" parent="UI/Panel" unique_id=356364418]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 226.0
+offset_right = 178.0
+offset_bottom = 319.0
 theme_override_font_sizes/font_size = 53
 theme_override_styles/normal = SubResource("StyleBoxFlat_6aonj")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pqpfu")

@@ -24,8 +24,8 @@ var selected_action: CombatAction = CombatAction.ATTACK
 var enemy_entity: CombatEntity
 var player_health: int = player_max_health
 
-@onready var btn_attack: Button = $UI/Panel/Actions/BtnAttack
-@onready var btn_fireball: Button = $UI/Panel/Actions/BtnFireball
+@onready var btn_attack: Button = $UI/Panel/BtnAttack
+@onready var btn_fireball: Button = $UI/Panel/BtnFireball
 @onready var lbl_player_health: Label = $UI/Panel/PlayerHealth
 @onready var ui_layer: CanvasLayer = $UI
 
