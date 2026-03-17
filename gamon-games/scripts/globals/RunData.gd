@@ -29,8 +29,8 @@ var current_corruption : int = 0:
 		corruption_changed.emit(value)
 
 var entered_rooms : Array = []
-var buffs : Array = [] # This stores permanent run upgrades
-var consumables : Array = [] # This stores single-use items
+var buffs : Array = [] 
+var consumables : Array = [] 
 
 # Values are placeholders for now, needs testing
 var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000]
@@ -52,7 +52,6 @@ func new_run():
 	current_corruption = 10
 	current_exp = 0
 
-# Updated to handle logic for Consumables vs Upgrades
 func add_buff(item : Resource):
 	if item is ItemData:
 		if item.category == "Consumable":
@@ -66,7 +65,6 @@ func add_buff(item : Resource):
 func _normalize_limb_identifier(name: String) -> String:
 	if name == "":
 		return name
-	# If the name contains spaces, use the last word (e.g. "Left Arm" -> "Arm").
 	var parts = name.split(" ", false)
 	if parts.size() == 0:
 		return name

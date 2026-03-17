@@ -3,7 +3,7 @@ class_name MetaStats
 
 @export var marrow_shards: int = 0
 
-# Permanent Levels
+# Permanent Upgrades (outside the runs themselves)
 @export var hardened_flesh_lvl: int = 0  # +5% HP
 @export var anatomy_mastery_lvl: int = 0  # +3% Limb Dmg
 @export var steady_hand_lvl: int = 0     # +2 Precision
