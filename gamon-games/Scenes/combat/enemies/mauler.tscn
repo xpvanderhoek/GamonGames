@@ -12,13 +12,13 @@
 [ext_resource type="Texture2D" uid="uid://hha5upbr4b3g" path="res://Assets/Placeholders/enemies/mauler_armR.png" id="7_lqs23"]
 [ext_resource type="Texture2D" uid="uid://cufsvkeeq2fgd" path="res://Assets/Placeholders/enemies/mauler_legL.png" id="8_w1bur"]
 
-[sub_resource type="Resource" id="Resource_2woyn"]
+[sub_resource type="Resource" id="Resource_y2fao"]
 script = ExtResource("5_l2lrl")
 damage = 5
 weight = 100.0
 sfx = ExtResource("5_y2fao")
 vfx_scene = ExtResource("6_1lpsr")
-vfx_lifetime = 2.0
+metadata/_custom_type_script = "uid://bsud4alvvvjht"
 
 [node name="mauler" type="Control" unique_id=1680014499]
 custom_minimum_size = Vector2(220, 330)
@@ -36,7 +36,6 @@ texture = ExtResource("2_0ypl1")
 script = ExtResource("3_rnyr7")
 limb_name = "Torso"
 is_vital = true
-attacks = Array[ExtResource("5_l2lrl")]([SubResource("Resource_2woyn")])
 
 [node name="MaulerHead" type="Sprite2D" parent="." unique_id=1638871885]
 position = Vector2(92, 82)
@@ -52,6 +51,7 @@ texture = ExtResource("6_34xek")
 script = ExtResource("3_rnyr7")
 limb_name = "Left Arm"
 max_health = 50
+attacks = Array[ExtResource("5_l2lrl")]([SubResource("Resource_y2fao")])
 
 [node name="MaulerArmR" type="Sprite2D" parent="." unique_id=1381969496]
 position = Vector2(67, 150)

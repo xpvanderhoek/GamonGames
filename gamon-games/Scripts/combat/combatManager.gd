@@ -75,7 +75,7 @@ func _refresh_enemy_entities() -> void:
 			if child is CombatEntity:
 				_register_enemy_entity(child as CombatEntity)
 
-	if enemy_entities.size() == 0 and enemy_entity_path != NodePath("") and has_node(enemy_entity_path):
+	if enemy_entities.is_empty() and has_node(enemy_entity_path):
 		var fallback_enemy := get_node(enemy_entity_path)
 		if fallback_enemy is CombatEntity:
 			_register_enemy_entity(fallback_enemy as CombatEntity)
@@ -152,7 +152,7 @@ func _perform_enemy_turn() -> void:
 		return
 
 	var alive_enemies := _get_alive_enemies()
-	if alive_enemies.size() == 0:
+	if alive_enemies.is_empty():
 		_end_enemy_turn()
 		return
 
@@ -182,7 +182,7 @@ func _choose_enemy_attack_limb(source_enemy: CombatEntity) -> CombatLimb:
 			continue
 		if limb.has_attack_options():
 			candidates.append(limb)
-	if candidates.size() == 0:
+	if candidates.is_empty():
 		return null
 	return candidates[randi() % candidates.size()]
 

@@ -34,7 +34,7 @@ func get_attack_options() -> Array[CombatAttack]:
 
 func choose_attack() -> CombatAttack:
 	var options := get_attack_options()
-	if options.size() == 0:
+	if options.is_empty():
 		return null
 	if options.size() == 1:
 		return options[0]
