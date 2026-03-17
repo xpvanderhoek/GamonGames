@@ -63,12 +63,30 @@ func add_buff(item : Resource):
 		buffs.append(item)
 
 # Gets total flat damage bonus for a specific limb from items
+
+# Normalizes limb identifiers so that side-specific names like "Left Arm"/"Right Arm"
+# can match generic targets like "Arm".
+func _normalize_limb_identifier(name: String) -> String:
+	if name == "":
+		return name
+	# If the name contains spaces, use the last word (e.g. "Left Arm" -> "Arm").
+	var parts = name.split(" ", false)
+	if parts.size() == 0:
+		return name
+	return parts[parts.size() - 1]
+
 func get_limb_damage_bonus(limb_name: String) -> float:
 	var total = 0.0
+	var normalized_limb = _normalize_limb_identifier(limb_name)
 	for item in buffs:
 		if item is ItemData:
-			if item.target_limb == limb_name or item.target_limb == "All":
+			var target_limb: String = item.target_limb
+			if target_limb == "All":
 				if item.buff_type == "Damage":
+					total += item.buff_value
+			else:
+				var normalized_target = _normalize_limb_identifier(target_limb)
+				if normalized_target == normalized_limb and item.buff_type == "Damage":
 					total += item.buff_value
 	return total
 
