@@ -126,7 +126,14 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		return
 	if source_enemy == null or not is_instance_valid(source_enemy) or not source_enemy.is_alive:
 		return
-	source_enemy.take_damage(limb, player_base_damage)
+	if limb.is_destroyed:
+		return
+
+	if limb.roll_hit():
+		source_enemy.take_damage(limb, player_base_damage)
+	else:
+		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(limb.hit_chance_percent, 0.1)])
+
 	_attack_selected = false
 	source_enemy.clear_current_highlight()
 	_end_player_turn()

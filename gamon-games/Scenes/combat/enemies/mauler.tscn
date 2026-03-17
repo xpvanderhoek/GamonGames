@@ -44,6 +44,7 @@ script = ExtResource("3_rnyr7")
 limb_name = "Head"
 max_health = 60
 is_vital = true
+hit_chance_percent = 30.0
 
 [node name="MaulerArmL" type="Sprite2D" parent="." unique_id=99250764]
 position = Vector2(183, 162)
