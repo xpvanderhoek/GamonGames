@@ -147,12 +147,13 @@ offset_right = 92.0
 offset_bottom = 63.0
 theme = SubResource("Theme_rnhwr")
 theme_type_variation = &"FlatButton"
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 53
 theme_override_styles/normal = SubResource("StyleBoxFlat_6aonj")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pqpfu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_ltalu")
 theme_override_styles/focus = SubResource("StyleBoxFlat_4voa6")
-text = "⚔️"
+text = "ATTACK
+"
 
 [node name="BtnItem" type="Button" parent="UI/Panel" unique_id=1423238341]
 layout_mode = 0
@@ -165,6 +166,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_6aonj")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pqpfu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_ltalu")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ijgaf")
+disabled = true
 text = "ITEM"
 
 [node name="BtnRun" type="Button" parent="UI/Panel" unique_id=356364418]
@@ -178,5 +180,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_6aonj")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pqpfu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_ltalu")
 theme_override_styles/focus = SubResource("StyleBoxFlat_uakg0")
+disabled = true
 text = "RUN
 "

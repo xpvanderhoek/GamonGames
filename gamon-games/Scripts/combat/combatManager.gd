@@ -23,6 +23,10 @@ var selected_action: CombatAction = CombatAction.ATTACK
 var enemy_entities: Array[CombatEntity] = []
 var player_health: int = player_max_health
 var _queued_encounter_scenes: Array[PackedScene] = []
+var _enemy_targeting_enabled: bool = false
+var _attack_selected: bool = false
+
+signal enemy_targeting_changed(enabled: bool)
 
 @onready var btn_attack: Button = $UI/Panel/BtnAttack
 @onready var lbl_player_health: Label = $UI/Panel/PlayerHealth
@@ -36,7 +40,7 @@ func _ready() -> void:
 	_update_player_health_label()
 
 	btn_attack.pressed.connect(select_attack)
-	select_attack()
+	_begin_player_turn()
 
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	_queued_encounter_scenes = encounter_enemy_scenes.duplicate()
@@ -45,7 +49,7 @@ func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 
 	_spawn_encounter_enemies(_queued_encounter_scenes)
 	_refresh_enemy_entities()
-	select_attack()
+	_begin_player_turn()
 
 func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	var enemy_container := get_node_or_null(enemy_container_path)
@@ -87,6 +91,11 @@ func _register_enemy_entity(entity: CombatEntity) -> void:
 	if not entity.highlighted_limb_clicked.is_connected(on_limb_clicked):
 		entity.highlighted_limb_clicked.connect(on_limb_clicked)
 
+	var on_targeting_changed := Callable(entity, "set_targeting_enabled")
+	if not enemy_targeting_changed.is_connected(on_targeting_changed):
+		enemy_targeting_changed.connect(on_targeting_changed)
+	entity.set_targeting_enabled(_enemy_targeting_enabled)
+
 func _get_alive_enemies() -> Array[CombatEntity]:
 	var alive_enemies: Array[CombatEntity] = []
 	for entity in enemy_entities:
@@ -98,24 +107,28 @@ func _has_alive_enemies() -> bool:
 	return _get_alive_enemies().size() > 0
 
 func select_attack() -> void:
+	if current_state != CombatState.PLAYER_TURN or not _has_alive_enemies():
+		return
 	selected_action = CombatAction.ATTACK
-	for entity in enemy_entities:
-		if not is_instance_valid(entity):
-			continue
-		entity.block_click_emit = false
-		entity.single_highlight_enabled = true
+	_attack_selected = true
+	_set_enemy_targeting_enabled(true)
 	_update_button_states()
 
 func _update_button_states() -> void:
-	if selected_action == CombatAction.ATTACK:
+	btn_attack.disabled = current_state != CombatState.PLAYER_TURN or _attack_selected or not _has_alive_enemies()
+	if selected_action == CombatAction.ATTACK and not btn_attack.disabled:
 		btn_attack.grab_focus()
 
 func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> void:
 	if current_state != CombatState.PLAYER_TURN:
 		return
+	if not _attack_selected:
+		return
 	if source_enemy == null or not is_instance_valid(source_enemy) or not source_enemy.is_alive:
 		return
 	source_enemy.take_damage(limb, player_base_damage)
+	_attack_selected = false
+	source_enemy.clear_current_highlight()
 	_end_player_turn()
 
 func _on_enemy_died(_entity: CombatEntity) -> void:
@@ -123,12 +136,15 @@ func _on_enemy_died(_entity: CombatEntity) -> void:
 		return
 
 	current_state = CombatState.COMBAT_OVER
+	_update_button_states()
 	NavigationManager.go_back_to_current_room()
 
 func _end_player_turn() -> void:
 	if not _has_alive_enemies():
 		return
+	_set_enemy_targeting_enabled(false)
 	current_state = CombatState.ENEMY_TURN
+	_update_button_states()
 	call_deferred("_perform_enemy_turn")
 
 func _perform_enemy_turn() -> void:
@@ -176,10 +192,21 @@ func _apply_player_damage(amount: int) -> void:
 	print("Player took %d damage — HP: %d/%d" % [amount, player_health, player_max_health])
 	if amount <= 0:
 		return
+	_flash_player_hit()
 	player_health = max(0, player_health - amount)
 	_update_player_health_label()
 	if player_health <= 0:
 		current_state = CombatState.COMBAT_OVER
+
+func _flash_player_hit() -> void:
+	var player_anchor := get_node_or_null(ui_player)
+	if not (player_anchor is CanvasItem):
+		return
+
+	var player_canvas := player_anchor as CanvasItem
+	var tween := create_tween()
+	tween.tween_property(player_canvas, "modulate", Color(1.7, 1.7, 1.7, 1.0), 0.18)
+	tween.tween_property(player_canvas, "modulate", Color(1, 1, 1, 1), 0.22)
 
 func _play_attack_feedback(attack: CombatAttack, attacking_enemy: CombatEntity) -> void:
 	var vfx_lifetime_timer: SceneTreeTimer = null
@@ -220,8 +247,21 @@ func _end_enemy_turn() -> void:
 		return
 	if not _has_alive_enemies():
 		current_state = CombatState.COMBAT_OVER
+		_update_button_states()
 		return
 	current_state = CombatState.PLAYER_TURN
+	_begin_player_turn()
+
+func _begin_player_turn() -> void:
+	_attack_selected = false
+	_set_enemy_targeting_enabled(false)
+	_update_button_states()
+
+func _set_enemy_targeting_enabled(enabled: bool) -> void:
+	if _enemy_targeting_enabled == enabled:
+		return
+	_enemy_targeting_enabled = enabled
+	enemy_targeting_changed.emit(enabled)
 
 func _update_player_health_label() -> void:
 	lbl_player_health.text = "HP: %d/%d" % [player_health, player_max_health]

@@ -61,6 +61,20 @@ func _refresh_highlight() -> void:
 	if _highlighted_limb != null:
 		_highlighted_limb.set_highlighted()
 
+func clear_current_highlight() -> void:
+	_hovered_limbs.clear()
+	if _highlighted_limb != null:
+		_highlighted_limb.set_unhighlighted()
+		_highlighted_limb = null
+
+func set_targeting_enabled(enabled: bool) -> void:
+	block_click_emit = not enabled
+	single_highlight_enabled = enabled
+	if not enabled:
+		clear_current_highlight()
+		return
+	_refresh_highlight()
+
 func _unhandled_input(event: InputEvent) -> void:
 	if block_click_emit or not is_alive or _highlighted_limb == null:
 		return
