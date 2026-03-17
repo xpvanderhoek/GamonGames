@@ -6,6 +6,7 @@
 
 [node name="Game" type="Node2D" unique_id=1771036447]
 process_mode = 3
+position = Vector2(-1, 1)
 script = ExtResource("1_qxrlw")
 
 [node name="RoomContainer" type="Node2D" parent="." unique_id=97497814]

@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://dhexr8smtlsmo"]
 
 [ext_resource type="Script" uid="uid://b4abrvd60h7j6" path="res://Scripts/character.gd" id="1_lkv7d"]
-[ext_resource type="Texture2D" uid="uid://gfxe7i5gvc8s" path="res://assets/Placeholders/Front - Walking.png" id="2_ejsiy"]
-[ext_resource type="Texture2D" uid="uid://dysyl0xogtuxj" path="res://assets/Placeholders/Front - Idle.png" id="2_wbia7"]
-[ext_resource type="Texture2D" uid="uid://t1vpka63nffx" path="res://assets/Placeholders/Left - Walking.png" id="3_2mse5"]
-[ext_resource type="Texture2D" uid="uid://mds0er5qnjsh" path="res://assets/Placeholders/Left - Idle.png" id="3_kq7hj"]
-[ext_resource type="Texture2D" uid="uid://dby7wiyicxfcp" path="res://assets/Placeholders/Right - Idle.png" id="4_7iw6i"]
-[ext_resource type="Texture2D" uid="uid://bvxae35r8iti6" path="res://assets/Placeholders/Right - Walking.png" id="4_reotu"]
-[ext_resource type="Texture2D" uid="uid://5u858b0t3sqj" path="res://assets/Placeholders/Back - Walking.png" id="5_a5ess"]
-[ext_resource type="Texture2D" uid="uid://huobv5232ua3" path="res://assets/Placeholders/Back - Idle.png" id="5_l1rcp"]
+[ext_resource type="Texture2D" uid="uid://cbc2ywqs2a3w2" path="res://Assets/Placeholders/Front - Walking.png" id="2_ejsiy"]
+[ext_resource type="Texture2D" uid="uid://ormmttn8fiq8" path="res://Assets/Placeholders/Front - Idle.png" id="2_wbia7"]
+[ext_resource type="Texture2D" uid="uid://bfd7fnet3oovu" path="res://Assets/Placeholders/Left - Walking.png" id="3_2mse5"]
+[ext_resource type="Texture2D" uid="uid://di827v78fk8vl" path="res://Assets/Placeholders/Left - Idle.png" id="3_kq7hj"]
+[ext_resource type="Texture2D" uid="uid://wwrowacdlmxa" path="res://Assets/Placeholders/Right - Idle.png" id="4_7iw6i"]
+[ext_resource type="Texture2D" uid="uid://8hqfomcreg6c" path="res://Assets/Placeholders/Right - Walking.png" id="4_reotu"]
+[ext_resource type="Texture2D" uid="uid://me0fjyq5kdp0" path="res://Assets/Placeholders/Back - Walking.png" id="5_a5ess"]
+[ext_resource type="Texture2D" uid="uid://bp8cof261h7av" path="res://Assets/Placeholders/Back - Idle.png" id="5_l1rcp"]
+[ext_resource type="PackedScene" uid="uid://cji2ni1ok5fvc" path="res://Scenes/UI/corruption_bar.tscn" id="10_kq7hj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_082uh"]
 atlas = ExtResource("2_wbia7")
@@ -1106,5 +1107,11 @@ vertical_alignment = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1919771425]
 shape = SubResource("CircleShape2D_wbia7")
 debug_color = Color(3.7541986e-06, 0.64510936, 0.2735894, 0.41960785)
+
+[node name="CorruptionBar" parent="." unique_id=755609357 instance=ExtResource("10_kq7hj")]
+offset_left = -170.0
+offset_top = -430.0
+offset_right = 184.0
+offset_bottom = -376.0
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
