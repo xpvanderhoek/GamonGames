@@ -6,7 +6,17 @@ class_name Enemy
 
 const SPEED = 100.0
 
+@export var encounter_enemies: Array[PackedScene] = []
+
 var last_direction: Vector2 = Vector2.DOWN
+
+func get_encounter_enemies() -> Array[PackedScene]:
+	var valid_enemies: Array[PackedScene] = []
+	for enemy_scene in encounter_enemies:
+		if enemy_scene != null:
+			valid_enemies.append(enemy_scene)
+
+	return valid_enemies
 
 func _physics_process(delta: float) -> void:
 	delta = min(delta, 0.1)

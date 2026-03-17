@@ -17,7 +17,6 @@ turbulence_enabled = true
 [node name="Test" type="Node2D" unique_id=355697278]
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1395312198]
-position = Vector2(143, 130)
 amount = 61
 texture = ExtResource("1_bh2oj")
 lifetime = 11.35

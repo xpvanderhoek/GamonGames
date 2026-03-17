@@ -128,5 +128,3 @@ func die() -> void:
 		if not limb.is_destroyed:
 			limb.destroy_limb()
 	entity_died.emit(self)
-
-	NavigationManager.go_back_to_current_room()
