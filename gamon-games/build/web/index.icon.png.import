@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cu2sdy08pf51y"
-path="res://.godot/imported/mauler_legR.png-4c1f11a2bd9f487d1c72d09970933ce7.ctex"
+uid="uid://doh4m8wa6jnlx"
+path="res://.godot/imported/index.icon.png-a9d2f4f7433eeddc29dad75f5e7f8710.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Placeholders/enemies/mauler_legR.png"
-dest_files=["res://.godot/imported/mauler_legR.png-4c1f11a2bd9f487d1c72d09970933ce7.ctex"]
+source_file="res://build/web/index.icon.png"
+dest_files=["res://.godot/imported/index.icon.png-a9d2f4f7433eeddc29dad75f5e7f8710.ctex"]
 
 [params]
 

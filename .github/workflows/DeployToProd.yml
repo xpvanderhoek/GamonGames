@@ -2,15 +2,16 @@ name: Build & Deploy Godot Game
 
 on:
   workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
-  # ──────────────── Non-Production Build ────────────────
   build-non-prod:
     runs-on: ubuntu-latest
-    environment: Non-Production  # approval knop kan hier ook als je wilt
+    environment: Non-Production
     defaults:
       run:
-        working-directory: gamon-games  # alles draait in de subfolder
+        working-directory: gamon-games
 
     steps:
       # 1️⃣ Checkout repo
