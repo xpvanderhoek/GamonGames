@@ -9,7 +9,6 @@ class_name ItemData
 
 @export_group("Economy")
 @export var cost: int = 50
-@export var is_consumable: bool = false
 
 @export_group("Combat Stats")
 @export_enum("None", "Head", "Arm", "Leg", "Torso", "All") var target_limb: String = "None"
@@ -18,4 +17,3 @@ class_name ItemData
 
 @export_group("Status Effects")
 @export_enum("None", "Bleed", "Poison", "Decay", "Vulnerable", "Burn", "Invulnerable") var status_to_apply: String = "None"
-@export var status_stacks: int = 0
