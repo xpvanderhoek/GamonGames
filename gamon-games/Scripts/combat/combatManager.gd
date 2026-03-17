@@ -9,12 +9,9 @@ enum CombatState {
 
 enum CombatAction {
 	ATTACK,
-	FIREBALL,
 }
 
 @export var player_base_damage: int = 25
-@export var fireball_damage: int = 40
-@export var fireball_radius: float = 100.0
 @export var enemy_entity_path: NodePath
 @export var enemy_container_path: NodePath = NodePath("UI/HBoxContainer")
 @export var ui_player: NodePath = NodePath("UI/Player")
@@ -28,7 +25,6 @@ var player_health: int = player_max_health
 var _queued_encounter_scenes: Array[PackedScene] = []
 
 @onready var btn_attack: Button = $UI/Panel/BtnAttack
-@onready var btn_fireball: Button = $UI/Panel/BtnFireball
 @onready var lbl_player_health: Label = $UI/Panel/PlayerHealth
 @onready var ui_layer: CanvasLayer = $UI
 
@@ -40,7 +36,6 @@ func _ready() -> void:
 	_update_player_health_label()
 
 	btn_attack.pressed.connect(select_attack)
-	btn_fireball.pressed.connect(select_fireball)
 	select_attack()
 
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
@@ -50,10 +45,7 @@ func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 
 	_spawn_encounter_enemies(_queued_encounter_scenes)
 	_refresh_enemy_entities()
-	if selected_action == CombatAction.FIREBALL:
-		select_fireball()
-	else:
-		select_attack()
+	select_attack()
 
 func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	var enemy_container := get_node_or_null(enemy_container_path)
@@ -105,40 +97,6 @@ func _get_alive_enemies() -> Array[CombatEntity]:
 func _has_alive_enemies() -> bool:
 	return _get_alive_enemies().size() > 0
 
-func _process(_delta: float) -> void:
-	if current_state != CombatState.PLAYER_TURN or not _has_alive_enemies():
-		return
-	if selected_action == CombatAction.FIREBALL:
-		for entity in _get_alive_enemies():
-			entity.update_aoe_preview(get_global_mouse_position(), fireball_radius)
-		queue_redraw()
-
-func _draw() -> void:
-	if selected_action != CombatAction.FIREBALL or current_state != CombatState.PLAYER_TURN:
-		return
-	var mouse_local := get_local_mouse_position()
-	
-	draw_circle(mouse_local, fireball_radius, Color(1.0, 0.35, 0.0, 0.12))
-	draw_arc(mouse_local, fireball_radius, 0.0, TAU, 64, Color(1.0, 0.5, 0.0, 0.85), 2.0)
-
-func _unhandled_input(event: InputEvent) -> void:
-	if current_state != CombatState.PLAYER_TURN or not _has_alive_enemies():
-		return
-	if selected_action == CombatAction.FIREBALL:
-		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			var mouse_pos := get_global_mouse_position()
-			var did_hit_any_enemy := false
-			for entity in _get_alive_enemies():
-				var aoe_limbs := entity.get_aoe_limbs(mouse_pos, fireball_radius)
-				if aoe_limbs.size() == 0:
-					continue
-				did_hit_any_enemy = true
-				entity.take_damage_all(aoe_limbs, fireball_damage)
-
-			if did_hit_any_enemy:
-				get_viewport().set_input_as_handled()
-				_end_player_turn()
-
 func select_attack() -> void:
 	selected_action = CombatAction.ATTACK
 	for entity in enemy_entities:
@@ -146,26 +104,11 @@ func select_attack() -> void:
 			continue
 		entity.block_click_emit = false
 		entity.single_highlight_enabled = true
-		entity.clear_aoe_preview()
-	queue_redraw()
-	_update_button_states()
-
-func select_fireball() -> void:
-	selected_action = CombatAction.FIREBALL
-	for entity in enemy_entities:
-		if not is_instance_valid(entity):
-			continue
-		entity.block_click_emit = true
-		entity.single_highlight_enabled = false
 	_update_button_states()
 
 func _update_button_states() -> void:
 	if selected_action == CombatAction.ATTACK:
 		btn_attack.grab_focus()
-		btn_fireball.release_focus()
-	elif selected_action == CombatAction.FIREBALL:
-		btn_attack.release_focus()
-		btn_fireball.grab_focus()
 
 func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> void:
 	if current_state != CombatState.PLAYER_TURN:

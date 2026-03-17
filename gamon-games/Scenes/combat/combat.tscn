@@ -53,18 +53,6 @@ border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.5803922, 0, 0.003921569, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jgg25"]
-content_margin_left = 30.0
-content_margin_top = 10.0
-content_margin_right = 30.0
-content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.5803922, 0, 0.003921569, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ijgaf"]
 content_margin_left = 30.0
 content_margin_top = 10.0
@@ -166,19 +154,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_ltalu")
 theme_override_styles/focus = SubResource("StyleBoxFlat_4voa6")
 text = "⚔️"
 
-[node name="BtnFireball" type="Button" parent="UI/Panel" unique_id=2143509788]
-layout_mode = 0
-offset_left = 19.0
-offset_top = 140.0
-offset_right = 314.0
-offset_bottom = 233.0
-theme_override_font_sizes/font_size = 53
-theme_override_styles/normal = SubResource("StyleBoxFlat_6aonj")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_pqpfu")
-theme_override_styles/hover = SubResource("StyleBoxFlat_ltalu")
-theme_override_styles/focus = SubResource("StyleBoxFlat_jgg25")
-text = "FIREBALL"
-
 [node name="BtnItem" type="Button" parent="UI/Panel" unique_id=1423238341]
 layout_mode = 0
 offset_left = 6.0
@@ -194,10 +169,10 @@ text = "ITEM"
 
 [node name="BtnRun" type="Button" parent="UI/Panel" unique_id=356364418]
 layout_mode = 0
-offset_left = 3.0
-offset_top = 226.0
-offset_right = 178.0
-offset_bottom = 319.0
+offset_left = 8.5
+offset_top = 157.0
+offset_right = 183.5
+offset_bottom = 250.0
 theme_override_font_sizes/font_size = 53
 theme_override_styles/normal = SubResource("StyleBoxFlat_6aonj")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pqpfu")
