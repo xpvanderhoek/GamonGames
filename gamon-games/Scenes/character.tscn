@@ -1107,6 +1107,6 @@ vertical_alignment = 1
 shape = SubResource("CircleShape2D_wbia7")
 debug_color = Color(3.7541986e-06, 0.64510936, 0.2735894, 0.41960785)
 
-[node name="CurrencyUi" parent="." unique_id=2139467543 instance=ExtResource("10_kq7hj")]
+[node name="CurrencyUi" parent="." unique_id=2139467543]
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
