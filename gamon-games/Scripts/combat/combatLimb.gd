@@ -34,7 +34,7 @@ func get_attack_options() -> Array[CombatAttack]:
 
 func choose_attack() -> CombatAttack:
 	var options := get_attack_options()
-	if options.size() == 0:
+	if options.is_empty():
 		return null
 	if options.size() == 1:
 		return options[0]
@@ -144,11 +144,17 @@ func get_health_percent() -> float:
 
 func _flash_hit() -> void:
 	var tween := create_tween()
-	tween.tween_property(self, "modulate", Color.RED, 0.10)
+	tween.tween_property(self, "modulate", Color(1.7, 1.7, 1.7, 1.0), 0.22)
+	tween.tween_interval(0.08)
+	tween.tween_callback(_sync_modulate_from_state)
+
+func _sync_modulate_from_state() -> void:
+	if is_destroyed:
+		return
 	if is_highlighted:
-		tween.tween_property(self, "modulate", Color.GREEN, 0.20)
+		modulate = Color.GREEN
 		return
 	if is_aoe_highlighted:
-		tween.tween_property(self, "modulate", Color(1, 0.5, 0), 0.20)
+		modulate = Color(1, 0.5, 0)
 		return
-	tween.tween_property(self, "modulate", Color.WHITE, 0.20)
+	modulate = Color.WHITE

@@ -24,7 +24,7 @@ func go_back_to_current_room():
 func get_new_random_room() -> String:
 	var possible_rooms = rooms.filter(func(x): return x not in RunData.entered_rooms) # Removes all entered rooms in current run from the rooms array.
 
-	if possible_rooms.size() == 0:
+	if possible_rooms.is_empty():
 		return scene_room5
 
 	var random_index = RunData.rng.randi_range(0, possible_rooms.size() - 1) # Choose random room that has not been entered during the current run yet.

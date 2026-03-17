@@ -64,6 +64,13 @@ func enter_combat(combat_scene_path: String, enemy: Node = null) -> void:
 	character.set_process_input(false)
 	add_child(combat_node)
 
+	var encounter_enemies: Array[PackedScene] = []
+	if enemy != null and enemy.has_method("get_encounter_enemies"):
+		encounter_enemies = enemy.get_encounter_enemies()
+
+	if combat_node.has_method("setup_encounter"):
+		combat_node.setup_encounter(encounter_enemies)
+
 func exit_combat(enemy_killed: bool = false) -> void:
 	if combat_node:
 		# Delete these 2 lines when UI is made
