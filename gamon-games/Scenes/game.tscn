@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://Scenes/character.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://cpgo21foq05vw" path="res://Scripts/game.gd" id="1_qxrlw"]
+[ext_resource type="Script" uid="uid://6mklxmfdvwie" path="res://Scripts/Shop/GoldLabel.gd" id="3_wrm1d"]
 
 [node name="Game" type="Node2D" unique_id=1771036447]
 process_mode = 3
@@ -28,3 +29,7 @@ layout_mode = 2
 
 [node name="ExpLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=1516745952]
 layout_mode = 2
+
+[node name="GoldLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=1414015285]
+layout_mode = 2
+script = ExtResource("3_wrm1d")
