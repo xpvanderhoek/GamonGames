@@ -29,6 +29,22 @@ jobs:
           PR_BRANCH="${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}"
           ACTION="${{ github.event.action }}"
 
+          # Functie om embed te maken
+          make_embed() {
+            local COLOR=$1
+            cat <<EOF
+            {
+              "title": "$PR_TITLE",
+              "url": "$PR_URL",
+              "color": $COLOR,
+              "fields": [
+                {"name": "👤 Auteur", "value": "$PR_AUTHOR", "inline": true},
+                {"name": "🌿 Branch", "value": "$PR_BRANCH", "inline": true}
+              ]
+            }
+EOF
+          }
+
           # Check action type
           if [ "$ACTION" == "opened" ]; then
             # Nieuwe thread aanmaken
@@ -38,17 +54,7 @@ jobs:
                 "content": "<@&1478774800062091294> 🚀 Nieuwe Pull Request!",
                 "thread_name": "'"$PR_TITLE"'",
                 "allowed_mentions": {"parse": ["roles"]},
-                "embeds": [
-                  {
-                    "title": "'"$PR_TITLE"'",
-                    "url": "'"$PR_URL"'",
-                    "color": 5814783,
-                    "fields": [
-                      {"name": "👤 Auteur", "value": "'"$PR_AUTHOR"'", "inline": true},
-                      {"name": "🌿 Branch", "value": "'"$PR_BRANCH"'", "inline": true}
-                    ]
-                  }
-                ]
+                "embeds": ['"$(make_embed 5814783)"']
               }' \
               "${{ secrets.DISCORD_WEBHOOK }}")
 
@@ -76,7 +82,8 @@ jobs:
               curl -s -H "Content-Type: application/json" \
                 -X POST \
                 -d '{
-                  "content": "✅ PR gemerged: '"$PR_TITLE"'"
+                  "content": "✅ PR gemerged: '"$PR_TITLE"'",
+                  "embeds": ['"$(make_embed 3066993)"']
                 }' \
                 "https://discord.com/api/v10/channels/$THREAD_ID/messages"
             else
@@ -84,7 +91,8 @@ jobs:
               curl -s -H "Content-Type: application/json" \
                 -X POST \
                 -d '{
-                  "content": "❌ PR gesloten zonder merge: '"$PR_TITLE"'"
+                  "content": "❌ PR gesloten zonder merge: '"$PR_TITLE"'",
+                  "embeds": ['"$(make_embed 15158332)"']
                 }' \
                 "https://discord.com/api/v10/channels/$THREAD_ID/messages"
             fi
