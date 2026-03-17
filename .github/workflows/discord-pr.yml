@@ -1,4 +1,5 @@
 name: Discord Forum PR Notifier
+
 on:
   pull_request:
     types: [opened, synchronize, closed]
@@ -14,34 +15,41 @@ jobs:
           if [ ! -f "$THREAD_FILE" ]; then
             echo "{}" > "$THREAD_FILE"
           fi
+
           PR_NUM=${{ github.event.pull_request.number }}
           PR_TITLE="${{ github.event.pull_request.title }}"
           PR_URL="${{ github.event.pull_request.html_url }}"
           PR_AUTHOR="${{ github.event.pull_request.user.login }}"
           PR_BRANCH="${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}"
           ACTION="${{ github.event.action }}"
-          # Embed generator
+
           make_embed() {
             COLOR=$1
             echo "{\"title\":\"$PR_TITLE\",\"url\":\"$PR_URL\",\"color\":$COLOR,\"fields\":[{\"name\":\"👤 Auteur\",\"value\":\"$PR_AUTHOR\",\"inline\":true},{\"name\":\"🌿 Branch\",\"value\":\"$PR_BRANCH\",\"inline\":true}]}"
           }
-          if [ "$ACTION" == "opened" ]; then
-            # Nieuwe thread
+
+          # Haal thread_id op uit map, kan null zijn
+          THREAD_ID=$(jq -r --arg pr "$PR_NUM" '.[$pr] // empty' $THREAD_FILE)
+
+          if [ "$ACTION" == "opened" ] || [ -z "$THREAD_ID" ]; then
+            # Nieuwe thread aanmaken
             RESPONSE=$(curl -s -H "Content-Type: application/json" \
               -X POST \
               -d "{\"content\":\"<@&1478774800062091294> 🚀 Nieuwe Pull Request!\",\"thread_name\":\"$PR_TITLE\",\"allowed_mentions\":{\"parse\":[\"roles\"]},\"embeds\":[$(make_embed 5814783)]}" \
               "${{ secrets.DISCORD_WEBHOOK }}")
+
             THREAD_ID=$(echo $RESPONSE | jq -r '.id')
             jq --arg pr "$PR_NUM" --arg tid "$THREAD_ID" '. + {($pr): $tid}' $THREAD_FILE > tmp.$$.json && mv tmp.$$.json $THREAD_FILE
+
           elif [ "$ACTION" == "synchronize" ]; then
             # Update bestaande thread
-            THREAD_ID=$(jq -r --arg pr "$PR_NUM" '.[$pr]' $THREAD_FILE)
             curl -s -H "Content-Type: application/json" \
               -X POST \
               -d "{\"content\":\"🔄 Nieuwe commits toegevoegd aan PR: $PR_TITLE\",\"thread_id\":$THREAD_ID,\"allowed_mentions\":{\"parse\":[\"roles\"]}}" \
               "${{ secrets.DISCORD_WEBHOOK }}"
+
           elif [ "$ACTION" == "closed" ]; then
-            THREAD_ID=$(jq -r --arg pr "$PR_NUM" '.[$pr]' $THREAD_FILE)
+            # PR gesloten
             if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
               curl -s -H "Content-Type: application/json" \
                 -X POST \
