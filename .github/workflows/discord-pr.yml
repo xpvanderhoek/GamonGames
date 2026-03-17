@@ -10,18 +10,12 @@ jobs:
     steps:
       - name: Send PR notification to Discord
         run: |
-          # Thread ID mapping file
           THREAD_FILE=".github/pr_thread_map.json"
-
-          # Zorg dat de folder bestaat
           mkdir -p $(dirname "$THREAD_FILE")
-
-          # Maak file aan als die nog niet bestaat
           if [ ! -f "$THREAD_FILE" ]; then
             echo "{}" > "$THREAD_FILE"
           fi
 
-          # Huidige PR info
           PR_NUM=${{ github.event.pull_request.number }}
           PR_TITLE="${{ github.event.pull_request.title }}"
           PR_URL="${{ github.event.pull_request.html_url }}"
@@ -29,71 +23,26 @@ jobs:
           PR_BRANCH="${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}"
           ACTION="${{ github.event.action }}"
 
-          # Functie om embed te maken
+          # Function to generate JSON embed inline (no EOF)
           make_embed() {
-            local COLOR=$1
-            cat <<EOF
-            {
-              "title": "$PR_TITLE",
-              "url": "$PR_URL",
-              "color": $COLOR,
-              "fields": [
-                {"name": "👤 Auteur", "value": "$PR_AUTHOR", "inline": true},
-                {"name": "🌿 Branch", "value": "$PR_BRANCH", "inline": true}
-              ]
-            }
-EOF
+            COLOR=$1
+            echo "{\"title\":\"$PR_TITLE\",\"url\":\"$PR_URL\",\"color\":$COLOR,\"fields\":[{\"name\":\"👤 Auteur\",\"value\":\"$PR_AUTHOR\",\"inline\":true},{\"name\":\"🌿 Branch\",\"value\":\"$PR_BRANCH\",\"inline\":true}]}"
           }
 
-          # Check action type
           if [ "$ACTION" == "opened" ]; then
-            # Nieuwe thread aanmaken
-            RESPONSE=$(curl -s -H "Content-Type: application/json" \
-              -X POST \
-              -d '{
-                "content": "<@&1478774800062091294> 🚀 Nieuwe Pull Request!",
-                "thread_name": "'"$PR_TITLE"'",
-                "allowed_mentions": {"parse": ["roles"]},
-                "embeds": ['"$(make_embed 5814783)"']
-              }' \
-              "${{ secrets.DISCORD_WEBHOOK }}")
-
-            # Haal thread_id uit de response
+            RESPONSE=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"content\":\"<@&1478774800062091294> 🚀 Nieuwe Pull Request!\",\"thread_name\":\"$PR_TITLE\",\"allowed_mentions\":{\"parse\":[\"roles\"]},\"embeds\":[$(make_embed 5814783)]}" "${{ secrets.DISCORD_WEBHOOK }}")
             THREAD_ID=$(echo $RESPONSE | jq -r '.id')
-
-            # Opslaan in map
             jq --arg pr "$PR_NUM" --arg tid "$THREAD_ID" '. + {($pr): $tid}' $THREAD_FILE > tmp.$$.json && mv tmp.$$.json $THREAD_FILE
 
           elif [ "$ACTION" == "synchronize" ]; then
-            # Nieuwe commits → update thread
             THREAD_ID=$(jq -r --arg pr "$PR_NUM" '.[$pr]' $THREAD_FILE)
-            curl -s -H "Content-Type: application/json" \
-              -X POST \
-              -d '{
-                "content": "🔄 Nieuwe commits toegevoegd aan PR: '"$PR_TITLE"'"
-              }' \
-              "https://discord.com/api/v10/channels/$THREAD_ID/messages"
+            curl -s -H "Content-Type: application/json" -X POST -d "{\"content\":\"🔄 Nieuwe commits toegevoegd aan PR: $PR_TITLE\"}" "https://discord.com/api/v10/channels/$THREAD_ID/messages"
 
           elif [ "$ACTION" == "closed" ]; then
-            # PR gesloten
             THREAD_ID=$(jq -r --arg pr "$PR_NUM" '.[$pr]' $THREAD_FILE)
             if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
-              # PR gemerged → groen bericht
-              curl -s -H "Content-Type: application/json" \
-                -X POST \
-                -d '{
-                  "content": "✅ PR gemerged: '"$PR_TITLE"'",
-                  "embeds": ['"$(make_embed 3066993)"']
-                }' \
-                "https://discord.com/api/v10/channels/$THREAD_ID/messages"
+              curl -s -H "Content-Type: application/json" -X POST -d "{\"content\":\"✅ PR gemerged: $PR_TITLE\",\"embeds\":[$(make_embed 3066993)]}" "https://discord.com/api/v10/channels/$THREAD_ID/messages"
             else
-              # PR gesloten zonder merge → rood bericht
-              curl -s -H "Content-Type: application/json" \
-                -X POST \
-                -d '{
-                  "content": "❌ PR gesloten zonder merge: '"$PR_TITLE"'",
-                  "embeds": ['"$(make_embed 15158332)"']
-                }' \
-                "https://discord.com/api/v10/channels/$THREAD_ID/messages"
+              curl -s -H "Content-Type: application/json" -X POST -d "{\"content\":\"❌ PR gesloten zonder merge: $PR_TITLE\",\"embeds\":[$(make_embed 15158332)]}" "https://discord.com/api/v10/channels/$THREAD_ID/messages"
             fi
           fi
