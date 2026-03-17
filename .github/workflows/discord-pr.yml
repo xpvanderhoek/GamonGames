@@ -1,5 +1,4 @@
 name: Discord Forum PR Notifier
-
 on:
   pull_request:
     types: [opened, synchronize, closed]
