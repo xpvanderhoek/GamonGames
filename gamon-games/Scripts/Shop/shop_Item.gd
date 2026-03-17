@@ -8,53 +8,40 @@ extends Node2D
 var player_in_range: bool = false
 
 func _ready():
-	if item_data:
-		sprite.texture = item_data.texture
-		price_label.text = str(item_data.cost)
+	_on_item_data_assigned()
 	prompt.hide()
 
-func _unhandled_input(event):
-	if event.is_action_pressed("interact") and player_in_range:
-		buy_item()
-
-# Assigns the item data to the item and updates the visuals 
 func _on_item_data_assigned():
 	if item_data:
 		sprite.texture = item_data.texture
 		price_label.text = str(item_data.cost)
 		
+		# Auto-scale sprite to fit shop slot
 		var max_size = 64.0
 		if sprite.texture:
 			var tex_size = sprite.texture.get_size()
 			var scale_factor = min(max_size / tex_size.x, max_size / tex_size.y, 1.0)
 			sprite.scale = Vector2(scale_factor, scale_factor)
 
+func _unhandled_input(event):
+	if event.is_action_pressed("interact") and player_in_range:
+		buy_item()
+
 func buy_item():
-	if CurrenciesManager.gold >= item_data.cost:
-		CurrenciesManager.gold -= item_data.cost
-		apply_buff()
+	if RunData.coins >= item_data.cost:
+		RunData.coins -= item_data.cost
+		RunData.add_buff(item_data)
+		
 		queue_free() 
 	else:
-		print("You're broke, adventurer.")
-
-
-## For now its just an example, but we'll need to connect it correctly to jakubs character stats 
-func apply_buff():
-	var player = get_tree().get_first_node_in_group("Player")
-	##if player:
-		##match item_data.buff_type:
-			##"Health": player.max_health += item_data.buff_value
-			##"Damage": player.attack_power += item_data.buff_value
-			##"Speed": player.move_speed += item_data.buff_value
+		print("Insufficient Coins. You broke af!")
 
 func _on_buy_zone_body_entered(body: Node2D) -> void:
-	print("Player entered buy zone")
 	if body.is_in_group("Player"):
 		player_in_range = true
 		if item_data:
-			prompt.text = "Press 'E' to buy " + item_data.item_name
-		prompt.show()
-
+			prompt.text = "[E] Buy " + item_data.item_name + " (" + str(item_data.cost) + ")"
+			prompt.show()
 
 func _on_buy_zone_body_exited(body: Node2D) -> void:
 	if body.is_in_group("Player"):

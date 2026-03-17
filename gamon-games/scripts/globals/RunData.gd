@@ -13,7 +13,7 @@ var current_level : int = 1:
 		current_level = value
 		level_changed.emit(value)
 
-var coins : int = 0:
+var coins : int = 100: # Placeholder starting amount, adjust as needed
 	set(value):
 		coins = value
 		coins_changed.emit(value)
@@ -29,7 +29,8 @@ var current_corruption : int = 0:
 		corruption_changed.emit(value)
 
 var entered_rooms : Array = []
-var buffs : Array = []
+var buffs : Array = [] # This stores permanent run upgrades
+var consumables : Array = [] # This stores single-use items
 
 # Values are placeholders for now, needs testing
 var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000]
@@ -46,12 +47,30 @@ func new_run():
 	coins = 100
 	entered_rooms.clear()
 	buffs.clear()
+	consumables.clear() 
 	current_hp = 100
 	current_corruption = 10
 	current_exp = 0
 
-func add_buff(buff : Resource):
-	buffs.append(buff)
+# Updated to handle logic for Consumables vs Upgrades
+func add_buff(item : Resource):
+	if item is ItemData:
+		if item.category == "Consumable":
+			consumables.append(item)
+		else:
+			buffs.append(item)
+	else:
+		buffs.append(item)
+
+# Gets total flat damage bonus for a specific limb from items
+func get_limb_damage_bonus(limb_name: String) -> float:
+	var total = 0.0
+	for item in buffs:
+		if item is ItemData:
+			if item.target_limb == limb_name or item.target_limb == "All":
+				if item.buff_type == "Damage":
+					total += item.buff_value
+	return total
 
 func add_exp(amount: int) -> void:
 	current_exp += amount

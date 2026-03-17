@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://Scenes/character.tscn" id="3_6tcdb"]
 [ext_resource type="Resource" uid="uid://caulqofce0110" path="res://Assets/ShopItems/Resources/AttackSword.tres" id="3_onhuh"]
 [ext_resource type="Resource" uid="uid://d1dojos006lm1" path="res://Assets/ShopItems/Resources/HealthPot.tres" id="4_027ho"]
-[ext_resource type="Texture2D" uid="uid://dbyiyb5buyvxl" path="res://Assets/TempShopkeeper.webp" id="4_fh4ca"]
+[ext_resource type="Texture2D" uid="uid://ug6vp7pjxyjk" path="res://Assets/TempShopkeeper.webp" id="4_fh4ca"]
 [ext_resource type="Resource" uid="uid://dqy5xntgugb6f" path="res://Assets/ShopItems/Resources/SpeedBoots.tres" id="5_ps3lo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rto70"]
@@ -54,7 +54,6 @@ tile_map_data = PackedByteArray("AAABAA0AAQACAAAAAAACAA4AAQACAAAAAAACAA8AAQACAAA
 tile_set = SubResource("TileSet_dffns")
 
 [node name="Character" parent="." unique_id=48660198 instance=ExtResource("3_6tcdb")]
-z_index = 1
 position = Vector2(344, 369)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1449665472]
