@@ -12,13 +12,16 @@ jobs:
         run: |
           # Thread ID mapping file
           THREAD_FILE=".github/pr_thread_map.json"
-          
+
+          # Zorg dat de folder bestaat
+          mkdir -p $(dirname "$THREAD_FILE")
+
           # Maak file aan als die nog niet bestaat
           if [ ! -f "$THREAD_FILE" ]; then
-            echo "{}" > $THREAD_FILE
+            echo "{}" > "$THREAD_FILE"
           fi
 
-          # Huidige PR nummer
+          # Huidige PR info
           PR_NUM=${{ github.event.pull_request.number }}
           PR_TITLE="${{ github.event.pull_request.title }}"
           PR_URL="${{ github.event.pull_request.html_url }}"
