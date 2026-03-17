@@ -153,7 +153,7 @@ func _perform_enemy_turn() -> void:
 			continue
 
 		await get_tree().create_timer(0.35).timeout
-		_play_attack_feedback(attack, attacking_enemy)
+		await _play_attack_feedback(attack, attacking_enemy)
 		var damage: int = max(0, attack.damage)
 		_apply_player_damage(damage)
 
@@ -182,6 +182,8 @@ func _apply_player_damage(amount: int) -> void:
 		current_state = CombatState.COMBAT_OVER
 
 func _play_attack_feedback(attack: CombatAttack, attacking_enemy: CombatEntity) -> void:
+	var vfx_lifetime_timer: SceneTreeTimer = null
+
 	if attack.sfx != null:
 		var player := AudioStreamPlayer.new()
 		player.stream = attack.sfx
@@ -195,7 +197,11 @@ func _play_attack_feedback(attack: CombatAttack, attacking_enemy: CombatEntity) 
 		ui_layer.add_child(vfx)
 		vfx.global_position = _resolve_vfx_position(attack, attacking_enemy) + attack.vfx_offset
 		if attack.vfx_lifetime > 0.0:
-			get_tree().create_timer(attack.vfx_lifetime).timeout.connect(vfx.queue_free)
+			vfx_lifetime_timer = get_tree().create_timer(attack.vfx_lifetime)
+			vfx_lifetime_timer.timeout.connect(vfx.queue_free)
+
+	if vfx_lifetime_timer != null:
+		await vfx_lifetime_timer.timeout
 
 func _resolve_vfx_position(attack: CombatAttack, attacking_enemy: CombatEntity) -> Vector2:
 	match attack.vfx_anchor:
