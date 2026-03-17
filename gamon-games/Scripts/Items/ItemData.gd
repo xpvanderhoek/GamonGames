@@ -4,7 +4,7 @@ class_name ItemData
 @export_group("Identity")
 @export var item_name: String = "Mysterious Relic"
 @export_multiline var lore: String = ""
-@export_enum("Tier I", "Tier II", "Tier III", "Consumable") var category: String = "Tier I"
+@export_enum("Tier I", "Tier II", "Tier III") var category: String = "Tier I"
 @export var texture: Texture2D
 
 @export_group("Economy")

@@ -30,7 +30,7 @@ var current_corruption : int = 0:
 
 var entered_rooms : Array = []
 var buffs : Array = [] 
-var consumables : Array = [] 
+var consumables : Array = [null, null, null, null, null]
 
 # Values are placeholders for now, needs testing
 var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000]
@@ -47,19 +47,36 @@ func new_run():
 	coins = 100
 	entered_rooms.clear()
 	buffs.clear()
-	consumables.clear() 
+	consumables = [null, null, null, null, null]
 	current_hp = 100
 	current_corruption = 10
 	current_exp = 0
 
-func add_buff(item : Resource):
-	if item is ItemData:
-		if item.category == "Consumable":
-			consumables.append(item)
-		else:
-			buffs.append(item)
-	else:
+func add_item(item: Resource) -> bool:
+	if not (item is ItemData):
 		buffs.append(item)
+		return true
+
+	var item_data := item as ItemData
+	if _is_consumable_item(item_data):
+		var slot_index := _find_empty_consumable_slot()
+		if slot_index == -1:
+			print("Consumable slots are full.")
+			return false
+		consumables[slot_index] = item_data
+		print("Picked up consumable '%s' in slot %d" % [item_data.item_name, slot_index + 1])
+		return true
+	buffs.append(item_data)
+	return true
+
+func _is_consumable_item(item: ItemData) -> bool:
+	return item is ConsumableItemData
+
+func _find_empty_consumable_slot() -> int:
+	for i in range(consumables.size()):
+		if consumables[i] == null:
+			return i
+	return -1
 
 # Gets total flat damage bonus for a specific limb from items
 func _normalize_limb_identifier(name: String) -> String:
