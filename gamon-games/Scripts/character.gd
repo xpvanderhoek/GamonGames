@@ -46,9 +46,9 @@ func process_movement() -> void:
 		velocity = Vector2.ZERO
 
 var last_frame := -1
-
+var on_ground_frames = [5, 15]
 func check_footstep_frame(frame: int):
-		if frame == 5 or frame == 15:
+		if frame in on_ground_frames:
 			play_footstep()
 			
 func handle_footsteps():

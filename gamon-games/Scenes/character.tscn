@@ -1004,7 +1004,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Walk_right",
-"speed": 20.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1089,7 +1089,8 @@ footstep_sounds = Array[AudioStream]([ExtResource("2_hgna0"), ExtResource("3_s7t
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1682484264]
 sprite_frames = SubResource("SpriteFrames_082uh")
-animation = &"Walk_down"
+animation = &"Walk_right"
+frame_progress = 0.6024841
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=190510597]
 position = Vector2(0, 38)
