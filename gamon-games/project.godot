@@ -22,6 +22,7 @@ NavigationManager="*uid://dnruitng07ior"
 CurrenciesManager="*uid://bwnahuxrnyn6o"
 AnimationManager="*uid://car5ovidbulrc"
 RunData="*uid://v8oh1j7mo6xp"
+PlayerStats="*uid://blaa2ldagphrn"
 
 [display]
 
