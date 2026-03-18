@@ -16,7 +16,6 @@ enum CombatAction {
 @export var enemy_container_path: NodePath = NodePath("UI/HBoxContainer")
 @export var ui_player: NodePath = NodePath("UI/Player")
 @export var player_max_health: int = 100
-@export var exp_reward: int = 50
 
 var current_state: CombatState = CombatState.PLAYER_TURN
 var selected_action: CombatAction = CombatAction.ATTACK
@@ -265,4 +264,3 @@ func _set_enemy_targeting_enabled(enabled: bool) -> void:
 
 func _update_player_health_label() -> void:
 	lbl_player_health.text = "HP: %d/%d" % [player_health, player_max_health]
-	RunData.add_exp(exp_reward)
