@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://me0fjyq5kdp0" path="res://Assets/Placeholders/Back - Walking.png" id="5_a5ess"]
 [ext_resource type="Texture2D" uid="uid://bp8cof261h7av" path="res://Assets/Placeholders/Back - Idle.png" id="5_l1rcp"]
 [ext_resource type="PackedScene" uid="uid://cji2ni1ok5fvc" path="res://Scenes/UI/corruption_bar.tscn" id="10_kq7hj"]
+[ext_resource type="AudioStream" uid="uid://c1nwd87pvjfbi" path="res://Assets/Sounds/Background.wav" id="11_7iw6i"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_082uh"]
 atlas = ExtResource("2_wbia7")
@@ -1113,5 +1114,10 @@ offset_left = -170.0
 offset_top = -430.0
 offset_right = 184.0
 offset_bottom = -376.0
+
+[node name="Background music" type="AudioStreamPlayer2D" parent="." unique_id=521327996]
+stream = ExtResource("11_7iw6i")
+volume_db = -12.772
+autoplay = true
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
