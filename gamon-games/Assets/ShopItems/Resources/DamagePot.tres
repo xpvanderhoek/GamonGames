@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ConsumableItemData" format=3 uid="uid://c02wtos437v0g"]
+
+[ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://Scripts/Items/ConsumableItemData.gd" id="1_rgj4g"]
+[ext_resource type="Texture2D" uid="uid://ccemkc50sl1x1" path="res://Assets/ShopItems/Textures/Damagepotion.png" id="2_t3k4q"]
+
+[resource]
+script = ExtResource("1_rgj4g")
+item_name = "cool pot"
+lore = "some deep lore"
+category = "Tier II"
+texture = ExtResource("2_t3k4q")
+cost = 20
+target_limb = "All"
+buff_value = 20.0
+status_to_apply = "Poison"
+metadata/_custom_type_script = "uid://dgqq6xftokity"

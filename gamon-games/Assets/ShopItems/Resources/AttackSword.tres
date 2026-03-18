@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://caulqofce0110"]
+[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://caulqofce0110"]
 
-[ext_resource type="Script" uid="uid://b7cli1nhudpxr" path="res://Scripts/Items/ItemData.gd" id="1_1qnha"]
-[ext_resource type="Texture2D" uid="uid://frntnrbfw6ih" path="res://Assets/ShopItems/Textures/TempSword.png" id="2_pdxds"]
+[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://Scripts/Items/BuffItemData.gd" id="1_1qnha"]
+[ext_resource type="Texture2D" uid="uid://5sh8rx0wqalw" path="res://Assets/ShopItems/Textures/TempSword.png" id="2_pdxds"]
 
 [resource]
 script = ExtResource("1_1qnha")
 item_name = "Sword of Trinity"
-cost = 40
+lore = "idk think of something you donkey"
+category = "Tier II"
 texture = ExtResource("2_pdxds")
-buff_type = "Damage"
-metadata/_custom_type_script = "uid://b7cli1nhudpxr"
+cost = 40
+status_to_apply = "Vulnerable"
+metadata/_custom_type_script = "uid://diaiuhssm05e5"

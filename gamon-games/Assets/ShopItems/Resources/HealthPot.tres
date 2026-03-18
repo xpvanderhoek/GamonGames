@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://d1dojos006lm1"]
+[gd_resource type="Resource" script_class="ConsumableItemData" format=3 uid="uid://d1dojos006lm1"]
 
-[ext_resource type="Script" uid="uid://b7cli1nhudpxr" path="res://Scripts/Items/ItemData.gd" id="1_gpiak"]
-[ext_resource type="Texture2D" uid="uid://d3npeqvtxugxp" path="res://Assets/ShopItems/Textures/TempPot.png" id="2_uygrq"]
+[ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://Scripts/Items/ConsumableItemData.gd" id="1_gpiak"]
+[ext_resource type="Texture2D" uid="uid://dxgr24vgajdtf" path="res://Assets/ShopItems/Textures/TempPot.png" id="2_uygrq"]
 
 [resource]
 script = ExtResource("1_gpiak")
 item_name = "The pot of the living"
 texture = ExtResource("2_uygrq")
-metadata/_custom_type_script = "uid://b7cli1nhudpxr"
+metadata/_custom_type_script = "uid://dgqq6xftokity"
