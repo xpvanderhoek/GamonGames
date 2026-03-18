@@ -874,7 +874,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Walk_down",
-"speed": 20.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -939,7 +939,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Walk_left",
-"speed": 20.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1069,7 +1069,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Walk_up",
-"speed": 20.0
+"speed": 30.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wbia7"]
@@ -1089,8 +1089,8 @@ footstep_sounds = Array[AudioStream]([ExtResource("2_hgna0"), ExtResource("3_s7t
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1682484264]
 sprite_frames = SubResource("SpriteFrames_082uh")
-animation = &"Walk_right"
-frame_progress = 0.6024841
+animation = &"Walk_up"
+frame_progress = 0.32768568
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=190510597]
 position = Vector2(0, 38)
