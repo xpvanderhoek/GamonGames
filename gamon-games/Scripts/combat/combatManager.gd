@@ -9,130 +9,180 @@ enum CombatState {
 
 enum CombatAction {
 	ATTACK,
-	FIREBALL,
 }
 
 @export var player_base_damage: int = 25
-@export var fireball_damage: int = 40
-@export var fireball_radius: float = 100.0
 @export var enemy_entity_path: NodePath
+@export var enemy_container_path: NodePath = NodePath("UI/HBoxContainer")
+@export var ui_player: NodePath = NodePath("UI/Player")
 @export var player_max_health: int = 100
 @export var exp_reward: int = 50
 
 var current_state: CombatState = CombatState.PLAYER_TURN
 var selected_action: CombatAction = CombatAction.ATTACK
-var enemy_entity: CombatEntity
+var enemy_entities: Array[CombatEntity] = []
 var player_health: int = player_max_health
+var _queued_encounter_scenes: Array[PackedScene] = []
+var _enemy_targeting_enabled: bool = false
+var _attack_selected: bool = false
 
-@onready var btn_attack: Button = $UI/Panel/Actions/BtnAttack
-@onready var btn_fireball: Button = $UI/Panel/Actions/BtnFireball
+signal enemy_targeting_changed(enabled: bool)
+
+@onready var btn_attack: Button = $UI/Panel/BtnAttack
 @onready var lbl_player_health: Label = $UI/Panel/PlayerHealth
 @onready var ui_layer: CanvasLayer = $UI
 
 func _ready() -> void:
-	enemy_entity = get_node(enemy_entity_path) as CombatEntity
-	enemy_entity.entity_died.connect(_on_enemy_died)
-	enemy_entity.highlighted_limb_clicked.connect(_on_enemy_limb_clicked)
+	if _queued_encounter_scenes.size() > 0:
+		_spawn_encounter_enemies(_queued_encounter_scenes)
+
+	_refresh_enemy_entities()
 	_update_player_health_label()
 
 	btn_attack.pressed.connect(select_attack)
-	btn_fireball.pressed.connect(select_fireball)
-	select_attack()
+	_begin_player_turn()
 
-func _process(_delta: float) -> void:
-	if current_state != CombatState.PLAYER_TURN or not enemy_entity.is_alive:
+func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
+	_queued_encounter_scenes = encounter_enemy_scenes.duplicate()
+	if not is_node_ready():
 		return
-	if selected_action == CombatAction.FIREBALL:
-		enemy_entity.update_aoe_preview(get_global_mouse_position(), fireball_radius)
-		queue_redraw()
 
-func _draw() -> void:
-	if selected_action != CombatAction.FIREBALL or current_state != CombatState.PLAYER_TURN:
-		return
-	var mouse_local := get_local_mouse_position()
-	
-	draw_circle(mouse_local, fireball_radius, Color(1.0, 0.35, 0.0, 0.12))
-	draw_arc(mouse_local, fireball_radius, 0.0, TAU, 64, Color(1.0, 0.5, 0.0, 0.85), 2.0)
+	_spawn_encounter_enemies(_queued_encounter_scenes)
+	_refresh_enemy_entities()
+	_begin_player_turn()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if current_state != CombatState.PLAYER_TURN or not enemy_entity.is_alive:
+func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> void:
+	var enemy_container := get_node_or_null(enemy_container_path)
+	if enemy_container == null:
 		return
-	if selected_action == CombatAction.FIREBALL:
-		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			var aoe_limbs := enemy_entity.get_aoe_limbs(get_global_mouse_position(), fireball_radius)
-			if aoe_limbs.size() > 0:
-				enemy_entity.take_damage_all(aoe_limbs, fireball_damage)
-				get_viewport().set_input_as_handled()
-				_end_player_turn()
+
+	for child in enemy_container.get_children():
+		if child is CombatEntity:
+			child.queue_free()
+
+	for enemy_scene in encounter_enemy_scenes:
+		if enemy_scene == null:
+			continue
+		var enemy_instance := enemy_scene.instantiate()
+		enemy_container.add_child(enemy_instance)
+
+func _refresh_enemy_entities() -> void:
+	enemy_entities.clear()
+
+	var enemy_container := get_node_or_null(enemy_container_path)
+	if enemy_container != null:
+		for child in enemy_container.get_children():
+			if child is CombatEntity:
+				_register_enemy_entity(child as CombatEntity)
+
+	if enemy_entities.is_empty() and has_node(enemy_entity_path):
+		var fallback_enemy := get_node(enemy_entity_path)
+		if fallback_enemy is CombatEntity:
+			_register_enemy_entity(fallback_enemy as CombatEntity)
+
+func _register_enemy_entity(entity: CombatEntity) -> void:
+	enemy_entities.append(entity)
+
+	var on_died := Callable(self, "_on_enemy_died")
+	if not entity.entity_died.is_connected(on_died):
+		entity.entity_died.connect(on_died)
+
+	var on_limb_clicked := Callable(self, "_on_enemy_limb_clicked").bind(entity)
+	if not entity.highlighted_limb_clicked.is_connected(on_limb_clicked):
+		entity.highlighted_limb_clicked.connect(on_limb_clicked)
+
+	var on_targeting_changed := Callable(entity, "set_targeting_enabled")
+	if not enemy_targeting_changed.is_connected(on_targeting_changed):
+		enemy_targeting_changed.connect(on_targeting_changed)
+	entity.set_targeting_enabled(_enemy_targeting_enabled)
+
+func _get_alive_enemies() -> Array[CombatEntity]:
+	var alive_enemies: Array[CombatEntity] = []
+	for entity in enemy_entities:
+		if is_instance_valid(entity) and entity.is_alive:
+			alive_enemies.append(entity)
+	return alive_enemies
+
+func _has_alive_enemies() -> bool:
+	return _get_alive_enemies().size() > 0
 
 func select_attack() -> void:
+	if current_state != CombatState.PLAYER_TURN or not _has_alive_enemies():
+		return
 	selected_action = CombatAction.ATTACK
-	enemy_entity.block_click_emit = false
-	enemy_entity.single_highlight_enabled = true
-	enemy_entity.clear_aoe_preview()
-	queue_redraw()
-	_update_button_states()
-
-func select_fireball() -> void:
-	selected_action = CombatAction.FIREBALL
-	enemy_entity.block_click_emit = true
-	enemy_entity.single_highlight_enabled = false
+	_attack_selected = true
+	_set_enemy_targeting_enabled(true)
 	_update_button_states()
 
 func _update_button_states() -> void:
-	if selected_action == CombatAction.ATTACK:
+	btn_attack.disabled = current_state != CombatState.PLAYER_TURN or _attack_selected or not _has_alive_enemies()
+	if selected_action == CombatAction.ATTACK and not btn_attack.disabled:
 		btn_attack.grab_focus()
-		btn_fireball.release_focus()
-	elif selected_action == CombatAction.FIREBALL:
-		btn_attack.release_focus()
-		btn_fireball.grab_focus()
 
-func _on_enemy_limb_clicked(limb: CombatLimb) -> void:
+func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> void:
 	if current_state != CombatState.PLAYER_TURN:
 		return
-	if not enemy_entity.is_alive:
+	if not _attack_selected:
 		return
-	enemy_entity.take_damage(limb, player_base_damage)
+	if source_enemy == null or not is_instance_valid(source_enemy) or not source_enemy.is_alive:
+		return
+	source_enemy.take_damage(limb, player_base_damage)
+	_attack_selected = false
+	source_enemy.clear_current_highlight()
 	_end_player_turn()
 
 func _on_enemy_died(_entity: CombatEntity) -> void:
+	if _has_alive_enemies():
+		return
+
 	current_state = CombatState.COMBAT_OVER
+	_update_button_states()
+	NavigationManager.go_back_to_current_room()
 
 func _end_player_turn() -> void:
-	if not enemy_entity.is_alive:
+	if not _has_alive_enemies():
 		return
+	_set_enemy_targeting_enabled(false)
 	current_state = CombatState.ENEMY_TURN
+	_update_button_states()
 	call_deferred("_perform_enemy_turn")
 
 func _perform_enemy_turn() -> void:
 	if current_state != CombatState.ENEMY_TURN:
 		return
-	if not enemy_entity.is_alive:
-		return
 
-	var attack_limb := _choose_enemy_attack_limb()
-	if attack_limb == null:
-		_end_enemy_turn()
-		return
-	var attack := attack_limb.choose_attack()
-	if attack == null:
+	var alive_enemies := _get_alive_enemies()
+	if alive_enemies.is_empty():
 		_end_enemy_turn()
 		return
 
-	await get_tree().create_timer(0.35).timeout
-	_play_attack_feedback(attack, enemy_entity.global_position)
-	var damage: int = max(0, attack.damage)
-	_apply_player_damage(damage)
+	for attacking_enemy in alive_enemies:
+		if not is_instance_valid(attacking_enemy) or not attacking_enemy.is_alive:
+			continue
+
+		var attack_limb := _choose_enemy_attack_limb(attacking_enemy)
+		if attack_limb == null:
+			continue
+
+		var attack := attack_limb.choose_attack()
+		if attack == null:
+			continue
+
+		await get_tree().create_timer(0.35).timeout
+		await _play_attack_feedback(attack, attacking_enemy)
+		var damage: int = max(0, attack.damage)
+		_apply_player_damage(damage)
+
 	_end_enemy_turn()
 
-func _choose_enemy_attack_limb() -> CombatLimb:
+func _choose_enemy_attack_limb(source_enemy: CombatEntity) -> CombatLimb:
 	var candidates: Array[CombatLimb] = []
-	for limb in enemy_entity.limbs:
+	for limb in source_enemy.limbs:
 		if limb.is_destroyed:
 			continue
 		if limb.has_attack_options():
 			candidates.append(limb)
-	if candidates.size() == 0:
+	if candidates.is_empty():
 		return null
 	return candidates[randi() % candidates.size()]
 
@@ -142,12 +192,25 @@ func _apply_player_damage(amount: int) -> void:
 	print("Player took %d damage — HP: %d/%d" % [amount, player_health, player_max_health])
 	if amount <= 0:
 		return
+	_flash_player_hit()
 	player_health = max(0, player_health - amount)
 	_update_player_health_label()
 	if player_health <= 0:
 		current_state = CombatState.COMBAT_OVER
 
-func _play_attack_feedback(attack: CombatAttack, world_pos: Vector2) -> void:
+func _flash_player_hit() -> void:
+	var player_anchor := get_node_or_null(ui_player)
+	if not (player_anchor is CanvasItem):
+		return
+
+	var player_canvas := player_anchor as CanvasItem
+	var tween := create_tween()
+	tween.tween_property(player_canvas, "modulate", Color(1.7, 1.7, 1.7, 1.0), 0.18)
+	tween.tween_property(player_canvas, "modulate", Color(1, 1, 1, 1), 0.22)
+
+func _play_attack_feedback(attack: CombatAttack, attacking_enemy: CombatEntity) -> void:
+	var vfx_lifetime_timer: SceneTreeTimer = null
+
 	if attack.sfx != null:
 		var player := AudioStreamPlayer.new()
 		player.stream = attack.sfx
@@ -159,23 +222,46 @@ func _play_attack_feedback(attack: CombatAttack, world_pos: Vector2) -> void:
 	if attack.vfx_scene != null:
 		var vfx := attack.vfx_scene.instantiate()
 		ui_layer.add_child(vfx)
-		vfx.global_position += attack.vfx_offset
+		vfx.global_position = _resolve_vfx_position(attack, attacking_enemy) + attack.vfx_offset
 		if attack.vfx_lifetime > 0.0:
-			get_tree().create_timer(attack.vfx_lifetime).timeout.connect(vfx.queue_free)
+			vfx_lifetime_timer = get_tree().create_timer(attack.vfx_lifetime)
+			vfx_lifetime_timer.timeout.connect(vfx.queue_free)
 
-func _find_first_node2d(root: Node) -> Node2D:
-	if root is Node2D:
-		return root as Node2D
-	for child in root.get_children():
-		var found := _find_first_node2d(child)
-		if found != null:
-			return found
-	return null
+	if vfx_lifetime_timer != null:
+		await vfx_lifetime_timer.timeout
+
+func _resolve_vfx_position(attack: CombatAttack, attacking_enemy: CombatEntity) -> Vector2:
+	match attack.vfx_anchor:
+		CombatAttack.VfxAnchor.PLAYER:
+			var player_anchor := get_node_or_null(ui_player)
+			if player_anchor is CanvasItem:
+				return (player_anchor as CanvasItem).global_position
+		CombatAttack.VfxAnchor.ENEMY:
+			if attacking_enemy is CombatEntity:
+				return (attacking_enemy as CombatEntity).global_position
+
+	return get_viewport_rect().size * 0.5
 
 func _end_enemy_turn() -> void:
 	if current_state == CombatState.COMBAT_OVER:
 		return
+	if not _has_alive_enemies():
+		current_state = CombatState.COMBAT_OVER
+		_update_button_states()
+		return
 	current_state = CombatState.PLAYER_TURN
+	_begin_player_turn()
+
+func _begin_player_turn() -> void:
+	_attack_selected = false
+	_set_enemy_targeting_enabled(false)
+	_update_button_states()
+
+func _set_enemy_targeting_enabled(enabled: bool) -> void:
+	if _enemy_targeting_enabled == enabled:
+		return
+	_enemy_targeting_enabled = enabled
+	enemy_targeting_changed.emit(enabled)
 
 func _update_player_health_label() -> void:
 	lbl_player_health.text = "HP: %d/%d" % [player_health, player_max_health]
