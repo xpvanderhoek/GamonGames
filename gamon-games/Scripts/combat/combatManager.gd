@@ -38,6 +38,7 @@ func _ready() -> void:
 	_refresh_enemy_entities()
 	_update_player_health_label()
 
+	RunData.health_changed.connect(_update_player_health_label)
 	btn_attack.pressed.connect(select_attack)
 	_begin_player_turn()
 
@@ -188,14 +189,13 @@ func _choose_enemy_attack_limb(source_enemy: CombatEntity) -> CombatLimb:
 func _apply_player_damage(amount: int) -> void:
 	if current_state == CombatState.COMBAT_OVER:
 		return
-	print("Player took %d damage — HP: %d/%d" % [amount, player_health, player_max_health])
 	if amount <= 0:
 		return
 	_flash_player_hit()
-	player_health = max(0, player_health - amount)
-	_update_player_health_label()
-	if player_health <= 0:
+	RunData.current_health -= amount 
+	if RunData.current_health <= 0:
 		current_state = CombatState.COMBAT_OVER
+	print("Player took %d damage — HP: %d/%d" % [amount, RunData.current_health, RunData.max_health])
 
 func _flash_player_hit() -> void:
 	var player_anchor := get_node_or_null(ui_player)
@@ -263,4 +263,4 @@ func _set_enemy_targeting_enabled(enabled: bool) -> void:
 	enemy_targeting_changed.emit(enabled)
 
 func _update_player_health_label() -> void:
-	lbl_player_health.text = "HP: %d/%d" % [player_health, player_max_health]
+	lbl_player_health.text = "HP: %d/%d" % [RunData.current_health, RunData.max_health]
