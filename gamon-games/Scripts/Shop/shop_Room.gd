@@ -17,7 +17,7 @@ func _ready():
 func spawn_shop_inventory():
 	var item_pool := _load_shop_items()
 	if item_pool.is_empty():
-		push_warning("You didn't put any ItemData resources in %s" % resources_folder)
+		push_warning("You donkey, You didn't put any resources in %s" % resources_folder)
 		return
 
 	var luck_value := _get_total_luck()
@@ -81,4 +81,4 @@ func _get_weight_for_item(item: ItemData, luck_value: float) -> float:
 			return 1.0
 
 func _get_total_luck() -> float:
-	return RunData.luck
+	return PlayerStats.stats.luck
