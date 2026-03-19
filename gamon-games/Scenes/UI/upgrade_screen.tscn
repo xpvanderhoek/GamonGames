@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://cmbiy651gr7cl"]
+
+[ext_resource type="Script" uid="uid://b1ajif5p0uay3" path="res://Scripts/globals/UpgradeScreen.gd" id="1_p3ub5"]
+
+[node name="UpgradeScreen" type="Control" unique_id=889918390]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_p3ub5")
+
+[node name="Panel" type="Panel" parent="." unique_id=1651158887]
+layout_mode = 0
+offset_right = 473.0
+offset_bottom = 148.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=719753232]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer" unique_id=629971118]
+layout_mode = 2
+text = "Choose Upgrade"
+
+[node name="Button1" type="Button" parent="Panel/VBoxContainer/Label" unique_id=1957405194]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 31.0
+offset_right = 66.0
+offset_bottom = 62.0
+
+[node name="Button2" type="Button" parent="Panel/VBoxContainer/Label" unique_id=1676905118]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 68.0
+offset_right = 82.0
+offset_bottom = 99.0
+
+[node name="Button3" type="Button" parent="Panel/VBoxContainer/Label" unique_id=2033030968]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 109.0
+offset_right = 64.0
+offset_bottom = 140.0
+
+[connection signal="pressed" from="Panel/VBoxContainer/Label/Button1" to="." method="_on_health_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Label/Button2" to="." method="_on_damage_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Label/Button3" to="." method="_on_speed_pressed"]
