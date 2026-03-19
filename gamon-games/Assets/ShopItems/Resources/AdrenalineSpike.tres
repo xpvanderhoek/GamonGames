@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ConsumableItemData" format=3 uid="uid://dgiw7l5ypjb0v"]
+
+[ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://Scripts/Items/ConsumableItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ccemkc50sl1x1" path="res://Assets/ShopItems/Textures/Damagepotion.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_script")
+item_name = "Adrenaline Spike"
+effect = "Grants Haste for 2 turns; -10 HP after effect ends"
+lore = "Borrowing strength from a future that may not come."
+category = "Tier III"
+texture = ExtResource("2_texture")
+cost = 55
+target_limb = "Self"
+buff_type = "Speed"
