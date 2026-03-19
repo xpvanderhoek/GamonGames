@@ -14,34 +14,33 @@ func _ready():
 	hide()
 	buttons = [button1, button2, button3]
 
-	button1.pressed.connect(_on_button_pressed)
-	button2.pressed.connect(_on_button_pressed)
-	button3.pressed.connect(_on_button_pressed)
+	for button in buttons:
+		button.pressed.connect(_on_button_pressed)
 
 func show_random_options():
 	var all_stats = PlayerStats.stats.keys()
 	all_stats.shuffle()
-	var options = all_stats.slice(0, 3)
+	var max_buttons = all_stats.slice(0, 3) 
 
-	for i in range(3):
-		var btn = buttons[i]
-		var stat_key = options[i]
+	for active_stat in range(3):  
+		var active_button = buttons[active_stat] 
+		var stat_key = max_buttons[active_stat]
 
-		btn.text = "%s (Lv %d)" % [stat_key.capitalize(), PlayerStats.get_upgrade_level(stat_key)]
-		button_stat_map[btn] = stat_key  
+		active_button.text = "%s (Lv %d)" % [stat_key.capitalize(), PlayerStats.get_upgrade_level(stat_key)]
+		button_stat_map[active_button] = stat_key  
 
 	show()
 
 func _on_button_pressed():
-	var btn = get_pressed_button()
-	if btn and btn in button_stat_map:
-		var stat = button_stat_map[btn]
+	var pressed_button = get_pressed_button()  
+	if pressed_button and pressed_button in button_stat_map:
+		var stat = button_stat_map[pressed_button]
 		print("Selected stat:", stat)
 		emit_signal("upgrade_selected", stat)
 		hide()
 
 func get_pressed_button() -> Button:
-	for b in buttons:
-		if b.is_pressed():
-			return b
+	for button in buttons:
+		if button.is_pressed():
+			return button
 	return null
