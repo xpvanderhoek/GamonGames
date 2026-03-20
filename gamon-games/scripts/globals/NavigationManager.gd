@@ -5,6 +5,7 @@ const scene_room2 = "res://scenes/rooms/room_2.tscn"
 const scene_room3 = "res://scenes/rooms/room_3.tscn"
 const scene_room4 = "res://scenes/rooms/room_4.tscn"
 const scene_room5 = "res://scenes/rooms/room_5.tscn"
+const shop_room = "res://scenes/Shop/ShopRoom.tscn"
 var current_room_path: String = scene_room4
 
 @onready var rooms : Array[String] = [scene_room1, scene_room2, scene_room3, scene_room4]

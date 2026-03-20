@@ -58,9 +58,9 @@ func new_run():
 	current_corruption = 10
 	current_exp = 0
 
-func add_item(item: Resource):
+func add_item(item: Resource) -> bool:
 	if not (item is ItemData):
-		return 
+		return false
 
 	var item_data := item as ItemData
 
@@ -68,20 +68,21 @@ func add_item(item: Resource):
 		var slot_index := _find_empty_consumable_slot()
 		if slot_index == -1:
 			print("Consumable slots are full.")
-			return 
+			return true
 		consumables[slot_index] = item_data
 		print("Picked up consumable '%s' in slot %d" % [item_data.item_name, slot_index + 1])
-		return 
+		return true 
 
 	if item_data.buff_type.to_lower() == "hp_max":
 		max_health += int(item_data.buff_value)
 
 	items.append(item_data)
+	return true
 
 func get_stat(buff_type : String) -> float:
 	var total = PlayerStats.stats[buff_type]
 	for item in items:
-		if item.buff_type == buff_type:
+		if item.buff_type.to_lower() == buff_type.to_lower():
 			total += item.buff_value
 	return total
 
