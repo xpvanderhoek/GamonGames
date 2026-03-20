@@ -17,7 +17,6 @@ func _ready() -> void:
 	_on_level_changed(RunData.current_level)
 	_on_exp_changed(RunData.current_exp)
 	
-	load_room(NavigationManager.current_room_path)
 
 func load_room(scene_path: String) -> void:
 	if current_room:
