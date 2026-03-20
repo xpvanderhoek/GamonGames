@@ -2,7 +2,7 @@ extends Node
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh
-	"limb_damage": 20.0,      # Anatomy Mastery
+	"damage": 20,      # Anatomy Mastery
 	"precision": 100.0,       # Steady Hand
 	"gold_gain": 1.0,         # Scavenger's Eye
 	"debuff_resistance": 10.0, # Iron Will
@@ -12,22 +12,22 @@ var stats = {
 
 var upgrade_levels = {
 	"health": 0,
-	"limb_damage": 0,
+	"damage": 0,
 	"precision": 0,
 	"gold_gain": 0,
 	"debuff_resistance": 0,
 	"speed": 0,
-	"defence": 0
+	"defense": 0
 }
 
 var upgrade_costs = {
 	"health": {"min": 100, "max": 1000},
-	"limb_damage": {"min": 500, "max": 2500},
+	"damage": {"min": 500, "max": 2500},
 	"precision": {"min": 150, "max": 1500},
 	"gold_gain": {"min": 400, "max": 2000},
 	"debuff_resistance": {"min": 300, "max": 1500},
 	"speed": {"min": 400, "max": 2000},
-	"defence": {"min": 100, "max": 1000}
+	"defense": {"min": 100, "max": 1000}
 }
 
 func get_stat_value(stat_name: String) -> float:
@@ -58,12 +58,12 @@ func upgrade_stat(stat_name: String) -> bool:
 	
 	var upgrade_config = {
 		"health": {"max": 10, "percent": 5.0},
-		"limb_damage": {"max": 5, "percent": 3.0},
+		"damage": {"max": 5, "percent": 3.0},
 		"precision": {"max": 10, "percent": 2.0},
 		"gold_gain": {"max": 5, "percent": 5.0},
 		"debuff_resistance": {"max": 5, "percent": 5.0},
 		"speed": {"max": 5, "percent": 2.0},
-		"defence": {"max": 10, "percent": 5.0}
+		"defense": {"max": 10, "percent": 5.0}
 	}
 	
 	var config = upgrade_config[stat_name]
@@ -86,12 +86,12 @@ func get_upgrade_level(stat_name: String) -> int:
 func reset_stats() -> void:
 	stats = {
 		"health": 100.0,
-		"limb_damage": 20.0,
+		"damage": 20,
 		"precision": 100.0,
 		"gold_gain": 1.0,
 		"debuff_resistance": 10.0,
-		"speed": 100.0,
-		"defence": 10.0
+		"speed": 300.0,
+		"defense": 10.0
 	}
 	
 	for key in upgrade_levels:

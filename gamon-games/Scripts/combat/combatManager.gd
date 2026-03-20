@@ -126,7 +126,8 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		return
 	if source_enemy == null or not is_instance_valid(source_enemy) or not source_enemy.is_alive:
 		return
-	source_enemy.take_damage(limb, player_base_damage)
+	var damage = RunData.get_stat("damage")
+	source_enemy.take_damage(limb, damage)
 	_attack_selected = false
 	source_enemy.clear_current_highlight()
 	_end_player_turn()

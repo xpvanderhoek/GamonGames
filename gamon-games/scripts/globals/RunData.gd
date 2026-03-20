@@ -79,7 +79,7 @@ func add_item(item: Resource) -> bool:
 	items.append(item_data)
 	return true
 
-func get_stat(buff_type : String) -> float:
+func get_stat(buff_type : String):
 	var total = PlayerStats.stats[buff_type]
 	for item in items:
 		if item.buff_type.to_lower() == buff_type.to_lower():
