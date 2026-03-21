@@ -25,8 +25,8 @@ jobs:
 
       # 4️⃣ Run linter
       - name: Run GDScript Linter
-        run: gdlint ./Scripts/
+        run: gdlint gamon-games/Scripts/
 
       # 5️⃣ Check formatting (faalt PR als code niet goed geformatteerd is)
       - name: Check GDScript Formatting
-        run: gdformat -r ./Scripts/ --check
+        run: gdformat -r gamon-games/Scripts/ --check
