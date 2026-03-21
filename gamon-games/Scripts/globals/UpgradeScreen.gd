@@ -2,10 +2,9 @@ extends Control
 
 signal upgrade_selected(stat)
 
-@onready var panel_vbox = $Panel/VBoxContainer
-@onready var button1: Button = $Panel/VBoxContainer/Label/Button1
-@onready var button2: Button = $Panel/VBoxContainer/Label/Button2
-@onready var button3: Button = $Panel/VBoxContainer/Label/Button3
+@onready var button1: Button = $Panel/HBoxContainer/VBoxContainer2/VBoxContainer/Button1
+@onready var button2: Button = $Panel/HBoxContainer/VBoxContainer2/VBoxContainer/Button2
+@onready var button3: Button = $Panel/HBoxContainer/VBoxContainer2/VBoxContainer/Button3
 
 var buttons: Array = []
 var button_to_stat_map := {} 
