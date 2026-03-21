@@ -1,0 +1,8 @@
+repos:
+  - repo: https://github.com/Scony/godot-gdscript-toolkit
+    rev: 4.2.2
+    hooks:
+      - id: gdlint
+        args: ["gamon-games/Scripts/"]
+      - id: gdformat
+        args: ["-r", "gamon-games/Scripts/"]
