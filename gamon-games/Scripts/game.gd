@@ -102,13 +102,16 @@ func exit_combat(enemy_killed: bool = false) -> void:
 func signal_kill_to_room():
 	var room = room_container.get_tree().get_first_node_in_group("room")
 	room.enemies_kill_count += 1
-	
+
 func _on_player_leveled_up():
-	get_tree().paused = true
-	upgrade_screen.show_random_options()
-	
 	character.set_process_input(false)
 	character.set_physics_process(false)
+	
+	call_deferred("_show_upgrade_screen")
+		
+func _show_upgrade_screen():
+	get_tree().paused = true
+	upgrade_screen.show_random_options()
 	
 func _on_upgrade_selected(stat: String):
 	print("Selected:", stat)
@@ -122,8 +125,7 @@ func _on_upgrade_selected(stat: String):
 	
 func _input(event):
 	if event.is_action_pressed("ui_page_up"):
-		upgrade_screen.show_random_options()
-		get_tree().paused = true
+		_on_player_leveled_up()
 		
 	if event.is_action_pressed("ui_page_down"): 
 		RunData.add_exp(1000)  

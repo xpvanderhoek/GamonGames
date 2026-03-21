@@ -15,7 +15,9 @@ func _ready():
 	hide()
 	buttons = [button1, button2, button3]
 
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	for button in buttons:
+		button.process_mode = Node.PROCESS_MODE_ALWAYS
 		button.pressed.connect(_on_button_pressed)
 
 func show_random_options():
