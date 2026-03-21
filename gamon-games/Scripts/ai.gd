@@ -4,11 +4,7 @@ extends Node2D
 
 signal state_changed(new_state)
 
-enum State {
-	PATROL,
-	ENGAGE,
-	IDLE
-}
+enum State { PATROL, ENGAGE, IDLE }
 
 var current_state: int = State.IDLE
 var enemy: Enemy
@@ -19,8 +15,10 @@ var patrol_target: Vector2 = Vector2.ZERO
 var patrol_moves_left: int = 0
 var disengage_distance: float = 400.0
 
+
 func _ready() -> void:
 	enemy = get_parent() as Enemy
+
 
 func _process(delta: float) -> void:
 	match current_state:
@@ -54,22 +52,26 @@ func _process(delta: float) -> void:
 		_:
 			print("Error: state doesn't exist")
 
+
 func _get_random_patrol_point() -> Vector2:
 	var random_offset := Vector2(randf_range(-150, 150), randf_range(-150, 150))
 	return enemy.global_position + random_offset
 
+
 func set_state(new_state: int):
 	if new_state == current_state:
 		return
-	
+
 	current_state = new_state
 	patrol_target = Vector2.ZERO
 	emit_signal("state_changed", current_state)
+
 
 func _on_player_detection_body_entered(body: Node2D) -> void:
 	if body is Character:
 		set_state(State.ENGAGE)
 		target = body
+
 
 func _on_player_detection_body_exited(body: Node2D) -> void:
 	if body is Character:

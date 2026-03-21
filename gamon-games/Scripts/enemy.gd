@@ -10,6 +10,7 @@ const SPEED = 100.0
 
 var last_direction: Vector2 = Vector2.DOWN
 
+
 func get_encounter_enemies() -> Array[PackedScene]:
 	var valid_enemies: Array[PackedScene] = []
 	for enemy_scene in encounter_enemies:
@@ -18,10 +19,12 @@ func get_encounter_enemies() -> Array[PackedScene]:
 
 	return valid_enemies
 
+
 func _physics_process(delta: float) -> void:
 	delta = min(delta, 0.1)
 	AnimationManager.process_animation(animated_sprite_2d, velocity, last_direction)
 	move_and_slide()
+
 
 func navigate_to(target_position: Vector2) -> void:
 	nav_agent.target_position = target_position
@@ -34,6 +37,7 @@ func navigate_to(target_position: Vector2) -> void:
 	var direction := (next_pos - global_position).normalized()
 	velocity = direction * SPEED
 	last_direction = direction
+
 
 func stop() -> void:
 	velocity = Vector2.ZERO

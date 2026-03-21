@@ -1,16 +1,13 @@
 extends Node2D
 
-var possible_enemy_groups : Array = [
-	["enemy", "enemy", "enemy"],
-	["enemy", "enemy"],
-	["enemy"]
-]
-var enemy_group : Array = []
-var enemies_kill_count : int:
+var possible_enemy_groups: Array = [["enemy", "enemy", "enemy"], ["enemy", "enemy"], ["enemy"]]
+var enemy_group: Array = []
+var enemies_kill_count: int:
 	set(value):
 		enemies_kill_count = value
 		if enemies_kill_count == enemy_group.size():
 			_unlock_all_doors()
+
 
 func _ready() -> void:
 	RunData.new_run()
@@ -19,6 +16,7 @@ func _ready() -> void:
 	enemy_group = possible_enemy_groups[idx]
 	_spawn_enemies()
 	_setup_doors()
+
 
 func _spawn_enemies():
 	var possible_enemy_spawns = $EnemySpawns.get_children().duplicate()
@@ -31,15 +29,17 @@ func _spawn_enemies():
 		enemy.add_to_group("enemy")
 		possible_enemy_spawns.remove_at(random_spawn_index)
 
+
 func _setup_doors():
 	var doors = $Doors.get_children()
 
 	for door in doors:
 		door.designated_room = NavigationManager.get_new_random_room()
 
+
 func _unlock_all_doors():
 	var doors = $Doors.get_children()
-	
+
 	for door in doors:
 		door.locked = false
 		door.lock_image.visible = false

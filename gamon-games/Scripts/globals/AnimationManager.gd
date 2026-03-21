@@ -1,7 +1,9 @@
 extends Node
 
 
-func process_animation(sprite: AnimatedSprite2D, velocity: Vector2, last_direction: Vector2) -> void:
+func process_animation(
+	sprite: AnimatedSprite2D, velocity: Vector2, last_direction: Vector2
+) -> void:
 	if velocity != Vector2.ZERO:
 		play_animation(sprite, "Walk", last_direction)
 	else:

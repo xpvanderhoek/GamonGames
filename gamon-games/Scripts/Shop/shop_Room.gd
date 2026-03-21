@@ -1,9 +1,9 @@
 extends Node2D
 
-@export var item_scene: PackedScene 
+@export var item_scene: PackedScene
 @export_dir var resources_folder: String = "res://Assets/ShopItems/Resources"
 
-# the weights and luck adjustments are placeholders for now, needs testing and tweaking to find good values, 
+# the weights and luck adjustments are placeholders for now, needs testing and tweaking to find good values,
 # but its just the higher the weights the more likely that tier will be chosen, and the higher the luck the more likely higher tiers will be chosen
 const TIER_1_BASE_WEIGHT := 70.0
 const TIER_2_BASE_WEIGHT := 20.0
@@ -11,8 +11,10 @@ const TIER_3_BASE_WEIGHT := 10.0
 
 @onready var spawn_positions = [$Item1, $Item2, $Item3]
 
+
 func _ready():
 	spawn_shop_inventory()
+
 
 func spawn_shop_inventory():
 	var item_pool := _load_shop_items()
@@ -40,12 +42,14 @@ func spawn_shop_inventory():
 		new_item.item_data = selected_item
 		new_item._on_item_data_assigned()
 
+
 func _load_shop_items() -> Array[ItemData]:
 	var items: Array[ItemData] = []
 	var dir = DirAccess.open(resources_folder)
 	for file in dir.get_files():
 		items.append(load("%s/%s" % [resources_folder, file]) as ItemData)
 	return items
+
 
 func _roll_item_from_pool(pool: Array[ItemData], luck_value: float) -> ItemData:
 	if pool.is_empty():
@@ -67,8 +71,9 @@ func _roll_item_from_pool(pool: Array[ItemData], luck_value: float) -> ItemData:
 
 	return pool[pool.size() - 1]
 
+
 func _get_weight_for_item(item: ItemData, luck_value: float) -> float:
-	var luck : Variant= clamp(luck_value, 0.0, 100.0)
+	var luck: Variant = clamp(luck_value, 0.0, 100.0)
 
 	match item.category:
 		"Tier I":
@@ -79,6 +84,7 @@ func _get_weight_for_item(item: ItemData, luck_value: float) -> float:
 			return TIER_3_BASE_WEIGHT + (luck * 0.2)
 		_:
 			return 1.0
+
 
 func _get_total_luck() -> float:
 	return PlayerStats.stats.luck

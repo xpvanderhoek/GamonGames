@@ -12,8 +12,10 @@ class_name MetaStats
 @export var quick_reflexes_lvl: int = 0
 @export var starting_kit_unlocked: bool = false
 
+
 func get_bonus_hp_percent() -> float:
 	return hardened_flesh_lvl * 0.05
+
 
 func get_base_precision_bonus() -> int:
 	return steady_hand_lvl * 2

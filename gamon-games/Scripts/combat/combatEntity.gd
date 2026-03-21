@@ -6,7 +6,7 @@ var is_alive: bool = true
 
 var _hovered_limbs: Array[CombatLimb] = []
 var _highlighted_limb: CombatLimb = null
-var _aoe_highlighted_limbs: Array[CombatLimb] = [] 
+var _aoe_highlighted_limbs: Array[CombatLimb] = []
 
 var block_click_emit: bool = false
 var single_highlight_enabled: bool = true
@@ -17,11 +17,14 @@ signal highlighted_limb_clicked(limb: CombatLimb)
 
 var exp_reward: int = 50
 
+
 func _ready() -> void:
 	_discover_limbs()
 
+
 func _discover_limbs() -> void:
 	_find_limbs_recursive(self)
+
 
 func _find_limbs_recursive(node: Node) -> void:
 	for child in node.get_children():
@@ -31,6 +34,7 @@ func _find_limbs_recursive(node: Node) -> void:
 			child.mouse_entered_limb.connect(_on_limb_mouse_entered.bind(child))
 			child.mouse_exited_limb.connect(_on_limb_mouse_exited.bind(child))
 
+
 func _on_limb_mouse_entered(limb: CombatLimb) -> void:
 	if limb.is_destroyed:
 		return
@@ -38,9 +42,11 @@ func _on_limb_mouse_entered(limb: CombatLimb) -> void:
 		_hovered_limbs.append(limb)
 	_refresh_highlight()
 
+
 func _on_limb_mouse_exited(limb: CombatLimb) -> void:
 	_hovered_limbs.erase(limb)
 	_refresh_highlight()
+
 
 func _refresh_highlight() -> void:
 	if not single_highlight_enabled:
@@ -63,11 +69,13 @@ func _refresh_highlight() -> void:
 	if _highlighted_limb != null:
 		_highlighted_limb.set_highlighted()
 
+
 func clear_current_highlight() -> void:
 	_hovered_limbs.clear()
 	if _highlighted_limb != null:
 		_highlighted_limb.set_unhighlighted()
 		_highlighted_limb = null
+
 
 func set_targeting_enabled(enabled: bool) -> void:
 	block_click_emit = not enabled
@@ -77,6 +85,7 @@ func set_targeting_enabled(enabled: bool) -> void:
 		return
 	_refresh_highlight()
 
+
 func _unhandled_input(event: InputEvent) -> void:
 	if block_click_emit or not is_alive or _highlighted_limb == null:
 		return
@@ -84,9 +93,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		highlighted_limb_clicked.emit(_highlighted_limb)
 		get_viewport().set_input_as_handled()
 
+
 func update_aoe_preview(world_pos: Vector2, radius: float) -> void:
 	var next_aoe := get_aoe_limbs(world_pos, radius)
 	update_aoe_preview_from_list(next_aoe)
+
 
 ## Update the AoE highlight from a pre-computed list of limbs (used by the spell system).
 func update_aoe_preview_from_list(next_aoe) -> void:
@@ -100,10 +111,12 @@ func update_aoe_preview_from_list(next_aoe) -> void:
 
 	_aoe_highlighted_limbs = next_aoe
 
+
 func clear_aoe_preview() -> void:
 	for limb in _aoe_highlighted_limbs:
 		limb.set_aoe_unhighlighted()
 	_aoe_highlighted_limbs.clear()
+
 
 func get_aoe_limbs(world_pos: Vector2, radius: float) -> Array[CombatLimb]:
 	var result: Array[CombatLimb] = []
@@ -112,15 +125,18 @@ func get_aoe_limbs(world_pos: Vector2, radius: float) -> Array[CombatLimb]:
 			result.append(limb)
 	return result
 
+
 func take_damage(limb: CombatLimb, amount: int) -> void:
 	if not is_alive:
 		return
 	limb.take_damage(amount)
 	entity_took_damage.emit(self, limb, amount)
 
+
 func take_damage_all(target_limbs: Array[CombatLimb], amount: int) -> void:
 	for limb in target_limbs:
 		take_damage(limb, amount)
+
 
 func _on_limb_destroyed(limb: CombatLimb) -> void:
 	_hovered_limbs.erase(limb)
@@ -130,6 +146,7 @@ func _on_limb_destroyed(limb: CombatLimb) -> void:
 		_refresh_highlight()
 	if limb.is_vital:
 		die()
+
 
 func die() -> void:
 	if not is_alive:

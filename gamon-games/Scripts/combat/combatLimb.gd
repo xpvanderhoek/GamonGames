@@ -12,8 +12,8 @@ var is_highlighted: bool = false
 var is_aoe_highlighted: bool = false
 
 # Auto generate collision polygon
-var alpha_threshold: float = 0.2 # Threshold for generating collision polygons from texture alpha
-var epsilon: float = 2.0 # Epsilon for polygon simplification when generating collision polygons
+var alpha_threshold: float = 0.2  # Threshold for generating collision polygons from texture alpha
+var epsilon: float = 2.0  # Epsilon for polygon simplification when generating collision polygons
 
 signal limb_damaged(limb: CombatLimb, damage: int, remaining_health: int)
 signal limb_destroyed(limb: CombatLimb)
@@ -21,8 +21,10 @@ signal limb_clicked(limb: CombatLimb)
 signal mouse_entered_limb
 signal mouse_exited_limb
 
+
 func has_attack_options() -> bool:
 	return get_attack_options().size() > 0
+
 
 func get_attack_options() -> Array[CombatAttack]:
 	var options: Array[CombatAttack] = []
@@ -31,6 +33,7 @@ func get_attack_options() -> Array[CombatAttack]:
 			continue
 		options.append(atk)
 	return options
+
 
 func choose_attack() -> CombatAttack:
 	var options := get_attack_options()
@@ -42,15 +45,17 @@ func choose_attack() -> CombatAttack:
 	# add later weighting based on attacks
 	return options[randi() % options.size()]
 
+
 func _ready() -> void:
 	current_health = max_health
 	if visible and texture:
 		_setup_click_area()
 
+
 func _setup_click_area() -> void:
 	# Auto generate collision polygons from the sprite's texture alpha clicking
 	# So we don't have to manually add CollisionPolygon2D nodes for each limb
-	
+
 	# Create an Area2D with collision from the sprite's alpha channel
 	var area := Area2D.new()
 	area.name = "ClickArea"
@@ -81,6 +86,7 @@ func _setup_click_area() -> void:
 	area.mouse_entered.connect(func(): mouse_entered_limb.emit())
 	area.mouse_exited.connect(func(): mouse_exited_limb.emit())
 
+
 func _on_area_input_event(viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if is_destroyed:
 		return
@@ -89,17 +95,20 @@ func _on_area_input_event(viewport: Node, event: InputEvent, _shape_idx: int) ->
 		# Consume the event so limbs behind this one (e.g. torso behind an arm) don't also get clicked
 		viewport.set_input_as_handled()
 
+
 func set_highlighted() -> void:
 	if is_destroyed or is_highlighted:
 		return
 	is_highlighted = true
 	modulate = Color.GREEN
 
+
 func set_unhighlighted() -> void:
 	if not is_highlighted:
 		return
 	is_highlighted = false
 	modulate = Color(1, 0.5, 0) if is_aoe_highlighted else Color.WHITE
+
 
 func set_aoe_highlighted() -> void:
 	if is_destroyed or is_aoe_highlighted:
@@ -108,11 +117,13 @@ func set_aoe_highlighted() -> void:
 	if not is_highlighted:
 		modulate = Color(1, 0.5, 0)
 
+
 func set_aoe_unhighlighted() -> void:
 	if not is_aoe_highlighted:
 		return
 	is_aoe_highlighted = false
 	modulate = Color.GREEN if is_highlighted else Color.WHITE
+
 
 func take_damage(amount: int) -> void:
 	if is_destroyed:
@@ -127,26 +138,31 @@ func take_damage(amount: int) -> void:
 	if current_health <= 0:
 		destroy_limb()
 
+
 func destroy_limb() -> void:
 	is_destroyed = true
 	visible = false
 	limb_destroyed.emit(self)
+
 
 func heal(amount: int) -> void:
 	if is_destroyed:
 		return
 	current_health = min(max_health, current_health + amount)
 
+
 func get_health_percent() -> float:
 	if max_health <= 0:
 		return 0.0
 	return float(current_health) / float(max_health)
+
 
 func _flash_hit() -> void:
 	var tween := create_tween()
 	tween.tween_property(self, "modulate", Color(1.7, 1.7, 1.7, 1.0), 0.22)
 	tween.tween_interval(0.08)
 	tween.tween_callback(_sync_modulate_from_state)
+
 
 func _sync_modulate_from_state() -> void:
 	if is_destroyed:
