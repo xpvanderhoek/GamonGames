@@ -73,14 +73,12 @@ jobs:
           git push https://xpvanderhoek:${{ secrets.GH_PAT }}@github.com/xpvanderhoek/GamonGames.git "$TAG"
           
       - name: Zip build
-        run: |
-          cd gamon-games/build
-          zip -r game-${{ github.run_number }}.zip .
-    
+        run: zip -r gamon-games/build/game.zip gamon-games/build/*
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: gamon-games/build/game.zip
           tag_name: v1.0.${{ github.run_number }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
