@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BuffItemData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Assets/ShopItems/Textures/TempSword.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_script")
+item_name = "Gilded Dice"
+effect = "+15 Luck during this run"
+lore = "The outcome was never in doubt, only the path."
+category = "Tier I"
+texture = ExtResource("2_texture")
+cost = 40
+target_limb = "None"
+buff_type = "Luck"
+buff_value = 15.0
