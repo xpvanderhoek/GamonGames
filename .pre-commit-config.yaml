@@ -3,6 +3,11 @@ repos:
     rev: 4.2.2
     hooks:
       - id: gdlint
+        files: \.gd$
         args: ["gamon-games/Scripts/"]
+        additional_dependencies: ["setuptools"]
+
       - id: gdformat
+        files: \.gd$
         args: ["-r", "gamon-games/Scripts/"]
+        additional_dependencies: ["setuptools"]
