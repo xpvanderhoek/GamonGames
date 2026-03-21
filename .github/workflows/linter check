@@ -2,13 +2,25 @@ name: Static checks
 
 on:
   pull_request:
-    branches: [ "main" ]
+    types: [opened, synchronize, reopened]
 
 jobs:
-  static-checks:
+  lint:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - uses: Scony/godot-gdscript-toolkit@master
-      - run: gdformat --check source/
-      - run: gdlint source/
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install GDScript Toolkit
+        run: pip install "gdtoolkit==4.*"
+
+      - name: Run Linter
+        run: gdlint ./Scripts/
+
+      - name: Check Formatting
+        run: gdformat -r ./Scripts/ --check
