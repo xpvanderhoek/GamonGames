@@ -1,5 +1,6 @@
-name: Static checks
+name: Lint & Format GDScript
 
+# Trigger bij PR aanmaak en updates
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -9,18 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout de code
       - uses: actions/checkout@v4
 
-      - name: Install Python
+      # 2️⃣ Setup Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
+      # 3️⃣ Install GDScript Toolkit (linter + formatter)
       - name: Install GDScript Toolkit
         run: pip install "gdtoolkit==4.*"
 
-      - name: Run Linter
+      # 4️⃣ Run linter
+      - name: Run GDScript Linter
         run: gdlint ./Scripts/
 
-      - name: Check Formatting
+      # 5️⃣ Check formatting (faalt PR als code niet goed geformatteerd is)
+      - name: Check GDScript Formatting
         run: gdformat -r ./Scripts/ --check
