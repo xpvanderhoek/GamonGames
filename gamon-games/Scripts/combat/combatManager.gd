@@ -291,7 +291,6 @@ func _set_enemy_targeting_enabled(enabled: bool) -> void:
 
 func _update_player_health_label() -> void:
 	lbl_player_health.text = "HP: %d/%d" % [player_health, player_max_health]
-	RunData.add_exp(exp_reward)
 
 func _refresh_turns_order_ui(current_enemy_actor: CombatEntity = null) -> void:
 	if turns_order_container == null:
