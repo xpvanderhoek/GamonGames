@@ -1,6 +1,8 @@
 class_name CombatManager
 extends Node2D
 
+const TURN_ORDER_ENTRY_SCENE := preload("res://Scenes/combat/TurnOrderEntry.tscn")
+
 enum CombatState { 
 	PLAYER_TURN,
 	ENEMY_TURN,
@@ -33,10 +35,11 @@ var current_round: int = 1
 
 signal enemy_targeting_changed(enabled: bool)
 
-@onready var btn_attack: Button = $UI/Panel/BtnAttack
-@onready var lbl_player_health: Label = $UI/Panel/PlayerHealth
+@onready var btn_attack: Button = $UI/BtnAttack
+@onready var lbl_player_health: Label = $UI/PlayerHealth
+@onready var lbl_turns_order: Label = $UI/TurnsOrderInfo
 @onready var ui_layer: CanvasLayer = $UI
-@onready var turns_order_container: VBoxContainer = get_node_or_null(turns_order_path) as VBoxContainer
+@onready var turns_order_container: VBoxContainer = $UI/TurnsOrder
 
 func _ready() -> void:
 	if _queued_encounter_scenes.size() > 0:
@@ -80,7 +83,7 @@ func _refresh_enemy_entities() -> void:
 	var enemy_container := get_node_or_null(enemy_container_path)
 	if enemy_container != null:
 		for child in enemy_container.get_children():
-			if child is CombatEntity:
+			if child is CombatEntity and not child.is_queued_for_deletion():
 				_register_enemy_entity(child as CombatEntity)
 
 	if enemy_entities.is_empty() and has_node(enemy_entity_path):
@@ -107,7 +110,7 @@ func _register_enemy_entity(entity: CombatEntity) -> void:
 func _get_alive_enemies() -> Array[CombatEntity]:
 	var alive_enemies: Array[CombatEntity] = []
 	for entity in enemy_entities:
-		if is_instance_valid(entity) and entity.is_alive:
+		if is_instance_valid(entity) and not entity.is_queued_for_deletion() and entity.is_alive:
 			alive_enemies.append(entity)
 	return alive_enemies
 
@@ -305,31 +308,23 @@ func _refresh_turns_order_ui(current_enemy_actor: CombatEntity = null) -> void:
 		preview_active_enemy = alive_enemies[0]
 
 	if preview_state == CombatState.COMBAT_OVER:
-		var combat_over_label := Label.new()
-		combat_over_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		combat_over_label.text = "Combat\nOver"
-		turns_order_container.add_child(combat_over_label)
 		return
 
 	var remaining_enemies := _build_remaining_turn_entities(preview_state, alive_enemies, preview_active_enemy)
 	if preview_state == CombatState.ENEMY_TURN and remaining_enemies.is_empty():
 		return
 
-	var round_header := Label.new()
-	round_header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	round_header.text = "%d\nRound" % current_round
-	turns_order_container.add_child(round_header)
+	lbl_turns_order.text = "%d" % current_round
 
 	if preview_state == CombatState.PLAYER_TURN:
-		turns_order_container.add_child(_create_turn_icon_entry(_get_player_turn_icon(), "Player", true))
+		turns_order_container.add_child(_create_turn_icon_entry(_get_player_turn_icon(), "Player"))
 
 	for i in range(remaining_enemies.size()):
 		var enemy := remaining_enemies[i]
 		turns_order_container.add_child(
 			_create_turn_icon_entry(
 				_get_enemy_turn_icon(enemy),
-				_format_turn_name(enemy),
-				preview_state == CombatState.ENEMY_TURN and i == 0
+				_format_turn_name(enemy)
 			)
 		)
 
@@ -351,15 +346,10 @@ func _build_remaining_turn_entities(state: CombatState, alive_enemies: Array[Com
 
 	return turn_entities
 
-func _create_turn_icon_entry(icon: Texture2D, tooltip: String, is_current: bool) -> TextureRect:
-	var icon_rect := TextureRect.new()
-	icon_rect.custom_minimum_size = Vector2(56, 56)
+func _create_turn_icon_entry(icon: Texture2D, tooltip: String) -> TextureRect:
+	var icon_rect := TURN_ORDER_ENTRY_SCENE.instantiate() as TextureRect
 	icon_rect.texture = icon
-	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	icon_rect.tooltip_text = tooltip
-	icon_rect.modulate = Color(1.2, 1.2, 1.2, 1.0) if is_current else Color(1, 1, 1, 0.85)
 	return icon_rect
 
 func _get_enemy_turn_icon(entity: CombatEntity) -> Texture2D:

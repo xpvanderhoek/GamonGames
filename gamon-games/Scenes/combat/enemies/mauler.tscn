@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://cx56l181uikvl" path="res://Assets/Placeholders/enemies/mauler_head.png" id="4_8djhq"]
 [ext_resource type="Texture2D" uid="uid://b7snvwb1c036s" path="res://Assets/Placeholders/enemies/mauler_legR.png" id="5_ktid0"]
 [ext_resource type="Script" uid="uid://bsud4alvvvjht" path="res://Scripts/combat/combatAttack.gd" id="5_l2lrl"]
-[ext_resource type="AudioStream" uid="uid://bxgmnbtuj1b3g" path="res://Assets/Placeholders/Sounds/dog.wav" id="5_y2fao"]
 [ext_resource type="PackedScene" uid="uid://mefrqehh2onn" path="res://Scenes/combat/vfx/test.tscn" id="6_1lpsr"]
 [ext_resource type="Texture2D" uid="uid://76aw0l04f38v" path="res://Assets/Placeholders/enemies/mauler_armL.png" id="6_34xek"]
 [ext_resource type="Texture2D" uid="uid://hha5upbr4b3g" path="res://Assets/Placeholders/enemies/mauler_armR.png" id="7_lqs23"]
@@ -16,8 +15,8 @@
 script = ExtResource("5_l2lrl")
 damage = 5
 weight = 100.0
-sfx = ExtResource("5_y2fao")
 vfx_scene = ExtResource("6_1lpsr")
+vfx_lifetime = 1.0
 metadata/_custom_type_script = "uid://bsud4alvvvjht"
 
 [node name="mauler" type="Control" unique_id=1680014499]

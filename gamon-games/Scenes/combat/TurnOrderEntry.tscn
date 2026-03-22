@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dlfs1r4c7m14f"]
+
+[node name="TurnOrderEntry" type="TextureRect" unique_id=1580723366]
+texture_filter = 1
+custom_minimum_size = Vector2(56, 56)
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
