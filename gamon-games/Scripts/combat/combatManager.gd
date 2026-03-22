@@ -22,7 +22,6 @@ enum CombatAction {
 @export var turns_order_row_height: float = 24.0
 @export var turns_order_min_visible_rows: int = 8
 @export var player_max_health: int = 100
-@export var exp_reward: int = 50
 
 var current_state: CombatState = CombatState.PLAYER_TURN
 var selected_action: CombatAction = CombatAction.ATTACK

@@ -17,6 +17,8 @@ signal entity_died(entity: CombatEntity)
 signal entity_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int)
 signal highlighted_limb_clicked(limb: CombatLimb)
 
+var exp_reward: int = 50
+
 func _ready() -> void:
 	_discover_limbs()
 
@@ -144,3 +146,4 @@ func die() -> void:
 		if not limb.is_destroyed:
 			limb.destroy_limb()
 	entity_died.emit(self)
+	RunData.add_exp(exp_reward)

@@ -51,20 +51,18 @@ jobs:
   promote-to-prod:
     needs: build-non-prod
     runs-on: ubuntu-latest
-    environment: Production  # approval knop hier
+    environment: Production
+    if: github.event_name == 'workflow_dispatch'  # alleen bij handmatige trigger
   
     steps:
-      # 1️⃣ Checkout repo (om git te hebben)
       - uses: actions/checkout@v4
   
-      # 2️⃣ Download artefact van Non-Prod
       - name: Download build from Non-Prod
         uses: actions/download-artifact@v4
         with:
           name: non-prod-build
           path: gamon-games/build/
   
-      # 3️⃣ Git-tag en push in root
       - name: Push Git tag
         run: |
           git config --global user.email "actions@github.com"
@@ -73,9 +71,7 @@ jobs:
           git tag -a "$TAG" -m "Non-Prod → Prod release"
           echo "Pushing tag $TAG..."
           git push https://xpvanderhoek:${{ secrets.GH_PAT }}@github.com/xpvanderhoek/GamonGames.git "$TAG"
-          
   
-      # 4️⃣ Upload Windows build naar Release
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:

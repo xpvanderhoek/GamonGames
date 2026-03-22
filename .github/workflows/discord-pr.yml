@@ -1,0 +1,36 @@
+name: Discord Forum PR Notifier
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send PR notification to Discord
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_BRANCH="${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}"
+
+          curl -s -H "Content-Type: application/json" \
+            -X POST \
+            -d "{
+              \"content\": \"🚀 Nieuwe Pull Request! $PR_TITLE <@&1478774800062091294>\",
+              \"thread_name\": \"$PR_TITLE\",
+              \"allowed_mentions\": {\"parse\": [\"roles\"]},
+              \"embeds\": [
+                {
+                  \"title\": \"$PR_TITLE\",
+                  \"url\": \"$PR_URL\",
+                  \"color\": 5814783,
+                  \"fields\": [
+                    {\"name\": \"👤 Maker\", \"value\": \"$PR_AUTHOR\", \"inline\": true},
+                    {\"name\": \"🌿 Branch\", \"value\": \"$PR_BRANCH\", \"inline\": true}
+                  ]
+                }
+              ]
+            }" \
+            "${{ secrets.DISCORD_WEBHOOK }}"
