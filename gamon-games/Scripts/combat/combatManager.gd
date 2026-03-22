@@ -1,7 +1,7 @@
 class_name CombatManager
 extends Node2D
 
-const TURN_ORDER_ENTRY_SCENE := preload("res://Scenes/combat/TurnOrderEntry.tscn")
+const TURN_ORDER_ENTRY_SCENE := preload("res://Scenes/combat/ui/TurnOrderEntry.tscn")
 
 enum CombatState { 
 	PLAYER_TURN,
