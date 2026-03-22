@@ -1,6 +1,8 @@
 class_name CombatEntity
 extends Node
 
+@export var turn_order_icon: Texture2D
+
 var limbs: Array[CombatLimb] = []
 var is_alive: bool = true
 
