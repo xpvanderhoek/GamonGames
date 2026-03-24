@@ -24,7 +24,7 @@ func _ready() -> void:
 	
 	upgrade_screen.upgrade_selected.connect(_on_upgrade_selected)
 	
-	load_room(NavigationManager.current_room_path)
+	load_room(NavigationManager.get_new_random_room())
 
 func load_room(scene_path: String) -> void:
 	if current_room:
