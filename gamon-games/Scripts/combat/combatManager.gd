@@ -141,7 +141,7 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		return
 
 	if limb.roll_hit():
-    var damage = RunData.get_stat("damage")
+		var damage = RunData.get_stat("damage")
 		source_enemy.take_damage(limb, damage)
 	else:
 		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(limb.hit_chance_percent, 0.1)])
@@ -290,7 +290,7 @@ func _set_enemy_targeting_enabled(enabled: bool) -> void:
 	enemy_targeting_changed.emit(enabled)
 
 func _update_player_health_label() -> void:
-  lbl_player_health.text = "HP: %d/%d" % [RunData.current_health, RunData.max_health]
+	lbl_player_health.text = "HP: %d/%d" % [RunData.current_health, RunData.max_health]
 
 func _refresh_turns_order_ui(current_enemy_actor: CombatEntity = null) -> void:
 	if turns_order_container == null:
