@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://6mklxmfdvwie" path="res://scripts/Shop/GoldLabel.gd" id="3_wrm1d"]
 [ext_resource type="PackedScene" uid="uid://cmbiy651gr7cl" path="res://Scenes/UI/upgrade_screen.tscn" id="4_3dryh"]
 
-
 [node name="Game" type="Node2D" unique_id=1771036447]
 process_mode = 3
 position = Vector2(-1, 1)
@@ -39,5 +38,7 @@ layout_mode = 2
 layout_mode = 2
 script = ExtResource("3_wrm1d")
 
+[node name="HealthLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=904635776]
+layout_mode = 2
 [node name="StartRunMenu" parent="CanvasLayer" unique_id=329919636 instance=ExtResource("2_lbhrr")]
 [node name="UpgradeScreen" parent="CanvasLayer" unique_id=889918390 instance=ExtResource("4_3dryh")]
