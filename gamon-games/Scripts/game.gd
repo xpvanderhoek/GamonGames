@@ -5,11 +5,13 @@ extends Node2D
 @onready var level_label: Label = $CanvasLayer/VBoxContainer/LevelLabel
 @onready var exp_label: Label = $CanvasLayer/VBoxContainer/ExpLabel
 @onready var health_label : Label = $CanvasLayer/VBoxContainer/HealthLabel
+@onready var upgrade_screen = $CanvasLayer/UpgradeScreen
 
 
 var current_room: Node = null
 var combat_node: Node = null
 var _combat_enemy: Node = null
+var last_level: int = 1
 
 func _ready() -> void:
 	RunData.level_changed.connect(_on_level_changed)
@@ -19,6 +21,8 @@ func _ready() -> void:
 	_on_level_changed(RunData.current_level)
 	_on_exp_changed(RunData.current_exp)
 	_on_health_changed()
+	
+	upgrade_screen.upgrade_selected.connect(_on_upgrade_selected)
 	
 	load_room(NavigationManager.current_room_path)
 
@@ -44,6 +48,11 @@ func change_room(scene_path: String) -> void:
 
 func _on_level_changed(new_level: int) -> void:
 	level_label.text = "Current level: " + str(new_level)
+
+	if new_level > last_level:
+		_on_player_leveled_up()
+
+	last_level = new_level
 
 func _on_exp_changed(new_exp: int) -> void:
 	exp_label.text = "Current exp: " + str(new_exp)
@@ -99,3 +108,30 @@ func exit_combat(enemy_killed: bool = false) -> void:
 func signal_kill_to_room():
 	var room = room_container.get_tree().get_first_node_in_group("room")
 	room.enemies_kill_count += 1
+
+func _on_player_leveled_up():
+	character.set_process_input(false)
+	character.set_physics_process(false)
+	
+	call_deferred("_show_upgrade_screen")
+		
+func _show_upgrade_screen():
+	get_tree().paused = true
+	upgrade_screen.show_random_options()
+	
+func _on_upgrade_selected(stat: String):
+	print("Selected:", stat)
+	PlayerStats.upgrade_stat(stat)
+
+	upgrade_screen.hide()
+	get_tree().paused = false
+	
+	character.set_process_input(true)
+	character.set_physics_process(true)
+	
+func _input(event):
+	if event.is_action_pressed("ui_page_up"):
+		_on_player_leveled_up()
+		
+	if event.is_action_pressed("ui_page_down"): 
+		RunData.add_exp(1000)  

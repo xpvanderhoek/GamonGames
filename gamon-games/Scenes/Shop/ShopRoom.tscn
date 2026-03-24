@@ -1,14 +1,10 @@
 [gd_scene format=4 uid="uid://drtwv8icvu7hw"]
 
-[ext_resource type="Script" uid="uid://mweq4ng0gdhd" path="res://scripts/Shop/shop_Room.gd" id="1_2g6x2"]
-[ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
-[ext_resource type="Script" uid="uid://b7cli1nhudpxr" path="res://scripts/Items/ItemData.gd" id="2_27i5q"]
-[ext_resource type="Texture2D" uid="uid://bwnhvweqx5eom" path="res://Assets/Placeholders/bettersheet.png" id="2_cougk"]
-[ext_resource type="Resource" uid="uid://caulqofce0110" path="res://assets/ShopItems/Resources/AttackSword.tres" id="3_onhuh"]
-[ext_resource type="Resource" uid="uid://d1dojos006lm1" path="res://assets/ShopItems/Resources/HealthPot.tres" id="4_027ho"]
-[ext_resource type="Texture2D" uid="uid://dbyiyb5buyvxl" path="res://Assets/TempShopkeeper.webp" id="4_fh4ca"]
-[ext_resource type="Resource" uid="uid://dqy5xntgugb6f" path="res://assets/ShopItems/Resources/SpeedBoots.tres" id="5_ps3lo"]
-[ext_resource type="Resource" uid="uid://c02wtos437v0g" path="res://assets/ShopItems/Resources/DamagePot.tres" id="6_27i5q"]
+[ext_resource type="Script" uid="uid://mweq4ng0gdhd" path="res://Scripts/Shop/shop_Room.gd" id="1_2g6x2"]
+[ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://Scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
+[ext_resource type="Texture2D" uid="uid://bgghk116s6pl4" path="res://Assets/Placeholders/bettersheet.png" id="2_cougk"]
+[ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://Scenes/character.tscn" id="3_6tcdb"]
+[ext_resource type="Texture2D" uid="uid://ug6vp7pjxyjk" path="res://Assets/TempShopkeeper.webp" id="4_fh4ca"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rto70"]
 texture = ExtResource("2_cougk")
@@ -42,7 +38,6 @@ sources/1 = SubResource("TileSetAtlasSource_rto70")
 
 [node name="ShopRoom" type="Node2D" unique_id=334542622]
 script = ExtResource("1_2g6x2")
-possible_items = Array[ExtResource("2_27i5q")]([ExtResource("3_onhuh"), ExtResource("4_027ho"), ExtResource("5_ps3lo"), ExtResource("6_27i5q")])
 item_scene = ExtResource("2_6tcdb")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=279538672]

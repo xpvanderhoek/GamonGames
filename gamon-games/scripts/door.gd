@@ -15,6 +15,8 @@ func get_prompt_text() -> String:
 	return "Enter"
 
 func interact():
+	if locked:
+		return
 	NavigationManager.go_to_room(designated_room)
 
 func _on_body_entered(body: Node2D) -> void:
