@@ -4,6 +4,7 @@ extends Sprite2D
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
 @export var is_vital: bool = false
+@export_range(0.0, 100.0, 0.1) var hit_chance_percent: float = 100.0
 @export var attacks: Array[CombatAttack] = []
 
 var current_health: int
@@ -20,6 +21,9 @@ signal limb_destroyed(limb: CombatLimb)
 signal limb_clicked(limb: CombatLimb)
 signal mouse_entered_limb
 signal mouse_exited_limb
+
+func roll_hit() -> bool:
+	return randf() * 100.0 < hit_chance_percent
 
 func has_attack_options() -> bool:
 	return get_attack_options().size() > 0
