@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://dibe1nlseg240"]
 
-[ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://Scenes/character.tscn" id="1_ebmjs"]
-[ext_resource type="Script" uid="uid://cpgo21foq05vw" path="res://Scripts/game.gd" id="1_qxrlw"]
-[ext_resource type="Script" uid="uid://6mklxmfdvwie" path="res://Scripts/Shop/GoldLabel.gd" id="3_wrm1d"]
+[ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://scenes/character.tscn" id="1_ebmjs"]
+[ext_resource type="Script" uid="uid://cpgo21foq05vw" path="res://scripts/game.gd" id="1_qxrlw"]
+[ext_resource type="PackedScene" uid="uid://disygs63m04ag" path="res://scenes/start_run.tscn" id="2_lbhrr"]
+[ext_resource type="Script" uid="uid://6mklxmfdvwie" path="res://scripts/Shop/GoldLabel.gd" id="3_wrm1d"]
 [ext_resource type="PackedScene" uid="uid://cmbiy651gr7cl" path="res://Scenes/UI/upgrade_screen.tscn" id="4_3dryh"]
+
 
 [node name="Game" type="Node2D" unique_id=1771036447]
 process_mode = 3
@@ -14,6 +16,7 @@ script = ExtResource("1_qxrlw")
 process_mode = 1
 
 [node name="Character" parent="." unique_id=1981490291 instance=ExtResource("1_ebmjs")]
+process_mode = 1
 position = Vector2(400, 300)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1035846177]
@@ -36,4 +39,5 @@ layout_mode = 2
 layout_mode = 2
 script = ExtResource("3_wrm1d")
 
+[node name="StartRunMenu" parent="CanvasLayer" unique_id=329919636 instance=ExtResource("2_lbhrr")]
 [node name="UpgradeScreen" parent="CanvasLayer" unique_id=889918390 instance=ExtResource("4_3dryh")]

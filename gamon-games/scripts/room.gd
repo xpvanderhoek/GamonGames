@@ -1,3 +1,4 @@
+class_name Room
 extends Node2D
 
 var possible_enemy_groups : Array = [
@@ -13,15 +14,17 @@ var enemies_kill_count : int:
 			_unlock_all_doors()
 
 func _ready() -> void:
-	RunData.new_run()
 	RunData.entered_rooms.append(self.scene_file_path)
 	var idx = RunData.rng.randi_range(0, possible_enemy_groups.size() - 1)
 	enemy_group = possible_enemy_groups[idx]
 	_spawn_enemies()
 	_setup_doors()
+	_unlock_all_doors()
 
 func _spawn_enemies():
 	var possible_enemy_spawns = $EnemySpawns.get_children().duplicate()
+	if possible_enemy_spawns.size() <= 0:
+		return
 	for enemy_id in enemy_group:
 		var enemy = load("res://scenes/%s.tscn" % enemy_id).instantiate()
 		var random_spawn_index = RunData.rng.randi_range(0, possible_enemy_spawns.size() - 1)
