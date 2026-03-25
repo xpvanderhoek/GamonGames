@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bxmn5l71j2q2d"]
 
-[ext_resource type="Texture2D" uid="uid://dj66w8ovjdf2b" path="res://Assets/Placeholders/blade_master.png" id="1_aix1d"]
+[ext_resource type="Texture2D" uid="uid://dj66w8ovjdf2b" path="res://Assets/Placeholders/ui/blade_master.png" id="1_aix1d"]
 
 [node name="Button" type="Button" unique_id=1071932624]
 custom_minimum_size = Vector2(64, 64)

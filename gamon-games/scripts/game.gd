@@ -2,10 +2,10 @@ extends Node2D
 
 @onready var room_container: Node2D = $RoomContainer
 @onready var character: Character = $Character
-@onready var level_label: Label = $CanvasLayer/VBoxContainer/LevelLabel
-@onready var exp_label: Label = $CanvasLayer/VBoxContainer/ExpLabel
-@onready var health_label : Label = $CanvasLayer/VBoxContainer/HealthLabel
-@onready var upgrade_screen = $CanvasLayer/UpgradeScreen
+@onready var level_label: Label = get_node_or_null("CanvasLayer/VBoxContainer/LevelLabel")
+@onready var exp_label: Label = get_node_or_null("CanvasLayer/VBoxContainer/ExpLabel")
+@onready var health_label: Label = get_node_or_null("CanvasLayer/VBoxContainer/HealthLabel")
+@onready var upgrade_screen = get_node_or_null("CanvasLayer/UpgradeScreen")
 
 
 var current_room: Node = null
@@ -22,7 +22,8 @@ func _ready() -> void:
 	_on_exp_changed(RunData.current_exp)
 	_on_health_changed()
 	
-	upgrade_screen.upgrade_selected.connect(_on_upgrade_selected)
+	if upgrade_screen:
+		upgrade_screen.upgrade_selected.connect(_on_upgrade_selected)
 	
 	load_room(NavigationManager.get_new_random_room())
 
@@ -47,7 +48,8 @@ func change_room(scene_path: String) -> void:
 	load_room(scene_path)
 
 func _on_level_changed(new_level: int) -> void:
-	level_label.text = "Current level: " + str(new_level)
+	if level_label:
+		level_label.text = "Current level: " + str(new_level)
 
 	if new_level > last_level:
 		_on_player_leveled_up()
@@ -55,10 +57,12 @@ func _on_level_changed(new_level: int) -> void:
 	last_level = new_level
 
 func _on_exp_changed(new_exp: int) -> void:
-	exp_label.text = "Current exp: " + str(new_exp)
+	if exp_label:
+		exp_label.text = "Current exp: " + str(new_exp)
 
 func _on_health_changed() -> void:
-	health_label.text = str(RunData.current_health) + " HP / " + str(RunData.max_health) + " HP"
+	if health_label:
+		health_label.text = str(RunData.current_health) + " HP / " + str(RunData.max_health) + " HP"
 
 func enter_combat(combat_scene_path: String, enemy: Node = null) -> void:
 	if combat_node:
@@ -66,8 +70,10 @@ func enter_combat(combat_scene_path: String, enemy: Node = null) -> void:
 		combat_node = null
 	
 	# Delete these 2 lines when UI is made
-	level_label.visible = false
-	exp_label.visible = false
+	if level_label:
+		level_label.visible = false
+	if exp_label:
+		exp_label.visible = false
 	
 	_combat_enemy = enemy
 	get_tree().paused = true
@@ -89,8 +95,10 @@ func enter_combat(combat_scene_path: String, enemy: Node = null) -> void:
 func exit_combat(enemy_killed: bool = false) -> void:
 	if combat_node:
 		# Delete these 2 lines when UI is made
-		level_label.visible = true
-		exp_label.visible = true
+		if level_label:
+			level_label.visible = true
+		if exp_label:
+			exp_label.visible = true
 		
 		remove_child(combat_node)
 		combat_node.queue_free()
@@ -117,13 +125,15 @@ func _on_player_leveled_up():
 		
 func _show_upgrade_screen():
 	get_tree().paused = true
-	upgrade_screen.show_random_options()
+	if upgrade_screen:
+		upgrade_screen.show_random_options()
 	
 func _on_upgrade_selected(stat: String):
 	print("Selected:", stat)
 	PlayerStats.upgrade_stat(stat)
 
-	upgrade_screen.hide()
+	if upgrade_screen:
+		upgrade_screen.hide()
 	get_tree().paused = false
 	
 	character.set_process_input(true)
