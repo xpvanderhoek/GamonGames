@@ -3,6 +3,8 @@ extends Node
 var random_seed : int = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
+var spells : Array[SpellData] = []
+
 var max_health : int = 100:
 	set (value):
 		max_health = value
@@ -46,11 +48,16 @@ signal corruption_changed(new_amount)
 signal exp_changed(new_amount)
 signal level_changed(new_amount)
 
+func _ready() -> void:
+	_ensure_default_attack_spell()
+
 func new_run():
 	random_seed = randi()
 	rng.seed = random_seed
 	coins = 100
 	entered_rooms.clear()
+	spells.clear()
+	_ensure_default_attack_spell()
 	items.clear()
 	consumables = [null, null, null, null, null]
 	max_health = PlayerStats.stats["health"]
@@ -114,3 +121,33 @@ func get_level_progress() -> float:
 	var next_requirement = EXP_PER_LEVEL[current_level + 1] if current_level + 1 < EXP_PER_LEVEL.size() else EXP_PER_LEVEL[current_level]
 	var progress = float(current_exp - current_requirement) / float(next_requirement - current_requirement)
 	return clamp(progress, 0.0, 1.0)
+
+func add_spell(spell: Resource) -> bool:
+	if not (spell is SpellData):
+		return false
+	_ensure_default_attack_spell()
+
+	var spell_data := spell as SpellData
+	for existing_spell in spells:
+		if existing_spell.spell_id == spell_data.spell_id and not existing_spell.spell_id.is_empty():
+			return false
+	spells.append(spell_data)
+	return true
+
+func _ensure_default_attack_spell() -> void:
+	if spells.is_empty():
+		spells.append(_create_default_attack_spell())
+		return
+
+	for spell in spells:
+		if spell != null and spell.spell_id == "attack":
+			return
+
+	spells.insert(0, _create_default_attack_spell())
+
+func _create_default_attack_spell() -> SpellData:
+	var spell := SpellData.new()
+	spell.spell_id = "attack"
+	spell.spell_name = "Attack"
+	spell.attack_power = 0
+	return spell

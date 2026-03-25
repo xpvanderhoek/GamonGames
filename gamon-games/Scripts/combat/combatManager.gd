@@ -2,6 +2,7 @@ class_name CombatManager
 extends Node2D
 
 const TURN_ORDER_ENTRY_SCENE := preload("res://Scenes/combat/ui/TurnOrderEntry.tscn")
+const SPELL_BUTTON_SCENE := preload("res://Scenes/combat/ui/SpellButton.tscn")
 
 enum CombatState { 
 	PLAYER_TURN,
@@ -31,10 +32,14 @@ var _queued_encounter_scenes: Array[PackedScene] = []
 var _enemy_targeting_enabled: bool = false
 var _attack_selected: bool = false
 var current_round: int = 1
+var selected_spell: SpellData = null
+var _spell_buttons: Array[Button] = []
+var _button_spells: Dictionary = {}
 
 signal enemy_targeting_changed(enabled: bool)
 
-@onready var btn_attack: Button = $UI/BtnAttack
+@onready var btn_attack: Button = $UI/SpellsPanel/BtnAttack
+@onready var spells_panel: HBoxContainer = $UI/SpellsPanel
 @onready var lbl_player_health: Label = $UI/PlayerHealth
 @onready var lbl_turns_order: Label = $UI/TurnsOrderInfo
 @onready var ui_layer: CanvasLayer = $UI
@@ -47,9 +52,9 @@ func _ready() -> void:
 	current_round = 1
 	_refresh_enemy_entities()
 	_update_player_health_label()
+	_rebuild_spells_panel()
 
 	RunData.health_changed.connect(_update_player_health_label)
-	btn_attack.pressed.connect(select_attack)
 	_begin_player_turn()
 
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
@@ -118,15 +123,63 @@ func _has_alive_enemies() -> bool:
 	return _get_alive_enemies().size() > 0
 
 func select_attack() -> void:
+	_select_spell(null)
+
+func _select_spell(spell: SpellData) -> void:
 	if current_state != CombatState.PLAYER_TURN or not _has_alive_enemies():
 		return
+	selected_spell = spell
 	selected_action = CombatAction.ATTACK
 	_attack_selected = true
 	_set_enemy_targeting_enabled(true)
 	_update_button_states()
 
+func _rebuild_spells_panel() -> void:
+	for child in spells_panel.get_children():
+		if child != btn_attack:
+			child.queue_free()
+
+	_spell_buttons.clear()
+	_button_spells.clear()
+
+	_configure_spell_button(btn_attack, null)
+	_spell_buttons.append(btn_attack)
+
+	for spell in RunData.spells:
+		if spell == null:
+			continue
+		if spell.spell_id == "attack":
+			_configure_spell_button(btn_attack, spell)
+			_button_spells[btn_attack] = spell
+			continue
+
+		var spell_button := SPELL_BUTTON_SCENE.instantiate() as Button
+		spell_button.name = "BtnSpell_%s" % (spell.spell_id if not spell.spell_id.is_empty() else str(_spell_buttons.size()))
+		spells_panel.add_child(spell_button)
+		_configure_spell_button(spell_button, spell)
+		_spell_buttons.append(spell_button)
+		_button_spells[spell_button] = spell
+
+func _configure_spell_button(button: Button, spell: SpellData) -> void:
+	button.text = spell.spell_name if spell != null and not spell.spell_name.is_empty() else "Attack"
+	button.tooltip_text = button.text
+	if spell != null and spell.icon != null:
+		button.icon = spell.icon
+
+	var on_pressed := Callable(self, "_on_spell_button_pressed").bind(button)
+	if not button.pressed.is_connected(on_pressed):
+		button.pressed.connect(on_pressed)
+
+func _on_spell_button_pressed(button: Button) -> void:
+	var spell := _button_spells.get(button, null) as SpellData
+	_select_spell(spell)
+
 func _update_button_states() -> void:
-	btn_attack.disabled = current_state != CombatState.PLAYER_TURN or _attack_selected or not _has_alive_enemies()
+	var should_disable_buttons := current_state != CombatState.PLAYER_TURN or _attack_selected or not _has_alive_enemies()
+	for spell_button in _spell_buttons:
+		if is_instance_valid(spell_button):
+			spell_button.disabled = should_disable_buttons
+
 	if selected_action == CombatAction.ATTACK and not btn_attack.disabled:
 		btn_attack.grab_focus()
 
@@ -141,11 +194,13 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		return
 
 	if limb.roll_hit():
-		var damage = RunData.get_stat("damage")
+		var spell_bonus := selected_spell.attack_power if selected_spell != null else 0
+		var damage = RunData.get_stat("damage") + spell_bonus
 		source_enemy.take_damage(limb, damage)
 	else:
 		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(limb.hit_chance_percent, 0.1)])
 	_attack_selected = false
+	selected_spell = null
 	source_enemy.clear_current_highlight()
 	_end_player_turn()
 
@@ -279,6 +334,7 @@ func _end_enemy_turn() -> void:
 
 func _begin_player_turn() -> void:
 	_attack_selected = false
+	selected_spell = null
 	_set_enemy_targeting_enabled(false)
 	_update_button_states()
 	_refresh_turns_order_ui()
