@@ -71,11 +71,17 @@ jobs:
           git tag -a "$TAG" -m "Non-Prod → Prod release"
           echo "Pushing tag $TAG..."
           git push https://xpvanderhoek:${{ secrets.GH_PAT }}@github.com/xpvanderhoek/GamonGames.git "$TAG"
-  
+          
+      - name: Zip build (auto clean)
+        run: |
+          cd gamon-games/build
+          ls *.exe *.pck
+          zip game-${{ github.run_number }}.zip *.exe *.pck
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: gamon-games/build/game.exe
+          files: gamon-games/build/game-${{ github.run_number }}.zip
           tag_name: v1.0.${{ github.run_number }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
