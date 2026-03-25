@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://bdi2prrpcl5hu"]
 
-[ext_resource type="Texture2D" uid="uid://bwnhvweqx5eom" path="res://assets/Placeholders/bettersheet.png" id="1_8h73v"]
+[ext_resource type="Texture2D" uid="uid://bgghk116s6pl4" path="res://assets/Placeholders/bettersheet.png" id="1_8h73v"]
 [ext_resource type="Script" uid="uid://hdi431gbav0r" path="res://scripts/room.gd" id="1_u8vhm"]
 [ext_resource type="PackedScene" uid="uid://c53jm5tnw6doc" path="res://scenes/door.tscn" id="2_u8vhm"]
 
