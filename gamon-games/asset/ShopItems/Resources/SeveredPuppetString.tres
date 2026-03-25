@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BuffItemData" format=3]
+
+[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://script/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://5sh8rx0wqalw" path="res://asset/ShopItems/Textures/TempSword.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_script")
+item_name = "Severed Puppet String"
+effect = "+20 Physical Damage when targeting Arms"
+lore = "Who is the master, and who is the wood?"
+category = "Tier II"
+texture = ExtResource("2_texture")
+cost = 60
+target_limb = "Arm"
+buff_type = "Damage"
+buff_value = 20.0

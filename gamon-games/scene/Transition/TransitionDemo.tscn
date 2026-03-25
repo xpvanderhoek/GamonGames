@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cpvh51rdqo5g1"]
+
+[ext_resource type="Script" uid="uid://cywqqb5a8ykv" path="res://script/Transition/transition_test.gd" id="1_abcde"]
+
+[node name="TransitionTest" type="Node2D" unique_id=161788783]
+script = ExtResource("1_abcde")
+
+[node name="Label" type="Label" parent="." unique_id=820340026]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 774.0
+offset_bottom = 150.0
+text = "TRANSITION TEST SCENE
+
+Press T for Fade
+Press Y for Slide
+Press U for Wipe
+
+Scene will loop to itself with transition effect!!!!!!!"
