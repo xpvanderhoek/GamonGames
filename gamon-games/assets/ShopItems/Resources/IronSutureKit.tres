@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ConsumableItemData" format=3]
+
+[ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://scripts/Items/ConsumableItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bleb452qkk8wy" path="res://assets/ShopItems/Textures/TempPot.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_script")
+item_name = "Iron-Suture Kit"
+effect = "Repairs a broken Limb and heals 20 HP"
+lore = "Painful needles for a second chance."
+category = "Tier I"
+texture = ExtResource("2_texture")
+cost = 30
+target_limb = "All Limbs"
+buff_type = "Limb_Repair"
+buff_value = 20.0
