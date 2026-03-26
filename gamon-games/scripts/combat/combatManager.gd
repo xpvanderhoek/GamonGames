@@ -1,5 +1,5 @@
 class_name CombatManager
-extends Node2D
+extends CanvasLayer
 
 const TURN_ORDER_ENTRY_SCENE := preload("res://Scenes/combat/ui/TurnOrderEntry.tscn")
 const SPELL_BUTTON_SCENE := preload("res://Scenes/combat/ui/SpellButton.tscn")
@@ -38,11 +38,10 @@ var _button_spells: Dictionary = {}
 
 signal enemy_targeting_changed(enabled: bool)
 
-@onready var spells_panel: HBoxContainer = $UI/SpellsPanel
-@onready var lbl_player_health: Label = $UI/PlayerHealth
-@onready var lbl_turns_order: Label = $UI/TurnsOrderInfo
-@onready var ui_layer: CanvasLayer = $UI
-@onready var turns_order_container: VBoxContainer = $UI/TurnsOrder
+@onready var spells_panel: HBoxContainer = $SpellsPanel
+@onready var lbl_player_health: Label = $PlayerHealth
+@onready var lbl_turns_order: Label = $TurnsOrderInfo
+@onready var turns_order_container: VBoxContainer = $TurnsOrder
 
 func _ready() -> void:
 	if _queued_encounter_scenes.size() > 0:
@@ -182,8 +181,7 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		return
 
 	if limb.roll_hit():
-		var spell_bonus := selected_spell.attack_power if selected_spell != null else 0
-		var damage = RunData.get_stat("damage") + spell_bonus
+		var damage = RunData.get_stat("damage") + selected_spell.damage
 		source_enemy.take_damage(limb, damage)
 	else:
 		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(limb.hit_chance_percent, 0.1)])
@@ -286,7 +284,7 @@ func _play_attack_feedback(attack: SpellData, attacking_enemy: CombatEntity) -> 
 
 	if attack.vfx_scene != null:
 		var vfx := attack.vfx_scene.instantiate()
-		ui_layer.add_child(vfx)
+		add_child(vfx)
 		vfx.global_position = _resolve_vfx_position(attack, attacking_enemy) + attack.vfx_offset
 		if attack.vfx_lifetime > 0.0:
 			vfx_lifetime_timer = get_tree().create_timer(attack.vfx_lifetime)
@@ -305,7 +303,7 @@ func _resolve_vfx_position(attack: SpellData, attacking_enemy: CombatEntity) -> 
 			if attacking_enemy is CombatEntity:
 				return (attacking_enemy as CombatEntity).global_position
 
-	return get_viewport_rect().size * 0.5
+	return get_viewport().get_visible_rect().size * 0.5
 
 func _end_enemy_turn() -> void:
 	if current_state == CombatState.COMBAT_OVER:

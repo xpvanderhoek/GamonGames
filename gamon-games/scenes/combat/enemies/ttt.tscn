@@ -5,13 +5,8 @@
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://Scripts/combat/combatLimb.gd" id="3_w2142"]
 [ext_resource type="Texture2D" uid="uid://dsxoo5xbeqhc" path="res://Assets/Placeholders/enemies/head.png" id="4_w3sxh"]
 [ext_resource type="Texture2D" uid="uid://j1m2vp1g8ig8" path="res://Assets/Placeholders/enemies/left_hand.png" id="5_8f83m"]
-[ext_resource type="Script" uid="uid://bsud4alvvvjht" path="res://Scripts/combat/spells/attack.gd" id="6_ot8vd"]
 [ext_resource type="Texture2D" uid="uid://dmvr7hisp4pak" path="res://Assets/Placeholders/enemies/right_hand.png" id="7_kbcej"]
-
-[sub_resource type="Resource" id="Resource_dvbgm"]
-script = ExtResource("6_ot8vd")
-damage = 20
-metadata/_custom_type_script = "uid://bsud4alvvvjht"
+[ext_resource type="Resource" path="res://resources/combat_spells/heavy_strike.tres" id="8_hea1y"]
 
 [node name="mauler" type="Control" unique_id=1680014499]
 custom_minimum_size = Vector2(220, 330)
@@ -51,7 +46,7 @@ texture = ExtResource("5_8f83m")
 script = ExtResource("3_w2142")
 limb_name = "Left Hand"
 max_health = 50
-attacks = Array[ExtResource("6_ot8vd")]([SubResource("Resource_dvbgm")])
+attacks = Array[Resource]([ExtResource("8_hea1y")])
 
 [node name="right_hand" type="Sprite2D" parent="." unique_id=1029105267]
 position = Vector2(113.72943, 195.9193)

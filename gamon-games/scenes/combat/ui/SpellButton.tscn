@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://bxmn5l71j2q2d"]
 
-[ext_resource type="Texture2D" uid="uid://dj66w8ovjdf2b" path="res://Assets/Placeholders/ui/blade_master.png" id="1_aix1d"]
+[ext_resource type="Texture2D" uid="uid://cydiwpld3gxpm" path="res://Assets/Placeholders/ui/blade_master.png" id="1_aix1d"]
 
 [node name="Button" type="Button" unique_id=1071932624]
 custom_minimum_size = Vector2(64, 64)
 offset_right = 32.0
 offset_bottom = 32.0
 icon = ExtResource("1_aix1d")
+text_overrun_behavior = 1
+autowrap_mode = 2
 icon_alignment = 1
 expand_icon = true
