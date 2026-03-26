@@ -273,7 +273,7 @@ func _flash_player_hit() -> void:
 	tween.tween_property(player_canvas, "modulate", Color(1.7, 1.7, 1.7, 1.0), 0.18)
 	tween.tween_property(player_canvas, "modulate", Color(1, 1, 1, 1), 0.22)
 
-func _play_attack_feedback(attack: CombatAttack, attacking_enemy: CombatEntity) -> void:
+func _play_attack_feedback(attack: SpellData, attacking_enemy: CombatEntity) -> void:
 	var vfx_lifetime_timer: SceneTreeTimer = null
 
 	if attack.sfx != null:
@@ -295,13 +295,13 @@ func _play_attack_feedback(attack: CombatAttack, attacking_enemy: CombatEntity) 
 	if vfx_lifetime_timer != null:
 		await vfx_lifetime_timer.timeout
 
-func _resolve_vfx_position(attack: CombatAttack, attacking_enemy: CombatEntity) -> Vector2:
+func _resolve_vfx_position(attack: SpellData, attacking_enemy: CombatEntity) -> Vector2:
 	match attack.vfx_anchor:
-		CombatAttack.VfxAnchor.PLAYER:
+		SpellData.VfxAnchor.PLAYER:
 			var player_anchor := get_node_or_null(ui_player)
 			if player_anchor is CanvasItem:
 				return (player_anchor as CanvasItem).global_position
-		CombatAttack.VfxAnchor.ENEMY:
+		SpellData.VfxAnchor.ENEMY:
 			if attacking_enemy is CombatEntity:
 				return (attacking_enemy as CombatEntity).global_position
 

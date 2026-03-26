@@ -5,7 +5,7 @@ extends Sprite2D
 @export var max_health: int = 100
 @export var is_vital: bool = false
 @export_range(0.0, 100.0, 0.1) var hit_chance_percent: float = 100.0
-@export var attacks: Array[CombatAttack] = []
+@export var attacks: Array[SpellData] = []
 
 var current_health: int
 var is_destroyed: bool = false
@@ -28,15 +28,14 @@ func roll_hit() -> bool:
 func has_attack_options() -> bool:
 	return get_attack_options().size() > 0
 
-func get_attack_options() -> Array[CombatAttack]:
-	var options: Array[CombatAttack] = []
+func get_attack_options() -> Array[SpellData]:
+	var options: Array[SpellData] = []
 	for atk in attacks:
 		if atk == null:
 			continue
 		options.append(atk)
 	return options
 
-func choose_attack() -> CombatAttack:
 	var options := get_attack_options()
 	if options.is_empty():
 		return null
