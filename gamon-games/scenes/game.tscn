@@ -1,10 +1,18 @@
 [gd_scene format=3 uid="uid://dibe1nlseg240"]
 
+<<<<<<< HEAD:gamon-games/Scenes/game.tscn
+[ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://Scenes/character.tscn" id="1_ebmjs"]
+[ext_resource type="Script" uid="uid://cpgo21foq05vw" path="res://Scripts/game.gd" id="1_qxrlw"]
+[ext_resource type="PackedScene" uid="uid://disygs63m04ag" path="res://Scenes/start_run.tscn" id="2_lbhrr"]
+[ext_resource type="Script" uid="uid://6mklxmfdvwie" path="res://Scripts/Shop/GoldLabel.gd" id="3_wrm1d"]
+[ext_resource type="PackedScene" uid="uid://dv04cc8iwb0s7" path="res://Scenes/UI/upgrade_screen.tscn" id="4_3dryh"]
+=======
 [ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://scenes/character.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://cpgo21foq05vw" path="res://scripts/game.gd" id="1_qxrlw"]
 [ext_resource type="PackedScene" uid="uid://disygs63m04ag" path="res://scenes/start_run.tscn" id="2_lbhrr"]
 [ext_resource type="Script" uid="uid://6mklxmfdvwie" path="res://scripts/Shop/GoldLabel.gd" id="3_wrm1d"]
 [ext_resource type="PackedScene" uid="uid://dv04cc8iwb0s7" path="res://scenes/UI/upgrade_screen.tscn" id="4_3dryh"]
+>>>>>>> origin/main:gamon-games/scenes/game.tscn
 
 [node name="Game" type="Node2D" unique_id=1771036447]
 process_mode = 3
