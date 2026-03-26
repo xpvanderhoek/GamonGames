@@ -16,13 +16,14 @@ func _ready() -> void:
 	get_tree().paused = true
 
 func _on_start_run_btn_pressed() -> void:
+	start_btn.disabled = true
+	giveup_btn.disabled = true
 	RunData.new_run()
 	var random_room : String = NavigationManager.get_new_random_room()
+	TransitionManager.transition_newrun(random_room)
 	get_tree().paused = false
-	TransitionManager.transition_room(random_room)
 	queue_free()
 
 
 func _on_give_up_btn_pressed() -> void:
 	get_tree().quit()
-
