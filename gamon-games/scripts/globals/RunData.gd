@@ -140,7 +140,7 @@ func _ensure_default_attack_spell() -> void:
 		return
 
 	for spell in spells:
-		if spell != null and spell.spell_id == "attack":
+		if spell != null:
 			return
 
 	spells.insert(0, _create_default_attack_spell())

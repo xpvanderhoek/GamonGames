@@ -38,7 +38,6 @@ var _button_spells: Dictionary = {}
 
 signal enemy_targeting_changed(enabled: bool)
 
-@onready var btn_attack: Button = $UI/SpellsPanel/BtnAttack
 @onready var spells_panel: HBoxContainer = $UI/SpellsPanel
 @onready var lbl_player_health: Label = $UI/PlayerHealth
 @onready var lbl_turns_order: Label = $UI/TurnsOrderInfo
@@ -136,21 +135,13 @@ func _select_spell(spell: SpellData) -> void:
 
 func _rebuild_spells_panel() -> void:
 	for child in spells_panel.get_children():
-		if child != btn_attack:
-			child.queue_free()
+		child.queue_free()
 
 	_spell_buttons.clear()
 	_button_spells.clear()
 
-	_configure_spell_button(btn_attack, null)
-	_spell_buttons.append(btn_attack)
-
 	for spell in RunData.spells:
 		if spell == null:
-			continue
-		if spell.spell_id == "attack":
-			_configure_spell_button(btn_attack, spell)
-			_button_spells[btn_attack] = spell
 			continue
 
 		var spell_button := SPELL_BUTTON_SCENE.instantiate() as Button
@@ -179,9 +170,6 @@ func _update_button_states() -> void:
 	for spell_button in _spell_buttons:
 		if is_instance_valid(spell_button):
 			spell_button.disabled = should_disable_buttons
-
-	if selected_action == CombatAction.ATTACK and not btn_attack.disabled:
-		btn_attack.grab_focus()
 
 func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> void:
 	if current_state != CombatState.PLAYER_TURN:
