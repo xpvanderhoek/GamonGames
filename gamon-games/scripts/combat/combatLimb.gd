@@ -36,6 +36,7 @@ func get_attack_options() -> Array[SpellData]:
 		options.append(atk)
 	return options
 
+func choose_attack() -> SpellData:
 	var options := get_attack_options()
 	if options.is_empty():
 		return null
