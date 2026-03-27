@@ -2602,10 +2602,12 @@ texture_region_size = Vector2i(688, 690)
 0:0/next_alternative_id = 2
 0:0/0 = 0
 0:0/0/texture_origin = Vector2i(0, 139)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -206, -344, 0, 0, 206, 344, 0)
 0:0/1 = 1
 0:0/1/texture_origin = Vector2i(0, 139)
 0:0/1/z_index = 1
 0:0/1/y_sort_origin = 1
+0:0/1/physics_layer_0/polygon_0/points = PackedVector2Array(0, -206, -344, 0, 0, 206, 344, 0)
 21:0/0 = 0
 42:0/0 = 0
 0:1/0 = 0
@@ -3319,10 +3321,12 @@ texture_region_size = Vector2i(688, 690)
 1:0/next_alternative_id = 2
 1:0/0 = 0
 1:0/0/texture_origin = Vector2i(0, 139)
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -206, -344, 0, 0, 206, 344, 0)
 1:0/1 = 1
 1:0/1/texture_origin = Vector2i(0, 139)
 1:0/1/z_index = 1
 1:0/1/y_sort_origin = 1
+1:0/1/physics_layer_0/polygon_0/points = PackedVector2Array(0, -206, -344, 0, 0, 206, 344, 0)
 
 [sub_resource type="TileSet" id="TileSet_p8nu4"]
 tile_shape = 1
