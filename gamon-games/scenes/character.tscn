@@ -18,9 +18,8 @@
 [ext_resource type="AudioStream" uid="uid://bl1ws7q08qkdo" path="res://assets/Sounds/Walk-07.wav" id="8_px0br"]
 [ext_resource type="AudioStream" uid="uid://bnk55bpgohyyc" path="res://assets/Sounds/Walk-08.wav" id="9_0wngn"]
 [ext_resource type="AudioStream" uid="uid://dmtah15tc8gnb" path="res://assets/Sounds/Walk-09.wav" id="10_8iu2w"]
-[ext_resource type="PackedScene" uid="uid://cji2ni1ok5fvc" path="res://scenes/UI/corruption_bar.tscn" id="10_kq7hj"]
-[ext_resource type="AudioStream" uid="uid://cdv3s3rnhpnk4" path="res://assets/Sounds/Walk-10.wav" id="11_vl1po"]
 [ext_resource type="AudioStream" uid="uid://d2v3tvumq6yx1" path="res://assets/Sounds/Background.wav" id="11_7iw6i"]
+[ext_resource type="AudioStream" uid="uid://cdv3s3rnhpnk4" path="res://assets/Sounds/Walk-10.wav" id="11_vl1po"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_082uh"]
 atlas = ExtResource("2_wbia7")
@@ -1122,12 +1121,6 @@ vertical_alignment = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1919771425]
 shape = SubResource("CircleShape2D_wbia7")
 debug_color = Color(3.7541986e-06, 0.64510936, 0.2735894, 0.41960785)
-
-[node name="CorruptionBar" parent="." unique_id=755609357 instance=ExtResource("10_kq7hj")]
-offset_left = -170.0
-offset_top = -430.0
-offset_right = 184.0
-offset_bottom = -376.0
 
 [node name="Background music" type="AudioStreamPlayer2D" parent="." unique_id=521327996]
 stream = ExtResource("11_7iw6i")
