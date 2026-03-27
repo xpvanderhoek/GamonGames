@@ -1123,12 +1123,6 @@ vertical_alignment = 1
 shape = SubResource("CircleShape2D_wbia7")
 debug_color = Color(3.7541986e-06, 0.64510936, 0.2735894, 0.41960785)
 
-[node name="CorruptionBar" parent="." unique_id=755609357 instance=ExtResource("10_kq7hj")]
-offset_left = -170.0
-offset_top = -430.0
-offset_right = 184.0
-offset_bottom = -376.0
-
 [node name="Background music" type="AudioStreamPlayer2D" parent="." unique_id=521327996]
 stream = ExtResource("11_7iw6i")
 volume_db = -12.772
