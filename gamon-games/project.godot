@@ -27,6 +27,7 @@ DialogueManager="*uid://cdsxgwq8b0vwp"
 
 [display]
 
+window/size/mode=2
 window/stretch/mode="canvas_items"
 
 [global_group]

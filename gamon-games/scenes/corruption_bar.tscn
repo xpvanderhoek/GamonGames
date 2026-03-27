@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://nih588exqlwy"]
+
+[ext_resource type="Texture2D" uid="uid://cpjkjtm8jhigb" path="res://assets/ui/corruption_under.png" id="1_8vntu"]
+[ext_resource type="Texture2D" uid="uid://bvl7xwka4ycwi" path="res://assets/ui/corruption_over.png" id="2_ci21v"]
+[ext_resource type="Texture2D" uid="uid://b07dnrq2eq540" path="res://assets/ui/corruption_progress.png" id="3_ga847"]
+[ext_resource type="Script" uid="uid://dp5rynxxlak6f" path="res://scripts/corruptionbar.gd" id="4_4aptc"]
+
+[node name="CorruptionBar" type="TextureProgressBar" unique_id=1647006907]
+texture_filter = 1
+offset_right = 256.0
+offset_bottom = 16.0
+texture_under = ExtResource("1_8vntu")
+texture_over = ExtResource("2_ci21v")
+texture_progress = ExtResource("3_ga847")
+script = ExtResource("4_4aptc")
