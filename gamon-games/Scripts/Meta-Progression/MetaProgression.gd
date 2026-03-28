@@ -17,3 +17,6 @@ func get_bonus_hp_percent() -> float:
 
 func get_base_precision_bonus() -> int:
 	return steady_hand_lvl * 2
+
+func get_marrow_shards_amount() -> int:
+	return marrow_shards

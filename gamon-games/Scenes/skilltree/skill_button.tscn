@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://d0aq04ae2r8kt"]
+
+[ext_resource type="Texture2D" uid="uid://bhw5v8m453e43" path="res://Assets/skilltreepng.webp" id="1_ueit2"]
+[ext_resource type="Script" uid="uid://d3avg0m83tn2j" path="res://Scripts/skill_button.gd" id="2_344eo"]
+[ext_resource type="Resource" uid="uid://c5o0w02emsava" path="res://Scripts/skilltree/skill_resources/hardened_flesh.tres" id="3_344eo"]
+
+[node name="SkillButton" type="TextureButton" unique_id=1870685182]
+anchors_preset = -1
+anchor_right = 0.082
+anchor_bottom = 0.147
+offset_right = 0.5359955
+offset_bottom = -0.2559967
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("1_ueit2")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("2_344eo")
+skill = ExtResource("3_344eo")
+
+[node name="SkillLevel" type="Label" parent="." unique_id=502287284]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 24
+text = "0/3"
+horizontal_alignment = 2
+
+[node name="SkillBranch" type="Line2D" parent="." unique_id=1908695902]
+position = Vector2(0, 1)
+points = PackedVector2Array(47.5, 0)
+width = 2.0
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
