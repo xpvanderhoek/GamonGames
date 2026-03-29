@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://u6eogpl807dg"]
 
-[ext_resource type="PackedScene" uid="uid://d0aq04ae2r8kt" path="res://Scenes/skilltree/skill_button.tscn" id="1_5yqfh"]
+[ext_resource type="PackedScene" uid="uid://d0aq04ae2r8kt" path="res://scenes/skilltree/skill_button.tscn" id="1_5yqfh"]
 [ext_resource type="Resource" uid="uid://b7gvd271gr6f2" path="res://Scripts/skilltree/skill_resources/anatomy_mastery.tres" id="2_u2fwl"]
 [ext_resource type="Resource" uid="uid://k1vhjfkad0qa" path="res://Scripts/skilltree/skill_resources/steady_hand.tres" id="3_0yau4"]
 [ext_resource type="Resource" uid="uid://crhxl5b2q35f5" path="res://Scripts/skilltree/skill_resources/scavengers_eye.tres" id="3_tudbh"]

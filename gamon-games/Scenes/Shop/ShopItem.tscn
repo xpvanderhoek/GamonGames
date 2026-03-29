@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ccjrv1y6hb003"]
 
-[ext_resource type="Script" uid="uid://u67a3erwqvta" path="res://Scripts/Shop/shop_Item.gd" id="1_6j5au"]
+[ext_resource type="Script" uid="uid://u67a3erwqvta" path="res://Scripts/shop/shop_Item.gd" id="1_6j5au"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4rgw3"]
 shadow_size = 8
