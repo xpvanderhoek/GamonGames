@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://dsqf26svuv2vr"]
+
+[ext_resource type="Script" uid="uid://bngpt3prf6s3c" path="res://Scripts/skilltree/skilldata.gd" id="1_kbse5"]
+[ext_resource type="Texture2D" uid="uid://bhw5v8m453e43" path="res://Assets/skilltreepng.webp" id="2_vrxdb"]
+
+[resource]
+script = ExtResource("1_kbse5")
+skill_name = "Iron Will"
+min_cost = 300
+max_cost = 1500
+max_level = 5
+texture = ExtResource("2_vrxdb")
