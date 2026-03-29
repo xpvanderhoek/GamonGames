@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://d0aq04ae2r8kt"]
 
 [ext_resource type="Texture2D" uid="uid://bhw5v8m453e43" path="res://assets/skilltreepng.webp" id="1_ueit2"]
-[ext_resource type="Script" uid="uid://d3avg0m83tn2j" path="res://Scripts/skill_button.gd" id="2_344eo"]
-[ext_resource type="Resource" uid="uid://c5o0w02emsava" path="res://Scripts/skilltree/skill_resources/hardened_flesh.tres" id="3_344eo"]
+[ext_resource type="Script" uid="uid://d3avg0m83tn2j" path="res://scripts/skilltree/skill_button.gd" id="2_344eo"]
+[ext_resource type="Resource" uid="uid://c5o0w02emsava" path="res://scripts/skilltree/skill_resources/hardened_flesh.tres" id="3_344eo"]
 
 [node name="SkillButton" type="TextureButton" unique_id=1870685182]
 anchors_preset = -1

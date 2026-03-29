@@ -6,7 +6,7 @@ class_name SkillNode
 @export var skill: SkillData
 
 func _ready() -> void:
-	tooltip_text = skill.tooltip_text
+	_update_tooltip_text()
 	if get_parent() is SkillNode:
 		var parent_node = get_parent() as SkillNode
 		
@@ -21,18 +21,18 @@ func _ready() -> void:
 		skill_branch.add_point(local_parent)
 		skill_branch.add_point(local_child)
 		
-		update_line_appearance(parent_node)
+		_update_line_appearance(parent_node)
 	if skill.current_level == 0:
 		self.self_modulate = self.self_modulate * 0.7
-	update_skill_display()
+	_update_skill_display()
 
-func update_line_appearance(parent_node: SkillNode) -> void:
+func _update_line_appearance(parent_node: SkillNode) -> void:
 	if parent_node.skill.current_level == 0:
 		skill_branch.modulate = Color(0.5, 0.5, 0.5, 0.5)
 	else:
 		skill_branch.modulate = Color.WHITE
 
-func update_skill_display() -> void:
+func _update_skill_display() -> void:
 	skill_level.text = str(skill.current_level) + "/" + str(skill.max_level)
 
 func _on_pressed() -> void:
@@ -45,11 +45,13 @@ func _on_pressed() -> void:
 	if skill.current_level == skill.max_level:
 		print(skill.skill_name + " is already at max level")
 		return
+	
 	var cost = skill.get_level_cost()
-	print(cost)
-	if PlayerStats.get_marrow_shards_amount() < cost:
+	
+	if RunData.marrow_shards < cost:
 		print("Not enough marrow shards for upgrade")
 	else:
+		RunData.marrow_shards -= cost
 		skill.current_level += 1
 		if skill.current_level == 1:
 			self.self_modulate = self.self_modulate * 1.42857
@@ -58,10 +60,15 @@ func _on_pressed() -> void:
 			pass
 			#TODO:Add something to sprite here to show skill reached its max level
 			#(green border for example)
-		update_skill_display()
+		_update_skill_display()
+		_update_tooltip_text()
 		print(skill.skill_name + " leveled up to level: " + str(skill.current_level))
 
 func _update_children_line_appearance() -> void:
 	for child in get_children():
 		if child is SkillNode:
-			child.update_line_appearance(self)
+			child._update_line_appearance(self)
+
+func _update_tooltip_text() -> void:
+	var lvl_cost = skill.get_level_cost()
+	tooltip_text = "%s\nCosts: %d Marrow shards"%[skill.skill_name,lvl_cost]
