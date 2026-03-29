@@ -16,6 +16,7 @@ jobs:
             exit 0
           fi
 
+
       - name: Check if already notified
         uses: actions/github-script@v7
         id: check_label
