@@ -6,6 +6,7 @@ class_name SkillNode
 @export var skill: SkillData
 
 func _ready() -> void:
+	tooltip_text = skill.tooltip_text
 	if get_parent() is SkillNode:
 		var parent_node = get_parent() as SkillNode
 		
@@ -21,7 +22,6 @@ func _ready() -> void:
 		skill_branch.add_point(local_child)
 		
 		update_line_appearance(parent_node)
-		print(skill_branch.points)
 	if skill.current_level == 0:
 		self.self_modulate = self.self_modulate * 0.7
 	update_skill_display()
@@ -43,12 +43,12 @@ func _on_pressed() -> void:
 			return
 	
 	if skill.current_level == skill.max_level:
-		print(skill.skill_name + " is already at max level.")
+		print(skill.skill_name + " is already at max level")
 		return
 	var cost = skill.get_level_cost()
 	print(cost)
 	if PlayerStats.get_marrow_shards_amount() < cost:
-		print("Not enough marrow_shards for upgrade")
+		print("Not enough marrow shards for upgrade")
 	else:
 		skill.current_level += 1
 		if skill.current_level == 1:
@@ -56,10 +56,10 @@ func _on_pressed() -> void:
 			_update_children_line_appearance()
 		if skill.current_level == skill.max_level:
 			pass
-			#TODO: Maybe add something to sprite here to show skill reached its max level
+			#TODO:Add something to sprite here to show skill reached its max level
 			#(green border for example)
 		update_skill_display()
-		print(str(skill.skill_name) + " leveled up to level: " + str(skill.current_level))
+		print(skill.skill_name + " leveled up to level: " + str(skill.current_level))
 
 func _update_children_line_appearance() -> void:
 	for child in get_children():

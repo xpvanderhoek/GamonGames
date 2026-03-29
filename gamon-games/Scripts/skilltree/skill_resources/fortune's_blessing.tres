@@ -10,3 +10,4 @@ min_cost = 200
 max_cost = 1200
 max_level = 10
 texture = ExtResource("2_emnc5")
+tooltip_text = "Increases item quality in the shop by +5% per level"

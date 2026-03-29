@@ -1,5 +1,5 @@
 extends Node
-
+#TODO: reset to 0 when done testing/before playtest
 var marrow_shards: int = 10000
 
 var stats = {

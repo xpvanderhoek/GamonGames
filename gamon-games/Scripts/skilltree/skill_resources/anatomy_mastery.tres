@@ -10,3 +10,4 @@ min_cost = 500
 max_cost = 2500
 max_level = 5
 texture = ExtResource("2_cvcw6")
+tooltip_text = "Increases base damage by 3% per level "

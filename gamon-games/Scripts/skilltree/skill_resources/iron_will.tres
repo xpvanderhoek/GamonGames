@@ -10,3 +10,4 @@ min_cost = 300
 max_cost = 1500
 max_level = 5
 texture = ExtResource("2_vrxdb")
+tooltip_text = "Increases chance to resist any negative status by 5% per level"

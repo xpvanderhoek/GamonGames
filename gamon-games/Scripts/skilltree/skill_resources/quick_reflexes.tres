@@ -10,3 +10,4 @@ min_cost = 400
 max_cost = 2000
 max_level = 5
 texture = ExtResource("2_x2i1d")
+tooltip_text = "Increases base speed by +2% per level"

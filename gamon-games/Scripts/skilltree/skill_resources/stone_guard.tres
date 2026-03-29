@@ -10,3 +10,4 @@ min_cost = 100
 max_cost = 1000
 max_level = 10
 texture = ExtResource("2_yqjv5")
+tooltip_text = "Increases base defense by +5% per level "

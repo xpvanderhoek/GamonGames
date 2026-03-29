@@ -10,3 +10,4 @@ min_cost = 100
 max_cost = 1000
 max_level = 10
 texture = ExtResource("2_ni2ke")
+tooltip_text = "Increases base HP by +5% per level"

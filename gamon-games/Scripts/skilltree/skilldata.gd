@@ -8,6 +8,7 @@ var cost: int
 @export var max_level: int
 @export var current_level: int = 0
 @export var texture: Texture
+@export var tooltip_text: String
 @export var skill_after: Array [SkillData]
 
 func get_level_cost() -> int:

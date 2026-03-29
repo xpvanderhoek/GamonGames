@@ -10,3 +10,4 @@ min_cost = 150
 max_cost = 1500
 max_level = 10
 texture = ExtResource("2_p7r3x")
+tooltip_text = "Increases base precision by +2% per level"

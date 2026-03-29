@@ -10,3 +10,4 @@ min_cost = 1500
 max_cost = 1500
 max_level = 1
 texture = ExtResource("2_u57mc")
+tooltip_text = "Start the run with 1 random Consumable "
