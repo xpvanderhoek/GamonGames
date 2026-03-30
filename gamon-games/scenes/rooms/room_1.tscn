@@ -2602,12 +2602,10 @@ texture_region_size = Vector2i(688, 690)
 0:0/next_alternative_id = 2
 0:0/0 = 0
 0:0/0/texture_origin = Vector2i(0, 139)
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -206, -344, 0, 0, 206, 344, 0)
 0:0/1 = 1
 0:0/1/texture_origin = Vector2i(0, 139)
 0:0/1/z_index = 1
 0:0/1/y_sort_origin = 1
-0:0/1/physics_layer_0/polygon_0/points = PackedVector2Array(-345.22723, -477.04123, -344, 0, 0, 206, 0, -279.3202)
 21:0/0 = 0
 42:0/0 = 0
 0:1/0 = 0
@@ -3321,18 +3319,14 @@ texture_region_size = Vector2i(688, 690)
 1:0/next_alternative_id = 2
 1:0/0 = 0
 1:0/0/texture_origin = Vector2i(0, 139)
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(5.314682, -274.59198, 3.5431213, -19.487167, 0, 206, 344, 0)
 1:0/1 = 1
 1:0/1/texture_origin = Vector2i(0, 139)
 1:0/1/z_index = 1
 1:0/1/y_sort_origin = 1
-1:0/1/physics_layer_0/polygon_0/points = PackedVector2Array(338.95032, -470.76437, 0, -273.04333, 0, 206, 344, 0)
 
 [sub_resource type="TileSet" id="TileSet_p8nu4"]
 tile_shape = 1
 tile_size = Vector2i(688, 412)
-physics_layer_0/collision_layer = 4
-physics_layer_0/collision_mask = 0
 sources/1 = SubResource("TileSetAtlasSource_dvakc")
 sources/2 = SubResource("TileSetAtlasSource_7iddu")
 
@@ -3341,6 +3335,7 @@ script = ExtResource("1_wodat")
 metadata/_custom_type_script = "uid://hdi431gbav0r"
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=638715275]
+y_sort_enabled = true
 navigation_polygon = SubResource("NavigationPolygon_a0jlh")
 
 [node name="Ground_tiles" type="TileMapLayer" parent="NavigationRegion2D" unique_id=1826961940]
@@ -3398,16 +3393,17 @@ position = Vector2(-10111, -2285)
 [node name="Spawn4" type="Marker2D" parent="EnemySpawns" unique_id=89338813]
 position = Vector2(-1540, -532)
 
-[node name="Collision_BottomFloorTiles" type="StaticBody2D" parent="." unique_id=173940027]
-position = Vector2(-1646, -494)
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collision_BottomFloorTiles" unique_id=883215844]
-position = Vector2(-1728, -11521)
-polygon = PackedVector2Array(-12288, 16320, -6254, 19951, -1449, 17073, -262, 17770, -1449, 18501, 4588, 22124, 8214, 19944, 4594, 17770, 9393, 14897, 8240, 19932, -68, 25144, -12902, 16644)
-
 [node name="Collision_Hole_Middle" type="StaticBody2D" parent="." unique_id=512953946]
 position = Vector2(17154, -10976)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collision_Hole_Middle" unique_id=1103368972]
 position = Vector2(-6581, -12909)
+build_mode = 1
 polygon = PackedVector2Array(-17804, 21726, -15410, 23169, -16607, 23888, -12979, 26053, -11776, 25327, -9442, 26727, -11786, 28201, -20190, 23165)
+
+[node name="Collision_Walls" type="StaticBody2D" parent="." unique_id=264962115]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collision_Walls" unique_id=1580807842]
+position = Vector2(6008, 2893)
+build_mode = 1
+polygon = PackedVector2Array(-8, -9, -4811, -2889, -3587, -3623, -7220, -5788, -8395, -5066, -13226, -7947, -18061, -5069, -21665, -7223, -25280, -5062, -19200, -1378, -18044, -2141, -16899, -1462, -21798, 1482, -15648, 5070, -10821, 2173, -9665, 2853, -10881, 3639, -4814, 7263, -1084, 5034, -4767, 2865)
