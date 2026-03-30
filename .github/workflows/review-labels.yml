@@ -26,10 +26,10 @@ jobs:
               pull_number: prNumber
             });
 
-            // 2️⃣ Laatste review per reviewer
+            // 2️⃣ Laatste review per reviewer (PR-maker eruit)
             const latestReviews = {};
             for (const review of reviews.data) {
-              if (review.user.login !== prCreator) { // PR-maker filteren
+              if (review.user.login !== prCreator) {
                 latestReviews[review.user.login] = review.state;
               }
             }
@@ -38,34 +38,49 @@ jobs:
             const approvers = Object.values(latestReviews).filter(s => s === "APPROVED");
             const requestedChanges = Object.values(latestReviews).filter(s => s === "CHANGES_REQUESTED");
 
-            // 3️⃣ Bepaal label
+            // 3️⃣ Maak label text van alle reviewers met emoji-status
+            const reviewLabels = Object.entries(latestReviews).map(([user, state]) => {
+              let emoji = "";
+              if (state === "APPROVED") emoji = "✅";
+              else if (state === "CHANGES_REQUESTED") emoji = "❌";
+              else if (state === "COMMENTED") emoji = "💬";
+              else emoji = "❓"; // fallback
+              return `${user} ${emoji}`;
+            });
+
             let labelName = "";
 
+            // 4️⃣ Bepaal welk label we gaan zetten
             if (allReviewers.length < 2) {
               labelName = "needs-review";
             } else {
+              // Bij ≥2 reviewers: status-label + reviewers
               if (requestedChanges.length > 0) {
-                labelName = `review-status: 🔴 ${requestedChanges.length} requested change(s)`;
+                labelName = `review-status: 🔴 ${reviewLabels.join(", ")}`;
               } else if (approvers.length >= 2) {
-                labelName = `review-status: 🟢 ${approvers.length} approvals`;
+                labelName = `review-status: 🟢 ${reviewLabels.join(", ")}`;
               } else {
-                labelName = `review-status: ⚪ ${approvers.length} approval(s)`;
+                labelName = `review-status: ⚪ ${reviewLabels.join(", ")}`;
               }
             }
 
-            // 4️⃣ Verwijder oude labels
-            const oldLabels = pr.labels.map(l => l.name)
+            // 5️⃣ Verwijder oude labels van deze workflow (behalve andere labels zoals discord-notified)
+            const oldLabels = pr.labels
+              .map(l => l.name)
               .filter(n => n.startsWith("review-status:") || n === "needs-review");
+
             for (const label of oldLabels) {
-              await github.rest.issues.removeLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                name: label
-              });
+              if (label !== "discord-notified") {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  name: label
+                });
+              }
             }
 
-            // 5️⃣ Voeg nieuwe label toe
+            // 6️⃣ Voeg nieuwe label toe
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
