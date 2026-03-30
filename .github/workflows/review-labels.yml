@@ -37,7 +37,7 @@ jobs:
             // 2️⃣ Verwijder oude labels van deze workflow
             const oldLabels = pr.labels
               .map(l => l.name)
-              .filter(n => n.startsWith("reviewed:") || n === "needs-review" || n.startsWith("review-status-"));
+              .filter(n => n.startsWith("reviewed:") || n === "needs-review");
 
             for (const label of oldLabels) {
               if (label !== "discord-notified") {
