@@ -18,14 +18,13 @@ jobs:
             const pr = context.payload.pull_request;
             const prCreator = pr.user.login;
 
-            // 1️⃣ Haal alle reviews op
+            // 1️⃣ Haal reviews op
             const reviews = await github.rest.pulls.listReviews({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber
             });
 
-            // 2️⃣ Laatste review per reviewer (PR-maker eruit)
             const latestReviews = {};
             for (const review of reviews.data) {
               if (review.user.login !== prCreator) {
@@ -35,10 +34,10 @@ jobs:
 
             const allReviewers = Object.keys(latestReviews);
 
-            // 3️⃣ Verwijder oude review-labels
+            // 2️⃣ Verwijder oude labels van deze workflow
             const oldLabels = pr.labels
               .map(l => l.name)
-              .filter(n => n.startsWith("reviewed:") || n === "needs-review");
+              .filter(n => n.startsWith("reviewed:") || n === "needs-review" || n.startsWith("review-status-"));
 
             for (const label of oldLabels) {
               if (label !== "discord-notified") {
@@ -51,7 +50,7 @@ jobs:
               }
             }
 
-            // 4️⃣ Voeg needs-review toe als er <2 reviewers zijn
+            // 3️⃣ Needs-review toevoegen bij <2 reviewers
             if (allReviewers.length < 2) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
@@ -61,16 +60,35 @@ jobs:
               });
             }
 
-            // 5️⃣ Maak labels per reviewer + status-emoji
+            // 4️⃣ Voeg individuele reviewer labels toe met kleur
             for (const [user, state] of Object.entries(latestReviews)) {
-              let emoji = "";
-              if (state === "APPROVED") emoji = "✅";
-              else if (state === "CHANGES_REQUESTED") emoji = "❌";
-              else if (state === "COMMENTED") emoji = "💬";
-              else emoji = "❓";
+              let emoji = "", color = "";
+              if (state === "APPROVED") { emoji = "✅"; color = "0e8a16"; } // groen
+              else if (state === "CHANGES_REQUESTED") { emoji = "❌"; color = "d93f0b"; } // rood
+              else if (state === "COMMENTED") { emoji = "💬"; color = "ededed"; } // grijs
+              else { emoji = "❓"; color = "ededed"; }
 
               const labelName = `reviewed: ${user} ${emoji}`;
 
+              // Check of label bestaat
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: labelName
+                });
+              } catch (e) {
+                // Label bestaat niet → maak aan
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: labelName,
+                  color: color,
+                  description: `Review status of ${user}`
+                });
+              }
+
+              // Voeg label toe aan PR
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
