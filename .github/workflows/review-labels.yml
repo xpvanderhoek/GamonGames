@@ -51,9 +51,21 @@ jobs:
               }
             }
 
-            // 4️⃣ Needs-review logica
-            if (allReviewers.length < 2) {
-              const existingLabels = pr.labels.map(l => l.name);
+            // 4️⃣ Needs-review logica (fix)
+            const existingLabels = pr.labels.map(l => l.name);
+            
+            if (allReviewers.length >= 2) {
+              // Verwijder needs-review als die er nog staat
+              if (existingLabels.includes("needs-review")) {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  name: "needs-review"
+                });
+              }
+            } else {
+              // Voeg needs-review toe als <2 reviewers
               if (!existingLabels.includes("needs-review")) {
                 await github.rest.issues.addLabels({
                   owner: context.repo.owner,
