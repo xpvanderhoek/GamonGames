@@ -1,4 +1,4 @@
-name: Update Review Status Label
+name: Update Review Labels
 
 on:
   pull_request_review:
@@ -7,10 +7,10 @@ on:
     types: [synchronize]
 
 jobs:
-  update-review-status:
+  update-review-labels:
     runs-on: ubuntu-latest
     steps:
-      - name: Update review label and comment
+      - name: Update review labels
         uses: actions/github-script@v7
         with:
           script: |
@@ -34,23 +34,11 @@ jobs:
             }
 
             const allReviewers = Object.keys(latestReviews);
-            const approvers = Object.values(latestReviews).filter(s => s === "APPROVED");
-            const requestedChanges = Object.values(latestReviews).filter(s => s === "CHANGES_REQUESTED");
 
-            // 3️⃣ Bepaal status-label
-            let labelName = "";
-            if (allReviewers.length < 2) {
-              labelName = "needs-review";
-            } else {
-              if (requestedChanges.length > 0) labelName = "review-status-red";
-              else if (approvers.length >= 2) labelName = "review-status-green";
-              else labelName = "review-status-yellow";
-            }
-
-            // 4️⃣ Verwijder oude labels van deze workflow (behalve andere labels zoals discord-notified)
+            // 3️⃣ Verwijder oude review-labels
             const oldLabels = pr.labels
               .map(l => l.name)
-              .filter(n => n.startsWith("review-status-") || n === "needs-review");
+              .filter(n => n.startsWith("reviewed:") || n === "needs-review");
 
             for (const label of oldLabels) {
               if (label !== "discord-notified") {
@@ -63,31 +51,30 @@ jobs:
               }
             }
 
-            // 5️⃣ Voeg nieuwe label toe
-            await github.rest.issues.addLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              labels: [labelName]
-            });
-
-            // 6️⃣ Voeg comment toe met reviewers + emoji
-            if (allReviewers.length > 0) {
-              const reviewLabels = Object.entries(latestReviews).map(([user, state]) => {
-                let emoji = "";
-                if (state === "APPROVED") emoji = "✅";
-                else if (state === "CHANGES_REQUESTED") emoji = "❌";
-                else if (state === "COMMENTED") emoji = "💬";
-                else emoji = "❓";
-                return `${user} ${emoji}`;
-              });
-
-              const commentBody = `### Review status\n${reviewLabels.join("\n")}`;
-              
-              await github.rest.issues.createComment({
+            // 4️⃣ Voeg needs-review toe als er <2 reviewers zijn
+            if (allReviewers.length < 2) {
+              await github.rest.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                body: commentBody
+                labels: ["needs-review"]
+              });
+            }
+
+            // 5️⃣ Maak labels per reviewer + status-emoji
+            for (const [user, state] of Object.entries(latestReviews)) {
+              let emoji = "";
+              if (state === "APPROVED") emoji = "✅";
+              else if (state === "CHANGES_REQUESTED") emoji = "❌";
+              else if (state === "COMMENTED") emoji = "💬";
+              else emoji = "❓";
+
+              const labelName = `reviewed: ${user} ${emoji}`;
+
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: [labelName]
               });
             }
