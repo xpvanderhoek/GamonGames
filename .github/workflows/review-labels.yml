@@ -1,14 +1,16 @@
-name: Update Review Labels
+name: Update Review Status Label
 
 on:
   pull_request_review:
     types: [submitted]
+  pull_request:
+    types: [synchronize]
 
 jobs:
-  update-review-label:
+  update-review-status:
     runs-on: ubuntu-latest
     steps:
-      - name: Update review label with reviewers and status
+      - name: Update review label with status
         uses: actions/github-script@v7
         with:
           script: |
@@ -22,32 +24,36 @@ jobs:
               pull_number: prNumber
             });
 
-            // 2️⃣ Pak laatste review van elke reviewer
+            // 2️⃣ Laatste review per reviewer
             const latestReviews = {};
             for (const review of reviews.data) {
               latestReviews[review.user.login] = review.state;
             }
 
-            // 3️⃣ Maak label text van alle reviewers met status
-            let labelName = "reviewed: ";
-            const reviewLabels = Object.entries(latestReviews).map(([user, state]) => {
-              let emoji = "";
-              if (state === "APPROVED") emoji = "✅";
-              else if (state === "CHANGES_REQUESTED") emoji = "❌";
-              else if (state === "COMMENTED") emoji = "💬";
-              else emoji = "❓"; // fallback
-              return `${user} ${emoji}`;
-            });
+            const allReviewers = Object.keys(latestReviews);
+            const approvers = Object.values(latestReviews).filter(s => s === "APPROVED");
+            const requestedChanges = Object.values(latestReviews).filter(s => s === "CHANGES_REQUESTED");
 
-            if (reviewLabels.length === 0) {
+            // 3️⃣ Beslis over label
+            let labelName = "";
+
+            if (allReviewers.length < 2) {
+              // Minder dan 2 reviewers → keep needs-review
               labelName = "needs-review";
             } else {
-              labelName += reviewLabels.join(", ");
+              // 2 of meer reviewers → status-label
+              if (requestedChanges.length > 0) {
+                labelName = `review-status: 🔴 ${requestedChanges.length} requested change(s)`;
+              } else if (approvers.length >= 2) {
+                labelName = `review-status: 🟢 ${approvers.length} approvals`;
+              } else {
+                labelName = `review-status: ⚪ ${approvers.length} approval(s)`;
+              }
             }
 
-            // 4️⃣ Verwijder oude review labels (alle labels die met "reviewed:" beginnen of "needs-review")
+            // 4️⃣ Verwijder oude labels
             const oldLabels = pr.labels.map(l => l.name)
-              .filter(n => n.startsWith("reviewed:") || n === "needs-review");
+              .filter(n => n.startsWith("review-status:") || n === "needs-review");
             for (const label of oldLabels) {
               await github.rest.issues.removeLabel({
                 owner: context.repo.owner,
