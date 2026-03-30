@@ -1,0 +1,132 @@
+name: PR Auto Assign & Review Labels
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  pull_request_review:
+    types: [submitted]
+
+
+jobs:
+  review-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update PR labels and assignments
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const prNumber = pr.number;
+            const prCreator = pr.user.login;
+
+            // 1️⃣ Haal alle reviews op
+            const reviews = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+
+            // 2️⃣ Laatste review per reviewer, PR-maker filteren
+            const latestReviews = {};
+            for (const review of reviews.data) {
+              if (review.user.login !== prCreator) {
+                latestReviews[review.user.login] = review.state;
+              }
+            }
+
+            const allReviewers = Object.keys(latestReviews);
+
+            // 3️⃣ Verwijder oude labels van deze workflow, maar laat andere labels zoals discord-notified staan
+            const oldLabels = pr.labels
+              .map(l => l.name)
+              .filter(n => n.startsWith("reviewed:") || n === "needs-review");
+
+            for (const label of oldLabels) {
+              if (label !== "discord-notified") {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  name: label
+                });
+              }
+            }
+
+            // 4️⃣ Needs-review logica (fix)
+            const existingLabels = pr.labels.map(l => l.name);
+            
+            if (allReviewers.length >= 2) {
+              // Verwijder needs-review als die er nog staat
+              if (existingLabels.includes("needs-review")) {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  name: "needs-review"
+                });
+              }
+            } else {
+              // Voeg needs-review toe als <2 reviewers
+              if (!existingLabels.includes("needs-review")) {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  labels: ["needs-review"]
+                });
+              }
+            }
+
+            // 5️⃣ Voeg individuele reviewer labels toe
+            for (const [user, state] of Object.entries(latestReviews)) {
+              let emoji = "";
+              if (state === "APPROVED") emoji = "✅";
+              else if (state === "CHANGES_REQUESTED") emoji = "❌";
+              else if (state === "COMMENTED") emoji = "💬";
+              else emoji = "❓";
+
+              const labelName = `reviewed: ${user} ${emoji}`;
+
+              // Check of label al bestaat
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: labelName
+                });
+              } catch (e) {
+                // Label bestaat niet → maak aan (kleur bij creatie instellen)
+                let color = "ededed"; // standaard grijs
+                if (emoji === "✅") color = "0e8a16"; // groen
+                else if (emoji === "❌") color = "d93f0b"; // rood
+
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: labelName,
+                  color: color,
+                  description: `Review status of ${user}`
+                });
+              }
+
+              // Voeg label toe aan PR
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: [labelName]
+              });
+            }
+
+            // 6️⃣ Assign PR creator als <2 reviewers en nog niet assigned
+            if (allReviewers.length < 2) {
+              const assignees = pr.assignees.map(a => a.login);
+              if (!assignees.includes(prCreator)) {
+                await github.rest.issues.addAssignees({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  assignees: [prCreator]
+                });
+              }
+            }
