@@ -6,6 +6,7 @@ on:
   pull_request_review:
     types: [submitted]
 
+
 jobs:
   review-labels:
     runs-on: ubuntu-latest
