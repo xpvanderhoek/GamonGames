@@ -5,16 +5,6 @@ We are a team working together to build an awesome game using **Godot** and a st
 
 ---
 
-## 🎯 About the Game
-
-[Add a short description of your game here]
-
-* **Genre:** roguelike, dungeon crawler
-* **Core gameplay:**
-* **Goal:**
-
----
-
 ## 🚀 Development Workflow
 
 We use **GitHub** to collaborate efficiently and maintain code quality.
