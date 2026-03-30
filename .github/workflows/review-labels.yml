@@ -1,31 +1,30 @@
-name: PR Auto Assign & Review Labels
+name: Update Review Labels
 
 on:
-  pull_request:
-    types: [opened, synchronize]
   pull_request_review:
     types: [submitted]
+  pull_request:
+    types: [synchronize]
 
 jobs:
-  review-labels:
+  update-review-labels:
     runs-on: ubuntu-latest
     steps:
-      - name: Update PR labels and assignments
+      - name: Update review labels
         uses: actions/github-script@v7
         with:
           script: |
+            const prNumber = context.payload.pull_request.number;
             const pr = context.payload.pull_request;
-            const prNumber = pr.number;
             const prCreator = pr.user.login;
 
-            // 1️⃣ Haal alle reviews op
+            // 1️⃣ Haal reviews op
             const reviews = await github.rest.pulls.listReviews({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber
             });
 
-            // 2️⃣ Laatste review per reviewer, PR-maker filteren
             const latestReviews = {};
             for (const review of reviews.data) {
               if (review.user.login !== prCreator) {
@@ -35,10 +34,10 @@ jobs:
 
             const allReviewers = Object.keys(latestReviews);
 
-            // 3️⃣ Verwijder oude labels van deze workflow, maar laat andere labels zoals discord-notified staan
+            // 2️⃣ Verwijder oude labels van deze workflow
             const oldLabels = pr.labels
               .map(l => l.name)
-              .filter(n => n.startsWith("reviewed:") || n === "needs-review");
+              .filter(n => n.startsWith("reviewed:") || n === "needs-review" || n.startsWith("review-status-"));
 
             for (const label of oldLabels) {
               if (label !== "discord-notified") {
@@ -51,30 +50,27 @@ jobs:
               }
             }
 
-            // 4️⃣ Needs-review logica
+            // 3️⃣ Needs-review toevoegen bij <2 reviewers
             if (allReviewers.length < 2) {
-              const existingLabels = pr.labels.map(l => l.name);
-              if (!existingLabels.includes("needs-review")) {
-                await github.rest.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: prNumber,
-                  labels: ["needs-review"]
-                });
-              }
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: ["needs-review"]
+              });
             }
 
-            // 5️⃣ Voeg individuele reviewer labels toe
+            // 4️⃣ Voeg individuele reviewer labels toe met kleur
             for (const [user, state] of Object.entries(latestReviews)) {
-              let emoji = "";
-              if (state === "APPROVED") emoji = "✅";
-              else if (state === "CHANGES_REQUESTED") emoji = "❌";
-              else if (state === "COMMENTED") emoji = "💬";
-              else emoji = "❓";
+              let emoji = "", color = "";
+              if (state === "APPROVED") { emoji = "✅"; color = "0e8a16"; } // groen
+              else if (state === "CHANGES_REQUESTED") { emoji = "❌"; color = "d93f0b"; } // rood
+              else if (state === "COMMENTED") { emoji = "💬"; color = "ededed"; } // grijs
+              else { emoji = "❓"; color = "ededed"; }
 
               const labelName = `reviewed: ${user} ${emoji}`;
 
-              // Check of label al bestaat
+              // Check of label bestaat
               try {
                 await github.rest.issues.getLabel({
                   owner: context.repo.owner,
@@ -82,11 +78,7 @@ jobs:
                   name: labelName
                 });
               } catch (e) {
-                // Label bestaat niet → maak aan (kleur bij creatie instellen)
-                let color = "ededed"; // standaard grijs
-                if (emoji === "✅") color = "0e8a16"; // groen
-                else if (emoji === "❌") color = "d93f0b"; // rood
-
+                // Label bestaat niet → maak aan
                 await github.rest.issues.createLabel({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -103,17 +95,4 @@ jobs:
                 issue_number: prNumber,
                 labels: [labelName]
               });
-            }
-
-            // 6️⃣ Assign PR creator als <2 reviewers en nog niet assigned
-            if (allReviewers.length < 2) {
-              const assignees = pr.assignees.map(a => a.login);
-              if (!assignees.includes(prCreator)) {
-                await github.rest.issues.addAssignees({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: prNumber,
-                  assignees: [prCreator]
-                });
-              }
             }
