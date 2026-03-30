@@ -9,7 +9,7 @@ We are a team working together to build an awesome game using **Godot** and a st
 
 [Add a short description of your game here]
 
-* **Genre:**
+* **Genre:** roguelike, dungeon crawler
 * **Core gameplay:**
 * **Goal:**
 
