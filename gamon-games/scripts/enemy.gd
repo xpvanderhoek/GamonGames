@@ -4,7 +4,7 @@ class_name Enemy
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 
-const SPEED = 100.0
+const SPEED = 200.0
 
 @export var encounter_enemies: Array[PackedScene] = []
 
