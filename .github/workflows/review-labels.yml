@@ -1,0 +1,61 @@
+name: Update Review Labels
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  update-review-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update review label with reviewers
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const pr = context.payload.pull_request;
+
+            // 1️⃣ Haal alle reviews op
+            const reviews = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+
+            // 2️⃣ Pak laatste review van elke reviewer
+            const latestReviews = {};
+            for (const review of reviews.data) {
+              latestReviews[review.user.login] = review.state;
+            }
+
+            // 3️⃣ Haal alleen approvals
+            const approvers = Object.entries(latestReviews)
+              .filter(([_, state]) => state === "APPROVED")
+              .map(([user, _]) => user);
+
+            // 4️⃣ Label text maken
+            let labelName = "";
+            if (approvers.length === 0) {
+              labelName = "needs-review";
+            } else {
+              labelName = `reviewed: ${approvers.join(", ")}`;
+            }
+
+            // 5️⃣ Verwijder oude review labels (alle labels die met "reviewed:" beginnen)
+            const oldLabels = pr.labels.map(l => l.name).filter(n => n.startsWith("reviewed:") || n === "needs-review");
+            if (oldLabels.length > 0) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                name: oldLabels
+              });
+            }
+
+            // 6️⃣ Voeg nieuwe label toe
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              labels: [labelName]
+            });
