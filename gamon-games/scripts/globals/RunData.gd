@@ -2,6 +2,9 @@ extends Node
 
 const BASIC_ATTACK = preload("res://resources/combat_spells/basic_attack.tres")
 const HEAVY_STRIKE = preload("res://resources/combat_spells/heavy_strike.tres")
+const BUFF = preload("res://resources/combat_spells/buff.tres")
+const DEBUFF = preload("res://resources/combat_spells/debuff.tres")
+const HEAL = preload("res://resources/combat_spells/heal.tres")
 
 var random_seed : int = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
@@ -65,6 +68,9 @@ func new_run():
 	current_exp = 0
 	add_spell(BASIC_ATTACK)
 	add_spell(HEAVY_STRIKE)
+	add_spell(BUFF)
+	add_spell(DEBUFF)
+	add_spell(HEAL)
 
 func add_item(item: Resource) -> bool:
 	if not (item is ItemData):

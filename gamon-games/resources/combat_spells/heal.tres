@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://dk62nox513ghx"]
+
+[ext_resource type="Texture2D" uid="uid://3s1eub7j1jku" path="res://Assets/Placeholders/enemies/buff_shaman_passive.png" id="1_66n7y"]
+[ext_resource type="Script" uid="uid://duq2aywoty7u5" path="res://Scripts/combat/spellData.gd" id="1_spelldata"]
+
+[resource]
+script = ExtResource("1_spelldata")
+spell_id = "heal"
+spell_name = "heal"
+spell_type = 3
+icon = ExtResource("1_66n7y")
+heal_amount = 25

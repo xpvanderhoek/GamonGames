@@ -5,9 +5,9 @@
 
 [resource]
 script = ExtResource("1_spelldata")
-damage = 5
-weight = 100.0
 spell_id = "basic_attack"
 spell_name = "Basic Attack"
+damage = 5
+weight = 100.0
 vfx_scene = ExtResource("2_vfx")
 vfx_lifetime = 1.0

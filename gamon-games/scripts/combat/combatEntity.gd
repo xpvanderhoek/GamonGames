@@ -9,9 +9,11 @@ var is_alive: bool = true
 var _hovered_limbs: Array[CombatLimb] = []
 var _highlighted_limb: CombatLimb = null
 var _aoe_highlighted_limbs: Array[CombatLimb] = [] 
+var _group_highlighted_limbs: Array[CombatLimb] = []
 
 var block_click_emit: bool = false
 var single_highlight_enabled: bool = true
+var whole_enemy_highlight_enabled: bool = false
 
 signal entity_died(entity: CombatEntity)
 signal entity_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int)
@@ -46,9 +48,7 @@ func _on_limb_mouse_exited(limb: CombatLimb) -> void:
 
 func _refresh_highlight() -> void:
 	if not single_highlight_enabled:
-		if _highlighted_limb != null:
-			_highlighted_limb.set_unhighlighted()
-			_highlighted_limb = null
+		_clear_current_highlight_visuals()
 		return
 
 	var top_limb: CombatLimb = null
@@ -56,24 +56,51 @@ func _refresh_highlight() -> void:
 		if top_limb == null or limb.get_index() > top_limb.get_index():
 			top_limb = limb
 
+	if whole_enemy_highlight_enabled:
+		if top_limb == null:
+			_clear_current_highlight_visuals()
+			return
+
+		if top_limb == _highlighted_limb and not _group_highlighted_limbs.is_empty():
+			return
+
+		_clear_current_highlight_visuals()
+		_highlighted_limb = top_limb
+		for limb in limbs:
+			if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
+				limb.set_highlighted()
+				_group_highlighted_limbs.append(limb)
+		return
+
 	if top_limb == _highlighted_limb:
 		return
 
-	if _highlighted_limb != null:
-		_highlighted_limb.set_unhighlighted()
+	_clear_current_highlight_visuals()
 	_highlighted_limb = top_limb
 	if _highlighted_limb != null:
 		_highlighted_limb.set_highlighted()
 
-func clear_current_highlight() -> void:
-	_hovered_limbs.clear()
+func _clear_current_highlight_visuals() -> void:
 	if _highlighted_limb != null:
 		_highlighted_limb.set_unhighlighted()
 		_highlighted_limb = null
 
+	for limb in _group_highlighted_limbs:
+		if limb != null and is_instance_valid(limb):
+			limb.set_unhighlighted()
+	_group_highlighted_limbs.clear()
+
+func clear_current_highlight() -> void:
+	_hovered_limbs.clear()
+	_clear_current_highlight_visuals()
+
 func set_targeting_enabled(enabled: bool) -> void:
+	set_targeting_mode(enabled, false)
+
+func set_targeting_mode(enabled: bool, highlight_whole_enemy: bool = false) -> void:
 	block_click_emit = not enabled
 	single_highlight_enabled = enabled
+	whole_enemy_highlight_enabled = enabled and highlight_whole_enemy
 	if not enabled:
 		clear_current_highlight()
 		return
@@ -127,6 +154,7 @@ func take_damage_all(target_limbs: Array[CombatLimb], amount: int) -> void:
 func _on_limb_destroyed(limb: CombatLimb) -> void:
 	_hovered_limbs.erase(limb)
 	_aoe_highlighted_limbs.erase(limb)
+	_group_highlighted_limbs.erase(limb)
 	if _highlighted_limb == limb:
 		_highlighted_limb = null
 		_refresh_highlight()
@@ -138,6 +166,7 @@ func die() -> void:
 		return
 	is_alive = false
 	_hovered_limbs.clear()
+	_group_highlighted_limbs.clear()
 	clear_aoe_preview()
 	if _highlighted_limb != null:
 		_highlighted_limb.set_unhighlighted()
