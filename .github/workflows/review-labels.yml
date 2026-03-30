@@ -17,6 +17,8 @@ jobs:
             const prNumber = context.payload.pull_request.number;
             const pr = context.payload.pull_request;
 
+            const prCreator = pr.user.login;
+
             // 1️⃣ Haal alle reviews op
             const reviews = await github.rest.pulls.listReviews({
               owner: context.repo.owner,
@@ -27,21 +29,21 @@ jobs:
             // 2️⃣ Laatste review per reviewer
             const latestReviews = {};
             for (const review of reviews.data) {
-              latestReviews[review.user.login] = review.state;
+              if (review.user.login !== prCreator) { // PR-maker filteren
+                latestReviews[review.user.login] = review.state;
+              }
             }
 
             const allReviewers = Object.keys(latestReviews);
             const approvers = Object.values(latestReviews).filter(s => s === "APPROVED");
             const requestedChanges = Object.values(latestReviews).filter(s => s === "CHANGES_REQUESTED");
 
-            // 3️⃣ Beslis over label
+            // 3️⃣ Bepaal label
             let labelName = "";
 
             if (allReviewers.length < 2) {
-              // Minder dan 2 reviewers → keep needs-review
               labelName = "needs-review";
             } else {
-              // 2 of meer reviewers → status-label
               if (requestedChanges.length > 0) {
                 labelName = `review-status: 🔴 ${requestedChanges.length} requested change(s)`;
               } else if (approvers.length >= 2) {
