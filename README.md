@@ -31,7 +31,7 @@ We use **GitHub** to collaborate efficiently and maintain code quality.
 ### ✅ Code Reviews
 
 * Each PR must be approved by **at least 2 people**.
-* Reviews are expected to be **critical and constructive** — quality matters!
+* Reviews are expected to be **critical and constructive**
 
 ---
 
