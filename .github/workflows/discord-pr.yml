@@ -1,14 +1,31 @@
-name: Discord Forum PR Notifier
+name: Discord PR Notifier
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send PR notification to Discord
+      - name: Check merge conflicts
+        run: |
+          MERGEABLE_STATE="${{ github.event.pull_request.mergeable_state }}"
+          if [ "$MERGEABLE_STATE" != "clean" ]; then
+            echo "⚠️ PR heeft nog steeds een merge conflict, geen notificatie"
+            exit 0
+          fi
+
+
+      - name: Check if already notified
+        uses: actions/github-script@v7
+        id: check_label
+        with:
+          script: |
+            const labels = context.payload.pull_request.labels.map(l => l.name)
+            return labels.includes("discord-notified")
+      - name: Send Discord notification
+        if: steps.check_label.outputs.result == 'false'
         run: |
           PR_TITLE="${{ github.event.pull_request.title }}"
           PR_URL="${{ github.event.pull_request.html_url }}"
@@ -34,3 +51,9 @@ jobs:
               ]
             }" \
             "${{ secrets.DISCORD_WEBHOOK }}"
+
+      - name: Add notified label
+        if: steps.check_label.outputs.result == 'false'
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: discord-notified
