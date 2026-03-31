@@ -106,11 +106,6 @@ func _register_enemy_entity(entity: CombatEntity) -> void:
 	if not enemy_targeting_changed.is_connected(on_targeting_changed):
 		enemy_targeting_changed.connect(on_targeting_changed)
 	entity.set_targeting_enabled(_enemy_targeting_enabled)
-	
-	#var on_limb_hovered := Callable(self, "_on_enemy_limb_hovered").bind(entity)
-	#if not entity.has_signal("limb_hovered"):
-		#print("Warning: CombatEntity has no limb_hovered signal!")
-	#entity.connect("limb_hovered", on_limb_hovered)
 
 func _get_alive_enemies() -> Array[CombatEntity]:
 	var alive_enemies: Array[CombatEntity] = []
@@ -378,9 +373,4 @@ func _format_turn_name(entity: CombatEntity) -> String:
 	if raw_name.is_empty():
 		return "Enemy"
 
-	return raw_name.capitalize()
-	
-#func _on_enemy_limb_hovered(limb: CombatLimb, entity: CombatEntity) -> void:
-	#print("Hovering over limb:", limb.limb_name)
-	#print("HP:", limb.current_health, "/", limb.max_health)
-	#print("Hit chance:", limb.hit_chance_percent)	
+	return raw_name.capitalize()	

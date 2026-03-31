@@ -42,9 +42,7 @@ func _on_limb_mouse_entered(limb: CombatLimb) -> void:
 		return
 	if not limb in _hovered_limbs:
 		_hovered_limbs.append(limb)
-	_refresh_highlight()
-	
-	#emit_signal("limb_hovered", limb) 
+	_refresh_highlight() 
 	
 	if _highlighted_limb != null and limb_stats_panel != null:
 		limb_stats_panel.show_limb_stats(_highlighted_limb)
@@ -53,7 +51,6 @@ func _on_limb_mouse_exited(limb: CombatLimb) -> void:
 	_hovered_limbs.erase(limb)
 	_refresh_highlight()
 	
-	#emit_signal("limb_exited", limb)
 	
 	if limb_stats_panel != null:
 		if _highlighted_limb != null:
