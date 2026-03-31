@@ -3,8 +3,7 @@ extends Node
 
 @export var turn_order_icon: Texture2D
 
-@onready var limb_stats_panel = get_node("/root/Game/Combat/UI/LimbStatsPanel") as Panel
-
+var limb_stats_panel: Node = null
 var limbs: Array[CombatLimb] = []
 var is_alive: bool = true
 
@@ -18,8 +17,6 @@ var single_highlight_enabled: bool = true
 signal entity_died(entity: CombatEntity)
 signal entity_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int)
 signal highlighted_limb_clicked(limb: CombatLimb)
-signal limb_hovered(limb: CombatLimb)
-signal limb_exited(limb: CombatLimb)
 
 var exp_reward: int = 50
 

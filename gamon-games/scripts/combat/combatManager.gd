@@ -22,6 +22,7 @@ enum CombatAction {
 @export var turns_order_row_height: float = 24.0
 @export var turns_order_min_visible_rows: int = 8
 @export var player_max_health: int = 100
+@onready var limb_stats_panel = $UI/LimbStatsPanel
 
 var current_state: CombatState = CombatState.PLAYER_TURN
 var selected_action: CombatAction = CombatAction.ATTACK
@@ -93,6 +94,7 @@ func _refresh_enemy_entities() -> void:
 
 func _register_enemy_entity(entity: CombatEntity) -> void:
 	enemy_entities.append(entity)
+	entity.limb_stats_panel = limb_stats_panel
 
 	var on_died := Callable(self, "_on_enemy_died")
 	if not entity.entity_died.is_connected(on_died):
