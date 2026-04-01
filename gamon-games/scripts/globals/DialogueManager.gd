@@ -5,7 +5,7 @@ var dialogue_ui: Node = null
 var pending_dialogue_key = null
 
 const DIALOGUE_JSON_PATH := "res://data/dialogue.json"
-const DIALOGUE_UI_SCENE := "res://Scenes/UI/dialogueUI.tscn"
+const DIALOGUE_UI_SCENE := "res://scenes/UI/dialogueUI.tscn"
 
 func _ready() -> void:
 	_load_dialogue_json()

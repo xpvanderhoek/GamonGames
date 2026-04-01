@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://1pnpqphwnw6"]
 
-[ext_resource type="Script" uid="uid://hdi431gbav0r" path="res://Scripts/room.gd" id="1_wodat"]
-[ext_resource type="Texture2D" uid="uid://cca2l2h30t6we" path="res://Assets/room_tiles/floor_tiles/Ground_tileset.png" id="2_nsq00"]
-[ext_resource type="PackedScene" uid="uid://c53jm5tnw6doc" path="res://Scenes/door.tscn" id="3_21tkn"]
-[ext_resource type="Texture2D" uid="uid://cb3823ad0weff" path="res://Assets/room_tiles/walls_tiles/Walls.png" id="3_a0jlh"]
+[ext_resource type="Script" uid="uid://hdi431gbav0r" path="res://scripts/room.gd" id="1_wodat"]
+[ext_resource type="Texture2D" uid="uid://cca2l2h30t6we" path="res://assets/room_tiles/floor_tiles/Ground_tileset.png" id="2_nsq00"]
+[ext_resource type="PackedScene" uid="uid://c53jm5tnw6doc" path="res://scenes/door.tscn" id="3_21tkn"]
+[ext_resource type="Texture2D" uid="uid://cje3pl4kqpwew" path="res://assets/room_tiles/walls_tiles/Walls.png" id="3_a0jlh"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_a0jlh"]
 vertices = PackedVector2Array(-1164.9922, -2816.3984, 2385.2969, -735.9375, 1139.3828, 2.3984375, -1203.8203, 1391.0234, -2415.9922, 2109.3672, -4202.8984, 1049.3984, -5953.422, -1.8984375, -4738.8516, -715.78906, -2416.4688, -2080.8203, 3395.539, 1324.1797, 1071.9219, 2747.3125, 3437.1719, 1356.7891, 5975.6016, 2891.9531, 1195.7891, 5751.8438, 1478.4063, 2619.4063, -1229.8281, 4354.7734, -13238.141, 1383.2422, -19130.617, -2156.0234, -15656.953, -4256.3438, -12106.047, -2144.3906, -12029.117, 615.22656, 1214.9063, 10039.328, -4792.8438, 6499.672, -3584.0313, 5731.797, 4689.9063, 7920.922, -9698.141, -729.8281, -7211.117, -5004.3516, -7289.117, -2235.7188, -2501.1328, -2130.4219)

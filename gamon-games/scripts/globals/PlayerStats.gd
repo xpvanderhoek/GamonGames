@@ -2,7 +2,7 @@ extends Node
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh
-	"damage": 20,      # Anatomy Mastery
+	"damage": 1000,      # Anatomy Mastery
 	"precision": 100.0,       # Steady Hand
 	"gold_gain": 1.0,         # Scavenger's Eye
 	"debuff_resistance": 10.0, # Iron Will

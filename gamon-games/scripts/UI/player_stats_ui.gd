@@ -6,12 +6,8 @@ extends Control
 
 func _ready():
 	stats_panel.visible = false
+	print("I EXIST")
 	stats_button.connect("pressed", Callable(self, "_on_stats_button_pressed"))
-
-func _on_stats_button_pressed():
-	stats_panel.visible = !stats_panel.visible
-	if stats_panel.visible:
-		update_stats_display()
 
 func update_stats_display():
 	if stats_container == null:
@@ -27,3 +23,10 @@ func update_stats_display():
 		var label = Label.new()
 		label.text = "%s: %.2f (Level %d)" % [stat_name.capitalize().replace("_", " "), value, upgrade_level]
 		stats_container.add_child(label)
+
+
+func _on_button_show_stats_pressed() -> void:
+	stats_panel.visible = !stats_panel.visible
+	if stats_panel.visible:
+		update_stats_display()
+	print("Pressed button")
