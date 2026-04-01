@@ -23,9 +23,11 @@ CurrenciesManager="*uid://bwnahuxrnyn6o"
 AnimationManager="*uid://car5ovidbulrc"
 RunData="*uid://v8oh1j7mo6xp"
 PlayerStats="*uid://blaa2ldagphrn"
+DialogueManager="*uid://cdsxgwq8b0vwp"
 
 [display]
 
+window/size/mode=2
 window/stretch/mode="canvas_items"
 
 [global_group]
