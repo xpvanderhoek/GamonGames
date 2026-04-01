@@ -1,6 +1,4 @@
 extends Node
-#TODO: reset to 0 when done testing/before playtest
-var marrow_shards: int = 10000
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh
@@ -34,9 +32,6 @@ var upgrade_costs = {
 	"defence": {"min": 100, "max": 1000},
 	"luck": {"min": 200, "max": 1200}
 }
-
-func get_marrow_shards_amount() -> int:
-	return marrow_shards
 
 func get_stat_value(stat_name: String) -> float:
 	if stat_name in stats:
