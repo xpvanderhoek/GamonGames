@@ -1,8 +1,6 @@
 extends Resource
 class_name MetaStats
 
-@export var marrow_shards: int = 0
-
 # Permanent Upgrades (outside the runs themselves)
 @export var hardened_flesh_lvl: int = 0
 @export var anatomy_mastery_lvl: int = 0
