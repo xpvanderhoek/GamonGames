@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://b1r88pxgxdvwr"]
 
-[ext_resource type="Texture2D" uid="uid://dim5whrucywck" path="res://assets/Placeholders/ui/expense.png" id="3_hm1fm"]
-[ext_resource type="Texture2D" uid="uid://dtcu7calhpdkj" path="res://assets/Placeholders/knight1_1_claymore.png" id="3_rnhwr"]
-[ext_resource type="Texture2D" uid="uid://b20rc02418rtg" path="res://assets/Placeholders/ui/run.png" id="4_smy72"]
-[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="5_xc4ib"]
-[ext_resource type="Script" uid="uid://bijf4wmi0sjds" path="res://scripts/UI/LimbStatsPanel.gd" id="6_smy72"]
-[ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://scripts/combat/combatManager.gd" id="7_mgr"]
+[ext_resource type="Texture2D" uid="uid://dim5whrucywck" path="res://Assets/Placeholders/ui/expense.png" id="3_hm1fm"]
+[ext_resource type="Texture2D" uid="uid://fp36e4p1kdhp" path="res://Assets/Placeholders/knight1_1_claymore.png" id="3_rnhwr"]
+[ext_resource type="Texture2D" uid="uid://b20rc02418rtg" path="res://Assets/Placeholders/ui/run.png" id="4_smy72"]
+[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://Assets/Placeholders/ui/bowie-knife.png" id="5_xc4ib"]
+[ext_resource type="Script" uid="uid://bijf4wmi0sjds" path="res://Scripts/UI/LimbStatsPanel.gd" id="6_smy72"]
+[ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://Scripts/combat/combatManager.gd" id="7_mgr"]
 
 [sub_resource type="Theme" id="Theme_rnhwr"]
 

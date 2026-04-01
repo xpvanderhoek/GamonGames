@@ -54,9 +54,6 @@ func _on_level_changed(new_level: int) -> void:
 
 	last_level = new_level
 
-
-
-
 func _on_exp_changed(new_exp: int) -> void:
 	exp_label.text = "Current exp: " + str(new_exp)
 
