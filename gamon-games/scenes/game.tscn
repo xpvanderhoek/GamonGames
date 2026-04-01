@@ -69,4 +69,3 @@ scale = Vector2(1.5, 2)
 [node name="UpgradeScreen" parent="CanvasLayer" unique_id=889918390 instance=ExtResource("4_3dryh")]
 
 [node name="PlayerStatsUI" parent="CanvasLayer" unique_id=323042381 instance=ExtResource("8_v158k")]
-script = null
