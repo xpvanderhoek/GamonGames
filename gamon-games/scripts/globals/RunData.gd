@@ -52,11 +52,9 @@ signal coins_changed(new_amount)
 signal health_changed(new_amount)
 signal exp_changed(new_amount)
 signal level_changed(new_amount)
-<<<<<<< HEAD
 signal marrow_shards_changed(new_amount)
-=======
 signal time_remaining_changed(new_amount)
->>>>>>> main
+
 
 func new_run():
 	random_seed = randi()
