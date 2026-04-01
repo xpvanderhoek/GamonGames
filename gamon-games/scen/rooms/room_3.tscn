@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://rjx4ej7ypvu2"]
+
+[ext_resource type="PackedScene" uid="uid://c53jm5tnw6doc" path="res://scen/door.tscn" id="2_u63ts"]
+
+[node name="Room3" type="Node2D" unique_id=2112896940]
+
+[node name="Door" parent="." unique_id=395606353 instance=ExtResource("2_u63ts")]
+position = Vector2(90, 377)
+
+[node name="Label" type="Label" parent="." unique_id=446355347]
+offset_left = 402.0
+offset_top = 18.0
+offset_right = 601.0
+offset_bottom = 87.0
+theme_override_font_sizes/font_size = 50
+text = "ROOM 3"
+
+[node name="SpawnPoint" type="Marker2D" parent="." unique_id=526655698]
+position = Vector2(101, 95)

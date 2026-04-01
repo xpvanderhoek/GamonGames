@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://crhxl5b2q35f5"]
+
+[ext_resource type="Script" uid="uid://bngpt3prf6s3c" path="res://scrip/skilltree/skilldata.gd" id="1_1fhex"]
+[ext_resource type="Texture2D" uid="uid://bhw5v8m453e43" path="res://asset/skilltreepng.webp" id="2_j7fwb"]
+
+[resource]
+script = ExtResource("1_1fhex")
+skill_name = "Scavengers Eye"
+min_cost = 400
+max_cost = 2000
+max_level = 5
+texture = ExtResource("2_j7fwb")
+tooltip_text = "Increases base defense by +5% per level"
