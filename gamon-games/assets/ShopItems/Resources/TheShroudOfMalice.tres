@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BuffItemData" format=3]
+
+[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://5sh8rx0wqalw" path="res://assets/ShopItems/Textures/TempSword.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_script")
+item_name = "The Shroud of Malice"
+effect = "Reflect 50% damage taken as Shadow"
+lore = "Hatred is the best armor."
+category = "Tier III"
+texture = ExtResource("2_texture")
+cost = 95
+target_limb = "None"
+buff_type = "Defense"
+buff_value = 0.0

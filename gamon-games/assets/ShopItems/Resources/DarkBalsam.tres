@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ConsumableItemData" format=3]
+
+[ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://scripts/Items/ConsumableItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dxgr24vgajdtf" path="res://assets/ShopItems/Textures/TempPot.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_script")
+item_name = "Dark Balsam"
+effect = "Restores 35 HP instantly"
+lore = "A bitter sludge that closes wounds with scar tissue."
+category = "Tier II"
+texture = ExtResource("2_texture")
+cost = 35
+target_limb = "Self"
+buff_type = "HP_Max"
+buff_value = 35.0

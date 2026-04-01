@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BuffItemData" format=3]
+
+[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bdqm853dq7egq" path="res://assets/ShopItems/Textures/TempBoots.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_script")
+item_name = "Withered Achilles Heel"
+effect = "Breaking a Leg applies 3x Vulnerable"
+lore = "A single crack can bring down a giant."
+category = "Tier III"
+texture = ExtResource("2_texture")
+cost = 90
+target_limb = "Leg"
+buff_type = "Defense"
+buff_value = 0.0
+status_to_apply = "Vulnerable"
