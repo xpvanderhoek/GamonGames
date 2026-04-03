@@ -2,6 +2,7 @@ extends Node
 
 const scene_room1 = "res://scenes/rooms/room_1.tscn"
 const scene_room2 = "res://scenes/rooms/room_2.tscn"
+const scene_room_limbo = "res://scenes/rooms/room_limbo.tscn"
 const scene_room_end= "res://scenes/rooms/room_end.tscn"
 
 @onready var rooms : Array[String] = [scene_room1, scene_room2]
@@ -26,7 +27,7 @@ func get_new_random_room() -> String:
 	var random_index = RunData.rng.randi_range(0, possible_rooms.size() - 1) # Choose random room that has not been entered during the current run yet.
 	var random_room = possible_rooms[random_index]
 
-	return random_room
+	return scene_room_limbo
 
 func go_to_room(room : String):
 	TransitionManager.call_deferred("transition_room", room, 0)
