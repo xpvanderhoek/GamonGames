@@ -3,6 +3,7 @@ extends Node
 var dialogue_data: Dictionary = {}
 var dialogue_ui: Node = null
 var pending_dialogue_key = null
+var is_in_dialogue: bool = false
 
 signal dialogue_finished
 
@@ -48,9 +49,14 @@ func start_dialogue(key: String) -> void:
 		push_error("Dialogue key not found: %s" % key)
 		return
 
+	is_in_dialogue = true
 	dialogue_ui.show()
+	print("before the talking")
 	await dialogue_ui.start_dialogue(dialogue_data[key])
+	print("after the talking, emit should happen now")
+	is_in_dialogue = false
 	dialogue_finished.emit()
+
 
 func has_dialogue(key: String) -> bool:
 	return dialogue_data.has(key)

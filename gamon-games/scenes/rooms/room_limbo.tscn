@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://2n4e6gskd1t8"]
 
-[ext_resource type="Script" path="res://scripts/room_limbo.gd" id="1_vcmus"]
+[ext_resource type="Script" uid="uid://du3g5v56pgcwk" path="res://scripts/room_limbo.gd" id="1_vcmus"]
 [ext_resource type="PackedScene" uid="uid://ew7uh7db1pnq" path="res://scenes/shaders/fog.tscn" id="2_4qcdk"]
 [ext_resource type="PackedScene" uid="uid://c53jm5tnw6doc" path="res://scenes/door.tscn" id="2_ceyxr"]
-[ext_resource type="Script" path="res://scripts/door_limbo.gd" id="4_parfc"]
+[ext_resource type="Script" uid="uid://bgbmqump2v32n" path="res://scripts/door_limbo.gd" id="4_parfc"]
 [ext_resource type="Texture2D" uid="uid://bgghk116s6pl4" path="res://assets/Placeholders/bettersheet.png" id="4_vcmus"]
 [ext_resource type="Texture2D" uid="uid://cca2l2h30t6we" path="res://assets/room_tiles/floor_tiles/Ground_tileset.png" id="5_parfc"]
 [ext_resource type="Texture2D" uid="uid://cje3pl4kqpwew" path="res://assets/room_tiles/walls_tiles/Walls.png" id="6_0kt2b"]
@@ -3339,7 +3339,6 @@ sources/0 = SubResource("TileSetAtlasSource_pe4d2")
 
 [node name="RoomLimbo" type="Node2D" unique_id=1108363590]
 script = ExtResource("1_vcmus")
-metadata/_custom_type_script = "uid://hdi431gbav0r"
 
 [node name="Fog" parent="." unique_id=1527500878 instance=ExtResource("2_4qcdk")]
 
@@ -3373,5 +3372,7 @@ tile_set = SubResource("TileSet_5qci1")
 [node name="Ghost" parent="." unique_id=122529656 instance=ExtResource("8_0kt2b")]
 position = Vector2(-4797, -193)
 scale = Vector2(6, 6)
+
+[connection signal="open_portal" from="Ghost" to="." method="_on_ghost_open_portal"]
 
 [editable path="Doors/Door"]

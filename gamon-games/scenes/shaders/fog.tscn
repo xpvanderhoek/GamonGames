@@ -21,6 +21,7 @@ shader_parameter/speed = Vector2(0.02, 0.01)
 [node name="Fog" type="CanvasLayer" unique_id=1527500878]
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=1656977623]
+scroll_scale = Vector2(1.1, 1.1)
 repeat_size = Vector2(1152, 648)
 repeat_times = 40
 

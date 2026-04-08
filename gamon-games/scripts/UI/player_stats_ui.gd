@@ -6,7 +6,6 @@ extends Control
 
 func _ready():
 	stats_panel.visible = false
-	print("I EXIST")
 	stats_button.connect("pressed", Callable(self, "_on_stats_button_pressed"))
 
 func update_stats_display():
