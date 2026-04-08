@@ -4,8 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://fp36e4p1kdhp" path="res://Assets/Placeholders/knight1_1_claymore.png" id="3_rnhwr"]
 [ext_resource type="Texture2D" uid="uid://b20rc02418rtg" path="res://Assets/Placeholders/ui/run.png" id="4_smy72"]
 [ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://Assets/Placeholders/ui/bowie-knife.png" id="5_xc4ib"]
-[ext_resource type="Script" uid="uid://bijf4wmi0sjds" path="res://Scripts/UI/LimbStatsPanel.gd" id="6_smy72"]
+[ext_resource type="Script" path="res://Scripts/UI/LimbStatsPanel.gd" id="6_smy72"]
 [ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://Scripts/combat/combatManager.gd" id="7_mgr"]
+[ext_resource type="Texture2D" uid="uid://bap2ra8mho357" path="res://Assets/combat_assets/dungeon_background.png" id="7_xc4ib"]
 
 [sub_resource type="Theme" id="Theme_rnhwr"]
 
@@ -62,34 +63,37 @@ script = ExtResource("7_mgr")
 [node name="UI" type="CanvasLayer" parent="." unique_id=-2003117295]
 layer = 5
 
-[node name="Background" type="ColorRect" parent="UI" unique_id=210930707]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -66.0
-offset_top = 15.0
-offset_right = -66.0
-offset_bottom = 15.0
+[node name="TextureRect" type="TextureRect" parent="UI" unique_id=2110065012]
+anchors_preset = -1
+anchor_left = -0.6111111
+anchor_top = -0.6111111
+anchor_right = 1.6111112
+anchor_bottom = 1.6111112
+offset_left = 704.0
+offset_top = 396.0
+offset_right = -704.0
+offset_bottom = -396.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
-
-[node name="Camera2D" type="Camera2D" parent="UI" unique_id=991902612]
-position = Vector2(794.5, 302)
+texture = ExtResource("7_xc4ib")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Player" type="Sprite2D" parent="UI" unique_id=888851307]
-position = Vector2(152.5, 519)
-scale = Vector2(1.4130435, 1.4130434)
+position = Vector2(95.000015, 544)
+scale = Vector2(1.692029, 1.7238382)
 texture = ExtResource("3_rnhwr")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI" unique_id=1990503357]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -111.0
-offset_right = 111.0
-offset_bottom = 330.0
+anchors_preset = -1
+anchor_left = 0.26649305
+anchor_top = 0.7347902
+anchor_right = 0.45451388
+anchor_bottom = 0.80200005
+offset_left = -94.0
+offset_top = -278.14404
+offset_right = 51.399994
+offset_bottom = 54.304016
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -98,17 +102,17 @@ mouse_behavior_recursive = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="PlayerHealth" type="Label" parent="UI" unique_id=168058055]
-offset_left = 143.0
-offset_top = 324.0
-offset_right = 252.0
-offset_bottom = 360.0
+offset_left = 29.0
+offset_top = 326.0
+offset_right = 138.0
+offset_bottom = 362.0
 text = "HP: 0/0"
 
 [node name="BtnItem" type="Button" parent="UI" unique_id=428309001]
-offset_left = 281.0
-offset_top = 439.0
-offset_right = 361.0
-offset_bottom = 519.0
+offset_left = 314.0
+offset_top = 556.0
+offset_right = 394.0
+offset_bottom = 636.0
 theme = SubResource("Theme_rnhwr")
 theme_type_variation = &"FlatButton"
 theme_override_font_sizes/font_size = 53
@@ -120,10 +124,10 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_4voa6")
 disabled = true
 
 [node name="BtnRun" type="Button" parent="UI" unique_id=1844448036]
-offset_left = 256.0
-offset_top = 528.0
-offset_right = 336.0
-offset_bottom = 608.0
+offset_left = 225.0
+offset_top = 550.0
+offset_right = 305.0
+offset_bottom = 630.0
 theme = SubResource("Theme_rnhwr")
 theme_type_variation = &"FlatButton"
 theme_override_font_sizes/font_size = 53
@@ -135,10 +139,10 @@ disabled = true
 icon = ExtResource("4_smy72")
 
 [node name="BtnAttack" type="Button" parent="UI" unique_id=2114013527]
-offset_left = 259.0
-offset_top = 355.0
-offset_right = 339.0
-offset_bottom = 435.0
+offset_left = 410.0
+offset_top = 556.0
+offset_right = 490.0
+offset_bottom = 636.0
 theme = SubResource("Theme_rnhwr")
 theme_type_variation = &"FlatButton"
 theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
@@ -202,3 +206,6 @@ layout_mode = 2
 
 [node name="LabelHitChance" type="Label" parent="UI/LimbStatsPanel/VBoxContainer" unique_id=1695640819]
 layout_mode = 2
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=991902612]
+position = Vector2(551, 291)
