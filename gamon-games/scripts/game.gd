@@ -140,7 +140,8 @@ func _input(event):
 		 
 	if event.is_action("ui_text_delete_word"):
 		DialogueManager.start_dialogue("intro")
-	# Debug for now, because limbo world doesn't exist yet
+	
+	# Debug for now, because limbo world doesn't exist
 	if event.is_action_pressed("open_skill_tree_debug"):
 		_toggle_skill_tree()
 
@@ -148,7 +149,6 @@ func _process(delta: float) -> void:
 	RunData.update_timer(delta)
 
 func _setup_skill_tree_overlay() -> void:
-	"""Create and setup the skill tree overlay in a CanvasLayer"""
 	var skill_tree_scene = load("res://scenes/skilltree/skill_tree_screen.tscn")
 	skill_tree_overlay = skill_tree_scene.instantiate()
 	
