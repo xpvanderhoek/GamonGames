@@ -95,6 +95,9 @@ func add_item(item: Resource) -> bool:
 
 func get_stat(buff_type : String):
 	var total = PlayerStats.stats[buff_type]
+	if total == null:
+		print ("Speed is giving null")
+		return
 	for item in items:
 		if item.buff_type.to_lower() == buff_type.to_lower():
 			total += item.buff_value

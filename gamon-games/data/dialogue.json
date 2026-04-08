@@ -5,12 +5,8 @@
     {"speaker": "Player", "text": "It works!"}
   ],
   "limbo_intro": [
-	  {"speaker": "YOU", "text": "Ugh... w-... where am I?"},
-	  {"speaker": "YOU", "text": "Am I... dead?"},
-	  {"speaker": "???", "text": "Not quite!"},
-	  {"speaker": "YOU", "text": "Who was that? Where did that come from?"},
-	  {"speaker": "YOU", "text": "Reveal yourself this instant! Where have you taken me?!"},
-	  {"speaker": "???", "text": "Alright alright, calm down. No need to get all fiesty. You wouldn't be able to harm me, even if you tried your hardest, y'know?"},
+	  {"speaker": "YOU", "text": "Identify yourself! Who are you? And where am I?"},
+	  {"speaker": "???", "text": "Woah, calm down! No need to get all fiesty. You wouldn't be able to harm me, even if you tried your hardest, y'know? Being a ghost, and all."},
 	  {"speaker": "YOU", "text": "What? A ghost? So I really am dead aren't I...?"},
 	  {"speaker": "GHOST", "text": "Again, not quite! You seem to be in LIMBO"},
 	  {"speaker": "YOU", "text": "LIMBO?"},

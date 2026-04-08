@@ -1,5 +1,7 @@
 extends Node
 
+var knows_ghost : bool = false
+
 var stats = {
 	"health": 100.0,          # Hardened Flesh
 	"damage": 1000,      # Anatomy Mastery

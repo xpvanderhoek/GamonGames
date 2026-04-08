@@ -4,6 +4,8 @@ var dialogue_data: Dictionary = {}
 var dialogue_ui: Node = null
 var pending_dialogue_key = null
 
+signal dialogue_finished
+
 const DIALOGUE_JSON_PATH := "res://data/dialogue.json"
 const DIALOGUE_UI_SCENE := "res://scenes/UI/dialogueUI.tscn"
 
@@ -47,7 +49,8 @@ func start_dialogue(key: String) -> void:
 		return
 
 	dialogue_ui.show()
-	dialogue_ui.start_dialogue(dialogue_data[key])
+	await dialogue_ui.start_dialogue(dialogue_data[key])
+	dialogue_finished.emit()
 
 func has_dialogue(key: String) -> bool:
 	return dialogue_data.has(key)

@@ -17,7 +17,7 @@ func _ready() -> void:
 
 func _on_start_run_btn_pressed() -> void:
 	get_tree().paused = false
-	TransitionManager.transition_room(NavigationManager.scene_room_limbo)
+	await TransitionManager.transition_room(NavigationManager.scene_room_limbo)
 	queue_free()
 
 
