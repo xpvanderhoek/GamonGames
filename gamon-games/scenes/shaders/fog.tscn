@@ -25,7 +25,8 @@ repeat_size = Vector2(1152, 648)
 repeat_times = 40
 
 [node name="ColorRect" type="ColorRect" parent="Parallax2D" unique_id=1462485947]
+z_index = 4096
 material = SubResource("ShaderMaterial_rc7ag")
 offset_right = 1152.0
 offset_bottom = 648.0
-color = Color(1, 1, 1, 0.24313726)
+color = Color(1, 1, 1, 0.38039216)

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://car332irwafr"]
+
+[ext_resource type="Script" uid="uid://q68nqexmyl8q" path="res://scripts/npc/ghost.gd" id="1_434k8"]
+[ext_resource type="Texture2D" uid="uid://bmm0652fritil" path="res://assets/Placeholders/ghost.png" id="2_klo5b"]
+
+[node name="Ghost" type="Node2D" unique_id=1417627856]
+script = ExtResource("1_434k8")
+metadata/_custom_type_script = "uid://dv00pim1t28o3"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2081916548]
+texture = ExtResource("2_klo5b")
+
+[node name="InteractableArea" type="Area2D" parent="." unique_id=1416217248]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="InteractableArea" unique_id=325747224]
+position = Vector2(-41, -2)
+polygon = PackedVector2Array(-58, 165, 131, 28, 243, 78, 53, 232)

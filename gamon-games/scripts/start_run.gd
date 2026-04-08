@@ -16,10 +16,8 @@ func _ready() -> void:
 	get_tree().paused = true
 
 func _on_start_run_btn_pressed() -> void:
-	RunData.new_run()
-	var random_room : String = NavigationManager.get_new_random_room()
 	get_tree().paused = false
-	TransitionManager.transition_room(random_room)
+	TransitionManager.transition_room(NavigationManager.scene_room_limbo)
 	queue_free()
 
 

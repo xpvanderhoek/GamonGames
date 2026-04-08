@@ -27,7 +27,7 @@ func get_new_random_room() -> String:
 	var random_index = RunData.rng.randi_range(0, possible_rooms.size() - 1) # Choose random room that has not been entered during the current run yet.
 	var random_room = possible_rooms[random_index]
 
-	return scene_room_limbo
+	return random_room
 
 func go_to_room(room : String):
 	TransitionManager.call_deferred("transition_room", room, 0)

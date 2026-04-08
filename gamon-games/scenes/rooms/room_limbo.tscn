@@ -1,11 +1,13 @@
 [gd_scene format=4 uid="uid://2n4e6gskd1t8"]
 
-[ext_resource type="Script" uid="uid://hdi431gbav0r" path="res://scripts/room.gd" id="1_jbtl5"]
+[ext_resource type="Script" path="res://scripts/room_limbo.gd" id="1_vcmus"]
 [ext_resource type="PackedScene" uid="uid://ew7uh7db1pnq" path="res://scenes/shaders/fog.tscn" id="2_4qcdk"]
 [ext_resource type="PackedScene" uid="uid://c53jm5tnw6doc" path="res://scenes/door.tscn" id="2_ceyxr"]
+[ext_resource type="Script" path="res://scripts/door_limbo.gd" id="4_parfc"]
 [ext_resource type="Texture2D" uid="uid://bgghk116s6pl4" path="res://assets/Placeholders/bettersheet.png" id="4_vcmus"]
 [ext_resource type="Texture2D" uid="uid://cca2l2h30t6we" path="res://assets/room_tiles/floor_tiles/Ground_tileset.png" id="5_parfc"]
 [ext_resource type="Texture2D" uid="uid://cje3pl4kqpwew" path="res://assets/room_tiles/walls_tiles/Walls.png" id="6_0kt2b"]
+[ext_resource type="PackedScene" uid="uid://car332irwafr" path="res://scenes/npc/ghost.tscn" id="8_0kt2b"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pe4d2"]
 texture = ExtResource("4_vcmus")
@@ -2593,6 +2595,7 @@ texture_region_size = Vector2i(688, 412)
 1:0/0 = 0
 2:0/0 = 0
 3:0/0 = 0
+3:0/0/modulate = Color(1, 1, 1, 0)
 3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -206, -344, 0, 0, 206, 344, 0)
 2:1/0 = 0
 1:1/0 = 0
@@ -3335,7 +3338,7 @@ sources/2 = SubResource("TileSetAtlasSource_w135w")
 sources/0 = SubResource("TileSetAtlasSource_pe4d2")
 
 [node name="RoomLimbo" type="Node2D" unique_id=1108363590]
-script = ExtResource("1_jbtl5")
+script = ExtResource("1_vcmus")
 metadata/_custom_type_script = "uid://hdi431gbav0r"
 
 [node name="Fog" parent="." unique_id=1527500878 instance=ExtResource("2_4qcdk")]
@@ -3352,10 +3355,12 @@ color = Color(0, 0, 0, 1)
 [node name="Doors" type="Node" parent="." unique_id=118348641]
 
 [node name="Door" parent="Doors" unique_id=89376507 instance=ExtResource("2_ceyxr")]
+script = ExtResource("4_parfc")
 
 [node name="EnemySpawns" type="Node" parent="." unique_id=1265856653]
 
 [node name="SpawnPoint" type="Marker2D" parent="." unique_id=1875689450]
+position = Vector2(-2394, 1731)
 
 [node name="Wall_tiles_base" type="TileMapLayer" parent="." unique_id=1425777322]
 y_sort_enabled = true
@@ -3364,5 +3369,9 @@ position = Vector2(0, -0.99999994)
 scale = Vector2(3.5, 3.5)
 tile_map_data = PackedByteArray("AAD9//v/AQADAAAAAAD9//z/AQADAAAAAAD8//3/AQADAAAAAAD8//7/AQADAAAAAAD7////AQADAAAAAAD7/wAAAQADAAAAAAD6/wEAAQADAAAAAAD6/wIAAQADAAAAAAD6/wMAAQADAAAAAAD7/wQAAQADAAAAAAD7/wUAAQADAAAAAAD8/wYAAQADAAAAAAD8/wcAAQADAAAAAAD9/wgAAQADAAAAAAD9/wkAAQADAAAAAAD+/woAAQADAAAAAAD+/wsAAQADAAAAAAD//wwAAQADAAAAAAD//wsAAQADAAAAAAAAAAoAAQADAAAAAAAAAAkAAQADAAAAAAABAAgAAQADAAAAAAABAAcAAQADAAAAAAACAAYAAQADAAAAAAACAAUAAQADAAAAAAADAAQAAQADAAAAAAACAAMAAQADAAAAAAACAAIAAQADAAAAAAABAAEAAQADAAAAAAABAAAAAQADAAAAAAAAAP//AQADAAAAAAAAAP7/AQADAAAAAAD///3/AQADAAAAAAD///z/AQADAAAAAAD+//v/AQADAAAAAAA=")
 tile_set = SubResource("TileSet_5qci1")
+
+[node name="Ghost" parent="." unique_id=122529656 instance=ExtResource("8_0kt2b")]
+position = Vector2(-4797, -193)
+scale = Vector2(6, 6)
 
 [editable path="Doors/Door"]

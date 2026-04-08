@@ -1,5 +1,5 @@
 class_name Interactable
-extends Node
+extends Node2D
 
 @onready var interactable_area: Area2D = $InteractableArea
 
