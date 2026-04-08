@@ -94,9 +94,20 @@ func add_item(item: Resource) -> bool:
 	return true
 
 func get_stat(buff_type : String):
-	var total = PlayerStats.stats[buff_type]
+	var stat_key := buff_type.to_lower()
+	if stat_key == "defense" or stat_key == "defence":
+		stat_key = "physical_defense"
+
+	if not PlayerStats.stats.has(stat_key):
+		push_error("Stat '%s' does not exist" % buff_type)
+		return 0
+
+	var total = PlayerStats.stats[stat_key]
 	for item in items:
-		if item.buff_type.to_lower() == buff_type.to_lower():
+		var item_buff_key := item.buff_type.to_lower()
+		if item_buff_key == "defense" or item_buff_key == "defence":
+			item_buff_key = "physical_defense"
+		if item_buff_key == stat_key:
 			total += item.buff_value
 	return total
 

@@ -8,6 +8,11 @@ enum SpellType {
 	HEAL,
 }
 
+enum DamageType {
+	PHYSICAL,
+	MAGIC,
+}
+
 enum TargetScope {
 	LIMB,
 	WHOLE_ENEMY,
@@ -24,6 +29,7 @@ enum VfxAnchor {
 @export var spell_type: SpellType = SpellType.ATTACK
 @export var target_scope: TargetScope = TargetScope.LIMB
 @export var damage: int = 0
+@export var damage_type: DamageType = DamageType.PHYSICAL
 @export_range(0.0, 100.0, 0.1) var weight: float = 1.0
 @export var icon: Texture2D
 
@@ -40,4 +46,8 @@ enum VfxAnchor {
 @export_range(-0.95, 3.0, 0.01) var outgoing_damage_multiplier_delta: float = 0.0
 @export_range(-0.95, 3.0, 0.01) var incoming_damage_multiplier_delta: float = 0.0
 @export var heal_amount: int = 0
+@export_range(-100.0, 100.0, 0.1) var player_physical_defense_delta: float = 0.0
+@export_range(-100.0, 100.0, 0.1) var player_magic_defense_delta: float = 0.0
+@export_range(-100.0, 100.0, 0.1) var target_physical_defense_delta: float = 0.0
+@export_range(-100.0, 100.0, 0.1) var target_magic_defense_delta: float = 0.0
 

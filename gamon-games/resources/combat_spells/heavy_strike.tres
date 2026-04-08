@@ -5,8 +5,9 @@
 
 [resource]
 script = ExtResource("1_spelldata")
+spell_id = "heavy_strike"
 damage = 20
+damage_type = 1
 weight = 100.0
-spell_id = "enemy.heavy_strike"
-spell_name = "Heavy Strike"
 icon = ExtResource("1_v0isw")
+player_physical_defense_delta = 100.0

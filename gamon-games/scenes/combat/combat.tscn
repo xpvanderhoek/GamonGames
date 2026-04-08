@@ -79,3 +79,17 @@ offset_left = 274.0
 offset_top = 484.0
 offset_right = 610.0
 offset_bottom = 548.0
+
+[node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=672937389]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -503.0
+offset_top = -361.0
+offset_right = -303.0
+offset_bottom = -329.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1

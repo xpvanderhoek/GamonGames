@@ -2,6 +2,8 @@ class_name CombatEntity
 extends Node
 
 @export var turn_order_icon: Texture2D
+@export_range(0.0, 100.0, 0.1) var physical_defense: float = 0.0
+@export_range(0.0, 100.0, 0.1) var magic_defense: float = 0.0
 
 var limbs: Array[CombatLimb] = []
 var is_alive: bool = true
@@ -20,6 +22,13 @@ signal entity_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int)
 signal highlighted_limb_clicked(limb: CombatLimb)
 
 var exp_reward: int = 50
+
+func get_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
+	match damage_type:
+		SpellData.DamageType.MAGIC:
+			return max(0.0, magic_defense)
+		_:
+			return max(0.0, physical_defense)
 
 func _ready() -> void:
 	_discover_limbs()

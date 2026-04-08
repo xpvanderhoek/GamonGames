@@ -11,3 +11,5 @@ spell_type = 1
 icon = ExtResource("1_f4ejj")
 duration_rounds = 2
 outgoing_damage_flat_bonus = 5
+player_physical_defense_delta = 20.0
+player_magic_defense_delta = 20.0

@@ -3,6 +3,7 @@ extends CanvasLayer
 
 const TURN_ORDER_ENTRY_SCENE := preload("res://Scenes/combat/ui/TurnOrderEntry.tscn")
 const SPELL_BUTTON_SCENE := preload("res://Scenes/combat/ui/SpellButton.tscn")
+const BUFF_ICON_SCENE := preload("res://Scenes/combat/ui/BuffIcon.tscn")
 
 enum CombatState { 
 	PLAYER_TURN,
@@ -28,6 +29,7 @@ enum TargetScope {
 @export var turns_order_row_height: float = 24.0
 @export var turns_order_min_visible_rows: int = 8
 @export var player_max_health: int = 100
+@export_range(0.0, 100.0, 0.1) var player_hit_chance_bonus_percent: float = 20.0
 @export var attack_target_scope: TargetScope = TargetScope.LIMB
 @export var debuff_target_scope: TargetScope = TargetScope.LIMB
 
@@ -63,6 +65,7 @@ func _ready() -> void:
 	current_round = 1
 	_refresh_enemy_entities()
 	_reset_combat_effects()
+	_refresh_enemy_buffs_ui()
 	_update_player_health_label()
 	_rebuild_spells_panel()
 	_setup_target_scope_selectors()
@@ -79,6 +82,7 @@ func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	_spawn_encounter_enemies(_queued_encounter_scenes)
 	_refresh_enemy_entities()
 	_reset_combat_effects()
+	_refresh_enemy_buffs_ui()
 	_begin_player_turn()
 
 func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> void:
@@ -216,13 +220,15 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		return
 
 	var active_spell := selected_spell
-	if limb.roll_hit():
+	if _roll_player_hit_on_limb(limb):
 		var spell_damage := 0
 		var spell_type := SpellData.SpellType.ATTACK
+		var attack_damage_type := SpellData.DamageType.PHYSICAL
 		var can_deal_damage := true
 		if active_spell != null:
 			spell_damage = active_spell.damage
 			spell_type = active_spell.spell_type
+			attack_damage_type = active_spell.damage_type
 			can_deal_damage = active_spell.damage > 0
 
 		if can_deal_damage and (spell_type == SpellData.SpellType.ATTACK or spell_type == SpellData.SpellType.DEBUFF):
@@ -235,6 +241,8 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 					continue
 				var incoming_multiplier := _get_enemy_incoming_multiplier(source_enemy, target_limb)
 				var final_damage := int(round(float(raw_damage) * outgoing_multiplier * incoming_multiplier))
+				var enemy_defense := _get_enemy_total_defense_for_damage_type(source_enemy, target_limb, attack_damage_type)
+				final_damage = _apply_defense_to_damage(final_damage, enemy_defense)
 				final_damage = max(0, final_damage)
 				if final_damage > 0:
 					source_enemy.take_damage(target_limb, final_damage)
@@ -245,16 +253,25 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		if active_spell != null:
 			_play_attack_feedback(active_spell, source_enemy)
 	else:
-		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(limb.hit_chance_percent, 0.1)])
+		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(_get_adjusted_hit_chance_percent(limb), 0.1)])
 	_attack_selected = false
 	selected_spell = null
 	source_enemy.clear_current_highlight()
 	_end_player_turn()
 
+func _get_adjusted_hit_chance_percent(limb: CombatLimb) -> float:
+	if limb == null or not is_instance_valid(limb):
+		return 0.0
+	return clampf(limb.hit_chance_percent + player_hit_chance_bonus_percent, 0.0, 100.0)
+
+func _roll_player_hit_on_limb(limb: CombatLimb) -> bool:
+	return randf() * 100.0 < _get_adjusted_hit_chance_percent(limb)
+
 func _on_enemy_died(_entity: CombatEntity) -> void:
 	if _entity != null and is_instance_valid(_entity):
 		_enemy_effects.erase(_entity.get_instance_id())
 		_enemy_limb_effects.erase(_entity.get_instance_id())
+		_refresh_enemy_buffs_ui()
 
 	if _has_alive_enemies():
 		_refresh_turns_order_ui()
@@ -340,7 +357,7 @@ func _perform_enemy_turn() -> void:
 		await _play_attack_feedback(attack, attacking_enemy)
 		var outgoing_multiplier := _get_enemy_outgoing_multiplier(attacking_enemy)
 		var damage: int = int(round(float(max(0, attack.damage)) * outgoing_multiplier))
-		_apply_player_damage(damage)
+		_apply_player_damage(damage, attack.damage_type)
 
 	_end_enemy_turn()
 
@@ -359,11 +376,33 @@ func _reset_combat_effects() -> void:
 	_player_effects.clear()
 	_enemy_effects.clear()
 	_enemy_limb_effects.clear()
+	_refresh_enemy_buffs_ui()
 
 func _get_effect_expiry_round(spell: SpellData) -> int:
 	if spell == null:
 		return current_round
 	return current_round + max(1, spell.duration_rounds) - 1
+
+func _extend_effect_expiry_round(existing_expires_round: int, spell: SpellData) -> int:
+	if spell == null:
+		return existing_expires_round
+	var extension_rounds: int = maxi(1, spell.duration_rounds)
+	var base_round: int = maxi(existing_expires_round, current_round - 1)
+	return base_round + extension_rounds
+
+func _is_same_player_effect(effect: Dictionary, spell: SpellData) -> bool:
+	if effect.is_empty() or spell == null:
+		return false
+	if spell.spell_id.is_empty():
+		return false
+	return String(effect.get("spell_id", "")) == spell.spell_id
+
+func _is_same_enemy_effect(effect: Dictionary, spell: SpellData) -> bool:
+	if effect.is_empty() or spell == null:
+		return false
+	if spell.spell_id.is_empty():
+		return false
+	return String(effect.get("spell_id", "")) == spell.spell_id
 
 func _cleanup_expired_effects() -> void:
 	_player_effects = _filter_active_effects(_player_effects)
@@ -406,35 +445,73 @@ func _append_player_effect(spell: SpellData) -> void:
 	if spell == null:
 		return
 
-	var has_effect := spell.outgoing_damage_flat_bonus != 0 or not is_zero_approx(spell.outgoing_damage_multiplier_delta)
+	var has_effect := spell.outgoing_damage_flat_bonus != 0 \
+		or not is_zero_approx(spell.outgoing_damage_multiplier_delta) \
+		or not is_zero_approx(spell.player_physical_defense_delta) \
+		or not is_zero_approx(spell.player_magic_defense_delta)
 	if not has_effect:
 		return
 
+	var effect_expires_round := _get_effect_expiry_round(spell)
+	for index in range(_player_effects.size()):
+		var existing_effect := _player_effects[index] as Dictionary
+		if not _is_same_player_effect(existing_effect, spell):
+			continue
+		existing_effect["expires_round"] = _extend_effect_expiry_round(int(existing_effect.get("expires_round", current_round)), spell)
+		_player_effects[index] = existing_effect
+		return
+
 	_player_effects.append({
-		"expires_round": _get_effect_expiry_round(spell),
+		"expires_round": effect_expires_round,
+		"spell_id": spell.spell_id,
+		"spell_name": spell.spell_name,
+		"spell_type": int(spell.spell_type),
 		"outgoing_flat": spell.outgoing_damage_flat_bonus,
 		"outgoing_mult_delta": spell.outgoing_damage_multiplier_delta,
+		"physical_defense_delta": spell.player_physical_defense_delta,
+		"magic_defense_delta": spell.player_magic_defense_delta,
 	})
 
 func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_limb: CombatLimb = null) -> void:
 	if target_enemy == null or not is_instance_valid(target_enemy) or spell == null:
 		return
 
-	var has_effect := not is_zero_approx(spell.outgoing_damage_multiplier_delta) or not is_zero_approx(spell.incoming_damage_multiplier_delta)
+	var has_effect := not is_zero_approx(spell.outgoing_damage_multiplier_delta) \
+		or not is_zero_approx(spell.incoming_damage_multiplier_delta) \
+		or not is_zero_approx(spell.target_physical_defense_delta) \
+		or not is_zero_approx(spell.target_magic_defense_delta)
 	if not has_effect:
 		return
 
+	var effect_expires_round := _get_effect_expiry_round(spell)
+
 	var effect_data := {
-		"expires_round": _get_effect_expiry_round(spell),
+		"expires_round": effect_expires_round,
+		"spell_id": spell.spell_id,
 		"outgoing_mult_delta": spell.outgoing_damage_multiplier_delta,
 		"incoming_mult_delta": spell.incoming_damage_multiplier_delta,
+		"physical_defense_delta": spell.target_physical_defense_delta,
+		"magic_defense_delta": spell.target_magic_defense_delta,
+		"spell_name": spell.spell_name,
+		"spell_type": int(spell.spell_type),
+		"icon": spell.icon,
 	}
 
 	var enemy_id := target_enemy.get_instance_id()
 	if _resolve_target_scope(spell) == TargetScope.WHOLE_ENEMY:
 		var enemy_effects: Array = _enemy_effects.get(enemy_id, [])
+		for index in range(enemy_effects.size()):
+			var existing_effect := enemy_effects[index] as Dictionary
+			if not _is_same_enemy_effect(existing_effect, spell):
+				continue
+			existing_effect["expires_round"] = _extend_effect_expiry_round(int(existing_effect.get("expires_round", current_round)), spell)
+			enemy_effects[index] = existing_effect
+			_enemy_effects[enemy_id] = enemy_effects
+			_refresh_enemy_buffs_ui()
+			return
 		enemy_effects.append(effect_data)
 		_enemy_effects[enemy_id] = enemy_effects
+		_refresh_enemy_buffs_ui()
 		return
 
 	if target_limb == null or not is_instance_valid(target_limb):
@@ -443,9 +520,91 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 	var limb_id := target_limb.get_instance_id()
 	var limb_effects_by_enemy := _enemy_limb_effects.get(enemy_id, {}) as Dictionary
 	var limb_effects: Array = limb_effects_by_enemy.get(limb_id, [])
+	for index in range(limb_effects.size()):
+		var existing_effect := limb_effects[index] as Dictionary
+		if not _is_same_enemy_effect(existing_effect, spell):
+			continue
+		existing_effect["expires_round"] = _extend_effect_expiry_round(int(existing_effect.get("expires_round", current_round)), spell)
+		limb_effects[index] = existing_effect
+		limb_effects_by_enemy[limb_id] = limb_effects
+		_enemy_limb_effects[enemy_id] = limb_effects_by_enemy
+		_refresh_enemy_buffs_ui()
+		return
 	limb_effects.append(effect_data)
 	limb_effects_by_enemy[limb_id] = limb_effects
 	_enemy_limb_effects[enemy_id] = limb_effects_by_enemy
+	_refresh_enemy_buffs_ui()
+
+func _collect_enemy_effects_for_ui(enemy: CombatEntity) -> Array[Dictionary]:
+	if enemy == null or not is_instance_valid(enemy):
+		return []
+
+	var all_effects: Array[Dictionary] = []
+	var enemy_id := enemy.get_instance_id()
+
+	var enemy_effects: Array = _enemy_effects.get(enemy_id, [])
+	for raw_effect in enemy_effects:
+		var effect := raw_effect as Dictionary
+		if effect.is_empty():
+			continue
+		all_effects.append(effect)
+
+	var limb_effects_by_enemy := _enemy_limb_effects.get(enemy_id, {}) as Dictionary
+	for limb_id in limb_effects_by_enemy.keys():
+		var limb_effects: Array = limb_effects_by_enemy.get(limb_id, [])
+		for raw_effect in limb_effects:
+			var effect := raw_effect as Dictionary
+			if effect.is_empty():
+				continue
+			all_effects.append(effect)
+
+	return all_effects
+
+func _refresh_enemy_buffs_ui() -> void:
+	for enemy in enemy_entities:
+		if enemy == null or not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
+			continue
+
+		var buffs_panel := enemy.get_node_or_null("BuffsPanel") as HBoxContainer
+		if buffs_panel == null:
+			continue
+
+		for child in buffs_panel.get_children():
+			child.queue_free()
+
+		for effect in _collect_enemy_effects_for_ui(enemy):
+			var buff_icon := BUFF_ICON_SCENE.instantiate() as Panel
+			if buff_icon == null:
+				continue
+
+			var icon_rect := buff_icon.get_node_or_null("Icon") as TextureRect
+			if icon_rect == null:
+				continue
+
+			var count_label := buff_icon.get_node_or_null("Count") as Label
+			if count_label == null:
+				continue
+
+			var icon_texture := effect.get("icon", null) as Texture2D
+			if icon_texture != null and icon_rect != null:
+				icon_rect.texture = icon_texture
+
+			var effect_name := String(effect.get("spell_name", "Effect"))
+			var expires_round := int(effect.get("expires_round", current_round))
+			var turns_remaining: int = int(max(1, expires_round - current_round + 1))
+			var turn_suffix := "s" if turns_remaining != 1 else ""
+			buff_icon.tooltip_text = "%s (%d turn%s)" % [effect_name, turns_remaining, turn_suffix]
+			if count_label != null:
+				count_label.text = str(turns_remaining)
+
+			if int(effect.get("spell_type", SpellData.SpellType.DEBUFF)) == int(SpellData.SpellType.DEBUFF):
+				if icon_rect != null:
+					icon_rect.modulate = Color(1.0, 0.85, 0.85, 1.0)
+			else:
+				if icon_rect != null:
+					icon_rect.modulate = Color(1.0, 1.0, 1.0, 1.0)
+
+			buffs_panel.add_child(buff_icon)
 
 func _get_player_outgoing_modifiers() -> Dictionary:
 	_cleanup_expired_effects()
@@ -521,16 +680,82 @@ func _get_target_limbs(source_enemy: CombatEntity, hovered_limb: CombatLimb, spe
 			target_limbs.append(limb)
 	return target_limbs
 
-func _apply_player_damage(amount: int) -> void:
+func _apply_player_damage(amount: int, damage_type: SpellData.DamageType = SpellData.DamageType.PHYSICAL) -> void:
 	if current_state == CombatState.COMBAT_OVER:
 		return
 	if amount <= 0:
 		return
+	var mitigated_amount := _apply_player_defense(amount, damage_type)
+	if mitigated_amount <= 0:
+		return
 	_flash_player_hit()
-	RunData.current_health -= amount 
+	RunData.current_health -= mitigated_amount 
 	if RunData.current_health <= 0:
 		current_state = CombatState.COMBAT_OVER
-	print("Player took %d damage — HP: %d/%d" % [amount, RunData.current_health, RunData.max_health])
+	print("Player took %d damage — HP: %d/%d" % [mitigated_amount, RunData.current_health, RunData.max_health])
+
+func _apply_player_defense(amount: int, damage_type: SpellData.DamageType) -> int:
+	var defense := _get_player_defense_for_damage_type(damage_type)
+	return _apply_defense_to_damage(amount, defense)
+
+func _get_player_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
+	_cleanup_expired_effects()
+
+	var total_defense := 0.0
+	match damage_type:
+		SpellData.DamageType.MAGIC:
+			total_defense = float(RunData.get_stat("magic_defense"))
+			for effect in _player_effects:
+				var expires_round := int(effect.get("expires_round", current_round))
+				if current_round <= expires_round:
+					total_defense += float(effect.get("magic_defense_delta", 0.0))
+		_:
+			total_defense = float(RunData.get_stat("physical_defense"))
+			for effect in _player_effects:
+				var expires_round := int(effect.get("expires_round", current_round))
+				if current_round <= expires_round:
+					total_defense += float(effect.get("physical_defense_delta", 0.0))
+
+	return max(0.0, total_defense)
+
+func _get_enemy_total_defense_for_damage_type(source_enemy: CombatEntity, source_limb: CombatLimb, damage_type: SpellData.DamageType) -> float:
+	if source_enemy == null or not is_instance_valid(source_enemy):
+		return 0.0
+
+	_cleanup_expired_effects()
+
+	var total_defense := source_enemy.get_defense_for_damage_type(damage_type)
+	if source_limb != null and is_instance_valid(source_limb):
+		total_defense += source_limb.get_defense_for_damage_type(damage_type)
+
+	var defense_key := "physical_defense_delta"
+	if damage_type == SpellData.DamageType.MAGIC:
+		defense_key = "magic_defense_delta"
+
+	var enemy_effects: Array = _enemy_effects.get(source_enemy.get_instance_id(), [])
+	for raw_effect in enemy_effects:
+		var effect := raw_effect as Dictionary
+		var expires_round := int(effect.get("expires_round", current_round))
+		if current_round <= expires_round:
+			total_defense += float(effect.get(defense_key, 0.0))
+
+	if source_limb != null and is_instance_valid(source_limb):
+		var limb_effects_by_enemy := _enemy_limb_effects.get(source_enemy.get_instance_id(), {}) as Dictionary
+		var limb_effects: Array = limb_effects_by_enemy.get(source_limb.get_instance_id(), [])
+		for raw_effect in limb_effects:
+			var effect := raw_effect as Dictionary
+			var expires_round := int(effect.get("expires_round", current_round))
+			if current_round <= expires_round:
+				total_defense += float(effect.get(defense_key, 0.0))
+
+	return max(0.0, total_defense)
+
+func _apply_defense_to_damage(raw_damage: int, defense: float) -> int:
+	if raw_damage <= 0:
+		return 0
+	var defense_percent := clampf(defense, 0.0, 100.0)
+	var mitigated := float(raw_damage) * (1.0 - (defense_percent / 100.0))
+	return int(round(mitigated))
 
 func _apply_player_heal(amount: int) -> void:
 	if amount <= 0:
@@ -602,6 +827,7 @@ func _end_enemy_turn() -> void:
 
 func _begin_player_turn() -> void:
 	_cleanup_expired_effects()
+	_refresh_enemy_buffs_ui()
 	_attack_selected = false
 	selected_spell = null
 	_set_enemy_targeting_enabled(false)
