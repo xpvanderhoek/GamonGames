@@ -120,7 +120,6 @@ func _show_upgrade_screen():
 	upgrade_screen.show_random_options()
 	
 func _on_upgrade_selected(stat: String):
-	print("Selected:", stat)
 	PlayerStats.upgrade_stat(stat)
 
 	upgrade_screen.hide()
