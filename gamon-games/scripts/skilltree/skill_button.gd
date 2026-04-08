@@ -53,6 +53,10 @@ func _on_pressed() -> void:
 	else:
 		RunData.marrow_shards -= cost
 		skill.current_level += 1
+		
+		if skill.affected_stat != "" and skill.stat_bonus_per_level > 0:
+			PlayerStats.update_stat(skill.affected_stat, skill.stat_bonus_per_level)
+		
 		if skill.current_level == 1:
 			self.self_modulate = self.self_modulate * 1.42857
 			_update_children_line_appearance()

@@ -50,7 +50,7 @@ func update_stat(stat_name: String, value: float) -> float:
 	var new_stat_value: float = current_stat_value * multiplier
 	
 	stats[stat_name] = new_stat_value
-	print("Updated %s: %.2f to %.2f" % [stat_name, current_stat_value, new_stat_value])
+	print("Updated %s: %d to %d" % [stat_name, current_stat_value, new_stat_value])
 	
 	return new_stat_value
 
@@ -101,3 +101,9 @@ func reset_stats() -> void:
 	
 	for key in upgrade_levels:
 		upgrade_levels[key] = 0
+
+func apply_skill_bonuses(skills: Array) -> void:
+	for skill in skills:
+		if skill is SkillData and skill.current_level > 0 and skill.affected_stat != "":
+			for i in range(skill.current_level):
+				update_stat(skill.affected_stat, skill.stat_bonus_per_level)

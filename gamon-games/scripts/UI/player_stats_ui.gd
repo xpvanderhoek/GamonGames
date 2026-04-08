@@ -21,7 +21,7 @@ func update_stats_display():
 		var value = PlayerStats.stats[stat_name]
 		var upgrade_level = PlayerStats.get_upgrade_level(stat_name)
 		var label = Label.new()
-		label.text = "%s: %.2f (Level %d)" % [stat_name.capitalize().replace("_", " "), value, upgrade_level]
+		label.text = "%s: %d (Level %d)" % [stat_name.capitalize().replace("_", " "), value, upgrade_level]
 		stats_container.add_child(label)
 
 

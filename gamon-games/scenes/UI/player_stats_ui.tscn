@@ -12,10 +12,9 @@ offset_bottom = 22.0
 script = ExtResource("1_4olud")
 
 [node name="StatsPanel" type="Panel" parent="." unique_id=644586482]
-visible = false
 layout_mode = 0
 offset_right = 300.0
-offset_bottom = 400.0
+offset_bottom = 252.0
 
 [node name="StatsContainer" type="VBoxContainer" parent="StatsPanel" unique_id=500878741]
 layout_mode = 0

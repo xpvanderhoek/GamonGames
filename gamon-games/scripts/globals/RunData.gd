@@ -40,7 +40,6 @@ var current_health : int = 100:
 		current_health = value
 		health_changed.emit()
 
-
 var entered_rooms : Array = []
 var items : Array[ItemData] = [] 
 var consumables : Array = [null, null, null, null, null]
@@ -50,10 +49,10 @@ var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000]
 
 signal coins_changed(new_amount)
 signal health_changed(new_amount)
+signal time_remaining_changed(new_amount)
 signal exp_changed(new_amount)
 signal level_changed(new_amount)
 signal marrow_shards_changed(new_amount)
-signal time_remaining_changed(new_amount)
 
 func new_run():
 	random_seed = randi()
