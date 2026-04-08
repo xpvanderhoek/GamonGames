@@ -15,6 +15,11 @@ var max_health : int = 100:
 		max_health = value
 		health_changed.emit()
 
+var marrow_shards : int = 10000:# Placeholder testing amount, adjust as needed
+	set(value):
+		marrow_shards = value
+		marrow_shards_changed.emit()
+
 var current_exp : int = 0:
 	set(value):
 		current_exp = value
@@ -47,6 +52,7 @@ signal coins_changed(new_amount)
 signal health_changed(new_amount)
 signal exp_changed(new_amount)
 signal level_changed(new_amount)
+signal marrow_shards_changed(new_amount)
 signal time_remaining_changed(new_amount)
 
 func new_run():
