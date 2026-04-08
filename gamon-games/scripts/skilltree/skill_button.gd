@@ -71,4 +71,4 @@ func _update_children_line_appearance() -> void:
 
 func _update_tooltip_text() -> void:
 	var lvl_cost = skill.get_level_cost()
-	tooltip_text = "%s\nCosts: %d Marrow shards"%[skill.skill_name,lvl_cost]
+	tooltip_text = "%s\n%s\nCost: %d Marrow shards"%[skill.skill_name,skill.tooltip_text,lvl_cost]
