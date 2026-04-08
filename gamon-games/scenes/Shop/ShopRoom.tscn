@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://mweq4ng0gdhd" path="res://scripts/Shop/shop_Room.gd" id="1_2g6x2"]
 [ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
-[ext_resource type="Texture2D" uid="uid://bgghk116s6pl4" path="res://assets/Placeholders/bettersheet.png" id="2_cougk"]
+[ext_resource type="Texture2D" uid="uid://bwnhvweqx5eom" path="res://assets/Placeholders/bettersheet.png" id="2_cougk"]
 [ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://scenes/character.tscn" id="3_6tcdb"]
-[ext_resource type="Texture2D" uid="uid://dbyiyb5buyvxl" path="res://assets/TempShopkeeper.webp" id="4_fh4ca"]
+[ext_resource type="Texture2D" uid="uid://ug6vp7pjxyjk" path="res://assets/TempShopkeeper.webp" id="4_fh4ca"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rto70"]
 texture = ExtResource("2_cougk")

@@ -2,11 +2,11 @@ extends Node
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh
-	"damage": 20,      # Anatomy Mastery
+	"damage": 1000,      # Anatomy Mastery
 	"precision": 100.0,       # Steady Hand
 	"gold_gain": 1.0,         # Scavenger's Eye
 	"debuff_resistance": 10.0, # Iron Will
-	"speed": 300.0,           # Quick Reflexes
+	"speed": 3000.0,           # Quick Reflexes
 	"defence": 10.0,          # Stoneguard
 	"luck": 0.0,               # Fortune's Blessing
 	"physical_defense": 10.0,

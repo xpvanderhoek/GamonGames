@@ -5,6 +5,7 @@ extends Node
 @export_range(0.0, 100.0, 0.1) var physical_defense: float = 0.0
 @export_range(0.0, 100.0, 0.1) var magic_defense: float = 0.0
 
+var limb_stats_panel: Node = null
 var limbs: Array[CombatLimb] = []
 var is_alive: bool = true
 
@@ -49,17 +50,27 @@ func _on_limb_mouse_entered(limb: CombatLimb) -> void:
 		return
 	if not limb in _hovered_limbs:
 		_hovered_limbs.append(limb)
-	_refresh_highlight()
+	_refresh_highlight() 
+	
+	if _highlighted_limb != null and limb_stats_panel != null:
+		limb_stats_panel.show_limb_stats(_highlighted_limb)
 
 func _on_limb_mouse_exited(limb: CombatLimb) -> void:
 	_hovered_limbs.erase(limb)
 	_refresh_highlight()
+	
+	
+	if limb_stats_panel != null:
+		if _highlighted_limb != null:
+			limb_stats_panel.show_limb_stats(_highlighted_limb)
+		else:
+			limb_stats_panel.hide_panel()
 
 func _refresh_highlight() -> void:
 	if not single_highlight_enabled:
 		_clear_current_highlight_visuals()
 		return
-
+		
 	var top_limb: CombatLimb = null
 	for limb in _hovered_limbs:
 		if top_limb == null or limb.get_index() > top_limb.get_index():
@@ -185,3 +196,4 @@ func die() -> void:
 			limb.destroy_limb()
 	entity_died.emit(self)
 	RunData.add_exp(exp_reward)
+	

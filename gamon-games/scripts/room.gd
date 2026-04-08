@@ -19,7 +19,6 @@ func _ready() -> void:
 	enemy_group = possible_enemy_groups[idx]
 	_spawn_enemies()
 	_setup_doors()
-	_unlock_all_doors()
 
 func _spawn_enemies():
 	var possible_enemy_spawns = $EnemySpawns.get_children().duplicate()

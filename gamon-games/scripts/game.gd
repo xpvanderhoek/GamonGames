@@ -142,4 +142,10 @@ func _input(event):
 		_on_player_leveled_up()
 		
 	if event.is_action_pressed("ui_page_down"): 
-		RunData.add_exp(1000)  
+		RunData.add_exp(1000) 
+		 
+	if event.is_action("ui_text_delete_word"):
+		DialogueManager.start_dialogue("intro")
+
+func _process(delta: float) -> void:
+	RunData.update_timer(delta)

@@ -1,26 +1,26 @@
 [gd_scene format=3 uid="uid://dhexr8smtlsmo"]
 
 [ext_resource type="Script" uid="uid://b4abrvd60h7j6" path="res://scripts/character.gd" id="1_lkv7d"]
-[ext_resource type="Texture2D" uid="uid://cbc2ywqs2a3w2" path="res://assets/Placeholders/Front - Walking.png" id="2_ejsiy"]
-[ext_resource type="AudioStream" uid="uid://b3wpgf35nbto5" path="res://assets/Sounds/Walk-01.wav" id="2_hgna0"]
-[ext_resource type="Texture2D" uid="uid://ormmttn8fiq8" path="res://assets/Placeholders/Front - Idle.png" id="2_wbia7"]
-[ext_resource type="Texture2D" uid="uid://bfd7fnet3oovu" path="res://assets/Placeholders/Left - Walking.png" id="3_2mse5"]
-[ext_resource type="Texture2D" uid="uid://di827v78fk8vl" path="res://assets/Placeholders/Left - Idle.png" id="3_kq7hj"]
-[ext_resource type="AudioStream" uid="uid://bgcw521mop7mu" path="res://assets/Sounds/Walk-02.wav" id="3_s7tkn"]
-[ext_resource type="Texture2D" uid="uid://wwrowacdlmxa" path="res://assets/Placeholders/Right - Idle.png" id="4_7iw6i"]
-[ext_resource type="AudioStream" uid="uid://brhs3oyfrck3t" path="res://assets/Sounds/Walk-03.wav" id="4_nw3qc"]
-[ext_resource type="Texture2D" uid="uid://8hqfomcreg6c" path="res://assets/Placeholders/Right - Walking.png" id="4_reotu"]
-[ext_resource type="Texture2D" uid="uid://me0fjyq5kdp0" path="res://assets/Placeholders/Back - Walking.png" id="5_a5ess"]
-[ext_resource type="Texture2D" uid="uid://bp8cof261h7av" path="res://assets/Placeholders/Back - Idle.png" id="5_l1rcp"]
-[ext_resource type="AudioStream" uid="uid://8ygkhvhdmept" path="res://assets/Sounds/Walk-04.wav" id="5_rtvxd"]
-[ext_resource type="AudioStream" uid="uid://wp023hk56wu5" path="res://assets/Sounds/Walk-05.wav" id="6_1g2gg"]
-[ext_resource type="AudioStream" uid="uid://b5rvnx7i0455i" path="res://assets/Sounds/Walk-06.wav" id="7_4kq8q"]
-[ext_resource type="AudioStream" uid="uid://bl1ws7q08qkdo" path="res://assets/Sounds/Walk-07.wav" id="8_px0br"]
-[ext_resource type="AudioStream" uid="uid://bnk55bpgohyyc" path="res://assets/Sounds/Walk-08.wav" id="9_0wngn"]
-[ext_resource type="AudioStream" uid="uid://dmtah15tc8gnb" path="res://assets/Sounds/Walk-09.wav" id="10_8iu2w"]
-[ext_resource type="PackedScene" uid="uid://cji2ni1ok5fvc" path="res://scenes/UI/corruption_bar.tscn" id="10_kq7hj"]
-[ext_resource type="AudioStream" uid="uid://cdv3s3rnhpnk4" path="res://assets/Sounds/Walk-10.wav" id="11_vl1po"]
-[ext_resource type="AudioStream" uid="uid://d2v3tvumq6yx1" path="res://assets/Sounds/Background.wav" id="11_7iw6i"]
+[ext_resource type="Texture2D" uid="uid://gfxe7i5gvc8s" path="res://Assets/Placeholders/Front - Walking.png" id="2_ejsiy"]
+[ext_resource type="AudioStream" uid="uid://do3jmg71bhu3k" path="res://Assets/Sounds/Walk-01.wav" id="2_hgna0"]
+[ext_resource type="Texture2D" uid="uid://dysyl0xogtuxj" path="res://Assets/Placeholders/Front - Idle.png" id="2_wbia7"]
+[ext_resource type="Texture2D" uid="uid://t1vpka63nffx" path="res://Assets/Placeholders/Left - Walking.png" id="3_2mse5"]
+[ext_resource type="Texture2D" uid="uid://mds0er5qnjsh" path="res://Assets/Placeholders/Left - Idle.png" id="3_kq7hj"]
+[ext_resource type="AudioStream" uid="uid://dq1b8g1n1i4b7" path="res://Assets/Sounds/Walk-02.wav" id="3_s7tkn"]
+[ext_resource type="Texture2D" uid="uid://dby7wiyicxfcp" path="res://Assets/Placeholders/Right - Idle.png" id="4_7iw6i"]
+[ext_resource type="AudioStream" uid="uid://b6ul6c1tucmcr" path="res://Assets/Sounds/Walk-03.wav" id="4_nw3qc"]
+[ext_resource type="Texture2D" uid="uid://bvxae35r8iti6" path="res://Assets/Placeholders/Right - Walking.png" id="4_reotu"]
+[ext_resource type="Texture2D" uid="uid://5u858b0t3sqj" path="res://Assets/Placeholders/Back - Walking.png" id="5_a5ess"]
+[ext_resource type="Texture2D" uid="uid://huobv5232ua3" path="res://Assets/Placeholders/Back - Idle.png" id="5_l1rcp"]
+[ext_resource type="AudioStream" uid="uid://cle2gs8ux5iei" path="res://Assets/Sounds/Walk-04.wav" id="5_rtvxd"]
+[ext_resource type="AudioStream" uid="uid://cm1a7bvtw7sjx" path="res://Assets/Sounds/Walk-05.wav" id="6_1g2gg"]
+[ext_resource type="AudioStream" uid="uid://c2ki50ajls3v2" path="res://Assets/Sounds/Walk-06.wav" id="7_4kq8q"]
+[ext_resource type="AudioStream" uid="uid://l7uaddbvdkk7" path="res://Assets/Sounds/Walk-07.wav" id="8_px0br"]
+[ext_resource type="AudioStream" uid="uid://dqqx5f0n0ooka" path="res://Assets/Sounds/Walk-08.wav" id="9_0wngn"]
+[ext_resource type="AudioStream" uid="uid://ogjxjcd2wsno" path="res://Assets/Sounds/Walk-09.wav" id="10_8iu2w"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/corruption_bar.tscn" id="10_kq7hj"]
+[ext_resource type="AudioStream" uid="uid://cypw1ikmbbd3w" path="res://Assets/Sounds/Background.wav" id="11_7iw6i"]
+[ext_resource type="AudioStream" uid="uid://cdf7oloddfcq3" path="res://Assets/Sounds/Walk-10.wav" id="11_vl1po"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_082uh"]
 atlas = ExtResource("2_wbia7")
@@ -1083,7 +1083,6 @@ radius = 159.22311
 [node name="Character" type="CharacterBody2D" unique_id=48660198 groups=["Player"]]
 light_mask = 2
 z_index = 1
-scale = Vector2(0.5, 0.5)
 collision_mask = 5
 script = ExtResource("1_lkv7d")
 footstep_sounds = Array[AudioStream]([ExtResource("2_hgna0"), ExtResource("3_s7tkn"), ExtResource("4_nw3qc"), ExtResource("5_rtvxd"), ExtResource("6_1g2gg"), ExtResource("7_4kq8q"), ExtResource("8_px0br"), ExtResource("9_0wngn"), ExtResource("10_8iu2w"), ExtResource("11_vl1po")])
@@ -1100,6 +1099,7 @@ shape = SubResource("CapsuleShape2D_wbia7")
 [node name="FootstepPlayer" type="AudioStreamPlayer2D" parent="." unique_id=488225958]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2100027953]
+zoom = Vector2(0.1, 0.1)
 
 [node name="InteractionLabel" type="Label" parent="Camera2D" unique_id=1112484888]
 anchors_preset = 8
@@ -1122,12 +1122,6 @@ vertical_alignment = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1919771425]
 shape = SubResource("CircleShape2D_wbia7")
 debug_color = Color(3.7541986e-06, 0.64510936, 0.2735894, 0.41960785)
-
-[node name="CorruptionBar" parent="." unique_id=755609357 instance=ExtResource("10_kq7hj")]
-offset_left = -170.0
-offset_top = -430.0
-offset_right = 184.0
-offset_bottom = -376.0
 
 [node name="Background music" type="AudioStreamPlayer2D" parent="." unique_id=521327996]
 stream = ExtResource("11_7iw6i")
