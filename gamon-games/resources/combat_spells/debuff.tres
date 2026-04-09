@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CombatSpellData" format=3 uid="uid://bf8am6yl50foj"]
+
+[ext_resource type="Texture2D" uid="uid://6n30floyj648" path="res://Assets/Placeholders/enemies/criticalchance buff.png" id="1_kblbj"]
+[ext_resource type="Script" uid="uid://duq2aywoty7u5" path="res://scripts/combat/spellData.gd" id="2_hyua3"]
+
+[resource]
+script = ExtResource("2_hyua3")
+spell_id = "debuff"
+spell_name = "debuff"
+spell_type = 2
+target_scope = 1
+icon = ExtResource("1_kblbj")
+duration_rounds = 2
+incoming_damage_multiplier_delta = 0.5
+target_physical_defense_delta = -25.0
+target_magic_defense_delta = -25.0

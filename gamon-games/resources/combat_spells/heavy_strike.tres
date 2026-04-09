@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CombatSpellData" format=3 uid="uid://bvm3rjca1eydo"]
+
+[ext_resource type="Script" uid="uid://duq2aywoty7u5" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
+[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://Assets/Placeholders/ui/bowie-knife.png" id="1_v0isw"]
+
+[resource]
+script = ExtResource("1_spelldata")
+spell_id = "heavy_strike"
+damage = 20
+damage_type = 1
+weight = 100.0
+icon = ExtResource("1_v0isw")
+player_physical_defense_delta = 100.0
