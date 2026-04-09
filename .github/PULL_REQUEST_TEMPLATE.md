@@ -1,20 +1,20 @@
-## Description
-<!-- Give description what this pr does -->
+# Description
+<!-- Voeg een korte beschrijving toe van wat deze PR doet -->
 
-## Type of change
-<!-- Click the type of change  -->
+## Wat verandert er
+<!-- Vink aan wat van toepassing is -->
 - [ ] Feature
 - [ ] Bug
-- [ ] Refactor
+- [ ] refactor
 
 ## Checklist
-<!-- Check the checklist things -->
-- [ ] Code compiles without errors
-- [ ] Code is tested
-- [ ] Any documentation is adjusted
+<!-- Vink aan wat van toepassing is -->
+- [ ] Code compileert zonder errors
+- [ ] Code is getest
+- [ ] Eventuele documentatie is bijgewerkt
 
 ## Screenshots
-<!-- Add any screenshots -->
+<!-- Voeg eventueel screenshots toe -->
 
-## Any extra comments
-<!-- Everything a reviewer must know -->
+## Eventuele extra opmerkingen
+<!-- Alles wat een reviewer moet weten -->

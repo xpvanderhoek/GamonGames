@@ -1,30 +1,28 @@
 [gd_scene format=3 uid="uid://c53jm5tnw6doc"]
 
-[ext_resource type="Script" uid="uid://dbfajipan12qx" path="res://Scripts/door.gd" id="1_fabj8"]
-[ext_resource type="Texture2D" uid="uid://bk5nqcik2kbi1" path="res://Assets/room_tiles/door_tiles/door.png" id="2_fahql"]
-[ext_resource type="Texture2D" uid="uid://dl1c84w2x6dqa" path="res://Assets/lock.png" id="3_12tgo"]
+[ext_resource type="Script" uid="uid://dbfajipan12qx" path="res://scripts/door.gd" id="1_fabj8"]
+[ext_resource type="Texture2D" uid="uid://cjx65ss8mx4w5" path="res://assets/door.png" id="2_12tgo"]
+[ext_resource type="Texture2D" uid="uid://dl1c84w2x6dqa" path="res://assets/lock.png" id="3_12tgo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m17xr"]
-size = Vector2(191.95462, 84.902054)
+size = Vector2(156.36389, 84.902054)
 
 [node name="Door" type="Node2D" unique_id=89376507]
 light_mask = 4
-scale = Vector2(7, 7)
 script = ExtResource("1_fabj8")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1303788607]
-texture = ExtResource("2_fahql")
+texture = ExtResource("2_12tgo")
 
 [node name="Lock" type="Sprite2D" parent="." unique_id=990543922]
-position = Vector2(145, -157)
+position = Vector2(1, -1)
 scale = Vector2(0.13714285, 0.13714285)
 texture = ExtResource("3_12tgo")
 
 [node name="InteractableArea" type="Area2D" parent="." unique_id=1250737456]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractableArea" unique_id=510798463]
-position = Vector2(145, 14.000004)
-rotation = 0.58119464
+position = Vector2(-2.3841858e-07, 103.51178)
 scale = Vector2(1.2039225, 1.0244328)
 shape = SubResource("RectangleShape2D_m17xr")
 

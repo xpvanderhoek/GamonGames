@@ -32,7 +32,6 @@ enum TargetScope {
 @export_range(0.0, 100.0, 0.1) var player_hit_chance_bonus_percent: float = 20.0
 @export var attack_target_scope: TargetScope = TargetScope.LIMB
 @export var debuff_target_scope: TargetScope = TargetScope.LIMB
-@onready var limb_stats_panel = $UI/LimbStatsPanel
 
 var current_state: CombatState = CombatState.PLAYER_TURN
 var selected_action: CombatAction = CombatAction.ATTACK
@@ -89,7 +88,7 @@ func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	var enemy_container := get_node_or_null(enemy_container_path)
 	if enemy_container == null:
-		return 
+		return
 
 	for child in enemy_container.get_children():
 		if child is CombatEntity:
@@ -117,7 +116,6 @@ func _refresh_enemy_entities() -> void:
 
 func _register_enemy_entity(entity: CombatEntity) -> void:
 	enemy_entities.append(entity)
-	entity.limb_stats_panel = limb_stats_panel
 
 	var on_died := Callable(self, "_on_enemy_died")
 	if not entity.entity_died.is_connected(on_died):
@@ -928,4 +926,4 @@ func _format_turn_name(entity: CombatEntity) -> String:
 	if raw_name.is_empty():
 		return "Enemy"
 
-	return raw_name.capitalize()	
+	return raw_name.capitalize()

@@ -6,17 +6,10 @@ const BUFF = preload("res://resources/combat_spells/buff.tres")
 const DEBUFF = preload("res://resources/combat_spells/debuff.tres")
 const HEAL = preload("res://resources/combat_spells/heal.tres")
 
-var spells : Array[SpellData] = []
-
 var random_seed : int = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
-const RUN_DURATION := 600.0 # 10 minutes
 
-var run_active : bool = false
-var time_remaining : float = RUN_DURATION:
-	set (value):
-		time_remaining = value
-		time_remaining_changed.emit()
+var spells : Array[SpellData] = []
 
 var max_health : int = 100:
 	set (value):
@@ -43,6 +36,10 @@ var current_health : int = 100:
 		current_health = value
 		health_changed.emit()
 
+var current_corruption : int = 0:
+	set(value):
+		current_corruption = value
+		corruption_changed.emit(value)
 
 var entered_rooms : Array = []
 var items : Array[ItemData] = [] 
@@ -53,9 +50,9 @@ var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000]
 
 signal coins_changed(new_amount)
 signal health_changed(new_amount)
+signal corruption_changed(new_amount)
 signal exp_changed(new_amount)
 signal level_changed(new_amount)
-signal time_remaining_changed(new_amount)
 
 func new_run():
 	random_seed = randi()
@@ -67,24 +64,13 @@ func new_run():
 	consumables = [null, null, null, null, null]
 	max_health = PlayerStats.stats["health"]
 	current_health = max_health
+	current_corruption = 10
 	current_exp = 0
 	add_spell(BASIC_ATTACK)
 	add_spell(HEAVY_STRIKE)
 	add_spell(BUFF)
 	add_spell(DEBUFF)
 	add_spell(HEAL)
-	run_active = true
-	time_remaining = RUN_DURATION
-
-func end_run():
-	run_active = false
-
-func update_timer(delta):
-	if run_active:
-		time_remaining -= delta
-		if time_remaining <= 0:
-			time_remaining = 0
-			end_run()
 
 func add_item(item: Resource) -> bool:
 	if not (item is ItemData):
