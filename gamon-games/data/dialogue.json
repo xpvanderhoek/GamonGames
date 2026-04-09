@@ -4,6 +4,11 @@
     {"speaker": "NPC", "text": "This is a test dialogue."},
     {"speaker": "Player", "text": "It works!"}
   ],
+  "limbo_enter": [
+	  {"speaker": "YOU", "text": "Ugh... where am I?"},
+	  {"speaker": "YOU", "text": "What is this place?"},
+	  {"speaker": "YOU", "text": "Am I... dead?"}
+  ],
   "limbo_intro_1": [
 	  {"speaker": "YOU", "text": "Identify yourself! Who are you? And where am I?"},
 	  {"speaker": "???", "text": "Woah, calm down! No need to get all fiesty. You wouldn't be able to harm me, even if you tried your hardest, y'know? Being a ghost, and all."},

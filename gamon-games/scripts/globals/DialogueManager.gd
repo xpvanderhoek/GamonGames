@@ -51,9 +51,7 @@ func start_dialogue(key: String) -> void:
 
 	is_in_dialogue = true
 	dialogue_ui.show()
-	print("before the talking")
 	await dialogue_ui.start_dialogue(dialogue_data[key])
-	print("after the talking, emit should happen now")
 	is_in_dialogue = false
 	dialogue_finished.emit()
 
