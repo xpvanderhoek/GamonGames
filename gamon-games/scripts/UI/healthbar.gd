@@ -4,6 +4,11 @@ extends Control
 
 func _ready() -> void:
 	RunData.health_changed.connect(update)
+	PlayerStats.stats_changed.connect(_on_stats_changed)
+
+func _on_stats_changed(stat_name: String, new_value: float) -> void:
+	if stat_name == "health":
+		update()
 
 func update():
 	if RunData.current_health == null or RunData.max_health == null:

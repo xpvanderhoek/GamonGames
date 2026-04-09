@@ -17,6 +17,7 @@ func _ready() -> void:
 	RunData.level_changed.connect(_on_level_changed)
 	RunData.exp_changed.connect(_on_exp_changed)
 	RunData.health_changed.connect(_on_health_changed)
+	PlayerStats.stats_changed.connect(_on_stats_changed)
 	
 	_on_level_changed(RunData.current_level)
 	_on_exp_changed(RunData.current_exp)
@@ -62,6 +63,13 @@ func _on_exp_changed(new_exp: int) -> void:
 
 func _on_health_changed() -> void:
 	health_label.text = str(RunData.current_health) + " HP / " + str(RunData.max_health) + " HP"
+
+func _on_stats_changed(stat_name: String, new_value: float) -> void:
+	if stat_name == "health":
+		RunData.max_health = int(new_value)
+		if RunData.current_health > RunData.max_health:
+			RunData.current_health = RunData.max_health
+		_on_health_changed()
 
 func enter_combat(combat_scene_path: String, enemy: Node = null) -> void:
 	if combat_node:
@@ -125,6 +133,12 @@ func _show_upgrade_screen():
 func _on_upgrade_selected(stat: String):
 	print("Selected:", stat)
 	PlayerStats.upgrade_stat(stat)
+	
+	if stat == "health":
+		RunData.max_health = int(PlayerStats.stats["health"])
+		if RunData.current_health > RunData.max_health:
+			RunData.current_health = RunData.max_health
+	
 	upgrade_screen.hide()
 	get_tree().paused = false
 	
