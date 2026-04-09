@@ -1,15 +1,14 @@
-[gd_resource type="Resource" script_class="BuffItemData" format=3]
+[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://bwg7v7na0dhhc"]
 
-[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bvv81yo0dnj16" path="res://assets/ShopItems/Textures/TempBoots.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://Scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://2d8yvc641s78" path="res://Assets/ShopItems/Textures/Thorned bracer.png" id="2_irsi3"]
 
 [resource]
 script = ExtResource("1_script")
 item_name = "Thorned Bracer"
 effect = "Reflect 8 Damage when an Arm is hit"
 lore = "Protection is just a sharper way to hurt."
-category = "Tier I"
-texture = ExtResource("2_texture")
+texture = ExtResource("2_irsi3")
 cost = 40
 target_limb = "Arm"
 buff_type = "Defense"
