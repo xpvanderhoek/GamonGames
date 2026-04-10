@@ -1,15 +1,14 @@
-[gd_resource type="Resource" script_class="BuffItemData" format=3]
+[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://cnq0fppu52k2x"]
 
-[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bdqm853dq7egq" path="res://assets/ShopItems/Textures/TempBoots.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://Scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://uk7cjtj825ic" path="res://Assets/ShopItems/Textures/Sightless Bandage.png" id="2_3guxu"]
 
 [resource]
 script = ExtResource("1_script")
 item_name = "Sightless Bandage"
 effect = "+20 Precision when targeting the Head"
 lore = "The eyes only see what they want to believe."
-category = "Tier I"
-texture = ExtResource("2_texture")
+texture = ExtResource("2_3guxu")
 cost = 35
 target_limb = "Head"
 buff_type = "Precision"
