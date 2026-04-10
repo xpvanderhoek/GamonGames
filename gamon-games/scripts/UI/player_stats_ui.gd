@@ -6,7 +6,6 @@ extends Control
 
 func _ready():
 	stats_panel.visible = false
-	print("I EXIST")
 	stats_button.connect("pressed", Callable(self, "_on_stats_button_pressed"))
 	
 	PlayerStats.stats_changed.connect(_on_player_stats_changed)
@@ -35,4 +34,3 @@ func _on_stats_button_pressed() -> void:
 	stats_panel.visible = !stats_panel.visible
 	if stats_panel.visible:
 		update_stats_display()
-	print("Pressed button")

@@ -48,7 +48,6 @@ func change_scene(scene_path: String, transition_type: int = TransitionType.FADE
 
 func transition_room(scene_path: String, transition_type: int = TransitionType.FADE) -> void:
 	_setup_transition(transition_type)
-	print("Transitioning room: " + scene_path)
 	await get_tree().process_frame
 	await transition_layer.fade_in()
 	var game = _get_game()

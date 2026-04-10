@@ -37,7 +37,6 @@ func _on_button_pressed():
 	var pressed_button = get_pressed_button()  
 	if pressed_button and pressed_button in button_to_stat_map:
 		var selected_stat = button_to_stat_map[pressed_button]
-		print("Selected stat:", selected_stat)
 		emit_signal("upgrade_selected", selected_stat)
 		hide()
 
