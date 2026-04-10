@@ -1,7 +1,9 @@
 class_name Interactable
-extends Node
+extends Node2D
 
 @onready var interactable_area: Area2D = $InteractableArea
+
+var is_busy : bool = false
 
 func _ready() -> void:
 	assert(interactable_area != null, name + " is missing an 'InteractableArea' Area2D node!!!")

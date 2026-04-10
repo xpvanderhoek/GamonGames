@@ -31,6 +31,8 @@ func hide_interaction_label():
 	interaction_label.text = ""
 
 func _physics_process(delta: float) -> void:
+	if DialogueManager.is_in_dialogue:
+		return
 	delta = min(delta, 0.1)
 	process_movement()
 	AnimationManager.process_animation(animated_sprite_2d, velocity, last_direction)

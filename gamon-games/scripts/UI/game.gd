@@ -28,8 +28,6 @@ func _ready() -> void:
 	
 	upgrade_screen.upgrade_selected.connect(_on_upgrade_selected)
 	
-	load_room(NavigationManager.get_new_random_room())
-
 func load_room(scene_path: String) -> void:
 	if current_room:
 		room_container.remove_child(current_room)

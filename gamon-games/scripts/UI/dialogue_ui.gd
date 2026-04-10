@@ -6,6 +6,8 @@ var char_index = 0
 var typing_speed := 0.03
 var typing_timer: Timer
 
+signal dialogue_completed
+
 @onready var name_label = $Panel/Label
 @onready var text_label = $Panel/RichTextLabel
 
@@ -22,10 +24,12 @@ func start_dialogue(dialogue):
 	current_dialogue = dialogue
 	index = 0
 	show_line()
+	await dialogue_completed
 
 func show_line():
 	if index >= current_dialogue.size():
 		hide()
+		dialogue_completed.emit()
 		return
 	var line = current_dialogue[index]
 	name_label.text = line["speaker"]

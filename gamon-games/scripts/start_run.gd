@@ -16,10 +16,14 @@ func _ready() -> void:
 	get_tree().paused = true
 
 func _on_start_run_btn_pressed() -> void:
-	RunData.new_run()
-	var random_room : String = NavigationManager.get_new_random_room()
 	get_tree().paused = false
-	TransitionManager.transition_room(random_room)
+	if !PlayerStats.knows_ghost:
+		RunData.new_run()
+		await TransitionManager.transition_room(NavigationManager.get_new_random_room())
+	else:
+		await TransitionManager.transition_room(NavigationManager.scene_room_limbo)
+	await TransitionManager.transition_room(NavigationManager.scene_room_limbo)
+	
 	queue_free()
 
 

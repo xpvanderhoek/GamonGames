@@ -3,6 +3,9 @@ extends Node
 var dialogue_data: Dictionary = {}
 var dialogue_ui: Node = null
 var pending_dialogue_key = null
+var is_in_dialogue: bool = false
+
+signal dialogue_finished
 
 const DIALOGUE_JSON_PATH := "res://data/dialogue.json"
 const DIALOGUE_UI_SCENE := "res://scenes/UI/dialogueUI.tscn"
@@ -46,8 +49,12 @@ func start_dialogue(key: String) -> void:
 		push_error("Dialogue key not found: %s" % key)
 		return
 
+	is_in_dialogue = true
 	dialogue_ui.show()
-	dialogue_ui.start_dialogue(dialogue_data[key])
+	await dialogue_ui.start_dialogue(dialogue_data[key])
+	is_in_dialogue = false
+	dialogue_finished.emit()
+
 
 func has_dialogue(key: String) -> bool:
 	return dialogue_data.has(key)

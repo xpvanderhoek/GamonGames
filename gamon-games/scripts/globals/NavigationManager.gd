@@ -2,6 +2,7 @@ extends Node
 
 const scene_room1 = "res://scenes/rooms/room_1.tscn"
 const scene_room2 = "res://scenes/rooms/room_2.tscn"
+const scene_room_limbo = "res://scenes/rooms/room_limbo.tscn"
 const scene_room_end= "res://scenes/rooms/room_end.tscn"
 
 @onready var rooms : Array[String] = [scene_room1, scene_room2]

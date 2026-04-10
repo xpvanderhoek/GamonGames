@@ -3,5 +3,58 @@
     {"speaker": "NPC", "text": "Hello!"},
     {"speaker": "NPC", "text": "This is a test dialogue."},
     {"speaker": "Player", "text": "It works!"}
+  ],
+  "limbo_enter": [
+	  {"speaker": "YOU", "text": "Ugh... where am I?"},
+	  {"speaker": "YOU", "text": "What is this place?"},
+	  {"speaker": "YOU", "text": "Am I... dead?"}
+  ],
+  "limbo_intro_1": [
+	  {"speaker": "YOU", "text": "Identify yourself! Who are you? And where am I?"},
+	  {"speaker": "???", "text": "Woah, calm down! No need to get all fiesty. You wouldn't be able to harm me, even if you tried your hardest, y'know? Being a ghost, and all."},
+	  {"speaker": "YOU", "text": "What? A ghost? So I really am dead aren't I...?"},
+	  {"speaker": "GHOST", "text": "Again, not quite! You seem to be in LIMBO"},
+	  {"speaker": "YOU", "text": "LIMBO?"},
+	  {"speaker": "GHOST", "text": "Yes! LIMBO, a place between the world of the living and the afterlife!"},
+	  {"speaker": "YOU", "text": "So I am dead?"},
+	  {"speaker": "GHOST", "text": "Well physically you are, but it seems that your SOUL is still living."},
+	  {"speaker": "YOU", "text": "B- but how?! Shouldn't this be the end for me?"},
+	  {"speaker": "GHOST", "text": "Well it seems like although your physical self has given up, your SOUL is still determined to keep fighting. And it won't stop until it is satisfied."},
+	  {"speaker": "YOU", "text": "But how? If I'm physically dead, how can I continue fighting? Won't that mean I'm stuck in this void forever?"},
+	  {"speaker": "GHOST", "text": "It seems that way to me. But may I ask what is fueling this determination of yours?"},
+	  {"speaker": "YOU", "text": "Well I am-... or atleast I was, cursed by something unknown, and was trying to find a cure to stop it from spreading.."},
+	  {"speaker": "YOU", "text": "But what does it matter to you anyway?"},
+	  {"speaker": "GHOST", "text": "It matters to me, because I might be able to get you back on your feet. But only for a small price of course"},
+	  {"speaker": "YOU", "text": "I'm not letting you control my body."},
+	  {"speaker": "GHOST", "text": "Not your body, silly. I do not care for some cursed human. What I do care about, however, are MARROW SHARDS."},
+	  {"speaker": "YOU", "text": "Marrow what now? What is that?"},
+	  {"speaker": "GHOST", "text": "MARROW SHARDS, they're fragments of a SOUL that grant strength to beings in the afterlife."},
+	  {"speaker": "GHOST", "text": "These MARROW SHARDS leave a living being whenever they've been killed, and since you've experienced death before, you'll be able to see them and collect them."},
+	  {"speaker": "GHOST", "text": "I'm willing to give you a second chance in life, by returning you back to the start of your journey, and in return you can collect these MARROW SHARDS and hand them to me."},
+	  {"speaker": "YOU", "text": "..."},
+	  {"speaker": "YOU", "text": "No deal."},
+	  {"speaker": "GHOST", "text": "NO DEAL!?! This is a deal of a lifetime we're talking about! I can quite literally bring you back from the dead, and you DECLINE MY OFFER?!"},
+	  {"speaker": "YOU", "text": "Well, being resurrected won't do me any good if I just die over and over again. If I couldn't survive back then, I surely couldn't survive now."},
+	  {"speaker": "GHOST", "text": "How about this then. When returning these MARROW SHARDS to me, when you inevitably come back, how about I lend you my strength? To aid you in your quest of finding your cure."},
+	  {"speaker": "YOU", "text": "It does seem tempting..."},
+	  {"speaker": "GHOST", "text": "Does that mean we have a deal?"},
+	  {"speaker": "YOU", "text": "..."},
+	  {"speaker": "YOU", "text": "No deal. I won't help some strange ghost that I've just met"},
+	  {"speaker": "GHOST", "text": "You're no fun. Enjoy sitting here in pure silence then..."}
+  ],
+  "limbo_intro_2": [
+	  {"speaker": "GHOST", "text": "Having fun?"},
+	  {"speaker": "YOU", "text": "Yeah... about that.. is that deal still on the table?"},
+	  {"speaker": "GHOST", "text": "I don't know... I don't really feel like making deals with people right now..."},
+	  {"speaker": "GHOST", "text": "Especially not those with weird curses..."},
+	  {"speaker": "YOU", "text": "..."},
+	  {"speaker": "GHOST", "text": "And who also wear super ugly knight's armo-"},
+	  {"speaker": "YOU", "text": "ALRIGHT ALRIGHT WE GET IT, I WAS WRONG!"},
+	  {"speaker": "YOU", "text": "I'll collect those shard things for you, so will you please resurrect me and lend me your strength?"},
+	  {"speaker": "GHOST", "text": "You've got yourself a deal! Pleasure doin' business with ya!"},
+	  {"speaker": "GHOST", "text": "I'll open a portal for you, enter it and you'll be back in your very own cursed body!"}
+  ],
+  "ghost_greeting": [
+	  {"speaker": "GHOST", "text": "Back again, huh? Show me what you've got!"}
   ]
 }
