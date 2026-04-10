@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://d2s17jklro683"]
+[gd_resource type="Resource" script_class="BuffItemData" format=3]
 
-[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://Scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://cis8lkqr0lf1y" path="res://Assets/ShopItems/Textures/Executioner's Hood.png" id="2_umaf5"]
+[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bvv81yo0dnj16" path="res://assets/ShopItems/Textures/TempBoots.png" id="2_texture"]
 
 [resource]
 script = ExtResource("1_script")
@@ -9,7 +9,7 @@ item_name = "Executioner's Hood"
 effect = "Crits on Head apply 2 stacks of Bleed"
 lore = "The last thing they see is the dark."
 category = "Tier III"
-texture = ExtResource("2_umaf5")
+texture = ExtResource("2_texture")
 cost = 90
 target_limb = "Head"
 buff_type = "Precision"
