@@ -7,7 +7,7 @@ extends Node2D
 @onready var health_label : Label = $CanvasLayer/VBoxContainer/HealthLabel
 @onready var upgrade_screen = $CanvasLayer/UpgradeScreen
 
-
+var skill_tree_overlay = null
 var current_room: Node = null
 var combat_node: Node = null
 var _combat_enemy: Node = null
@@ -17,10 +17,14 @@ func _ready() -> void:
 	RunData.level_changed.connect(_on_level_changed)
 	RunData.exp_changed.connect(_on_exp_changed)
 	RunData.health_changed.connect(_on_health_changed)
+	PlayerStats.stats_changed.connect(_on_stats_changed)
 	
 	_on_level_changed(RunData.current_level)
 	_on_exp_changed(RunData.current_exp)
 	_on_health_changed()
+	
+	_setup_skill_tree_overlay()
+	_apply_skill_tree_bonuses()
 	
 	upgrade_screen.upgrade_selected.connect(_on_upgrade_selected)
 	
@@ -59,6 +63,13 @@ func _on_exp_changed(new_exp: int) -> void:
 
 func _on_health_changed() -> void:
 	health_label.text = str(RunData.current_health) + " HP / " + str(RunData.max_health) + " HP"
+
+func _on_stats_changed(stat_name: String, new_value: float) -> void:
+	if stat_name == "health":
+		RunData.max_health = int(new_value)
+		if RunData.current_health > RunData.max_health:
+			RunData.current_health = RunData.max_health
+		_on_health_changed()
 
 func enter_combat(combat_scene_path: String, enemy: Node = null) -> void:
 	if combat_node:
@@ -122,7 +133,12 @@ func _show_upgrade_screen():
 func _on_upgrade_selected(stat: String):
 	print("Selected:", stat)
 	PlayerStats.upgrade_stat(stat)
-
+	
+	if stat == "health":
+		RunData.max_health = int(PlayerStats.stats["health"])
+		if RunData.current_health > RunData.max_health:
+			RunData.current_health = RunData.max_health
+	
 	upgrade_screen.hide()
 	get_tree().paused = false
 	
@@ -138,6 +154,50 @@ func _input(event):
 		 
 	if event.is_action("ui_text_delete_word"):
 		DialogueManager.start_dialogue("intro")
+	
+	# Debug for now, because limbo world doesn't exist
+	if event.is_action_pressed("open_skill_tree_debug"):
+		_toggle_skill_tree()
 
 func _process(delta: float) -> void:
 	RunData.update_timer(delta)
+
+func _setup_skill_tree_overlay() -> void:
+	var skill_tree_scene = load("res://scenes/skilltree/skill_tree_screen.tscn")
+	skill_tree_overlay = skill_tree_scene.instantiate()
+	
+	var canvas_layer = CanvasLayer.new()
+	canvas_layer.layer = 100
+	add_child(canvas_layer)
+	canvas_layer.add_child(skill_tree_overlay)
+	
+	skill_tree_overlay.visible = false
+
+func _toggle_skill_tree() -> void:
+	if skill_tree_overlay == null:
+		return
+	
+	skill_tree_overlay.visible = !skill_tree_overlay.visible
+	get_tree().paused = skill_tree_overlay.visible
+
+func _apply_skill_tree_bonuses() -> void:
+	var skills: Array = []
+	
+	var skill_paths = [
+		"res://scripts/skilltree/skill_resources/anatomy_mastery.tres",
+		"res://scripts/skilltree/skill_resources/fortune's_blessing.tres",
+		"res://scripts/skilltree/skill_resources/hardened_flesh.tres",
+		"res://scripts/skilltree/skill_resources/iron_will.tres",
+		"res://scripts/skilltree/skill_resources/quick_reflexes.tres",
+		"res://scripts/skilltree/skill_resources/scavengers_eye.tres",
+		"res://scripts/skilltree/skill_resources/starting_kit.tres",
+		"res://scripts/skilltree/skill_resources/steady_hand.tres",
+		"res://scripts/skilltree/skill_resources/stone_guard.tres",
+	]
+	
+	for path in skill_paths:
+		var skill = load(path) as SkillData
+		if skill:
+			skills.append(skill)
+	
+	PlayerStats.apply_skill_bonuses(skills)
