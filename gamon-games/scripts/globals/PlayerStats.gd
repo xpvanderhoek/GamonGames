@@ -1,6 +1,8 @@
 extends Node
 
 var knows_ghost : bool = false
+signal stats_changed(stat_name: String, new_value: float)
+signal upgrade_completed(stat_name: String, level: int)
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh
@@ -52,7 +54,8 @@ func update_stat(stat_name: String, value: float) -> float:
 	var new_stat_value: float = current_stat_value * multiplier
 	
 	stats[stat_name] = new_stat_value
-	print("Updated %s: %.2f to %.2f" % [stat_name, current_stat_value, new_stat_value])
+	stats_changed.emit(stat_name, new_stat_value)
+	print("Updated %s: %d to %d" % [stat_name, current_stat_value, new_stat_value])
 	
 	return new_stat_value
 
@@ -80,6 +83,7 @@ func upgrade_stat(stat_name: String) -> bool:
 	
 	update_stat(stat_name, config.percent)
 	upgrade_levels[stat_name] += 1
+	upgrade_completed.emit(stat_name, upgrade_levels[stat_name])
 	print("Upgraded %s to level %d" % [stat_name, upgrade_levels[stat_name]])
 	
 	return true
@@ -103,3 +107,9 @@ func reset_stats() -> void:
 	
 	for key in upgrade_levels:
 		upgrade_levels[key] = 0
+
+func apply_skill_bonuses(skills: Array) -> void:
+	for skill in skills:
+		if skill is SkillData and skill.current_level > 0 and skill.affected_stat != "":
+			for i in range(skill.current_level):
+				update_stat(skill.affected_stat, skill.stat_bonus_per_level)

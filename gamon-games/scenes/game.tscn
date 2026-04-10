@@ -21,6 +21,7 @@ process_mode = 1
 process_mode = 1
 position = Vector2(400, 300)
 scale = Vector2(5, 5)
+combat_scene_path = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1035846177]
 

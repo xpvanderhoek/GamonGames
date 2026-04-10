@@ -7,6 +7,9 @@ extends Control
 func _ready():
 	stats_panel.visible = false
 	stats_button.connect("pressed", Callable(self, "_on_stats_button_pressed"))
+	
+	PlayerStats.stats_changed.connect(_on_player_stats_changed)
+	PlayerStats.upgrade_completed.connect(_on_player_stats_changed.bind(""))
 
 func update_stats_display():
 	if stats_container == null:
@@ -20,12 +23,14 @@ func update_stats_display():
 		var value = PlayerStats.stats[stat_name]
 		var upgrade_level = PlayerStats.get_upgrade_level(stat_name)
 		var label = Label.new()
-		label.text = "%s: %.2f (Level %d)" % [stat_name.capitalize().replace("_", " "), value, upgrade_level]
+		label.text = "%s: %d (Level %d)" % [stat_name.capitalize().replace("_", " "), value, upgrade_level]
 		stats_container.add_child(label)
 
+func _on_player_stats_changed(stat_name: String = "", new_value: float = 0.0) -> void:
+	if stats_panel.visible:
+		update_stats_display()
 
-func _on_button_show_stats_pressed() -> void:
+func _on_stats_button_pressed() -> void:
 	stats_panel.visible = !stats_panel.visible
 	if stats_panel.visible:
 		update_stats_display()
-	print("Pressed button")

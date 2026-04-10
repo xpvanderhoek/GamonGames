@@ -40,11 +40,18 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func process_movement() -> void:
-	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	if direction != Vector2.ZERO:
+	var input_direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+
+	if input_direction != Vector2.ZERO:
 		var speed = RunData.get_stat("speed")
-		velocity = direction * speed
-		last_direction = direction
+
+		var isometric_direction = Vector2(
+			input_direction.x,
+			input_direction.y * 0.60
+		)
+
+		velocity = isometric_direction.normalized() * speed
+		last_direction = isometric_direction.normalized()
 	else:
 		velocity = Vector2.ZERO
 
