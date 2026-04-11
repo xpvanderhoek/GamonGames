@@ -1,8 +1,8 @@
 {
   "intro": [
-    {"speaker": "NPC", "text": "Hello!"},
-    {"speaker": "NPC", "text": "This is a test dialogue."},
-    {"speaker": "Player", "text": "It works!"}
+	{"speaker": "NPC", "text": "Hello!"},
+	{"speaker": "NPC", "text": "This is a test dialogue."},
+	{"speaker": "Player", "text": "It works!"}
   ],
   "limbo_enter": [
 	  {"speaker": "YOU", "text": "Ugh... where am I?"},

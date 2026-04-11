@@ -1,6 +1,10 @@
 extends Node
 
+var SAVE_PATH
+var project_path = ProjectSettings.globalize_path("res://")
+
 var knows_ghost : bool = false
+
 signal stats_changed(stat_name: String, new_value: float)
 signal upgrade_completed(stat_name: String, level: int)
 
@@ -37,25 +41,84 @@ var upgrade_costs = {
 	"luck": {"min": 200, "max": 1200}
 }
 
+func _ready():
+	var project_root = ProjectSettings.globalize_path("res://")
+	SAVE_PATH = project_root + "data/player_stats.json"
+	# print(SAVE_PATH)
+	
+	load_from_file()
+
+
+func save_to_file():
+	var save_data = {
+		"stats": stats.duplicate(),
+		"upgrade_levels": upgrade_levels.duplicate(),
+		"knows_ghost": knows_ghost
+	}
+	
+	# print("SAVE DATA:", save_data)
+	
+	var json_string = JSON.stringify(save_data)
+	
+	if json_string == "":
+		push_error("JSON stringify failed!")
+		return
+	
+	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	
+	if file:
+		file.store_string(json_string)
+		file.close()
+		print("Saved!")
+	else:
+		push_error("Failed to save file")
+
+func load_from_file():
+	if not FileAccess.file_exists(SAVE_PATH):
+		print("No save file found : creating default save")
+		save_to_file()
+		return
+	
+	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
+	var content = file.get_as_text()
+	file.close()
+	
+	if content.strip_edges() == "":
+		print("Empty save detected : resetting")
+		save_to_file()
+		return
+	
+	var result = JSON.parse_string(content)
+	
+	if result == null:
+		print("Corrupted save : resetting")
+		save_to_file()
+		return
+	
+	stats = result.get("stats", stats)
+	upgrade_levels = result.get("upgrade_levels", upgrade_levels)
+	knows_ghost = result.get("knows_ghost", false)
+	
+	print("Game loaded!")
+
 func get_stat_value(stat_name: String) -> float:
 	if stat_name in stats:
 		return stats[stat_name]
-	else:
-		push_error("Stat '%s' does not exist" % stat_name)
-		return 0.0
+	push_error("Stat '%s' does not exist" % stat_name)
+	return 0.0
 
 func update_stat(stat_name: String, value: float) -> float:
 	if not stat_name in stats:
 		push_error("Stat '%s' does not exist" % stat_name)
 		return 0.0
 	
-	var current_stat_value = get_stat_value(stat_name)
+	var current_stat_value = stats[stat_name]
 	var multiplier = 1.0 + (value / 100.0)
 	var new_stat_value: float = current_stat_value * multiplier
 	
 	stats[stat_name] = new_stat_value
 	stats_changed.emit(stat_name, new_stat_value)
-	print("Updated %s: %d to %d" % [stat_name, current_stat_value, new_stat_value])
+	print("Updated %s: %f → %f" % [stat_name, current_stat_value, new_stat_value])
 	
 	return new_stat_value
 
@@ -83,15 +146,15 @@ func upgrade_stat(stat_name: String) -> bool:
 	
 	update_stat(stat_name, config.percent)
 	upgrade_levels[stat_name] += 1
+	
 	upgrade_completed.emit(stat_name, upgrade_levels[stat_name])
 	print("Upgraded %s to level %d" % [stat_name, upgrade_levels[stat_name]])
 	
+	save_to_file()
 	return true
 
 func get_upgrade_level(stat_name: String) -> int:
-	if stat_name in upgrade_levels:
-		return upgrade_levels[stat_name]
-	return 0
+	return upgrade_levels.get(stat_name, 0)
 
 func reset_stats() -> void:
 	stats = {
@@ -107,9 +170,13 @@ func reset_stats() -> void:
 	
 	for key in upgrade_levels:
 		upgrade_levels[key] = 0
+	
+	save_to_file()
 
 func apply_skill_bonuses(skills: Array) -> void:
 	for skill in skills:
 		if skill is SkillData and skill.current_level > 0 and skill.affected_stat != "":
 			for i in range(skill.current_level):
 				update_stat(skill.affected_stat, skill.stat_bonus_per_level)
+	
+	save_to_file()
