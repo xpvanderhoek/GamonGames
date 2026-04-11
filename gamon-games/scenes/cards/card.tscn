@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bern6ljusurl6"]
+
+[ext_resource type="Script" uid="uid://b84e4hmilu0p6" path="res://scripts/cards/card.gd" id="1_0qqw3"]
+[ext_resource type="Texture2D" uid="uid://dmiafejjj76nr" path="res://assets/Civilian_card_back.png" id="1_45qsb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0qqw3"]
+size = Vector2(196, 284)
+
+[node name="Card" type="Node2D" unique_id=1728975858]
+script = ExtResource("1_0qqw3")
+
+[node name="CardImage" type="Sprite2D" parent="." unique_id=771585276]
+texture = ExtResource("1_45qsb")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1248238000]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=606185124]
+shape = SubResource("RectangleShape2D_0qqw3")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

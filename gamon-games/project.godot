@@ -28,6 +28,7 @@ DialogueManager="*uid://cdsxgwq8b0vwp"
 [display]
 
 window/stretch/mode="canvas_items"
+window/vsync/vsync_mode=0
 
 [global_group]
 
