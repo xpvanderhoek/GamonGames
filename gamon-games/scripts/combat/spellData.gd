@@ -19,8 +19,8 @@ enum TargetScope {
 }
 
 enum VfxAnchor {
-	PLAYER,
-	ENEMY,
+	SELF,
+	TARGET,
 	SCREEN_CENTER,
 }
 
@@ -36,7 +36,7 @@ enum VfxAnchor {
 @export_category("VFX-SFX")
 @export var sfx: AudioStream
 @export var vfx_scene: PackedScene
-@export var vfx_anchor: VfxAnchor = VfxAnchor.PLAYER
+@export var vfx_anchor: VfxAnchor = VfxAnchor.SELF
 @export var vfx_offset: Vector2 = Vector2.ZERO
 @export_range(0.0, 30.0, 0.1) var vfx_lifetime: float = 1.5
 

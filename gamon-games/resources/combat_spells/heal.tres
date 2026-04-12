@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://dk62nox513ghx"]
 
-[ext_resource type="Texture2D" path="res://assets/Placeholders/enemies/buff_shaman_passive.png" id="1_66n7y"]
+[ext_resource type="Texture2D" uid="uid://5exyi34fo3k2" path="res://assets/Placeholders/ui/buff_shaman_passive.png" id="1_66n7y"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
 
 [resource]

@@ -151,14 +151,14 @@ func _select_spell(spell: SpellData) -> void:
 		return
 	if spell != null and spell.spell_type == SpellData.SpellType.BUFF:
 		_append_player_effect(spell)
-		_play_attack_feedback(spell, null)
+		_play_attack_feedback(spell, null, null)
 		_attack_selected = false
 		selected_spell = null
 		_end_player_turn()
 		return
 	if spell != null and spell.spell_type == SpellData.SpellType.HEAL:
 		_apply_player_heal(spell.heal_amount)
-		_play_attack_feedback(spell, null)
+		_play_attack_feedback(spell, null, null)
 		_attack_selected = false
 		selected_spell = null
 		_end_player_turn()
@@ -254,7 +254,7 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 			_append_enemy_effect(source_enemy, active_spell, limb)
 
 		if active_spell != null:
-			_play_attack_feedback(active_spell, source_enemy)
+			_play_attack_feedback(active_spell, null, source_enemy)
 	else:
 		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(_get_adjusted_hit_chance_percent(limb), 0.1)])
 	_attack_selected = false
@@ -357,7 +357,7 @@ func _perform_enemy_turn() -> void:
 			continue
 
 		await get_tree().create_timer(0.35).timeout
-		await _play_attack_feedback(attack, attacking_enemy)
+		await _play_attack_feedback(attack, attacking_enemy, null)
 		var outgoing_multiplier := _get_enemy_outgoing_multiplier(attacking_enemy)
 		var damage: int = int(round(float(max(0, attack.damage)) * outgoing_multiplier))
 		_apply_player_damage(damage, attack.damage_type)
@@ -820,7 +820,7 @@ func _flash_player_hit() -> void:
 	tween.tween_property(player_canvas, "modulate", Color(1.7, 1.7, 1.7, 1.0), 0.18)
 	tween.tween_property(player_canvas, "modulate", Color(1, 1, 1, 1), 0.22)
 
-func _play_attack_feedback(attack: SpellData, attacking_enemy: CombatEntity) -> void:
+func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> void:
 	var vfx_lifetime_timer: SceneTreeTimer = null
 
 	if attack.sfx != null:
@@ -834,7 +834,7 @@ func _play_attack_feedback(attack: SpellData, attacking_enemy: CombatEntity) -> 
 	if attack.vfx_scene != null:
 		var vfx := attack.vfx_scene.instantiate()
 		add_child(vfx)
-		vfx.global_position = _resolve_vfx_position(attack, attacking_enemy) + attack.vfx_offset
+		vfx.global_position = _resolve_vfx_position(attack, source_entity, target_entity) + attack.vfx_offset
 		if attack.vfx_lifetime > 0.0:
 			vfx_lifetime_timer = get_tree().create_timer(attack.vfx_lifetime)
 			vfx_lifetime_timer.timeout.connect(vfx.queue_free)
@@ -842,17 +842,33 @@ func _play_attack_feedback(attack: SpellData, attacking_enemy: CombatEntity) -> 
 	if vfx_lifetime_timer != null:
 		await vfx_lifetime_timer.timeout
 
-func _resolve_vfx_position(attack: SpellData, attacking_enemy: CombatEntity) -> Vector2:
+func _resolve_vfx_position(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> Vector2:
 	match attack.vfx_anchor:
-		SpellData.VfxAnchor.PLAYER:
-			var player_anchor := get_node_or_null(ui_player)
-			if player_anchor is CanvasItem:
-				return (player_anchor as CanvasItem).global_position
-		SpellData.VfxAnchor.ENEMY:
-			if attacking_enemy is CombatEntity:
-				return (attacking_enemy as CombatEntity).global_position
+		SpellData.VfxAnchor.SELF:
+			var source_position := _get_vfx_anchor_position(source_entity)
+			if source_position != null:
+				return source_position
+		SpellData.VfxAnchor.TARGET:
+			var target_position := _get_vfx_anchor_position(target_entity)
+			if target_position != null:
+				return target_position
 
 	return get_viewport().get_visible_rect().size * 0.5
+
+func _get_vfx_anchor_position(anchor_node: Node) -> Variant:
+	if anchor_node == null or not is_instance_valid(anchor_node):
+		var player_anchor := get_node_or_null(ui_player)
+		if player_anchor is CanvasItem:
+			return (player_anchor as CanvasItem).global_position
+		return null
+
+	if anchor_node is CanvasItem:
+		return (anchor_node as CanvasItem).global_position
+
+	if anchor_node is CombatEntity:
+		return (anchor_node as CombatEntity).global_position
+
+	return null
 
 func _end_enemy_turn() -> void:
 	if current_state == CombatState.COMBAT_OVER:

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CombatSpellData" format=3 uid="uid://brqp1tf0obe77"]
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://brqp1tf0obe77"]
 
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
+[ext_resource type="Texture2D" uid="uid://cydiwpld3gxpm" path="res://assets/Placeholders/ui/blade_master.png" id="1_ylob2"]
 [ext_resource type="PackedScene" uid="uid://mefrqehh2onn" path="res://Scenes/combat/vfx/test.tscn" id="2_vfx"]
 
 [resource]
@@ -9,5 +10,7 @@ spell_id = "basic_attack"
 spell_name = "Basic Attack"
 damage = 5
 weight = 100.0
+icon = ExtResource("1_ylob2")
 vfx_scene = ExtResource("2_vfx")
+vfx_anchor = 1
 vfx_lifetime = 1.0
