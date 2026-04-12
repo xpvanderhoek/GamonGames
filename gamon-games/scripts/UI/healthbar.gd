@@ -8,5 +8,5 @@ func _ready() -> void:
 func update():
 	if RunData.current_health == null or RunData.max_health == null:
 		return
-	texture_health_bar.value = RunData.current_health * 100 / RunData.max_health
+	texture_health_bar.value = float(RunData.current_health) * 100.0 / float(RunData.max_health)
 	health_label.text = str(RunData.current_health) + " / " + str(RunData.max_health)

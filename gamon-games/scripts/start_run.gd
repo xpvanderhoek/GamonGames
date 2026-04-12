@@ -19,7 +19,7 @@ func _on_start_run_btn_pressed() -> void:
 	RunData.new_run()
 	var random_room : String = NavigationManager.get_new_random_room()
 	get_tree().paused = false
-	TransitionManager.transition_room(random_room)
+	TransitionManager.transition_newrun(random_room)
 	queue_free()
 
 

@@ -1,8 +1,15 @@
 extends Node
 
+const BASIC_ATTACK = preload("res://resources/combat_spells/basic_attack.tres")
+const HEAVY_STRIKE = preload("res://resources/combat_spells/heavy_strike.tres")
+const BUFF = preload("res://resources/combat_spells/buff.tres")
+const DEBUFF = preload("res://resources/combat_spells/debuff.tres")
+const HEAL = preload("res://resources/combat_spells/heal.tres")
+
 const RUN_DURATION := 600.0 # 10 minutes
 var random_seed : int = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
+var spells : Array[SpellData] = []
 
 var run_active : bool = false
 var time_remaining : float = RUN_DURATION:
@@ -61,6 +68,11 @@ func new_run():
 	current_exp = 0
 	run_active = true
 	time_remaining = RUN_DURATION
+	add_spell(BASIC_ATTACK)
+	add_spell(HEAVY_STRIKE)
+	add_spell(BUFF)
+	add_spell(DEBUFF)
+	add_spell(HEAL)
 
 func end_run():
 	run_active = false
@@ -128,3 +140,13 @@ func get_level_progress() -> float:
 	var next_requirement = EXP_PER_LEVEL[current_level + 1] if current_level + 1 < EXP_PER_LEVEL.size() else EXP_PER_LEVEL[current_level]
 	var progress = float(current_exp - current_requirement) / float(next_requirement - current_requirement)
 	return clamp(progress, 0.0, 1.0)
+
+func add_spell(spell: SpellData) -> bool:
+	if not (spell is SpellData):
+		return false
+
+	for existing_spell in spells:
+		if existing_spell.spell_id == spell.spell_id and not existing_spell.spell_id.is_empty():
+			return false
+	spells.append(spell)
+	return true

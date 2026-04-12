@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CombatSpellData" format=3 uid="uid://dk62nox513ghx"]
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://dk62nox513ghx"]
 
-[ext_resource type="Texture2D" uid="uid://3s1eub7j1jku" path="res://Assets/Placeholders/enemies/buff_shaman_passive.png" id="1_66n7y"]
-[ext_resource type="Script" uid="uid://duq2aywoty7u5" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
+[ext_resource type="Texture2D" path="res://assets/Placeholders/enemies/buff_shaman_passive.png" id="1_66n7y"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
 
 [resource]
 script = ExtResource("1_spelldata")

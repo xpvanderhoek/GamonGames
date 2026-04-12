@@ -1,4 +1,4 @@
-class_name CombatSpellData
+class_name SpellData
 extends Resource
 
 enum SpellType {
@@ -50,3 +50,4 @@ enum VfxAnchor {
 @export_range(-100.0, 100.0, 0.1) var player_magic_defense_delta: float = 0.0
 @export_range(-100.0, 100.0, 0.1) var target_physical_defense_delta: float = 0.0
 @export_range(-100.0, 100.0, 0.1) var target_magic_defense_delta: float = 0.0
+

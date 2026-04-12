@@ -1,15 +1,16 @@
-[gd_resource type="Resource" script_class="CombatSpellData" format=3 uid="uid://6v0aa72wsqee"]
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://6v0aa72wsqee"]
 
-[ext_resource type="Texture2D" uid="uid://dwcqt0lyptmn2" path="res://Assets/Placeholders/enemies/absorbing_robe.png" id="1_f4ejj"]
-[ext_resource type="Script" uid="uid://duq2aywoty7u5" path="res://scripts/combat/spellData.gd" id="2_ga2yp"]
+[ext_resource type="Texture2D" path="res://assets/Placeholders/enemies/absorbing_robe.png" id="1_f4ejj"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_ga2yp"]
 
 [resource]
 script = ExtResource("2_ga2yp")
 spell_id = "buff"
 spell_name = "buff"
 spell_type = 1
+target_scope = 1
 icon = ExtResource("1_f4ejj")
-duration_rounds = 2
+duration_rounds = 4
 outgoing_damage_flat_bonus = 5
 player_physical_defense_delta = 20.0
 player_magic_defense_delta = 20.0
