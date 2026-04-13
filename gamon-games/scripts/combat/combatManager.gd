@@ -147,6 +147,14 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		source_enemy.take_damage(limb, damage)
 	else:
 		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(limb.hit_chance_percent, 0.1)])
+		
+		DialogueManager.start_dialogue([
+			{
+			"speaker": "System",
+			"text": "Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(limb.hit_chance_percent, 0.1)]	
+			}
+		], "combat")
+	
 	_attack_selected = false
 	source_enemy.clear_current_highlight()
 	_end_player_turn()
@@ -221,6 +229,13 @@ func _apply_player_damage(amount: int) -> void:
 	if RunData.current_health <= 0:
 		current_state = CombatState.COMBAT_OVER
 	print("Player took %d damage — HP: %d/%d" % [amount, RunData.current_health, RunData.max_health])
+	
+	DialogueManager.start_dialogue([
+		{
+			"speaker": "System",
+			"text": "Player took %d damage — HP: %d/%d" % [amount, RunData.current_health, RunData.max_health]
+		}
+	], "combat")
 
 func _flash_player_hit() -> void:
 	var player_anchor := get_node_or_null(ui_player)

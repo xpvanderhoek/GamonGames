@@ -124,6 +124,14 @@ func take_damage(amount: int) -> void:
 
 	current_health = max(0, current_health - amount)
 	print(limb_name, " took ", amount, " damage — HP: ", current_health, "/", max_health)
+	
+	DialogueManager.start_dialogue([
+		{
+		"speaker": "System",
+		"text": "%s took %d damage — HP: %d/%d" % [limb_name, amount, current_health, max_health]
+		}
+	], "combat")
+		
 	limb_damaged.emit(self, amount, current_health)
 
 	_flash_hit()

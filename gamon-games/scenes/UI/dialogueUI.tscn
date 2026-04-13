@@ -14,6 +14,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=629855543]
+layer = 100
 script = ExtResource("1_abnd6")
 
 [node name="Panel" type="Panel" parent="." unique_id=2035059136]
