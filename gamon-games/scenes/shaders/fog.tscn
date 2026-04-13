@@ -15,7 +15,7 @@ seamless_blend_skirt = 0.75
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rc7ag"]
 shader = ExtResource("1_exdsw")
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_exdsw")
-shader_parameter/density = 0.1590000075525
+shader_parameter/density = 0.14400000684
 shader_parameter/speed = Vector2(0.02, 0.01)
 
 [node name="Fog" type="CanvasLayer" unique_id=1527500878]
@@ -23,11 +23,12 @@ shader_parameter/speed = Vector2(0.02, 0.01)
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=1656977623]
 scroll_scale = Vector2(1.1, 1.1)
 repeat_size = Vector2(1152, 648)
-repeat_times = 40
+repeat_times = 5
 
 [node name="ColorRect" type="ColorRect" parent="Parallax2D" unique_id=1462485947]
 z_index = 4096
 material = SubResource("ShaderMaterial_rc7ag")
 offset_right = 1152.0
 offset_bottom = 648.0
+mouse_filter = 2
 color = Color(1, 1, 1, 0.38039216)

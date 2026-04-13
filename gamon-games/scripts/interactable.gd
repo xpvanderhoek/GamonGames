@@ -18,7 +18,8 @@ func _ready() -> void:
 	interactable_area.input_event.connect(_on_input_event)
 
 func _on_mouse_hovered():
-	interaction_label.visible = true
+	if !is_busy:
+		interaction_label.visible = true
 
 func _on_mouse_exit():
 	interaction_label.visible = false
@@ -26,6 +27,7 @@ func _on_mouse_exit():
 func _on_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			interaction_label.visible = false
 			interact()
 
 func interact(): 

@@ -14,21 +14,10 @@ var current_interactable = null
 @export var footstep_sounds: Array[AudioStream]
 @export var combat_scene_path: String = "res://scenes/combat/combat.tscn"
 
-func _ready():
-	interaction_label.visible = false
-
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact"):
 		if current_interactable != null:
 			current_interactable.interact()
-
-func show_interaction_label(action_name : String):
-	interaction_label.visible = true
-	interaction_label.text = "Press 'E' to " + action_name
-
-func hide_interaction_label():
-	interaction_label.visible = false
-	interaction_label.text = ""
 
 func _physics_process(delta: float) -> void:
 	if DialogueManager.is_in_dialogue:
