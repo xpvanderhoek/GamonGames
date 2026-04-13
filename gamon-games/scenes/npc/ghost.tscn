@@ -8,16 +8,34 @@ size = Vector2(16.843575, 25.013554)
 
 [node name="Ghost" type="Node2D" unique_id=1417627856]
 script = ExtResource("1_434k8")
+prompt_text = "talk"
 metadata/_custom_type_script = "uid://dv00pim1t28o3"
+
+[node name="InteractionLabel" type="Label" parent="." unique_id=509524311]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.0
+offset_top = -222.0
+offset_right = 47.5
+offset_bottom = -168.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 39
+text = "TALK"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2081916548]
 texture = ExtResource("2_klo5b")
 
 [node name="InteractableArea" type="Area2D" parent="." unique_id=1416217248]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="InteractableArea" unique_id=325747224]
-position = Vector2(-41, -2)
-polygon = PackedVector2Array(-58, 165, 131, 28, 243, 78, 53, 232)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="InteractableArea" unique_id=841485563]
+polygon = PackedVector2Array(23, -151.9, -7.5999985, -154, -9, -154, -9, -152.7, -29.400002, -148, -32.6, -148, -49.6, -137, -51.9, -137, -69.9, -118, -71.2, -118, -82.2, -96, -83.7, -96, -86.7, -80, -87.9, -80, -94, -1.1000061, -94, 6.699997, -108, 87.8, -108, 97.100006, -96, 105.100006, -96, 106.79999, -85.1, 108, -82.2, 108, -83, 115.899994, -83, 126.899994, -76, 132.9, -76, 134.4, -68.3, 137, -51.8, 137, -32.699997, 134, -27.900002, 134, -16, 144.9, -16, 146.4, -6.4000015, 150, -4, 150, -4, 154, 1, 154, 1, 151.70001, 3.5, 152, 11.5, 148, 14.699997, 148, 30.699997, 134, 30.600006, 134.5, 33, 136.79999, 33, 138.29999, 35.300003, 139.29999, 41.600006, 134.20001, 52, 135.70001, 52, 137, 70.600006, 137, 75.5, 134, 78.100006, 134, 82.100006, 128, 84.100006, 128, 83, 109.899994, 83, 107.70001, 93.3, 106, 97.8, 106, 107.7, 97, 109, 97, 109, 88.8, 96.7, 12, 95.8, 12, 90, -46.199997, 90, -74.3, 82, -99.3, 82, -102.7, 71, -117.7, 71, -119.9, 47, -140, 47, -141.4, 23, -150.5)
 
 [node name="Hitbox" type="StaticBody2D" parent="." unique_id=2048237287]
 
