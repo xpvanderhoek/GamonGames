@@ -4,8 +4,10 @@ extends Sprite2D
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
 @export var is_vital: bool = false
+@export_range(0.0, 100.0, 0.1) var physical_defense: float = 0.0
+@export_range(0.0, 100.0, 0.1) var magic_defense: float = 0.0
 @export_range(0.0, 100.0, 0.1) var hit_chance_percent: float = 100.0
-@export var attacks: Array[CombatAttack] = []
+@export var attacks: Array[SpellData] = []
 
 var current_health: int
 var is_destroyed: bool = false
@@ -22,21 +24,28 @@ signal limb_clicked(limb: CombatLimb)
 signal mouse_entered_limb
 signal mouse_exited_limb
 
+func get_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
+	match damage_type:
+		SpellData.DamageType.MAGIC:
+			return max(0.0, magic_defense)
+		_:
+			return max(0.0, physical_defense)
+
 func roll_hit() -> bool:
 	return randf() * 100.0 < hit_chance_percent
 
 func has_attack_options() -> bool:
 	return get_attack_options().size() > 0
 
-func get_attack_options() -> Array[CombatAttack]:
-	var options: Array[CombatAttack] = []
+func get_attack_options() -> Array[SpellData]:
+	var options: Array[SpellData] = []
 	for atk in attacks:
 		if atk == null:
 			continue
 		options.append(atk)
 	return options
 
-func choose_attack() -> CombatAttack:
+func choose_attack() -> SpellData:
 	var options := get_attack_options()
 	if options.is_empty():
 		return null

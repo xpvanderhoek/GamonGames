@@ -12,7 +12,9 @@ var stats = {
 	"debuff_resistance": 10.0, # Iron Will
 	"speed": 3000.0,           # Quick Reflexes
 	"defence": 10.0,          # Stoneguard
-	"luck": 0.0               # Fortune's Blessing
+	"luck": 0.0,               # Fortune's Blessing
+	"physical_defense": 10.0,
+	"magic_defense": 10.0,
 }
 
 var upgrade_levels = {
@@ -23,7 +25,9 @@ var upgrade_levels = {
 	"debuff_resistance": 0,
 	"speed": 0,
 	"defence": 0,
-	"luck": 0
+	"luck": 0,
+	"physical_defense": 0,
+	"magic_defense": 0,
 }
 
 var upgrade_costs = {
@@ -34,7 +38,9 @@ var upgrade_costs = {
 	"debuff_resistance": {"min": 300, "max": 1500},
 	"speed": {"min": 400, "max": 2000},
 	"defence": {"min": 100, "max": 1000},
-	"luck": {"min": 200, "max": 1200}
+	"luck": {"min": 200, "max": 1200},
+	"physical_defense": {"min": 100, "max": 1000},
+	"magic_defense": {"min": 100, "max": 1000},
 }
 
 func get_stat_value(stat_name: String) -> float:
@@ -72,7 +78,9 @@ func upgrade_stat(stat_name: String) -> bool:
 		"debuff_resistance": {"max": 5, "percent": 5.0},
 		"speed": {"max": 5, "percent": 2.0},
 		"defence": {"max": 10, "percent": 5.0},
-		"luck": {"max": 10, "percent": 5.0}
+		"luck": {"max": 10, "percent": 5.0},
+		"physical_defense": {"max": 10, "percent": 5.0},
+		"magic_defense": {"max": 10, "percent": 5.0},
 	}
 	
 	var config = upgrade_config[stat_name]
@@ -102,7 +110,9 @@ func reset_stats() -> void:
 		"debuff_resistance": 10.0,
 		"speed": 100.0,
 		"defence": 10.0,
-		"luck": 0.0
+		"luck": 0.0,
+		"physical_defense": 10.0,
+		"magic_defense": 10.0,
 	}
 	
 	for key in upgrade_levels:

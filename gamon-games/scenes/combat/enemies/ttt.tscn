@@ -5,38 +5,28 @@
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="3_w2142"]
 [ext_resource type="Texture2D" uid="uid://dsxoo5xbeqhc" path="res://assets/Placeholders/enemies/head.png" id="4_w3sxh"]
 [ext_resource type="Texture2D" uid="uid://j1m2vp1g8ig8" path="res://assets/Placeholders/enemies/left_hand.png" id="5_8f83m"]
-[ext_resource type="Script" uid="uid://bsud4alvvvjht" path="res://scripts/combat/combatAttack.gd" id="6_ot8vd"]
 [ext_resource type="Texture2D" uid="uid://dmvr7hisp4pak" path="res://assets/Placeholders/enemies/right_hand.png" id="7_kbcej"]
 
-[sub_resource type="Resource" id="Resource_dvbgm"]
-script = ExtResource("6_ot8vd")
-damage = 20
-metadata/_custom_type_script = "uid://bsud4alvvvjht"
-
-[node name="mauler" type="Control" unique_id=1680014499]
-custom_minimum_size = Vector2(220, 330)
+[node name="ttt" type="Control" unique_id=1680014499]
+custom_minimum_size = Vector2(250, 350)
 layout_mode = 3
 anchors_preset = 0
-offset_left = -93.0
-offset_top = 4.0
-offset_right = 157.0
-offset_bottom = 354.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+offset_right = 250.0
+offset_bottom = 350.0
 script = ExtResource("1_dvbgm")
 turn_order_icon = ExtResource("4_w3sxh")
 
 [node name="torso" type="Sprite2D" parent="." unique_id=1081538787]
-position = Vector2(176.72943, 210.9193)
-scale = Vector2(0.50949365, 0.50949365)
+position = Vector2(121, 177.00002)
+scale = Vector2(0.4423119, 0.4423119)
 texture = ExtResource("2_q3xq3")
 script = ExtResource("3_w2142")
 limb_name = "Torso"
 is_vital = true
 
 [node name="head" type="Sprite2D" parent="." unique_id=433218234]
-position = Vector2(173.72943, 103.9193)
-scale = Vector2(0.50949365, 0.50949365)
+position = Vector2(118.02294, 83.31077)
+scale = Vector2(0.44132692, 0.44720063)
 texture = ExtResource("4_w3sxh")
 script = ExtResource("3_w2142")
 limb_name = "Head"
@@ -45,18 +35,31 @@ is_vital = true
 hit_chance_percent = 50.0
 
 [node name="left_hand" type="Sprite2D" parent="." unique_id=1018948439]
-position = Vector2(254.72943, 153.9193)
+position = Vector2(191, 129.00002)
 scale = Vector2(0.50949365, 0.50949365)
 texture = ExtResource("5_8f83m")
 script = ExtResource("3_w2142")
 limb_name = "Left Hand"
 max_health = 50
-attacks = Array[ExtResource("6_ot8vd")]([SubResource("Resource_dvbgm")])
 
 [node name="right_hand" type="Sprite2D" parent="." unique_id=1029105267]
-position = Vector2(113.72943, 195.9193)
+position = Vector2(62, 173)
 scale = Vector2(0.50949365, 0.50949365)
 texture = ExtResource("7_kbcej")
 script = ExtResource("3_w2142")
 limb_name = "Right Hand"
 max_health = 50
+
+[node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -32.0
+offset_right = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1

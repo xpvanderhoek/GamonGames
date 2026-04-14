@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://coej4qxba8o7a" path="res://scenes/combat/enemies/mauler.tscn" id="2_0830c"]
 [ext_resource type="PackedScene" uid="uid://c4v6x4ghgyn5j" path="res://scenes/combat/enemies/ttt.tscn" id="3_ghaa6"]
 [ext_resource type="Script" uid="uid://e5m00ws5a7yr" path="res://scripts/ai.gd" id="4_287tu"]
-[ext_resource type="Texture2D" uid="uid://byampmpibdrsw" path="res://assets/Placeholders/Lich3_Idle_without_shadow.png" id="4_xwavj"]
-[ext_resource type="Texture2D" uid="uid://dba627dop1o3w" path="res://assets/Placeholders/Lich3_Walk_without_shadow.png" id="5_nenq2"]
+[ext_resource type="Texture2D" uid="uid://b73m5mdlb55pi" path="res://assets/Placeholders/Lich3_Idle_without_shadow.png" id="4_xwavj"]
+[ext_resource type="Texture2D" uid="uid://bbhdsf5er88p2" path="res://assets/Placeholders/Lich3_Walk_without_shadow.png" id="5_nenq2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ghaa6"]
 atlas = ExtResource("4_xwavj")

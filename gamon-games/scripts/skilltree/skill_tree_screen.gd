@@ -6,7 +6,7 @@ func _ready() -> void:
 	_update_marrow_shards_label()
 	RunData.marrow_shards_changed.connect(_update_marrow_shards_label)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 func _update_marrow_shards_label() -> void:
