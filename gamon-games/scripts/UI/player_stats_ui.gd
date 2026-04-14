@@ -26,7 +26,7 @@ func update_stats_display():
 		label.text = "%s: %d (Level %d)" % [stat_name.capitalize().replace("_", " "), value, upgrade_level]
 		stats_container.add_child(label)
 
-func _on_player_stats_changed(stat_name: String = "", new_value: float = 0.0) -> void:
+func _on_player_stats_changed(_stat_name: String = "", _new_value: float = 0.0) -> void:
 	if stats_panel.visible:
 		update_stats_display()
 

@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://4gsswv26qmqh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ov5p"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_blend = true
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56bqr"]
+bg_color = Color(0, 0, 0, 0.63529414)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="BuffIcon" type="Panel" unique_id=2071332401]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 32.0
+offset_bottom = 32.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ov5p")
+
+[node name="Icon" type="TextureRect" parent="." unique_id=910425411]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 31.0
+offset_bottom = 31.0
+expand_mode = 1
+
+[node name="Count" type="Label" parent="." unique_id=982279672]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 22.0
+offset_right = 28.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_56bqr")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_trim_flags = 0
+justification_flags = 0
