@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cww7k3ngmylu3"]
+
+[ext_resource type="Script" uid="uid://cicxkue5c6f0p" path="res://scripts/puzzles/simon_button.gd" id="1_nvylr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nvylr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2jmmo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rhpa7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gu1pt"]
+
+[node name="SimonButton" type="Node2D" unique_id=470095919]
+script = ExtResource("1_nvylr")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=574003253]
+offset_right = 150.0
+offset_bottom = 150.0
+color = Color(0.3529412, 0, 0, 1)
+
+[node name="Button" type="Button" parent="." unique_id=1543372673]
+offset_right = 150.0
+offset_bottom = 150.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nvylr")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_2jmmo")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rhpa7")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_gu1pt")

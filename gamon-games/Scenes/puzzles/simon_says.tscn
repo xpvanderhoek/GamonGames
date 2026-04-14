@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://52xjqdm6sq4e"]
+
+[ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://scenes/puzzles/simon_button.tscn" id="1_87wjc"]
+[ext_resource type="Script" uid="uid://dj0iwhnadym3f" path="res://scripts/puzzles/simon_says.gd" id="1_pmpej"]
+
+[node name="SimonSays" type="Node2D" unique_id=1794218684]
+script = ExtResource("1_pmpej")
+
+[node name="RedButton" parent="." unique_id=682006721 instance=ExtResource("1_87wjc")]
+position = Vector2(100, 100)
+idle_color = Color(0.3529412, 0, 0, 1)
+lit_color = Color(1, 0, 0, 1)
+
+[node name="GreenButton" parent="." unique_id=1314957190 instance=ExtResource("1_87wjc")]
+position = Vector2(270, 100)
+idle_color = Color(0, 0.3019608, 0, 1)
+lit_color = Color(0, 1, 0, 1)
+
+[node name="BlueButton" parent="." unique_id=625942902 instance=ExtResource("1_87wjc")]
+position = Vector2(100, 270)
+idle_color = Color(0, 0, 0.3019608, 1)
+lit_color = Color(0, 0, 1, 1)
+
+[node name="YellowButton" parent="." unique_id=470095919 instance=ExtResource("1_87wjc")]
+position = Vector2(270, 270)
+idle_color = Color(0.3019608, 0.3019608, 0, 1)
+lit_color = Color(1, 1, 0, 1)
