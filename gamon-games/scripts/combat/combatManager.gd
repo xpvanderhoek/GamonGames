@@ -804,9 +804,9 @@ func _apply_player_heal(amount: int) -> void:
 		return
 	if current_state == CombatState.COMBAT_OVER:
 		return
-	var previous_health := RunData.current_health
+	var previous_health = RunData.current_health
 	RunData.current_health = min(RunData.max_health, RunData.current_health + amount)
-	var healed_amount := RunData.current_health - previous_health
+	var healed_amount = RunData.current_health - previous_health
 	if healed_amount > 0:
 		print("Player healed %d HP — HP: %d/%d" % [healed_amount, RunData.current_health, RunData.max_health])
 
@@ -845,11 +845,11 @@ func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target
 func _resolve_vfx_position(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> Vector2:
 	match attack.vfx_anchor:
 		SpellData.VfxAnchor.SELF:
-			var source_position := _get_vfx_anchor_position(source_entity)
+			var source_position = _get_vfx_anchor_position(source_entity)
 			if source_position != null:
 				return source_position
 		SpellData.VfxAnchor.TARGET:
-			var target_position := _get_vfx_anchor_position(target_entity)
+			var target_position = _get_vfx_anchor_position(target_entity)
 			if target_position != null:
 				return target_position
 
