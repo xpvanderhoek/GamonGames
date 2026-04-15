@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cww7k3ngmylu3"]
 
-[ext_resource type="Script" uid="uid://cicxkue5c6f0p" path="res://Scripts/puzzles/simon_button.gd" id="1_nvylr"]
+[ext_resource type="Script" uid="uid://cicxkue5c6f0p" path="res://Scripts/puzzles/simon_says/simon_button.gd" id="1_nvylr"]
 [ext_resource type="Texture2D" uid="uid://7w26tsxfknef" path="res://Assets/Placeholders/Puzzle/Simon says button.png" id="2_2jmmo"]
 
 [node name="SimonButton" type="TextureButton" unique_id=380593538]
