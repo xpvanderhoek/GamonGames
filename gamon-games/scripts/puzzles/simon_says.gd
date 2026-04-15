@@ -71,8 +71,11 @@ func _on_button_pressed(idx):
 		return
 	
 	if player_input.size() == sequence.size():
-		await get_tree().create_timer(0.8).timeout
+		for b in buttons:
+			b.self_modulate = Color(0.267, 0.667, 0.268, 1.0)
+		await get_tree().create_timer(0.4).timeout
 		input_locked = false
+		
 		next_round()
 		return
 	
