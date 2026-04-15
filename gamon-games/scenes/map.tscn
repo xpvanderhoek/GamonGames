@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://c7kb8r2bxnm6p"]
 
+[ext_resource type="Script" uid="uid://dph5dxbxjgxy7" path="res://scripts/map.gd" id="1_0cso3"]
 [ext_resource type="Texture2D" uid="uid://dem6q8nlywvnv" path="res://assets/map/map_foreground.png" id="1_gldc4"]
 [ext_resource type="PackedScene" uid="uid://dt2v2gfpb8qbv" path="res://scenes/map_node.tscn" id="2_0cso3"]
 [ext_resource type="Texture2D" uid="uid://bellswrd7kme1" path="res://assets/map/map_line_dash.png" id="3_2klcf"]
 
 [node name="Map" type="Node2D" unique_id=1667129948]
+script = ExtResource("1_0cso3")
 
 [node name="Background" type="Parallax2D" parent="." unique_id=1078799763]
 repeat_size = Vector2(40, 40)
@@ -20,6 +22,14 @@ position = Vector2(576.50006, 325.31253)
 scale = Vector2(0.35963547, 0.30341434)
 texture = ExtResource("1_gldc4")
 
+[node name="DottedLine" type="Line2D" parent="." unique_id=928161305]
+texture_filter = 1
+texture_repeat = 2
+width = 4.0
+texture = ExtResource("3_2klcf")
+texture_mode = 1
+sharp_limit = 0.0
+
 [node name="MapNodes" type="Node2D" parent="." unique_id=2059397813]
 position = Vector2(7, 13)
 
@@ -34,10 +44,3 @@ position = Vector2(682, 349)
 
 [node name="MapNode4" parent="MapNodes" unique_id=1905499765 instance=ExtResource("2_0cso3")]
 position = Vector2(925, 306)
-
-[node name="DottedLine" type="Line2D" parent="." unique_id=928161305]
-texture_filter = 1
-width = 4.0
-texture = ExtResource("3_2klcf")
-texture_mode = 1
-sharp_limit = 0.0

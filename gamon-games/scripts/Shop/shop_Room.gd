@@ -14,6 +14,14 @@ const TIER_3_BASE_WEIGHT := 10.0
 func _ready():
 	spawn_shop_inventory()
 
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):  # ESC key
+		_exit_shop()
+
+func _exit_shop():
+	# Return to the map room
+	TransitionManager.transition_room("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+
 func spawn_shop_inventory():
 	var item_pool := _load_shop_items()
 	if item_pool.is_empty():

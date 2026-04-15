@@ -47,6 +47,7 @@ var current_health : int = 100:
 		current_health = value
 		health_changed.emit()
 
+var current_map_node: MapNodeData = null
 var entered_rooms : Array = []
 var items : Array[ItemData] = [] 
 var consumables : Array = [null, null, null, null, null]
