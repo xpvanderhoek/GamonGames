@@ -20,7 +20,7 @@ func _input(event):
 
 func _exit_shop():
 	# Return to the map room
-	TransitionManager.transition_room("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
 
 func spawn_shop_inventory():
 	var item_pool := _load_shop_items()

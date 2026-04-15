@@ -15,7 +15,8 @@ var current_interactable = null
 @export var combat_scene_path: String = "res://scenes/combat/combat.tscn"
 
 func _ready():
-	interaction_label.visible = false
+	pass
+	# interaction_label.visible = false
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact"):

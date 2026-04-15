@@ -1,26 +1,25 @@
 [gd_scene format=3 uid="uid://dhexr8smtlsmo"]
 
-[ext_resource type="Script" path="res://scripts/character.gd" id="1_lkv7d"]
-[ext_resource type="Texture2D" path="res://assets/Placeholders/Front - Walking.png" id="2_ejsiy"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Walk-01.wav" id="2_hgna0"]
-[ext_resource type="Texture2D" path="res://assets/Placeholders/Front - Idle.png" id="2_wbia7"]
-[ext_resource type="Texture2D" path="res://assets/Placeholders/Left - Walking.png" id="3_2mse5"]
-[ext_resource type="Texture2D" path="res://assets/Placeholders/Left - Idle.png" id="3_kq7hj"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Walk-02.wav" id="3_s7tkn"]
-[ext_resource type="Texture2D" path="res://assets/Placeholders/Right - Idle.png" id="4_7iw6i"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Walk-03.wav" id="4_nw3qc"]
-[ext_resource type="Texture2D" path="res://assets/Placeholders/Right - Walking.png" id="4_reotu"]
-[ext_resource type="Texture2D" path="res://assets/Placeholders/Back - Walking.png" id="5_a5ess"]
-[ext_resource type="Texture2D" path="res://assets/Placeholders/Back - Idle.png" id="5_l1rcp"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Walk-04.wav" id="5_rtvxd"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Walk-05.wav" id="6_1g2gg"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Walk-06.wav" id="7_4kq8q"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Walk-07.wav" id="8_px0br"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Walk-08.wav" id="9_0wngn"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Walk-09.wav" id="10_8iu2w"]
-[ext_resource type="PackedScene" path="res://scenes/corruption_bar.tscn" id="10_kq7hj"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Background.wav" id="11_7iw6i"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/Walk-10.wav" id="11_vl1po"]
+[ext_resource type="Script" uid="uid://b4abrvd60h7j6" path="res://scripts/character.gd" id="1_lkv7d"]
+[ext_resource type="Texture2D" uid="uid://cbc2ywqs2a3w2" path="res://assets/Placeholders/Front - Walking.png" id="2_ejsiy"]
+[ext_resource type="AudioStream" uid="uid://b3wpgf35nbto5" path="res://assets/Sounds/Walk-01.wav" id="2_hgna0"]
+[ext_resource type="Texture2D" uid="uid://ormmttn8fiq8" path="res://assets/Placeholders/Front - Idle.png" id="2_wbia7"]
+[ext_resource type="Texture2D" uid="uid://bfd7fnet3oovu" path="res://assets/Placeholders/Left - Walking.png" id="3_2mse5"]
+[ext_resource type="Texture2D" uid="uid://di827v78fk8vl" path="res://assets/Placeholders/Left - Idle.png" id="3_kq7hj"]
+[ext_resource type="AudioStream" uid="uid://bgcw521mop7mu" path="res://assets/Sounds/Walk-02.wav" id="3_s7tkn"]
+[ext_resource type="Texture2D" uid="uid://wwrowacdlmxa" path="res://assets/Placeholders/Right - Idle.png" id="4_7iw6i"]
+[ext_resource type="AudioStream" uid="uid://brhs3oyfrck3t" path="res://assets/Sounds/Walk-03.wav" id="4_nw3qc"]
+[ext_resource type="Texture2D" uid="uid://8hqfomcreg6c" path="res://assets/Placeholders/Right - Walking.png" id="4_reotu"]
+[ext_resource type="Texture2D" uid="uid://me0fjyq5kdp0" path="res://assets/Placeholders/Back - Walking.png" id="5_a5ess"]
+[ext_resource type="Texture2D" uid="uid://bp8cof261h7av" path="res://assets/Placeholders/Back - Idle.png" id="5_l1rcp"]
+[ext_resource type="AudioStream" uid="uid://8ygkhvhdmept" path="res://assets/Sounds/Walk-04.wav" id="5_rtvxd"]
+[ext_resource type="AudioStream" uid="uid://wp023hk56wu5" path="res://assets/Sounds/Walk-05.wav" id="6_1g2gg"]
+[ext_resource type="AudioStream" uid="uid://b5rvnx7i0455i" path="res://assets/Sounds/Walk-06.wav" id="7_4kq8q"]
+[ext_resource type="AudioStream" uid="uid://bl1ws7q08qkdo" path="res://assets/Sounds/Walk-07.wav" id="8_px0br"]
+[ext_resource type="AudioStream" uid="uid://bnk55bpgohyyc" path="res://assets/Sounds/Walk-08.wav" id="9_0wngn"]
+[ext_resource type="AudioStream" uid="uid://dmtah15tc8gnb" path="res://assets/Sounds/Walk-09.wav" id="10_8iu2w"]
+[ext_resource type="AudioStream" uid="uid://d2v3tvumq6yx1" path="res://assets/Sounds/Background.wav" id="11_7iw6i"]
+[ext_resource type="AudioStream" uid="uid://cdv3s3rnhpnk4" path="res://assets/Sounds/Walk-10.wav" id="11_vl1po"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_082uh"]
 atlas = ExtResource("2_wbia7")
@@ -1097,25 +1096,6 @@ position = Vector2(0, 38)
 shape = SubResource("CapsuleShape2D_wbia7")
 
 [node name="FootstepPlayer" type="AudioStreamPlayer2D" parent="." unique_id=488225958]
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=2100027953]
-zoom = Vector2(0.1, 0.1)
-
-[node name="InteractionLabel" type="Label" parent="Camera2D" unique_id=1112484888]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -271.0
-offset_top = 508.0
-offset_right = 271.0
-offset_bottom = 591.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 60
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Area2D" type="Area2D" parent="." unique_id=311827631]
 

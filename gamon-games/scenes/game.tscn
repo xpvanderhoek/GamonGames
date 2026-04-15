@@ -19,9 +19,9 @@ process_mode = 1
 
 [node name="Character" parent="." unique_id=1981490291 instance=ExtResource("1_ebmjs")]
 process_mode = 1
+visible = false
 position = Vector2(400, 300)
 scale = Vector2(5, 5)
-combat_scene_path = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1035846177]
 

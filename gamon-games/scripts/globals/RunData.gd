@@ -48,7 +48,7 @@ var current_health : int = 100:
 		health_changed.emit()
 
 var current_map_node: MapNodeData = null
-var entered_rooms : Array = []
+var map_nodes_data: Array[MapNodeData] = []
 var items : Array[ItemData] = [] 
 var consumables : Array = [null, null, null, null, null]
 
@@ -66,7 +66,9 @@ func new_run():
 	random_seed = randi()
 	rng.seed = random_seed
 	coins = 100
-	entered_rooms.clear()
+	# entered_rooms.clear()
+	map_nodes_data.clear()
+	current_map_node = null
 	items.clear()
 	consumables = [null, null, null, null, null]
 	max_health = PlayerStats.stats["health"]

@@ -36,6 +36,8 @@ func set_available(new_value: bool):
 		
 	elif not data.selected:
 		animation_player.play("RESET")
+	else:
+		$Visuals/Cross.visible = true
 
 func set_data(new_data: MapNodeData):
 	data = new_data

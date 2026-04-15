@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://kber2r1esl2u" path="res://scripts/map_node.gd" id="1_0xswi"]
 [ext_resource type="Texture2D" uid="uid://dtnq2hxlh8w6d" path="res://assets/map/icons/map_icon_combat.png" id="2_whnn0"]
+[ext_resource type="Texture2D" uid="uid://t0j06pwyh47h" path="res://assets/Placeholders/crossed.png" id="3_0xswi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0xswi"]
 
@@ -75,6 +76,11 @@ modulate = Color(0.42557132, 0.42557135, 0.42557132, 1)
 [node name="Sprite2D" type="Sprite2D" parent="Visuals" unique_id=1818948237]
 scale = Vector2(0.08270591, 0.08270591)
 texture = ExtResource("2_whnn0")
+
+[node name="Cross" type="Sprite2D" parent="Visuals" unique_id=1694783299]
+visible = false
+scale = Vector2(0.33064988, 0.33064988)
+texture = ExtResource("3_0xswi")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=531194898]
 scale = Vector2(4.148117, 4.148117)

@@ -8,24 +8,36 @@ func _ready() -> void:
 	_update_node_availability()
 
 func _setup_map_nodes():
-	var previous_node : MapNodeData = null
 	var nodes_list := map_nodes.get_children()
 	
-	for node in nodes_list:
-		var data : MapNodeData = MapNodeData.new()
-		var rand_idx = randi_range(0, MapNodeData.Type.size() - 1)
-		data.type = rand_idx
+	# If we don't have saved map data, generate it
+	if RunData.map_nodes_data.is_empty():
+		var previous_node : MapNodeData = null
 		
-		node.data = data
-		
-		node.selected.connect(_on_map_node_selected)
-		
-		if previous_node == null:
-			node.available = true
-		else:
-			previous_node.next_rooms.append(node.data)
+		for node in nodes_list:
+			var data : MapNodeData = MapNodeData.new()
+			var rand_idx = randi_range(0, MapNodeData.Type.size() - 1)
+			data.type = rand_idx
 			
-		previous_node = data
+			RunData.map_nodes_data.append(data)
+			
+			node.data = data
+			node.selected.connect(_on_map_node_selected)
+			
+			if previous_node == null:
+				node.available = true
+			else:
+				previous_node.next_rooms.append(node.data)
+				
+			previous_node = data
+	else:
+		# Use the saved map data
+		for i in range(nodes_list.size()):
+			var node = nodes_list[i]
+			var data = RunData.map_nodes_data[i]
+			
+			node.data = data
+			node.selected.connect(_on_map_node_selected)
 
 func _on_map_node_selected(data: MapNodeData) -> void:
 	# Store the selected node for when we return
@@ -43,20 +55,23 @@ func _on_map_node_selected(data: MapNodeData) -> void:
 			TransitionManager.change_scene("res://scenes/Shop/ShopRoom.tscn", TransitionManager.TransitionType.FADE)
 
 func _update_node_availability() -> void:
+	# First, set all nodes to unavailable by default
+	for node in map_nodes.get_children():
+		node.available = false
+	
 	# If we have a current map node, disable it and enable its next rooms
 	if RunData.current_map_node:
-		# Disable the current node
-		for node in map_nodes.get_children():
-			if node.data == RunData.current_map_node:
-				node.available = false
-				break
-		
 		# Enable all next rooms
 		for next_data in RunData.current_map_node.next_rooms:
 			for node in map_nodes.get_children():
 				if node.data == next_data:
 					node.available = true
 					break
+	else:
+		# No current node selected yet, enable the first node
+		var nodes_list = map_nodes.get_children()
+		if nodes_list.size() > 0:
+			nodes_list[0].available = true
 
 func _process(delta: float) -> void:
 	draw_dotted_line()
