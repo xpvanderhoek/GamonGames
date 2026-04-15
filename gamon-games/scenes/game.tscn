@@ -17,11 +17,8 @@ script = ExtResource("1_qxrlw")
 [node name="RoomContainer" type="Node2D" parent="." unique_id=97497814]
 process_mode = 1
 
-[node name="Character" parent="." unique_id=1981490291 instance=ExtResource("1_ebmjs")]
-process_mode = 1
-position = Vector2(400, 300)
+[node name="Character" parent="." unique_id=48660198 instance=ExtResource("1_ebmjs")]
 scale = Vector2(5, 5)
-combat_scene_path = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1035846177]
 
