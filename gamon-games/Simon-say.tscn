@@ -12,7 +12,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_34nd6")
-buttons = [NodePath("topleft"), NodePath("topleft"), NodePath("topright"), NodePath("midleft"), NodePath("midmid"), NodePath("midright"), NodePath("bottomleft"), NodePath("bottommid"), NodePath("bottomright")]
+buttons = [NodePath("topleft"), NodePath("topmid"), NodePath("topright"), NodePath("midleft"), NodePath("midmid"), NodePath("midright"), NodePath("bottomleft"), NodePath("bottommid"), NodePath("bottomright")]
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=642298664]
 layout_mode = 1
@@ -28,61 +28,67 @@ expand_mode = 2
 layout_mode = 0
 offset_left = 298.0
 offset_top = 81.0
-offset_right = 448.0
-offset_bottom = 231.0
+offset_right = 633.5556
+offset_bottom = 405.44446
 
 [node name="topmid" parent="." unique_id=716709725 instance=ExtResource("3_dlawt")]
 layout_mode = 0
 offset_left = 490.0
 offset_top = 88.0
-offset_right = 640.0
-offset_bottom = 238.0
+offset_right = 825.55554
+offset_bottom = 412.44443
 
 [node name="topright" parent="." unique_id=820805330 instance=ExtResource("3_dlawt")]
 layout_mode = 0
 offset_left = 678.0
 offset_top = 88.0
-offset_right = 828.0
-offset_bottom = 238.0
+offset_right = 1013.55554
+offset_bottom = 410.22226
 
 [node name="midleft" parent="." unique_id=528311950 instance=ExtResource("3_dlawt")]
 layout_mode = 0
 offset_left = 305.0
 offset_top = 248.0
-offset_right = 455.0
-offset_bottom = 398.0
+offset_right = 642.7778
+offset_bottom = 576.8889
 
 [node name="midmid" parent="." unique_id=650777621 instance=ExtResource("3_dlawt")]
 layout_mode = 0
 offset_left = 499.0
 offset_top = 256.0
-offset_right = 649.0
-offset_bottom = 406.0
+offset_right = 834.55554
+offset_bottom = 576.0
 
 [node name="midright" parent="." unique_id=96318376 instance=ExtResource("3_dlawt")]
 layout_mode = 0
 offset_left = 690.0
 offset_top = 257.0
-offset_right = 840.0
-offset_bottom = 407.0
+offset_right = 1027.7778
+offset_bottom = 574.7778
 
 [node name="bottomleft" parent="." unique_id=1590645181 instance=ExtResource("3_dlawt")]
 layout_mode = 0
 offset_left = 699.0
 offset_top = 426.0
-offset_right = 849.0
-offset_bottom = 576.0
+offset_right = 1039.0
+offset_bottom = 752.6667
 
 [node name="bottommid" parent="." unique_id=912756650 instance=ExtResource("3_dlawt")]
 layout_mode = 0
 offset_left = 507.0
 offset_top = 421.0
-offset_right = 657.0
-offset_bottom = 571.0
+offset_right = 847.0
+offset_bottom = 745.4444
 
 [node name="bottomright" parent="." unique_id=1527618845 instance=ExtResource("3_dlawt")]
 layout_mode = 0
 offset_left = 314.0
 offset_top = 420.0
-offset_right = 464.0
-offset_bottom = 570.0
+offset_right = 647.3334
+offset_bottom = 748.8889
+
+[node name="RoundLabel" type="Label" parent="." unique_id=1117392395]
+layout_mode = 0
+offset_right = 225.0
+offset_bottom = 106.0
+text = "Round 1"

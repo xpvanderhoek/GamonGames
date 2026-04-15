@@ -2,22 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cicxkue5c6f0p" path="res://Scripts/puzzles/simon_button.gd" id="1_nvylr"]
 [ext_resource type="Texture2D" uid="uid://7w26tsxfknef" path="res://Assets/Placeholders/Puzzle/Simon says button.png" id="2_2jmmo"]
-[ext_resource type="Texture2D" uid="uid://cmhvs8witc4qe" path="res://Assets/Placeholders/Puzzle/Simon says pressed.png" id="3_rhpa7"]
 
-[node name="SimonButton" type="Control" unique_id=908209133]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 150.0
-offset_bottom = 150.0
-script = ExtResource("1_nvylr")
-
-[node name="TextureButton" type="TextureButton" parent="." unique_id=883970929]
-layout_mode = 0
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 340.0
-offset_bottom = 324.0
+[node name="SimonButton" type="TextureButton" unique_id=380593538]
+offset_right = 338.0
+offset_bottom = 328.0
 scale = Vector2(0.45, 0.45)
 texture_normal = ExtResource("2_2jmmo")
-texture_pressed = ExtResource("3_rhpa7")
 ignore_texture_size = true
+script = ExtResource("1_nvylr")
