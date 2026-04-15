@@ -1,6 +1,6 @@
-extends Node2D
+extends Control
 
-@export var buttons: Array[Node2D] = []
+@export var buttons: Array[Control] = []
 
 var sequence = []        
 var player_input = []      

@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://bmymgk0low55t"]
+
+[ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://Assets/Placeholders/Puzzle/stone table.png" id="1_76v6r"]
+[ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://Scenes/puzzles/simon_button.tscn" id="2_w47fg"]
+[ext_resource type="Texture2D" uid="uid://cfkt1e0kvxu4i" path="res://Assets/Placeholders/Puzzle/Simon says.png" id="3_amv67"]
+
+[node name="Simon-Says" type="Control" unique_id=500545781]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1227525753]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_76v6r")
+expand_mode = 1
+
+[node name="topleft" parent="." unique_id=470095919 instance=ExtResource("2_w47fg")]
+layout_mode = 0
+offset_left = 298.0
+offset_top = 81.0
+offset_right = 448.0
+offset_bottom = 231.0
+
+[node name="topmid" parent="." unique_id=1738137134 instance=ExtResource("2_w47fg")]
+layout_mode = 0
+offset_left = 490.0
+offset_top = 88.0
+offset_right = 640.0
+offset_bottom = 238.0
+
+[node name="topright" parent="." unique_id=374470849 instance=ExtResource("2_w47fg")]
+layout_mode = 0
+offset_left = 678.0
+offset_top = 88.0
+offset_right = 828.0
+offset_bottom = 238.0
+
+[node name="midleft" parent="." unique_id=76943642 instance=ExtResource("2_w47fg")]
+layout_mode = 0
+offset_left = 305.0
+offset_top = 248.0
+offset_right = 455.0
+offset_bottom = 398.0
+
+[node name="midmid" parent="." unique_id=1978928233 instance=ExtResource("2_w47fg")]
+layout_mode = 0
+offset_left = 499.0
+offset_top = 256.0
+offset_right = 649.0
+offset_bottom = 406.0
+
+[node name="midright" parent="." unique_id=597463421 instance=ExtResource("2_w47fg")]
+layout_mode = 0
+offset_left = 690.0
+offset_top = 257.0
+offset_right = 840.0
+offset_bottom = 407.0
+
+[node name="bottomleft" parent="." unique_id=1421377323 instance=ExtResource("2_w47fg")]
+layout_mode = 0
+offset_left = 699.0
+offset_top = 426.0
+offset_right = 849.0
+offset_bottom = 576.0
+
+[node name="bottommid" parent="." unique_id=1286673368 instance=ExtResource("2_w47fg")]
+layout_mode = 0
+offset_left = 507.0
+offset_top = 421.0
+offset_right = 657.0
+offset_bottom = 571.0
+
+[node name="bottomright" parent="." unique_id=1832715869 instance=ExtResource("2_w47fg")]
+layout_mode = 0
+offset_left = 314.0
+offset_top = 420.0
+offset_right = 464.0
+offset_bottom = 570.0
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1198544207]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24900001
+anchor_top = 0.108
+anchor_right = 0.77000004
+anchor_bottom = 0.901
+offset_left = 0.15197754
+offset_top = 0.01599884
+offset_right = -0.040039063
+offset_bottom = 0.15197754
+texture = ExtResource("3_amv67")
+expand_mode = 1

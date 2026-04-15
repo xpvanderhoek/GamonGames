@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://dtbwu42iv0b8f"]
+
+[ext_resource type="Script" uid="uid://dj0iwhnadym3f" path="res://Scripts/puzzles/simon_says.gd" id="1_34nd6"]
+[ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://Assets/Placeholders/Puzzle/stone table.png" id="2_r5jfs"]
+[ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://Scenes/puzzles/simon_button.tscn" id="3_dlawt"]
+
+[node name="SimonSays" type="Control" unique_id=1237460606 node_paths=PackedStringArray("buttons")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_34nd6")
+buttons = [NodePath("topleft"), NodePath("topleft"), NodePath("topright"), NodePath("midleft"), NodePath("midmid"), NodePath("midright"), NodePath("bottomleft"), NodePath("bottommid"), NodePath("bottomright")]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=642298664]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_r5jfs")
+expand_mode = 2
+
+[node name="topleft" parent="." unique_id=470095919 instance=ExtResource("3_dlawt")]
+layout_mode = 0
+offset_left = 298.0
+offset_top = 81.0
+offset_right = 448.0
+offset_bottom = 231.0
+
+[node name="topmid" parent="." unique_id=716709725 instance=ExtResource("3_dlawt")]
+layout_mode = 0
+offset_left = 490.0
+offset_top = 88.0
+offset_right = 640.0
+offset_bottom = 238.0
+
+[node name="topright" parent="." unique_id=820805330 instance=ExtResource("3_dlawt")]
+layout_mode = 0
+offset_left = 678.0
+offset_top = 88.0
+offset_right = 828.0
+offset_bottom = 238.0
+
+[node name="midleft" parent="." unique_id=528311950 instance=ExtResource("3_dlawt")]
+layout_mode = 0
+offset_left = 305.0
+offset_top = 248.0
+offset_right = 455.0
+offset_bottom = 398.0
+
+[node name="midmid" parent="." unique_id=650777621 instance=ExtResource("3_dlawt")]
+layout_mode = 0
+offset_left = 499.0
+offset_top = 256.0
+offset_right = 649.0
+offset_bottom = 406.0
+
+[node name="midright" parent="." unique_id=96318376 instance=ExtResource("3_dlawt")]
+layout_mode = 0
+offset_left = 690.0
+offset_top = 257.0
+offset_right = 840.0
+offset_bottom = 407.0
+
+[node name="bottomleft" parent="." unique_id=1590645181 instance=ExtResource("3_dlawt")]
+layout_mode = 0
+offset_left = 699.0
+offset_top = 426.0
+offset_right = 849.0
+offset_bottom = 576.0
+
+[node name="bottommid" parent="." unique_id=912756650 instance=ExtResource("3_dlawt")]
+layout_mode = 0
+offset_left = 507.0
+offset_top = 421.0
+offset_right = 657.0
+offset_bottom = 571.0
+
+[node name="bottomright" parent="." unique_id=1527618845 instance=ExtResource("3_dlawt")]
+layout_mode = 0
+offset_left = 314.0
+offset_top = 420.0
+offset_right = 464.0
+offset_bottom = 570.0
