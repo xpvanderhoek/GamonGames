@@ -88,7 +88,7 @@ func enter_combat(combat_scene_path: String, enemy: Node = null) -> void:
 	character.set_process_input(false)
 	add_child(combat_node)
 
-	var encounter_enemies: Array[PackedScene] = []
+	var encounter_enemies: Array = []
 	if enemy != null and enemy.has_method("get_encounter_enemies"):
 		encounter_enemies = enemy.get_encounter_enemies()
 

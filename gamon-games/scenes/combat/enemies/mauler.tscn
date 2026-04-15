@@ -3,30 +3,20 @@
 [ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_43sib"]
 [ext_resource type="Texture2D" uid="uid://dp2ij4sj5km0" path="res://assets/Placeholders/enemies/mauler_torso.png" id="2_0ypl1"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="3_rnyr7"]
-[ext_resource type="Texture2D" uid="uid://w1upi8nkgt8v" path="res://assets/Placeholders/enemies/mauler_head.png" id="4_8djhq"]
-[ext_resource type="Texture2D" uid="uid://hllpsl2mig7c" path="res://assets/Placeholders/enemies/mauler_legR.png" id="5_ktid0"]
-[ext_resource type="Script" uid="uid://bsud4alvvvjht" path="res://scripts/combat/combatAttack.gd" id="5_l2lrl"]
-[ext_resource type="PackedScene" uid="uid://mefrqehh2onn" path="res://scenes/combat/vfx/test.tscn" id="6_1lpsr"]
-[ext_resource type="Texture2D" uid="uid://ls4xqo7pr8s8" path="res://assets/Placeholders/enemies/mauler_armL.png" id="6_34xek"]
-[ext_resource type="Texture2D" uid="uid://dlual78qqqiqq" path="res://assets/Placeholders/enemies/mauler_armR.png" id="7_lqs23"]
-[ext_resource type="Texture2D" uid="uid://dq7tb105hekv3" path="res://assets/Placeholders/enemies/mauler_legL.png" id="8_w1bur"]
-
-[sub_resource type="Resource" id="Resource_y2fao"]
-script = ExtResource("5_l2lrl")
-damage = 5
-weight = 100.0
-vfx_scene = ExtResource("6_1lpsr")
-vfx_lifetime = 1.0
-metadata/_custom_type_script = "uid://bsud4alvvvjht"
+[ext_resource type="Texture2D" path="res://assets/Placeholders/enemies/mauler_head.png" id="4_8djhq"]
+[ext_resource type="Texture2D" uid="uid://b7snvwb1c036s" path="res://assets/Placeholders/enemies/mauler_legR.png" id="5_ktid0"]
+[ext_resource type="Texture2D" uid="uid://76aw0l04f38v" path="res://assets/Placeholders/enemies/mauler_armL.png" id="6_34xek"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="6_moyyn"]
+[ext_resource type="Texture2D" uid="uid://hha5upbr4b3g" path="res://assets/Placeholders/enemies/mauler_armR.png" id="7_lqs23"]
+[ext_resource type="Texture2D" uid="uid://cufsvkeeq2fgd" path="res://assets/Placeholders/enemies/mauler_legL.png" id="8_w1bur"]
+[ext_resource type="Resource" uid="uid://brqp1tf0obe77" path="res://resources/combat_spells/basic_attack.tres" id="9_bas1c"]
 
 [node name="mauler" type="Control" unique_id=1680014499]
-custom_minimum_size = Vector2(220, 330)
+custom_minimum_size = Vector2(250, 350)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 250.0
 offset_bottom = 350.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
 script = ExtResource("1_43sib")
 turn_order_icon = ExtResource("4_8djhq")
 
@@ -36,6 +26,7 @@ texture = ExtResource("2_0ypl1")
 script = ExtResource("3_rnyr7")
 limb_name = "Torso"
 is_vital = true
+magic_defense = 100.0
 
 [node name="MaulerHead" type="Sprite2D" parent="." unique_id=1638871885]
 position = Vector2(89, 53)
@@ -52,7 +43,7 @@ texture = ExtResource("6_34xek")
 script = ExtResource("3_rnyr7")
 limb_name = "Left Arm"
 max_health = 50
-attacks = Array[ExtResource("5_l2lrl")]([SubResource("Resource_y2fao")])
+attacks = Array[ExtResource("6_moyyn")]([ExtResource("9_bas1c")])
 
 [node name="MaulerArmR" type="Sprite2D" parent="." unique_id=1381969496]
 position = Vector2(67, 150)
@@ -74,3 +65,17 @@ texture = ExtResource("8_w1bur")
 script = ExtResource("3_rnyr7")
 limb_name = "Left Leg"
 max_health = 70
+
+[node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -32.0
+offset_right = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1

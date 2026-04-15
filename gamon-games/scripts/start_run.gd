@@ -23,7 +23,7 @@ func _on_start_run_btn_pressed() -> void:
 	# else:
 		# await TransitionManager.transition_room(NavigationManager.scene_room_limbo)
 	await TransitionManager.transition_room(NavigationManager.limbo)
-	
+
 	queue_free()
 
 
