@@ -18,7 +18,7 @@ script = ExtResource("1_qxrlw")
 process_mode = 1
 
 [node name="Character" parent="." unique_id=48660198 instance=ExtResource("1_ebmjs")]
-visible = false
+scale = Vector2(5, 5)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1035846177]
 

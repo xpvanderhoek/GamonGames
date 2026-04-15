@@ -22,7 +22,9 @@ func _on_start_run_btn_pressed() -> void:
 		# await TransitionManager.transition_room(NavigationManager.get_new_random_room())
 	# else:
 		# await TransitionManager.transition_room(NavigationManager.scene_room_limbo)
-	await TransitionManager.transition_room(NavigationManager.limbo)
+
+	RunData.new_run()
+	await TransitionManager.transition_room(NavigationManager.get_new_random_room())
 
 	queue_free()
 
