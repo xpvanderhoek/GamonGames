@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://52xjqdm6sq4e"]
 
-[ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://scenes/puzzles/simon_button.tscn" id="1_87wjc"]
-[ext_resource type="Script" uid="uid://dj0iwhnadym3f" path="res://scripts/puzzles/simon_says.gd" id="1_pmpej"]
+[ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://Scenes/puzzles/simon_button.tscn" id="1_87wjc"]
+[ext_resource type="Script" uid="uid://dj0iwhnadym3f" path="res://Scripts/puzzles/simon_says.gd" id="1_pmpej"]
 
-[node name="SimonSays" type="Node2D" unique_id=1794218684]
+[node name="SimonSays" type="Node2D" unique_id=1794218684 node_paths=PackedStringArray("buttons")]
 script = ExtResource("1_pmpej")
+buttons = [NodePath("RedButton"), NodePath("GreenButton"), NodePath("BlueButton"), NodePath("YellowButton")]
 
 [node name="RedButton" parent="." unique_id=682006721 instance=ExtResource("1_87wjc")]
 position = Vector2(100, 100)

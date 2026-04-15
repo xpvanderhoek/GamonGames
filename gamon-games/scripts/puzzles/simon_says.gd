@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var buttons = [$RedButton, $GreenButton, $BlueButton, $YellowButton]
+@export var buttons: Array[Node2D] = []
 
 var sequence = []        
 var player_input = []      
