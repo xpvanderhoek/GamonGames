@@ -3,8 +3,6 @@ extends Node2D
 @export var item_scene: PackedScene 
 @export_dir var resources_folder: String = "res://Assets/ShopItems/Resources"
 
-# the weights and luck adjustments are placeholders for now, needs testing and tweaking to find good values, 
-# but its just the higher the weights the more likely that tier will be chosen, and the higher the luck the more likely higher tiers will be chosen
 const TIER_1_BASE_WEIGHT := 70.0
 const TIER_2_BASE_WEIGHT := 20.0
 const TIER_3_BASE_WEIGHT := 10.0
@@ -13,6 +11,13 @@ const TIER_3_BASE_WEIGHT := 10.0
 
 func _ready():
 	spawn_shop_inventory()
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		_exit_shop()
+
+func _exit_shop(): #Temporary
+	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
 
 func spawn_shop_inventory():
 	var item_pool := _load_shop_items()
