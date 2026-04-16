@@ -5,7 +5,7 @@ func _ready():
 	super._ready()
 	
 	
-func pulse_first_button():
+func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	sequence.append(randi() % buttons.size())
 	var idx = sequence[0]
 	
@@ -13,16 +13,16 @@ func pulse_first_button():
 	pulse_active = true
 	
 	while pulse_active:
-		buttons[idx].modulate = Color(2, 2, 2)
+		buttons[idx].modulate = highlight_color
 		await get_tree().create_timer(0.2).timeout
 	buttons[idx].modulate = Color(1, 1, 1)
 		
 func _on_button_pressed(idx):
 	pulse_active = false
-	if is_showing or input_locked:
+	if !can_click:
 		return
 	
-	input_locked = true
+	can_click = false
 	
 	await buttons[idx].flash()
 	player_input.append(idx)
@@ -30,6 +30,6 @@ func _on_button_pressed(idx):
 	
 	checkCorrect(buttons.size() - 1 - idx, pos)
 	
-	input_locked = false
+	can_click = true
 	
 	

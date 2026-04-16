@@ -8,16 +8,24 @@ class_name SimonSays
 var sequence: Array[int] = []
 var player_input: Array[int] = []
 var pulse_active = false
-var is_showing := false
-var input_locked := false
+var can_click := false
 
 
-func pulse_first_button():
-	pass
+func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
+	var idx = sequence[0]
+	buttons[idx].disabled = false
+	pulse_active = true
+	
+	while pulse_active:
+		buttons[idx].modulate = highlight_color
+		await get_tree().create_timer(0.2).timeout
+	buttons[idx].modulate = Color(1,1,1)
+	await get_tree().create_timer(0.2).timeout
 
 func _ready():
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))
+	sequence.append(randi() % buttons.size())
 	
 	for i in range(buttons.size()):
 		buttons[i].pressed.connect(_on_button_pressed.bind(i))
@@ -38,7 +46,7 @@ func next_round():
 	player_input.clear()
 
 func show_sequence():
-	is_showing = true
+	can_click = false
 	
 	await get_tree().create_timer(0.5).timeout
 	
@@ -46,19 +54,19 @@ func show_sequence():
 		await buttons[idx].flash()
 		await get_tree().create_timer(0.2).timeout
 	
-	is_showing = false
+	can_click = true
 
 
 func checkCorrect(clicked_button: int, click_position: int):
 	if sequence[click_position] != clicked_button:
 		await fail()
-		input_locked = false
+		can_click = false
 		return
 	
 	if player_input.size() == sequence.size():
 		changeColor(Color(0.267, 0.667, 0.268, 1.0))
 		await get_tree().create_timer(0.4).timeout
-		input_locked = false
+		can_click = false
 		
 		next_round()
 		return
@@ -74,18 +82,16 @@ func switchDisabled(variable: bool):
 	
 	
 func fail():
-	is_showing = true
-	
 	switchDisabled(true)
 	changeColor(Color(2, 0.5, 0.5))
 	
 	
 func _on_button_pressed(idx):
 	pulse_active = false
-	if is_showing or input_locked:
+	if !can_click:
 		return
 	
-	input_locked = true
+	can_click = false
 	
 	await buttons[idx].flash()
 	player_input.append(idx)
@@ -93,4 +99,4 @@ func _on_button_pressed(idx):
 	
 	checkCorrect(idx, pos)
 	
-	input_locked = false
+	can_click = true
