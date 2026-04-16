@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dtbwu42iv0b8f"]
 
-[ext_resource type="Script" uid="uid://dj0iwhnadym3f" path="res://Scripts/puzzles/simon_says/simon_says.gd" id="1_aahgm"]
+[ext_resource type="Script" uid="uid://dj0iwhnadym3f" path="res://Scripts/puzzles/simon_says/simon_says_versions/simon_says_normal.gd" id="1_bwhsd"]
 [ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://Assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
 [ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
 [ext_resource type="Texture2D" uid="uid://divcn52ai7dw6" path="res://Assets/Placeholders/Puzzle/pngimg.com - gravestone_PNG35.png" id="4_bwhsd"]
@@ -18,7 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_aahgm")
+script = ExtResource("1_bwhsd")
 buttons = [NodePath("topleft"), NodePath("topmid"), NodePath("topright"), NodePath("midleft"), NodePath("midmid"), NodePath("midright"), NodePath("bottomleft"), NodePath("bottommid"), NodePath("bottomright")]
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=642298664]
@@ -75,10 +75,10 @@ offset_bottom = 574.7778
 
 [node name="bottomleft" parent="." unique_id=1590645181 instance=ExtResource("3_bogql")]
 layout_mode = 0
-offset_left = 699.0
-offset_top = 426.0
-offset_right = 1039.0
-offset_bottom = 752.6667
+offset_left = 315.0
+offset_top = 414.0
+offset_right = 655.0
+offset_bottom = 740.6667
 
 [node name="bottommid" parent="." unique_id=912756650 instance=ExtResource("3_bogql")]
 layout_mode = 0
@@ -89,10 +89,10 @@ offset_bottom = 745.4444
 
 [node name="bottomright" parent="." unique_id=1527618845 instance=ExtResource("3_bogql")]
 layout_mode = 0
-offset_left = 314.0
-offset_top = 420.0
-offset_right = 647.3334
-offset_bottom = 748.8889
+offset_left = 693.0
+offset_top = 422.0
+offset_right = 1026.3335
+offset_bottom = 750.8889
 
 [node name="Pngimg_comGravestonePng35" type="Sprite2D" parent="." unique_id=1511149445]
 position = Vector2(169, 416)
@@ -127,3 +127,8 @@ rotation = -0.23212878
 text = "1"
 label_settings = SubResource("LabelSettings_bogql")
 horizontal_alignment = 1
+
+[node name="VersionLabel" type="Label" parent="." unique_id=299659955]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
