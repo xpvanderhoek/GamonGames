@@ -1,7 +1,7 @@
 extends Node
 class_name SimonSays
 	
-@export var buttons: Array[TextureButton] = []
+@onready var buttons: Array[TextureButton] = [$topleft, $topmid, $topright, $midleft, $midmid, $midright, $bottomleft, $bottommid, $bottomright]
 @onready var roundLabel: Label = $RoundNumberLabel
 @onready var versionLabel: Label = $VersionLabel
 
@@ -25,6 +25,7 @@ func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 func _ready():
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))
+	print(buttons.size())
 	sequence.append(randi() % buttons.size())
 	
 	for i in range(buttons.size()):
@@ -85,6 +86,8 @@ func fail():
 	switchDisabled(true)
 	changeColor(Color(2, 0.5, 0.5))
 	
+	$Button.visible = true
+	
 	
 func _on_button_pressed(idx):
 	pulse_active = false
@@ -100,3 +103,7 @@ func _on_button_pressed(idx):
 	checkCorrect(idx, pos)
 	
 	can_click = true
+	
+func _on_continue_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/puzzles/simon_says/start_simon.tscn")
+	queue_free()

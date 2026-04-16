@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dip87pnxytcc5"]
 
-[ext_resource type="Script" uid="uid://ctmvj0imj481b" path="res://scripts/puzzles/simon_says/simon_says_versions/simon_says_mirrored.gd" id="1_bwhsd"]
+[ext_resource type="Script" uid="uid://c5xnmi2opdjbb" path="res://scripts/puzzles/simon_says/simon_says.gd" id="1_0oafj"]
 [ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://Assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
 [ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
 [ext_resource type="Texture2D" uid="uid://divcn52ai7dw6" path="res://Assets/Placeholders/Puzzle/pngimg.com - gravestone_PNG35.png" id="4_bwhsd"]
@@ -21,15 +21,14 @@ font_color = Color(0, 0, 0, 1)
 font_size = 24
 font_color = Color(0, 0, 0, 1)
 
-[node name="SimonSays" type="Control" unique_id=1237460606 node_paths=PackedStringArray("buttons")]
+[node name="SimonSays" type="Control" unique_id=1237460606]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_bwhsd")
-buttons = [NodePath("topleft"), NodePath("topmid"), NodePath("topright"), NodePath("midleft"), NodePath("midmid"), NodePath("midright"), NodePath("bottomleft"), NodePath("bottommid"), NodePath("bottomright")]
+script = ExtResource("1_0oafj")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=642298664]
 layout_mode = 1
@@ -195,3 +194,15 @@ rotation = 0.93375117
 text = "1, 3, 6 -> 6, 3, 1"
 label_settings = SubResource("LabelSettings_0oafj")
 horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="." unique_id=1815418118]
+visible = false
+layout_mode = 0
+offset_left = 516.99994
+offset_top = 593.0
+offset_right = 595.99994
+offset_bottom = 624.0
+scale = Vector2(1.665, 1.665)
+text = "Continue"
+
+[connection signal="pressed" from="Button" to="." method="_on_continue_pressed"]
