@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
 [ext_resource type="Texture2D" uid="uid://divcn52ai7dw6" path="res://Assets/Placeholders/Puzzle/pngimg.com - gravestone_PNG35.png" id="4_bwhsd"]
 [ext_resource type="Texture2D" uid="uid://h264litjey6" path="res://Assets/Placeholders/Puzzle/580b585b2edbce24c47b2a12.png" id="5_bogql"]
+[ext_resource type="Texture2D" uid="uid://csk8xw5k86lco" path="res://assets/Placeholders/Puzzle/mouse-left-button.svg" id="6_0oafj"]
+[ext_resource type="Texture2D" uid="uid://y6fgp3gbp8as" path="res://assets/Placeholders/Puzzle/888647-200.png" id="7_s13xn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
 
@@ -147,3 +149,26 @@ rotation = -0.20943952
 text = "Normal"
 label_settings = SubResource("LabelSettings_sgwws")
 horizontal_alignment = 1
+
+[node name="MouseLeftButton" type="Sprite2D" parent="." unique_id=2079907741]
+visible = false
+position = Vector2(80, 62)
+rotation = 0.57595867
+scale = Vector2(0.11862962, 0.13505109)
+texture = ExtResource("6_0oafj")
+
+[node name="Arrow" type="Sprite2D" parent="." unique_id=231044794]
+visible = false
+position = Vector2(126, 99.99999)
+rotation = 0.57595867
+scale = Vector2(0.355, 0.265)
+texture = ExtResource("7_s13xn")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=647806681]
+visible = false
+layout_mode = 0
+offset_left = 166.0
+offset_top = 100.00001
+offset_right = 206.0
+offset_bottom = 140.00002
+rotation = 0.57595867

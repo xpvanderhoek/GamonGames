@@ -9,6 +9,11 @@ func _ready():
 	all_colors.append(Color(0.188, 0.188, 0.0, 1.0))
 	all_colors.append(Color(0.176, 0.0, 0.176, 1.0))
 	good_color = all_colors[randi() % all_colors.size()]
+	$MouseLeftButton.visible = true
+	$Arrow.visible = true
+	print(good_color)
+	$ColorRect.color = good_color
+	$ColorRect.visible = true
 	sequence.append(randi() % buttons.size())
 	versionLabel.text = "Colored"
 	switchDisabled(true)
