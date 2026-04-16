@@ -23,14 +23,6 @@ func _input(event: InputEvent) -> void:
 		if current_interactable != null:
 			current_interactable.interact()
 
-func show_interaction_label(action_name : String):
-	interaction_label.visible = true
-	interaction_label.text = "Press 'E' to " + action_name
-
-func hide_interaction_label():
-	interaction_label.visible = false
-	interaction_label.text = ""
-
 func _physics_process(delta: float) -> void:
 	if DialogueManager.is_in_dialogue:
 		return

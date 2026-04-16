@@ -23,7 +23,7 @@ func _on_start_run_btn_pressed() -> void:
 	#else:
 		#TransitionManager.transition_newrun(NavigationManager.scene_room_limbo)
 	TransitionManager.transition_newrun("res://scenes/map.tscn")
-	
+
 	queue_free()
 
 
