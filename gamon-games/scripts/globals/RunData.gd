@@ -66,7 +66,6 @@ func new_run():
 	random_seed = randi()
 	rng.seed = random_seed
 	coins = 100
-	# entered_rooms.clear()
 	map_nodes_data.clear()
 	current_map_node = null
 	items.clear()

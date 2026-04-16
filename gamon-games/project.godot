@@ -11,14 +11,13 @@ config_version=5
 [application]
 
 config/name="GamonGames"
-run/main_scene="uid://dibe1nlseg240"
+run/main_scene="uid://c7kb8r2bxnm6p"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 TransitionManager="*uid://dh7cx5gqjgckf"
-NavigationManager="*uid://dnruitng07ior"
 CurrenciesManager="*uid://bwnahuxrnyn6o"
 AnimationManager="*uid://car5ovidbulrc"
 RunData="*uid://v8oh1j7mo6xp"

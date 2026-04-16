@@ -291,7 +291,6 @@ func _on_enemy_died(_entity: CombatEntity) -> void:
 	current_state = CombatState.COMBAT_OVER
 	_update_button_states()
 	_refresh_turns_order_ui()
-	NavigationManager.go_back_to_current_room()
 
 func _setup_target_scope_selectors() -> void:
 	if attack_scope_option != null:

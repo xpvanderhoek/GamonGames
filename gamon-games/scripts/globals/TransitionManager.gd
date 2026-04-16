@@ -46,25 +46,6 @@ func change_scene(scene_path: String, transition_type: int = TransitionType.FADE
 	get_tree().change_scene_to_file(scene_path)
 	await transition_layer.fade_out()
 
-func transition_room(scene_path: String, transition_type: int = TransitionType.FADE) -> void:
-	_setup_transition(transition_type)
-	await get_tree().process_frame
-	await transition_layer.fade_in()
-	var game = _get_game()
-	if game.has_method("change_room"):
-		game.change_room(scene_path)
-	await transition_layer.fade_out()
-
-func transition_newrun(scene_path: String, transition_type: int = TransitionType.FADE) -> void:
-	_setup_transition(transition_type)
-	print("Transitioning to new run: " + scene_path)
-	await get_tree().process_frame
-	await transition_layer.fade_in(0.0)
-	var game = _get_game()
-	if game.has_method("change_room"):
-		game.change_room(scene_path)
-	await transition_layer.fade_out()
-
 func transition_combat(enter: bool, combat_path: String = "", transition_type: int = TransitionType.FADE, enemy: Node = null) -> void:
 	_setup_transition(transition_type)
 	await get_tree().process_frame
