@@ -16,8 +16,12 @@ func _setup_map_nodes():
 		
 		for node in nodes_list:
 			var data : MapNodeData = MapNodeData.new()
-			var rand_idx = randi_range(0, MapNodeData.Type.size() - 1)
-			data.type = rand_idx
+			
+			if previous_node == null:
+				data.type = MapNodeData.Type.COMBAT
+			else:
+				var rand_idx = randi_range(0, MapNodeData.Type.size() - 1)
+				data.type = rand_idx
 			
 			RunData.map_nodes_data.append(data)
 			
