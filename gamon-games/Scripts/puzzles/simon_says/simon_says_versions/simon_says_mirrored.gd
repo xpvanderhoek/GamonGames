@@ -15,6 +15,7 @@ func pulse_first_button():
 	while pulse_active:
 		buttons[idx].modulate = Color(2, 2, 2)
 		await get_tree().create_timer(0.2).timeout
+	buttons[idx].modulate = Color(1, 1, 1)
 		
 func _on_button_pressed(idx):
 	pulse_active = false
@@ -23,7 +24,7 @@ func _on_button_pressed(idx):
 	
 	input_locked = true
 	
-	await buttons[buttons.size() - 1 - idx].flash()
+	await buttons[idx].flash()
 	player_input.append(idx)
 	var pos = player_input.size() - 1
 	

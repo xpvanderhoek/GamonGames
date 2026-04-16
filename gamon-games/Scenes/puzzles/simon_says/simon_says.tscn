@@ -1,15 +1,19 @@
-[gd_scene format=3 uid="uid://cvwh3mkwamuf8"]
+[gd_scene format=3 uid="uid://dip87pnxytcc5"]
 
-[ext_resource type="Script" path="res://Scripts/puzzles/simon_says/simon_says_versions/simon_says_mirrored.gd" id="1_bwhsd"]
-[ext_resource type="Texture2D" uid="uid://80dsky5u1kk8" path="res://Assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
-[ext_resource type="PackedScene" uid="uid://f851tq4sr3a3" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
-[ext_resource type="Texture2D" uid="uid://dydujt5d83e30" path="res://Assets/Placeholders/Puzzle/pngimg.com - gravestone_PNG35.png" id="4_bwhsd"]
+[ext_resource type="Script" uid="uid://ctmvj0imj481b" path="res://Scripts/puzzles/simon_says/simon_says_versions/simon_says_mirrored.gd" id="1_bwhsd"]
+[ext_resource type="Texture2D" uid="uid://bagwhm16chgmk" path="res://Assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
+[ext_resource type="PackedScene" uid="uid://b2w1jm57sbry6" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
+[ext_resource type="Texture2D" uid="uid://db7aq763ewm82" path="res://Assets/Placeholders/Puzzle/pngimg.com - gravestone_PNG35.png" id="4_bwhsd"]
+[ext_resource type="Texture2D" uid="uid://7lk8k5jxuqnl" path="res://Assets/Placeholders/Puzzle/580b585b2edbce24c47b2a12.png" id="5_bogql"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bogql"]
 font_size = 70
 font_color = Color(0.8862745, 0.8862745, 0.8862745, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_sgwws"]
+font_color = Color(0, 0, 0, 1)
 
 [node name="SimonSays" type="Control" unique_id=1237460606 node_paths=PackedStringArray("buttons")]
 layout_mode = 3
@@ -128,7 +132,18 @@ text = "1"
 label_settings = SubResource("LabelSettings_bogql")
 horizontal_alignment = 1
 
+[node name="580b585b2Edbce24c47b2a12" type="Sprite2D" parent="." unique_id=977035026]
+position = Vector2(1009, 560)
+scale = Vector2(0.5198198, 0.5885609)
+texture = ExtResource("5_bogql")
+
 [node name="VersionLabel" type="Label" parent="." unique_id=299659955]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 934.00006
+offset_top = 563.0
+offset_right = 1076.0
+offset_bottom = 586.0
+rotation = -0.20943952
+text = "Normal"
+label_settings = SubResource("LabelSettings_sgwws")
+horizontal_alignment = 1
