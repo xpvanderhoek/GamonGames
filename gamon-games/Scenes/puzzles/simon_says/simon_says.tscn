@@ -3,6 +3,13 @@
 [ext_resource type="Script" uid="uid://dj0iwhnadym3f" path="res://Scripts/puzzles/simon_says/simon_says.gd" id="1_aahgm"]
 [ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://Assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
 [ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
+[ext_resource type="Texture2D" uid="uid://divcn52ai7dw6" path="res://Assets/Placeholders/Puzzle/pngimg.com - gravestone_PNG35.png" id="4_bwhsd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bogql"]
+font_size = 70
+font_color = Color(0.8862745, 0.8862745, 0.8862745, 1)
 
 [node name="SimonSays" type="Control" unique_id=1237460606 node_paths=PackedStringArray("buttons")]
 layout_mode = 3
@@ -87,8 +94,36 @@ offset_top = 420.0
 offset_right = 647.3334
 offset_bottom = 748.8889
 
+[node name="Pngimg_comGravestonePng35" type="Sprite2D" parent="." unique_id=1511149445]
+position = Vector2(169, 416)
+scale = Vector2(0.39682543, 0.3567901)
+texture = ExtResource("4_bwhsd")
+
 [node name="RoundLabel" type="Label" parent="." unique_id=1117392395]
 layout_mode = 0
-offset_right = 225.0
-offset_bottom = 106.0
-text = "Round 1"
+offset_left = 110.4024
+offset_top = 353.92352
+offset_right = 200.02347
+offset_bottom = 386.92352
+rotation = -0.23212878
+text = "Round:"
+label_settings = SubResource("LabelSettings_bwhsd")
+horizontal_alignment = 1
+
+[node name="RoundNumberLabel" type="Label" parent="." unique_id=1320825437]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -465.8039
+offset_top = 44.863342
+offset_right = -374.0583
+offset_bottom = 153.25827
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.23212878
+text = "1"
+label_settings = SubResource("LabelSettings_bogql")
+horizontal_alignment = 1

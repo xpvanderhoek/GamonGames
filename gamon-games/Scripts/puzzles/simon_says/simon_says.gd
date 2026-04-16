@@ -1,7 +1,7 @@
 extends Control
 
 @export var buttons: Array[TextureButton] = []
-@onready var roundLabel: Label = $RoundLabel
+@onready var roundLabel: Label = $RoundNumberLabel
 
 var sequence: Array[int] = []
 var player_input: Array[int] = []
@@ -34,7 +34,7 @@ func next_round():
 		b.disabled = true
 		b.self_modulate = Color(0.9, 0.9, 0.9)
 		
-	roundLabel.text = "Round " + str(sequence.size() + 1)
+	roundLabel.text = str(sequence.size() + 1)
 	sequence.append(randi() % buttons.size())
 	
 	await show_sequence()
@@ -90,7 +90,7 @@ func fail():
 	await get_tree().create_timer(0.5).timeout
 	
 	for b in buttons:
-		b.self_modulate = Color(1, 1, 1)
+		b.self_modulate = Color(0.9, 0.9, 0.9)
 	
 	sequence.clear()
 	player_input.clear()
