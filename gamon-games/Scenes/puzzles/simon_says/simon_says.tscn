@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dip87pnxytcc5"]
 
-[ext_resource type="Script" uid="uid://dhf4k5hsnr2i6" path="res://scripts/puzzles/simon_says/simon_says_versions/simon_says_colored.gd" id="1_wpfcq"]
+[ext_resource type="Script" uid="uid://ctmvj0imj481b" path="res://scripts/puzzles/simon_says/simon_says_versions/simon_says_mirrored.gd" id="1_bwhsd"]
 [ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://Assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
 [ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
 [ext_resource type="Texture2D" uid="uid://divcn52ai7dw6" path="res://Assets/Placeholders/Puzzle/pngimg.com - gravestone_PNG35.png" id="4_bwhsd"]
@@ -17,6 +17,10 @@ font_color = Color(0.8862745, 0.8862745, 0.8862745, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_sgwws"]
 font_color = Color(0, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_0oafj"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
+
 [node name="SimonSays" type="Control" unique_id=1237460606 node_paths=PackedStringArray("buttons")]
 layout_mode = 3
 anchors_preset = 15
@@ -24,7 +28,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_wpfcq")
+script = ExtResource("1_bwhsd")
 buttons = [NodePath("topleft"), NodePath("topmid"), NodePath("topright"), NodePath("midleft"), NodePath("midmid"), NodePath("midright"), NodePath("bottomleft"), NodePath("bottommid"), NodePath("bottomright")]
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=642298664]
@@ -172,3 +176,22 @@ offset_top = 100.00001
 offset_right = 206.0
 offset_bottom = 140.00002
 rotation = 0.57595867
+
+[node name="Bone" type="Sprite2D" parent="." unique_id=1659875245]
+visible = false
+position = Vector2(1015.5856, 180.73311)
+rotation = 1.1641346
+scale = Vector2(0.5444601, 0.6347534)
+texture = ExtResource("5_bogql")
+
+[node name="Vice_versa_hint" type="Label" parent="." unique_id=1095332853]
+visible = false
+layout_mode = 0
+offset_left = 967.9999
+offset_top = 85.00005
+offset_right = 1168.9999
+offset_bottom = 129.00006
+rotation = 0.93375117
+text = "1, 3, 6 -> 6, 3, 1"
+label_settings = SubResource("LabelSettings_0oafj")
+horizontal_alignment = 1

@@ -1,0 +1,19 @@
+extends SimonSays
+
+func _ready():
+	versionLabel.text = "Inverted Says"
+	super._ready()
+	
+func show_sequence():
+	can_click = false
+	
+	await get_tree().create_timer(0.5).timeout
+	
+	for idx in sequence:
+		for i in range(buttons.size()):
+			if i != idx:
+				buttons[i].flash()
+		await get_tree().create_timer(0.5).timeout
+			
+	
+	can_click = true

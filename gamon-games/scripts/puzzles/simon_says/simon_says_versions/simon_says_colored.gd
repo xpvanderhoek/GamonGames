@@ -5,9 +5,9 @@ var all_colors: Array[Color] = []
 var colored_sequence: Array[Dictionary] = []
 
 func _ready():
-	all_colors.append(Color(0.0, 0.0, 0.365, 1.0))
-	all_colors.append(Color(0.188, 0.188, 0.0, 1.0))
-	all_colors.append(Color(0.176, 0.0, 0.176, 1.0))
+	all_colors.append(Color(0.0, 0.0, 0.616, 1.0))
+	all_colors.append(Color(0.514, 0.514, 0.0, 1.0))
+	all_colors.append(Color(0.549, 0.0, 0.549, 1.0))
 	good_color = all_colors[randi() % all_colors.size()]
 	$MouseLeftButton.visible = true
 	$Arrow.visible = true
@@ -15,7 +15,7 @@ func _ready():
 	$ColorRect.color = good_color
 	$ColorRect.visible = true
 	sequence.append(randi() % buttons.size())
-	versionLabel.text = "Colored"
+	versionLabel.text = "Colors Says"
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))
 	colored_sequence.append({

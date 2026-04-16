@@ -1,12 +1,11 @@
 extends SimonSays
 
 func _ready():
-	versionLabel.text = "Mirrored"
+	versionLabel.text = "syaS NomiS (Mirrored)"
 	super._ready()
 	
 	
 func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
-	sequence.append(randi() % buttons.size())
 	var idx = sequence[0]
 	
 	buttons[buttons.size() - 1 - idx].disabled = false
@@ -20,6 +19,7 @@ func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 func _on_button_pressed(idx):
 	pulse_active = false
 	if !can_click:
+		switchDisabled(true)
 		return
 	
 	can_click = false

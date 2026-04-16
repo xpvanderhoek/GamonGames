@@ -1,6 +1,6 @@
 extends SimonSays
 
 func _ready():
-	versionLabel.text = "Normal"
+	versionLabel.text = "Simon Says"
 	super._ready()
 	
