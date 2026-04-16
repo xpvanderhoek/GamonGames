@@ -50,7 +50,6 @@ func show_sequence():
 
 
 func checkCorrect(clicked_button: int, click_position: int):
-	print(clicked_button, sequence[click_position])
 	if sequence[click_position] != clicked_button:
 		await fail()
 		input_locked = false

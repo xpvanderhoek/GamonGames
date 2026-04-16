@@ -7,7 +7,6 @@ func _ready():
 	
 func pulse_first_button():
 	sequence.append(randi() % buttons.size())
-	print(sequence[0])
 	var idx = sequence[0]
 	
 	buttons[buttons.size() - 1 - idx].disabled = false

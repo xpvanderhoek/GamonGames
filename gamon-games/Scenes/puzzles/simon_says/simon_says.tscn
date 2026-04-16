@@ -1,9 +1,9 @@
-[gd_scene format=3 uid="uid://dtbwu42iv0b8f"]
+[gd_scene format=3 uid="uid://cvwh3mkwamuf8"]
 
-[ext_resource type="Script" uid="uid://dj0iwhnadym3f" path="res://Scripts/puzzles/simon_says/simon_says_versions/simon_says_normal.gd" id="1_bwhsd"]
-[ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://Assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
-[ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
-[ext_resource type="Texture2D" uid="uid://divcn52ai7dw6" path="res://Assets/Placeholders/Puzzle/pngimg.com - gravestone_PNG35.png" id="4_bwhsd"]
+[ext_resource type="Script" path="res://Scripts/puzzles/simon_says/simon_says_versions/simon_says_mirrored.gd" id="1_bwhsd"]
+[ext_resource type="Texture2D" uid="uid://80dsky5u1kk8" path="res://Assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
+[ext_resource type="PackedScene" uid="uid://f851tq4sr3a3" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
+[ext_resource type="Texture2D" uid="uid://dydujt5d83e30" path="res://Assets/Placeholders/Puzzle/pngimg.com - gravestone_PNG35.png" id="4_bwhsd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
 
