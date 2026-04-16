@@ -1,6 +1,6 @@
 extends Node2D
 
-const GRID_SIZE     := 3
+const GRID_SIZE     := 4
 const TILE_SIZE     := 100
 const TILE_GAP      := 6
 const SHUFFLE_MOVES := 40
@@ -80,22 +80,6 @@ func _shuffle_solvable() -> void:
 		var neighbors := _get_neighbors(air_index)
 		var pick: int = neighbors[randi() % neighbors.size()]
 		_swap(air_index, pick)
-
-	if not _is_solvable():
-		_swap(0, 1)
-
-
-func _is_solvable() -> bool:
-	var inversion_count := 0
-	var arr := tile_values.duplicate()
-	arr.erase(0)
-
-	for i in range(arr.size()):
-		for j in range(i + 1, arr.size()):
-			if arr[i] > arr[j]:
-				inversion_count += 1
-
-	return inversion_count % 2 == 0
 
 
 func _on_tile_pressed(slot: int) -> void:
