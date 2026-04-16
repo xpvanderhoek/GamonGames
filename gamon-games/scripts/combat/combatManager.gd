@@ -75,6 +75,14 @@ func _ready() -> void:
 	RunData.health_changed.connect(_update_player_health_label)
 	_begin_player_turn()
 
+func _input(event): #Temporary
+	if event.is_action_pressed("ui_cancel"):
+		_exit_combat()
+
+func _exit_combat():
+	# Temporary
+	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	_queued_encounter_scenes = encounter_enemy_scenes.duplicate()
 	current_round = 1
@@ -283,7 +291,6 @@ func _on_enemy_died(_entity: CombatEntity) -> void:
 	current_state = CombatState.COMBAT_OVER
 	_update_button_states()
 	_refresh_turns_order_ui()
-	NavigationManager.go_back_to_current_room()
 
 func _setup_target_scope_selectors() -> void:
 	if attack_scope_option != null:
