@@ -75,12 +75,12 @@ func _ready() -> void:
 	RunData.health_changed.connect(_update_player_health_label)
 	_begin_player_turn()
 
-func _input(event):
-	if event.is_action_pressed("ui_cancel"):  # ESC key
+func _input(event): #Temporary
+	if event.is_action_pressed("ui_cancel"):
 		_exit_combat()
 
 func _exit_combat():
-	# Return to the map room
+	# Temporary
 	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
 
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:

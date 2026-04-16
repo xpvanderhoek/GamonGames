@@ -17,6 +17,7 @@ func _setup_map_nodes():
 		for node in nodes_list:
 			var data : MapNodeData = MapNodeData.new()
 			
+			# previous node being null means its the first node, so default to combat.
 			if previous_node == null:
 				data.type = MapNodeData.Type.COMBAT
 			else:
@@ -49,17 +50,12 @@ func _on_map_node_selected(data: MapNodeData) -> void:
 	
 	match data.type:
 		MapNodeData.Type.COMBAT:
-			# To transition to combat, call TransitionManager.transition_combat()
-			# You'll need to specify a combat scene path
-			#TransitionManager.transition_combat(true, "res://scenes/combat/CombatScene.tscn", TransitionManager.TransitionType.FADE)
 			TransitionManager.change_scene("res://scenes/combat/combat.tscn")
 		
 		MapNodeData.Type.SHOP:
-			# For shop, use change_scene() since it's a regular scene transition
 			TransitionManager.change_scene("res://scenes/Shop/ShopRoom.tscn", TransitionManager.TransitionType.FADE)
 
 func _update_node_availability() -> void:
-	# First, set all nodes to unavailable by default
 	for node in map_nodes.get_children():
 		node.available = false
 	
@@ -72,7 +68,6 @@ func _update_node_availability() -> void:
 					node.available = true
 					break
 	else:
-		# No current node selected yet, enable the first node
 		var nodes_list = map_nodes.get_children()
 		if nodes_list.size() > 0:
 			nodes_list[0].available = true
