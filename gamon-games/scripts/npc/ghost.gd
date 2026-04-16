@@ -20,13 +20,13 @@ func interact():
 		is_introduced = true
 		is_deal_offered = true
 	
-	elif is_deal_offered:
-		DialogueManager.start_dialogue("limbo_intro_2")
-		await DialogueManager.dialogue_finished
-		is_introduced = true
-		is_deal_offered = false
-		open_portal.emit()
-		PlayerStats.knows_ghost = true
+	# elif is_deal_offered:
+		# DialogueManager.start_dialogue("limbo_intro_2")
+		# await DialogueManager.dialogue_finished
+		# is_introduced = true
+		# is_deal_offered = false
+		# open_portal.emit()
+		# PlayerStats.knows_ghost = true
 	
 	else:
 		DialogueManager.start_dialogue("ghost_greeting")
