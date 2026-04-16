@@ -65,6 +65,7 @@ func checkCorrect(clicked_button: int, click_position: int):
 		return
 	
 	if player_input.size() == sequence.size():
+		switchDisabled(true)
 		changeColor(Color(0.267, 0.667, 0.268, 1.0))
 		await get_tree().create_timer(0.4).timeout
 		can_click = false
