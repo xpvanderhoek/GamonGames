@@ -11,3 +11,8 @@ turns_order_path = null
 turns_order_row_height = null
 turns_order_min_visible_rows = null
 player_max_health = null
+
+[node name="Container" type="Container" parent="." index="5" unique_id=631037354]
+offset_top = 125.0
+offset_right = 92.0
+offset_bottom = 125.0

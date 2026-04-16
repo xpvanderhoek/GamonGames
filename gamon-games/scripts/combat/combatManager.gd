@@ -51,10 +51,10 @@ var _button_spells: Dictionary = {}
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
-@onready var spells_panel: HBoxContainer = $SpellsPanel
-@onready var lbl_player_health: Label = $PlayerHealth
-@onready var lbl_turns_order: Label = $TurnsOrderInfo
-@onready var turns_order_container: VBoxContainer = $TurnsOrder
+@onready var spells_panel: HBoxContainer = $SpellsPanel/Container
+@onready var lbl_player_health: Label = $HealthBar/HealthLabel
+@onready var lbl_turns_order: Label = $TurnsOrderUI/RoundValue
+@onready var turns_order_container: VBoxContainer = $TurnsOrderUI/Panel
 @onready var player_buffs_panel: HBoxContainer = get_node_or_null("BuffsPanel") as HBoxContainer
 @onready var attack_scope_option: OptionButton = get_node_or_null("TargetingPanel/AttackScopeOption") as OptionButton
 @onready var debuff_scope_option: OptionButton = get_node_or_null("TargetingPanel/DebuffScopeOption") as OptionButton
