@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dv04cc8iwb0s7"]
 
-[ext_resource type="Script" uid="uid://b1ajif5p0uay3" path="res://scripts/globals/UpgradeScreen.gd" id="1_p3ub5"]
+[ext_resource type="Script" uid="uid://b1ajif5p0uay3" path="res://scripts/UpgradeScreen.gd" id="1_p3ub5"]
 
 [node name="UpgradeScreen" type="Control" unique_id=889918390]
 process_mode = 2
