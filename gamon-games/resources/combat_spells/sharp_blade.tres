@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://c7bpwpt5u5ksd"]
+
+[ext_resource type="Texture2D" uid="uid://cydiwpld3gxpm" path="res://Assets/Placeholders/ui/blade_master.png" id="1_r0rvb"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_nj51v"]
+
+[resource]
+script = ExtResource("2_nj51v")
+spell_id = "sharp_blade"
+spell_name = "Sharp Blade"
+damage = 5
+accuracy = 100.0
+weight = 100.0
+icon = ExtResource("1_r0rvb")
+vfx_anchor = 1
+vfx_lifetime = 1.0

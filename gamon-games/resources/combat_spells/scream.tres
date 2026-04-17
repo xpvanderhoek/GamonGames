@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://cugipurly6sgj"]
+
+[ext_resource type="Texture2D" uid="uid://cydiwpld3gxpm" path="res://Assets/Placeholders/ui/blade_master.png" id="1_gw4sn"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_i6ilq"]
+
+[resource]
+script = ExtResource("2_i6ilq")
+spell_id = "scream"
+spell_name = "Scream"
+damage = 5
+accuracy = 100.0
+weight = 100.0
+icon = ExtResource("1_gw4sn")
+vfx_anchor = 1
+vfx_lifetime = 1.0
