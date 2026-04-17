@@ -30,6 +30,7 @@ enum TargetScope {
 @export var turns_order_min_visible_rows: int = 8
 @export var player_max_health: int = 100
 @export_range(0.0, 100.0, 0.1) var player_hit_chance_bonus_percent: float = 20.0
+@export_range(0.0, 200.0, 1.0) var attack_lunge_distance: float = 42.0
 @export var attack_target_scope: TargetScope = TargetScope.LIMB
 @export var debuff_target_scope: TargetScope = TargetScope.LIMB
 
@@ -79,6 +80,15 @@ func _ready() -> void:
 func _input(event): #Temporary
 	if event.is_action_pressed("ui_cancel"):
 		_exit_combat()
+		return
+
+	if event is InputEventKey:
+		var key_event := event as InputEventKey
+		if key_event.pressed and not key_event.echo:
+			var spell_index := _get_spell_index_from_key_event(key_event)
+			if spell_index >= 0:
+				_select_spell_by_index(spell_index)
+				get_viewport().set_input_as_handled()
 
 func _exit_combat():
 	if _is_exiting_combat:
@@ -227,6 +237,33 @@ func _on_spell_button_pressed(button: Button) -> void:
 	var spell := _button_spells.get(button, null) as SpellData
 	_select_spell(spell)
 
+func _select_spell_by_index(index: int) -> void:
+	if index < 0 or index >= mini(6, _spell_buttons.size()):
+		return
+
+	var spell_button := _spell_buttons[index]
+	if spell_button == null or not is_instance_valid(spell_button) or spell_button.disabled:
+		return
+
+	_on_spell_button_pressed(spell_button)
+
+func _get_spell_index_from_key_event(event: InputEventKey) -> int:
+	match event.keycode:
+		KEY_1, KEY_KP_1:
+			return 0
+		KEY_2, KEY_KP_2:
+			return 1
+		KEY_3, KEY_KP_3:
+			return 2
+		KEY_4, KEY_KP_4:
+			return 3
+		KEY_5, KEY_KP_5:
+			return 4
+		KEY_6, KEY_KP_6:
+			return 5
+		_:
+			return -1
+
 func _update_button_states() -> void:
 	var should_disable_buttons := current_state != CombatState.PLAYER_TURN or _attack_selected or not _has_alive_enemies()
 	for spell_button in _spell_buttons:
@@ -279,7 +316,7 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 			_append_enemy_effect(source_enemy, active_spell, limb)
 
 		if active_spell != null:
-			_play_attack_feedback(active_spell, null, source_enemy)
+			_play_attack_feedback(active_spell, get_node_or_null(ui_player), source_enemy)
 	else:
 		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(_get_adjusted_hit_chance_percent(limb), 0.1)])
 	_attack_selected = false
@@ -439,7 +476,7 @@ func _perform_enemy_turn() -> void:
 			continue
 
 		await get_tree().create_timer(0.35).timeout
-		await _play_attack_feedback(attack, attacking_enemy, null)
+		await _play_attack_feedback(attack, attacking_enemy, get_node_or_null(ui_player))
 		var outgoing_multiplier := _get_enemy_outgoing_multiplier(attacking_enemy)
 		var damage: int = int(round(float(max(0, attack.damage)) * outgoing_multiplier))
 		_apply_player_damage(damage, attack.damage_type)
@@ -1077,6 +1114,8 @@ func _flash_player_hit() -> void:
 	tween.tween_property(player_canvas, "modulate", Color(1, 1, 1, 1), 0.22)
 
 func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> void:
+	await _play_attack_lunge(source_entity, target_entity)
+
 	var vfx_lifetime_timer: SceneTreeTimer = null
 
 	if attack.sfx != null:
@@ -1097,6 +1136,38 @@ func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target
 
 	if vfx_lifetime_timer != null:
 		await vfx_lifetime_timer.timeout
+
+func _play_attack_lunge(source_entity: Node, target_entity: Node) -> void:
+	if source_entity == null or target_entity == null:
+		return
+	if not is_instance_valid(source_entity) or not is_instance_valid(target_entity):
+		return
+	if not (source_entity is CanvasItem):
+		return
+
+	var source_canvas := source_entity as CanvasItem
+	var raw_target_position: Variant = _get_vfx_anchor_position(target_entity)
+	if not (raw_target_position is Vector2):
+		return
+
+	var start_position: Vector2 = source_canvas.global_position
+	var target_position := raw_target_position as Vector2
+	var attack_direction := target_position - start_position
+	if attack_direction.length_squared() <= 0.01:
+		return
+
+	var lunge_distance := minf(attack_lunge_distance, attack_direction.length() * 0.45)
+	if lunge_distance <= 0.0:
+		return
+
+	var lunge_position := start_position + attack_direction.normalized() * lunge_distance
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(source_canvas, "global_position", lunge_position, 0.09)
+	tween.set_ease(Tween.EASE_IN)
+	tween.tween_property(source_canvas, "global_position", start_position, 0.12)
+	await tween.finished
 
 func _resolve_vfx_position(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> Vector2:
 	match attack.vfx_anchor:
