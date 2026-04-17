@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b1r88pxgxdvwr"]
 
 [ext_resource type="Texture2D" uid="uid://cws830736mswa" path="res://assets/Placeholders/backgrounds/combatbg.png" id="2_ltalu"]
-[ext_resource type="Texture2D" uid="uid://fp36e4p1kdhp" path="res://assets/Placeholders/knight1_1_claymore.png" id="3_rnhwr"]
+[ext_resource type="Texture2D" uid="uid://dm7rgnxirsjjh" path="res://assets/player.png" id="3_ltalu"]
 [ext_resource type="PackedScene" uid="uid://cw35es2dvr2it" path="res://scenes/UI/health_bar.tscn" id="4_4voa6"]
 [ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://scripts/combat/combatManager.gd" id="7_mgr"]
 
@@ -26,9 +26,9 @@ expand_mode = 1
 position = Vector2(570, 324)
 
 [node name="Player" type="Sprite2D" parent="." unique_id=888851307]
-position = Vector2(135.00002, 537)
-scale = Vector2(1.4130435, 1.4130434)
-texture = ExtResource("3_rnhwr")
+position = Vector2(148, 493.99997)
+scale = Vector2(0.8511, 0.85109985)
+texture = ExtResource("3_ltalu")
 
 [node name="EnemyContainer" type="HBoxContainer" parent="." unique_id=1990503357]
 anchors_preset = 5
@@ -47,10 +47,10 @@ alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="SpellsPanel" type="PanelContainer" parent="." unique_id=609410318]
-offset_left = 213.0
-offset_top = 547.0
-offset_right = 617.0
-offset_bottom = 611.0
+offset_left = 298.0
+offset_top = 548.0
+offset_right = 702.0
+offset_bottom = 612.0
 
 [node name="Container" type="HBoxContainer" parent="SpellsPanel" unique_id=1942063916]
 layout_mode = 2
@@ -61,10 +61,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -361.0
-offset_top = -204.0
-offset_right = -26.0
-offset_bottom = -172.0
+offset_left = -276.0
+offset_top = -203.0
+offset_right = 59.0
+offset_bottom = -171.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -78,7 +78,7 @@ offset_bottom = 648.0
 layout_mode = 0
 offset_top = 48.0
 offset_right = 92.0
-offset_bottom = 541.0
+offset_bottom = 454.0
 
 [node name="Text" type="Label" parent="TurnsOrderUI" unique_id=1861351399]
 layout_mode = 0
@@ -109,16 +109,16 @@ grow_vertical = 2
 theme_override_constants/separation = 8
 
 [node name="HealthBar" parent="." unique_id=405192399 instance=ExtResource("4_4voa6")]
-offset_left = 213.0
-offset_top = 496.0
-offset_right = 217.25598
-offset_bottom = 505.248
+offset_left = 298.0
+offset_top = 497.0
+offset_right = 302.25598
+offset_bottom = 506.248
 
 [node name="Panel" type="Panel" parent="." unique_id=819468727]
-offset_left = 635.0
-offset_top = 496.0
-offset_right = 750.0
-offset_bottom = 611.0
+offset_left = 720.0
+offset_top = 497.0
+offset_right = 835.0
+offset_bottom = 612.0
 
 [node name="GridContainer" type="GridContainer" parent="Panel" unique_id=1834709144]
 layout_mode = 1
