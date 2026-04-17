@@ -3,6 +3,10 @@ extends Node2D
 @onready var dotted_line: Line2D = $DottedLine
 @onready var map_nodes: Node2D = $MapNodes
 
+var enemy_scenes := [
+	"res://scenes/combat/enemies/ttt.tscn"
+]
+
 func _ready() -> void:
 	if not RunData.run_active:
 		RunData.new_run()
@@ -25,6 +29,12 @@ func _setup_map_nodes():
 			else:
 				var rand_idx = randi_range(0, MapNodeData.Type.size() - 1)
 				data.type = rand_idx as MapNodeData.Type
+			
+			if data.type == MapNodeData.Type.COMBAT:
+				var enemy_count = randi_range(1, 3)
+				for i in range(enemy_count):
+					var random_enemy = enemy_scenes[randi() % enemy_scenes.size()]
+					data.enemies.append(random_enemy)
 			
 			RunData.map_nodes_data.append(data)
 			
@@ -52,6 +62,12 @@ func _on_map_node_selected(data: MapNodeData) -> void:
 	
 	match data.type:
 		MapNodeData.Type.COMBAT:
+			var encounter_scenes: Array[PackedScene] = []
+			for enemy_path in data.enemies:
+				var scene = load(enemy_path) as PackedScene
+				if scene:
+					encounter_scenes.append(scene)
+			RunData.current_encounter = encounter_scenes
 			TransitionManager.change_scene("res://scenes/combat/combat.tscn")
 		
 		MapNodeData.Type.SHOP:

@@ -6,3 +6,4 @@ enum Type {COMBAT, SHOP}
 @export var type: Type
 @export var next_rooms: Array[MapNodeData]
 @export var selected := false
+@export var enemies: Array[String] = []

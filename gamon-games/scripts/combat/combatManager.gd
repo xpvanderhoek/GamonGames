@@ -22,7 +22,7 @@ enum TargetScope {
 
 @export var player_base_damage: int = 25
 @export var enemy_entity_path: NodePath
-@export var enemy_container_path: NodePath = NodePath("HBoxContainer")
+@export var enemy_container_path: NodePath = NodePath("EnemyContainer")
 @export var ui_player: NodePath = NodePath("Player")
 @export var turns_order_path: NodePath = NodePath("TurnsOrder")
 @export var player_turn_icon: Texture2D
@@ -65,6 +65,8 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 func _ready() -> void:
 	if _queued_encounter_scenes.size() > 0:
 		_spawn_encounter_enemies(_queued_encounter_scenes)
+	elif RunData.current_encounter.size() > 0:
+		_spawn_encounter_enemies(RunData.current_encounter)
 
 	current_round = 1
 	_refresh_enemy_entities()
