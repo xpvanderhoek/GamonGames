@@ -25,7 +25,6 @@ func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 func _ready():
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))
-	print(buttons.size())
 	sequence.append(randi() % buttons.size())
 	
 	for i in range(buttons.size()):

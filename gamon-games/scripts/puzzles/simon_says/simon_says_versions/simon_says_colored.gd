@@ -11,7 +11,6 @@ func _ready():
 	good_color = all_colors[randi() % all_colors.size()]
 	$MouseLeftButton.visible = true
 	$Arrow.visible = true
-	print(good_color)
 	$ColorRect.color = good_color
 	$ColorRect.visible = true
 	sequence.append(randi() % buttons.size())
