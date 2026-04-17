@@ -5,6 +5,7 @@ class_name SkillNode
 @onready var skill_branch: Line2D = $SkillBranch
 @export var skill: SkillData
 
+
 func _ready() -> void:
 	_update_tooltip_text()
 	if get_parent() is SkillNode:

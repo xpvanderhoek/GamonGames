@@ -49,7 +49,7 @@ func get_stat_value(stat_name: String) -> float:
 	else:
 		push_error("Stat '%s' does not exist" % stat_name)
 		return 0.0
-
+#TODO: change upgrade calculation so it calculates from base stats
 func update_stat(stat_name: String, value: float) -> float:
 	if not stat_name in stats:
 		push_error("Stat '%s' does not exist" % stat_name)

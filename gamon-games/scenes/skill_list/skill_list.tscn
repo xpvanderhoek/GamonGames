@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://dt8r031bdktx7"]
+
+[ext_resource type="Script" uid="uid://p1714dc445e1" path="res://scripts/skill_list/skill_list.gd" id="1_lvfat"]
+[ext_resource type="Script" uid="uid://bngpt3prf6s3c" path="res://scripts/skilltree/skilldata.gd" id="2_loq5n"]
+[ext_resource type="Resource" uid="uid://b7gvd271gr6f2" path="res://scripts/skilltree/skill_resources/anatomy_mastery.tres" id="3_3tci0"]
+[ext_resource type="Resource" uid="uid://dvdfog01m33k6" path="res://scripts/skilltree/skill_resources/fortune's_blessing.tres" id="4_20qiw"]
+[ext_resource type="Resource" uid="uid://c5o0w02emsava" path="res://scripts/skilltree/skill_resources/hardened_flesh.tres" id="5_r8qnw"]
+[ext_resource type="Resource" uid="uid://dsqf26svuv2vr" path="res://scripts/skilltree/skill_resources/iron_will.tres" id="6_qn87k"]
+[ext_resource type="Resource" uid="uid://clyv743p1odja" path="res://scripts/skilltree/skill_resources/quick_reflexes.tres" id="7_4jjhm"]
+[ext_resource type="Resource" uid="uid://crhxl5b2q35f5" path="res://scripts/skilltree/skill_resources/scavengers_eye.tres" id="8_ed1i2"]
+[ext_resource type="Resource" uid="uid://x3hhxu7knfbq" path="res://scripts/skilltree/skill_resources/starting_kit.tres" id="9_usirg"]
+[ext_resource type="Resource" uid="uid://k1vhjfkad0qa" path="res://scripts/skilltree/skill_resources/steady_hand.tres" id="10_or8jn"]
+[ext_resource type="Resource" uid="uid://80wse1xg4dkb" path="res://scripts/skilltree/skill_resources/stone_guard.tres" id="11_gli5f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lvfat"]
+bg_color = Color(0, 0, 0, 0.5921569)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="skill_list" type="Control" unique_id=1497030253]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lvfat")
+skills = Array[ExtResource("2_loq5n")]([ExtResource("3_3tci0"), ExtResource("4_20qiw"), ExtResource("5_r8qnw"), ExtResource("6_qn87k"), ExtResource("7_4jjhm"), ExtResource("8_ed1i2"), ExtResource("9_usirg"), ExtResource("10_or8jn"), ExtResource("11_gli5f")])
+
+[node name="Background" type="ColorRect" parent="." unique_id=1327498651]
+z_index = -5
+custom_minimum_size = Vector2(720, 520)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.085408114, 0.07120069, 0.15267435, 1)
+
+[node name="MarrowShardsLabel" type="Label" parent="." unique_id=1742998272]
+custom_minimum_size = Vector2(122, 49)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 11.0
+offset_right = 132.0
+offset_bottom = 60.0
+text = "Marrow shards:
+"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Panel" type="Panel" parent="." unique_id=1672882145]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -211.0
+offset_right = 230.0
+offset_bottom = 211.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lvfat")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=1173757160]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/VBoxContainer" unique_id=1558890568]
+layout_mode = 2
+
+[node name="SkillListTitle" type="Label" parent="Panel/VBoxContainer" unique_id=1874865007]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Skill List"
+horizontal_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="Panel/VBoxContainer" unique_id=1587181175]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=1237664655]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="Panel/VBoxContainer/HBoxContainer" unique_id=1149613809]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer/HBoxContainer" unique_id=925547683]
+custom_minimum_size = Vector2(445, 363)
+layout_mode = 2
+
+[node name="SkillVboxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/ScrollContainer" unique_id=1706093462]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/VBoxContainer/HBoxContainer" unique_id=396191193]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="Panel/VBoxContainer" unique_id=1785811231]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2

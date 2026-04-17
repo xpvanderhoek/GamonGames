@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_1da31")
-skill_name = "Sarting Kit"
+skill_name = "Starting Kit"
 min_cost = 1500
 max_cost = 1500
 max_level = 1

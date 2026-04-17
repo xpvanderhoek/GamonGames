@@ -160,7 +160,7 @@ func _process(delta: float) -> void:
 	RunData.update_timer(delta)
 
 func _setup_skill_tree_overlay() -> void:
-	var skill_tree_scene = load("res://scenes/skilltree/skill_tree_screen.tscn")
+	var skill_tree_scene = load("res://scenes/skill_list/skill_list.tscn")
 	skill_tree_overlay = skill_tree_scene.instantiate()
 	
 	var canvas_layer = CanvasLayer.new()
