@@ -50,6 +50,7 @@ var _enemy_limb_effects: Dictionary = {}
 var _spell_buttons: Array[Button] = []
 var _button_spells: Dictionary = {}
 var _is_exiting_combat: bool = false
+var _spell_cursor_overlay: TextureRect = null
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
@@ -71,6 +72,7 @@ func _ready() -> void:
 	_refresh_enemy_buffs_ui()
 	_refresh_player_buffs_ui()
 	_update_player_health_label()
+	_setup_spell_cursor_overlay()
 	_rebuild_spells_panel()
 	_setup_target_scope_selectors()
 
@@ -79,7 +81,11 @@ func _ready() -> void:
 
 func _input(event): #Temporary
 	if event.is_action_pressed("ui_cancel"):
-		_exit_combat()
+		if _attack_selected:
+			_cancel_selected_spell()
+			get_viewport().set_input_as_handled()
+			return
+		# _exit_combat()
 		return
 
 	if event is InputEventKey:
@@ -89,6 +95,9 @@ func _input(event): #Temporary
 			if spell_index >= 0:
 				_select_spell_by_index(spell_index)
 				get_viewport().set_input_as_handled()
+
+func _process(_delta: float) -> void:
+	_update_spell_cursor_overlay_position()
 
 func _exit_combat():
 	if _is_exiting_combat:
@@ -203,6 +212,8 @@ func _select_spell(spell: SpellData) -> void:
 	selected_action = CombatAction.ATTACK
 	_attack_selected = true
 	_set_enemy_targeting_enabled(true)
+	_update_enemy_spell_targeting_preview()
+	_update_spell_cursor_overlay()
 	_update_button_states()
 
 func _rebuild_spells_panel() -> void:
@@ -224,7 +235,9 @@ func _rebuild_spells_panel() -> void:
 		_button_spells[spell_button] = spell
 
 func _configure_spell_button(button: Button, spell: SpellData) -> void:
-	button.text = spell.spell_name if spell != null and not spell.spell_name.is_empty() else "Attack"
+	var bind_label = button.get_node_or_null("Bind") as Label
+	bind_label.text = str(_spell_buttons.size() + 1)
+
 	button.tooltip_text = button.text
 	if spell != null and spell.icon != null:
 		button.icon = spell.icon
@@ -236,6 +249,25 @@ func _configure_spell_button(button: Button, spell: SpellData) -> void:
 func _on_spell_button_pressed(button: Button) -> void:
 	var spell := _button_spells.get(button, null) as SpellData
 	_select_spell(spell)
+
+func _cancel_selected_spell() -> void:
+	if current_state != CombatState.PLAYER_TURN or not _attack_selected:
+		return
+
+	_attack_selected = false
+	selected_spell = null
+	_update_enemy_spell_targeting_preview()
+	_set_enemy_targeting_enabled(false)
+	_clear_spell_cursor_overlay()
+	_update_button_states()
+
+	for enemy in enemy_entities:
+		if enemy == null or not is_instance_valid(enemy):
+			continue
+		if enemy.has_method("clear_current_highlight"):
+			enemy.clear_current_highlight()
+		if enemy.has_method("set_spell_targeting_preview"):
+			enemy.set_spell_targeting_preview(false, false, null)
 
 func _select_spell_by_index(index: int) -> void:
 	if index < 0 or index >= mini(6, _spell_buttons.size()):
@@ -321,6 +353,8 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(_get_adjusted_hit_chance_percent(limb), 0.1)])
 	_attack_selected = false
 	selected_spell = null
+	_clear_spell_cursor_overlay()
+	_update_enemy_spell_targeting_preview()
 	source_enemy.clear_current_highlight()
 	_end_player_turn()
 
@@ -1214,9 +1248,65 @@ func _begin_player_turn() -> void:
 	_refresh_player_buffs_ui()
 	_attack_selected = false
 	selected_spell = null
+	_update_enemy_spell_targeting_preview()
 	_set_enemy_targeting_enabled(false)
+	_clear_spell_cursor_overlay()
 	_update_button_states()
 	_refresh_turns_order_ui()
+
+func _update_enemy_spell_targeting_preview() -> void:
+	var spell_icon: Texture2D = null
+	var use_whole_enemy_preview := false
+	if _attack_selected and selected_spell != null:
+		spell_icon = selected_spell.icon
+		use_whole_enemy_preview = _resolve_target_scope(selected_spell) == TargetScope.WHOLE_ENEMY
+
+	for enemy in enemy_entities:
+		if enemy == null or not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
+			continue
+		if enemy.has_method("set_spell_targeting_preview"):
+			enemy.set_spell_targeting_preview(_attack_selected, use_whole_enemy_preview, spell_icon)
+
+func _setup_spell_cursor_overlay() -> void:
+	if _spell_cursor_overlay != null:
+		return
+
+	_spell_cursor_overlay = TextureRect.new()
+	_spell_cursor_overlay.name = "SpellCursorOverlay"
+	_spell_cursor_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_spell_cursor_overlay.visible = false
+	_spell_cursor_overlay.z_index = 1000
+	_spell_cursor_overlay.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_spell_cursor_overlay.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_spell_cursor_overlay.custom_minimum_size = Vector2(28.0, 28.0)
+	add_child(_spell_cursor_overlay)
+
+func _update_spell_cursor_overlay() -> void:
+	if _spell_cursor_overlay == null:
+		return
+
+	if selected_spell == null or selected_spell.icon == null:
+		_clear_spell_cursor_overlay()
+		return
+
+	_spell_cursor_overlay.texture = selected_spell.icon
+	_spell_cursor_overlay.visible = true
+	_update_spell_cursor_overlay_position()
+
+func _update_spell_cursor_overlay_position() -> void:
+	if _spell_cursor_overlay == null or not _spell_cursor_overlay.visible:
+		return
+
+	var icon_size := _spell_cursor_overlay.texture.get_size() if _spell_cursor_overlay.texture != null else Vector2(28.0, 28.0)
+	_spell_cursor_overlay.size = icon_size
+	_spell_cursor_overlay.position = get_viewport().get_mouse_position() + Vector2(18.0, 18.0)
+
+func _clear_spell_cursor_overlay() -> void:
+	if _spell_cursor_overlay == null:
+		return
+
+	_spell_cursor_overlay.visible = false
+	_spell_cursor_overlay.texture = null
 
 func _set_enemy_targeting_enabled(enabled: bool) -> void:
 	var highlight_whole_enemy := enabled and _is_whole_enemy_targeting()
