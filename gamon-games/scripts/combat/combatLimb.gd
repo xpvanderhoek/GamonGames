@@ -13,6 +13,8 @@ var current_health: int
 var is_destroyed: bool = false
 var is_highlighted: bool = false
 var is_aoe_highlighted: bool = false
+var _initial_scale: Vector2 = Vector2.ONE
+var _initial_position: Vector2 = Vector2.ZERO
 
 # Auto generate collision polygon
 var alpha_threshold: float = 0.2 # Threshold for generating collision polygons from texture alpha
@@ -56,6 +58,8 @@ func choose_attack() -> SpellData:
 	return options[randi() % options.size()]
 
 func _ready() -> void:
+	_initial_scale = scale
+	_initial_position = position
 	current_health = max_health
 	if visible and texture:
 		_setup_click_area()
@@ -141,9 +145,48 @@ func take_damage(amount: int) -> void:
 		destroy_limb()
 
 func destroy_limb() -> void:
+	if is_destroyed:
+		return
 	is_destroyed = true
-	visible = false
+	is_highlighted = false
+	is_aoe_highlighted = false
+
+	var click_area := get_node_or_null("ClickArea") as Area2D
+	if click_area != null:
+		click_area.input_pickable = false
+		click_area.monitoring = false
+		click_area.monitorable = false
+
 	limb_destroyed.emit(self)
+	_play_destroy_animation()
+
+func _play_destroy_animation() -> void:
+	if not is_inside_tree():
+		visible = false
+		return
+
+	var existing_tween = get_meta("destroy_tween", null)
+	if existing_tween is Tween:
+		(existing_tween as Tween).kill()
+
+	var break_offset := Vector2(randf_range(-8.0, 8.0), randf_range(8.0, 18.0))
+	var tween := create_tween()
+	set_meta("destroy_tween", tween)
+	tween.set_parallel(true)
+	tween.tween_property(self, "modulate", Color(1.25, 0.45, 0.45, 0.95), 0.07).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "scale", _initial_scale * 1.12, 0.07).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.set_parallel(false)
+	tween.set_parallel(true)
+	tween.tween_property(self, "modulate", Color(0.2, 0.1, 0.1, 0.0), 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "scale", _initial_scale * 0.58, 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "position", _initial_position + break_offset, 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.finished.connect(_finalize_destroy_visual)
+
+func _finalize_destroy_visual() -> void:
+	visible = false
+	scale = _initial_scale
+	position = _initial_position
+	modulate = Color.WHITE
 
 func heal(amount: int) -> void:
 	if is_destroyed:

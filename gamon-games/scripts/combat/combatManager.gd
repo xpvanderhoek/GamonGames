@@ -149,6 +149,10 @@ func _register_enemy_entity(entity: CombatEntity) -> void:
 	if not entity.highlighted_limb_clicked.is_connected(on_limb_clicked):
 		entity.highlighted_limb_clicked.connect(on_limb_clicked)
 
+	var on_took_damage := Callable(self, "_on_enemy_took_damage")
+	if not entity.entity_took_damage.is_connected(on_took_damage):
+		entity.entity_took_damage.connect(on_took_damage)
+
 	var on_targeting_changed := Callable(entity, "set_targeting_mode")
 	if not enemy_targeting_changed.is_connected(on_targeting_changed):
 		enemy_targeting_changed.connect(on_targeting_changed)
@@ -302,6 +306,53 @@ func _on_enemy_died(_entity: CombatEntity) -> void:
 		return
 
 	_on_combat_victory()
+
+func _on_enemy_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int) -> void:
+	if damage <= 0:
+		return
+
+	var hit_position := Vector2.ZERO
+	if limb != null and is_instance_valid(limb):
+		hit_position = limb.global_position
+	elif entity != null and is_instance_valid(entity):
+		var fallback_limb := _get_first_alive_enemy_limb(entity)
+		if fallback_limb != null:
+			hit_position = fallback_limb.global_position
+		else:
+			hit_position = get_viewport().get_visible_rect().size * 0.5
+	else:
+		hit_position = get_viewport().get_visible_rect().size * 0.5
+
+	_play_enemy_impact_pulse(limb, entity)
+	_spawn_floating_damage_number(damage, hit_position, false)
+
+func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
+	var impact_node: Node2D = null
+	if limb != null and is_instance_valid(limb):
+		impact_node = limb
+	elif entity != null and is_instance_valid(entity):
+		impact_node = _get_first_alive_enemy_limb(entity)
+
+	if impact_node == null:
+		return
+
+	var existing_tween = impact_node.get_meta("impact_tween", null)
+	if existing_tween is Tween:
+		(existing_tween as Tween).kill()
+
+	var base_scale := impact_node.scale
+	var base_position := impact_node.position
+	var knock_offset := Vector2(randf_range(-5.0, 5.0), randf_range(-3.0, 1.5))
+
+	var tween := create_tween()
+	impact_node.set_meta("impact_tween", tween)
+	tween.set_parallel(true)
+	tween.tween_property(impact_node, "scale", base_scale * 1.1, 0.06).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(impact_node, "position", base_position + knock_offset, 0.06).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.set_parallel(false)
+	tween.tween_property(impact_node, "scale", base_scale, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.set_parallel(true)
+	tween.tween_property(impact_node, "position", base_position, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
 func _setup_target_scope_selectors() -> void:
 	if attack_scope_option != null:
@@ -876,11 +927,61 @@ func _apply_player_damage(amount: int, damage_type: SpellData.DamageType = Spell
 	var mitigated_amount := _apply_player_defense(amount, damage_type)
 	if mitigated_amount <= 0:
 		return
+	var player_hit_position = _get_vfx_anchor_position(null)
 	_flash_player_hit()
 	RunData.current_health -= mitigated_amount 
+	if player_hit_position is Vector2:
+		_spawn_floating_damage_number(mitigated_amount, player_hit_position as Vector2, true)
 	if RunData.current_health <= 0:
 		current_state = CombatState.COMBAT_OVER
 	print("Player took %d damage — HP: %d/%d" % [mitigated_amount, RunData.current_health, RunData.max_health])
+
+func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false) -> void:
+	if amount <= 0:
+		return
+	var is_enemy_damage := not hit_player and not is_heal
+
+	var damage_label := Label.new()
+	damage_label.text = "+%d" % amount if is_heal else "-%d" % amount
+	damage_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	damage_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	damage_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	damage_label.z_index = 500
+	damage_label.add_theme_font_size_override("font_size", 38 if hit_player else (36 if is_enemy_damage else 34))
+	if is_heal:
+		damage_label.add_theme_color_override("font_color", Color(0.45, 1.0, 0.62, 1.0))
+	else:
+		damage_label.add_theme_color_override("font_color", Color(1.0, 0.33, 0.28, 1.0) if hit_player else Color(1.0, 0.82, 0.22, 1.0))
+	damage_label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 0.95))
+	damage_label.add_theme_constant_override("outline_size", 6)
+	add_child(damage_label)
+
+	var start_position := world_position + Vector2(randf_range(-24.0, 24.0), randf_range(-12.0, 8.0))
+	var rise_amount := -84.0
+	var travel_time := 0.58
+	if is_enemy_damage:
+		rise_amount = -102.0
+		travel_time = 0.66
+	var end_position := start_position + Vector2(randf_range(-16.0, 16.0), rise_amount)
+
+	damage_label.global_position = start_position
+	damage_label.scale = Vector2(0.55, 0.55) if is_enemy_damage else Vector2(0.65, 0.65)
+	damage_label.rotation_degrees = randf_range(-8.0, 8.0) if is_enemy_damage else 0.0
+	damage_label.modulate = Color(1.0, 1.0, 1.0, 0.0)
+
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(damage_label, "global_position", end_position, travel_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(damage_label, "scale", Vector2(1.22, 0.94) if is_enemy_damage else Vector2.ONE, 0.14 if is_enemy_damage else 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(damage_label, "modulate:a", 1.0, 0.08)
+	if is_enemy_damage:
+		tween.tween_property(damage_label, "rotation_degrees", 0.0, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.set_parallel(false)
+	tween.tween_interval(0.12 if is_enemy_damage else 0.14)
+	tween.set_parallel(true)
+	tween.tween_property(damage_label, "scale", Vector2(0.9, 0.9), 0.32 if is_enemy_damage else 0.28).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_property(damage_label, "modulate:a", 0.0, 0.32 if is_enemy_damage else 0.28).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.finished.connect(damage_label.queue_free)
 
 func _apply_player_defense(amount: int, damage_type: SpellData.DamageType) -> int:
 	var defense := _get_player_defense_for_damage_type(damage_type)
@@ -954,6 +1055,9 @@ func _apply_player_heal(amount: int) -> void:
 	RunData.current_health = min(RunData.max_health, RunData.current_health + amount)
 	var healed_amount = RunData.current_health - previous_health
 	if healed_amount > 0:
+		var heal_position = _get_vfx_anchor_position(null)
+		if heal_position is Vector2:
+			_spawn_floating_damage_number(healed_amount, heal_position as Vector2, true, true)
 		print("Player healed %d HP — HP: %d/%d" % [healed_amount, RunData.current_health, RunData.max_health])
 
 func _flash_player_hit() -> void:
