@@ -240,13 +240,100 @@ func _configure_spell_button(button: Button, spell: SpellData) -> void:
 	var bind_label = button.get_node_or_null("Bind") as Label
 	bind_label.text = str(_spell_buttons.size() + 1)
 
-	button.tooltip_text = button.text
+	button.tooltip_text = _build_spell_tooltip(spell)
 	if spell != null and spell.icon != null:
 		button.icon = spell.icon
 
 	var on_pressed := Callable(self, "_on_spell_button_pressed").bind(button)
 	if not button.pressed.is_connected(on_pressed):
 		button.pressed.connect(on_pressed)
+
+func _build_spell_tooltip(spell: SpellData) -> String:
+	if spell == null:
+		return ""
+
+	var lines: Array[String] = []
+	lines.append(spell.spell_name)
+	lines.append("Type: %s" % _spell_type_to_text(spell.spell_type))
+	lines.append("Target: %s" % _target_scope_to_text(spell.target_scope))
+
+	if spell.energy > 0:
+		lines.append("Energy: %d" % spell.energy)
+	if spell.accuracy > 0.0:
+		lines.append("Accuracy: %s%%" % str(snappedf(spell.accuracy, 0.1)))
+	if spell.damage > 0:
+		lines.append("Damage: %d (%s)" % [spell.damage, _damage_type_to_text(spell.damage_type)])
+	if spell.heal_amount > 0:
+		lines.append("Heal: %d" % spell.heal_amount)
+
+	var effect_lines: Array[String] = []
+	if spell.outgoing_damage_flat_bonus != 0:
+		effect_lines.append("Outgoing Damage: %s" % _format_signed_int(spell.outgoing_damage_flat_bonus))
+	if not is_zero_approx(spell.outgoing_damage_multiplier_delta):
+		effect_lines.append("Outgoing Damage Mult: %s%%" % _format_signed_percent(spell.outgoing_damage_multiplier_delta * 100.0))
+	if not is_zero_approx(spell.incoming_damage_multiplier_delta):
+		effect_lines.append("Incoming Damage Mult: %s%%" % _format_signed_percent(spell.incoming_damage_multiplier_delta * 100.0))
+	if not is_zero_approx(spell.player_physical_defense_delta):
+		effect_lines.append("Player Phys Def: %s%%" % _format_signed_percent(spell.player_physical_defense_delta))
+	if not is_zero_approx(spell.player_magic_defense_delta):
+		effect_lines.append("Player Magic Def: %s%%" % _format_signed_percent(spell.player_magic_defense_delta))
+	if not is_zero_approx(spell.target_physical_defense_delta):
+		effect_lines.append("Target Phys Def: %s%%" % _format_signed_percent(spell.target_physical_defense_delta))
+	if not is_zero_approx(spell.target_magic_defense_delta):
+		effect_lines.append("Target Magic Def: %s%%" % _format_signed_percent(spell.target_magic_defense_delta))
+	if spell.damage_over_time != 0:
+		effect_lines.append("Damage Over Time: %s/turn" % _format_signed_int(spell.damage_over_time))
+	if spell.stun_turns:
+		effect_lines.append("Applies Stun")
+
+	if not effect_lines.is_empty():
+		lines.append("Duration: %d turn%s" % [spell.duration_rounds, "" if spell.duration_rounds == 1 else "s"])
+		for effect_line in effect_lines:
+			lines.append(effect_line)
+
+	return "\n".join(lines)
+
+func _spell_type_to_text(spell_type: SpellData.SpellType) -> String:
+	match spell_type:
+		SpellData.SpellType.ATTACK:
+			return "Attack"
+		SpellData.SpellType.BUFF:
+			return "Buff"
+		SpellData.SpellType.DEBUFF:
+			return "Debuff"
+		SpellData.SpellType.HEAL:
+			return "Heal"
+		_:
+			return "Unknown"
+
+func _target_scope_to_text(target_scope: SpellData.TargetScope) -> String:
+	match target_scope:
+		SpellData.TargetScope.LIMB:
+			return "Limb"
+		SpellData.TargetScope.WHOLE_ENEMY:
+			return "Whole Enemy"
+		_:
+			return "Unknown"
+
+func _damage_type_to_text(damage_type: SpellData.DamageType) -> String:
+	match damage_type:
+		SpellData.DamageType.PHYSICAL:
+			return "Physical"
+		SpellData.DamageType.MAGIC:
+			return "Magic"
+		_:
+			return "Unknown"
+
+func _format_signed_int(value: int) -> String:
+	if value > 0:
+		return "+%d" % value
+	return "%d" % value
+
+func _format_signed_percent(value: float) -> String:
+	var rounded := snappedf(value, 0.1)
+	if rounded > 0.0:
+		return "+%s" % str(rounded)
+	return str(rounded)
 
 func _on_spell_button_pressed(button: Button) -> void:
 	var spell := _button_spells.get(button, null) as SpellData
