@@ -4,6 +4,7 @@ class_name SimonSays
 @onready var buttons: Array[TextureButton] = [$topleft, $topmid, $topright, $midleft, $midmid, $midright, $bottomleft, $bottommid, $bottomright]
 @onready var roundLabel: Label = $RoundNumberLabel
 @onready var versionLabel: Label = $VersionLabel
+@onready var coinLabel: Label = $CoinLabel
 
 var sequence: Array[int] = []
 var player_input: Array[int] = []
@@ -33,6 +34,7 @@ func _ready():
 	next_round()
 		
 func next_round():
+	calculate_coins(sequence.size())
 	changeColor(Color(0.9, 0.9, 0.9))
 	switchDisabled(true)
 		
@@ -68,7 +70,6 @@ func checkCorrect(clicked_button: int, click_position: int):
 		changeColor(Color(0.267, 0.667, 0.268, 1.0))
 		await get_tree().create_timer(0.4).timeout
 		can_click = false
-		
 		next_round()
 		return
 
@@ -88,6 +89,8 @@ func fail():
 	
 	$Button.visible = true
 	
+func calculate_coins(round: int):
+	coinLabel.text = str(round * 2)
 	
 func _on_button_pressed(idx):
 	pulse_active = false
