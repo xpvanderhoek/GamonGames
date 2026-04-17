@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://ew7uh7db1pnq" path="res://scenes/shaders/fog.tscn" id="1_6xu76"]
 [ext_resource type="Script" uid="uid://cpguqngqa3k7d" path="res://scripts/limbo.gd" id="1_ptmcv"]
-[ext_resource type="Texture2D" uid="uid://fp36e4p1kdhp" path="res://assets/Placeholders/knight1_1_claymore.png" id="2_ptmcv"]
+[ext_resource type="Texture2D" uid="uid://fp36e4p1kdhp" path="res://assets/placeholders/knight1_1_claymore.png" id="2_ptmcv"]
 [ext_resource type="PackedScene" uid="uid://car332irwafr" path="res://scenes/npc/ghost.tscn" id="3_hq8n3"]
 
 [node name="Limbo" type="Node2D" unique_id=153916572]

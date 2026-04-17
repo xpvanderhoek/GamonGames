@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://c4v6x4ghgyn5j"]
 
 [ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_dvbgm"]
-[ext_resource type="Texture2D" uid="uid://c00yinhi0j7pd" path="res://assets/Placeholders/enemies/torso.png" id="2_q3xq3"]
+[ext_resource type="Texture2D" uid="uid://c00yinhi0j7pd" path="res://assets/placeholders/enemies/torso.png" id="2_q3xq3"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="3_w2142"]
-[ext_resource type="Texture2D" uid="uid://dsxoo5xbeqhc" path="res://assets/Placeholders/enemies/head.png" id="4_w3sxh"]
-[ext_resource type="Texture2D" uid="uid://j1m2vp1g8ig8" path="res://assets/Placeholders/enemies/left_hand.png" id="5_8f83m"]
-[ext_resource type="Texture2D" uid="uid://dmvr7hisp4pak" path="res://assets/Placeholders/enemies/right_hand.png" id="7_kbcej"]
+[ext_resource type="Texture2D" uid="uid://dsxoo5xbeqhc" path="res://assets/placeholders/enemies/head.png" id="4_w3sxh"]
+[ext_resource type="Texture2D" uid="uid://j1m2vp1g8ig8" path="res://assets/placeholders/enemies/left_hand.png" id="5_8f83m"]
+[ext_resource type="Texture2D" uid="uid://dmvr7hisp4pak" path="res://assets/placeholders/enemies/right_hand.png" id="7_kbcej"]
 
 [node name="ttt" type="Control" unique_id=1680014499]
 custom_minimum_size = Vector2(250, 350)

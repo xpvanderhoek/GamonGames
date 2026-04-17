@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://brqp1tf0obe77"]
 
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
-[ext_resource type="Texture2D" uid="uid://cydiwpld3gxpm" path="res://assets/Placeholders/ui/blade_master.png" id="1_ylob2"]
-[ext_resource type="PackedScene" uid="uid://mefrqehh2onn" path="res://Scenes/combat/vfx/test.tscn" id="2_vfx"]
+[ext_resource type="Texture2D" uid="uid://cydiwpld3gxpm" path="res://assets/placeholders/ui/blade_master.png" id="1_ylob2"]
+[ext_resource type="PackedScene" uid="uid://mefrqehh2onn" path="res://scenes/combat/vfx/test.tscn" id="2_vfx"]
 
 [resource]
 script = ExtResource("1_spelldata")
