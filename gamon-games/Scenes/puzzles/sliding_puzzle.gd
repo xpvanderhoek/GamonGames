@@ -1,9 +1,9 @@
-extends Node2D
+extends Control
 
 const GRID_SIZE     := 4
 const TILE_SIZE     := 100
 const TILE_GAP      := 6
-const SHUFFLE_MOVES := 40
+const SHUFFLE_MOVES := 400000
 const ANIM_TIME     := 0.12
 
 @onready var grid_container : GridContainer = $GridContainer
