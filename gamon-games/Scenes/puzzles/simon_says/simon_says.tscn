@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c5xnmi2opdjbb" path="res://scripts/puzzles/simon_says/simon_says.gd" id="1_0oafj"]
 [ext_resource type="Texture2D" uid="uid://80dsky5u1kk8" path="res://Assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
-[ext_resource type="PackedScene" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
+[ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://Scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
 [ext_resource type="Texture2D" uid="uid://dydujt5d83e30" path="res://Assets/Placeholders/Puzzle/pngimg.com - gravestone_PNG35.png" id="4_bwhsd"]
 [ext_resource type="Texture2D" uid="uid://7lk8k5jxuqnl" path="res://Assets/Placeholders/Puzzle/580b585b2edbce24c47b2a12.png" id="5_bogql"]
 [ext_resource type="Texture2D" uid="uid://clx43tbnk5b5n" path="res://assets/Placeholders/Puzzle/mouse-left-button.svg" id="6_0oafj"]

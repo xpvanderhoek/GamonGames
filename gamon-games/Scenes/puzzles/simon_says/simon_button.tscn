@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://cww7k3ngmylu3"]
 
-[ext_resource type="Script" uid="uid://cicxkue5c6f0p" path="res://Scripts/puzzles/simon_says/simon_button.gd" id="1_nvylr"]
-[ext_resource type="Texture2D" uid="uid://7w26tsxfknef" path="res://Assets/Placeholders/Puzzle/Simon says button.png" id="2_2jmmo"]
+[ext_resource type="Texture2D" uid="uid://bqtpa14o8hi1d" path="res://assets/Placeholders/Puzzle/Simon_says_button.png" id="1_0bpx2"]
+[ext_resource type="Script" uid="uid://cicxkue5c6f0p" path="res://scripts/puzzles/simon_says/simon_button.gd" id="1_nvylr"]
 
 [node name="SimonButton" type="TextureButton" unique_id=380593538]
 offset_right = 338.0
 offset_bottom = 328.0
 scale = Vector2(0.45, 0.45)
-texture_normal = ExtResource("2_2jmmo")
+texture_normal = ExtResource("1_0bpx2")
 ignore_texture_size = true
 script = ExtResource("1_nvylr")
