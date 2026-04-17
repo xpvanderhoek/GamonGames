@@ -1,7 +1,7 @@
 class_name MapNodeData
 extends Resource
 
-enum Type {COMBAT, SHOP}
+enum Type {COMBAT, SHOP, PUZZLE}
 
 @export var type: Type
 @export var next_rooms: Array[MapNodeData]

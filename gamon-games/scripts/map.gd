@@ -25,7 +25,7 @@ func _setup_map_nodes():
 			
 			# previous node being null means its the first node, so default to combat.
 			if previous_node == null:
-				data.type = MapNodeData.Type.COMBAT
+				data.type = MapNodeData.Type.PUZZLE
 			else:
 				var rand_idx = randi_range(0, MapNodeData.Type.size() - 1)
 				data.type = rand_idx as MapNodeData.Type
@@ -72,6 +72,9 @@ func _on_map_node_selected(data: MapNodeData) -> void:
 		
 		MapNodeData.Type.SHOP:
 			TransitionManager.change_scene("res://scenes/Shop/ShopRoom.tscn", TransitionManager.TransitionType.FADE)
+		
+		MapNodeData.Type.PUZZLE:
+			TransitionManager.change_scene("res://scenes/puzzles/simon_says/start_simon.tscn")
 
 func _update_node_availability() -> void:
 	for node in map_nodes.get_children():

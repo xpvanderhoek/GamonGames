@@ -5,7 +5,8 @@ signal selected(map_node: MapNode)
 
 const ICONS := {
 	MapNodeData.Type.COMBAT: preload("res://assets/map/icons/map_icon_combat.png"),
-	MapNodeData.Type.SHOP: preload("res://assets/map/icons/map_icon_shop.png")
+	MapNodeData.Type.SHOP: preload("res://assets/map/icons/map_icon_shop.png"),
+	MapNodeData.Type.PUZZLE: preload("res://assets/map/icons/map_icon_puzzle.png")
 }
 
 @onready var sprite : Sprite2D = $Visuals/Sprite2D
