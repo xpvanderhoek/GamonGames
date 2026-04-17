@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cws830736mswa" path="res://assets/Placeholders/backgrounds/combatbg.png" id="2_ltalu"]
 [ext_resource type="Texture2D" uid="uid://dm7rgnxirsjjh" path="res://assets/player.png" id="3_ltalu"]
 [ext_resource type="PackedScene" uid="uid://cw35es2dvr2it" path="res://scenes/UI/health_bar.tscn" id="4_4voa6"]
+[ext_resource type="PackedScene" uid="uid://bnspxqohk3rfu" path="res://scenes/combat/ui/ItemButton.tscn" id="5_4voa6"]
 [ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://scripts/combat/combatManager.gd" id="7_mgr"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ijgaf"]
@@ -122,18 +123,42 @@ offset_bottom = 612.0
 
 [node name="GridContainer" type="GridContainer" parent="Panel" unique_id=1834709144]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -52.0
+offset_right = 52.0
+offset_bottom = 52.0
 grow_horizontal = 2
 grow_vertical = 2
 columns = 3
 
-[node name="Label" type="Label" parent="Panel" unique_id=1901892063]
-layout_mode = 0
-offset_left = 7.0
-offset_top = 41.0
-offset_right = 116.0
-offset_bottom = 94.0
-text = "inventory grid
-"
+[node name="ItemButton" parent="Panel/GridContainer" unique_id=1649103459 instance=ExtResource("5_4voa6")]
+layout_mode = 2
+
+[node name="ItemButton2" parent="Panel/GridContainer" unique_id=164207450 instance=ExtResource("5_4voa6")]
+layout_mode = 2
+
+[node name="ItemButton3" parent="Panel/GridContainer" unique_id=575481908 instance=ExtResource("5_4voa6")]
+layout_mode = 2
+
+[node name="ItemButton4" parent="Panel/GridContainer" unique_id=197370156 instance=ExtResource("5_4voa6")]
+layout_mode = 2
+
+[node name="ItemButton5" parent="Panel/GridContainer" unique_id=1911588408 instance=ExtResource("5_4voa6")]
+layout_mode = 2
+
+[node name="ItemButton6" parent="Panel/GridContainer" unique_id=970174094 instance=ExtResource("5_4voa6")]
+layout_mode = 2
+
+[node name="ItemButton7" parent="Panel/GridContainer" unique_id=577666559 instance=ExtResource("5_4voa6")]
+layout_mode = 2
+
+[node name="ItemButton8" parent="Panel/GridContainer" unique_id=1555637911 instance=ExtResource("5_4voa6")]
+layout_mode = 2
+
+[node name="ItemButton9" parent="Panel/GridContainer" unique_id=572885561 instance=ExtResource("5_4voa6")]
+layout_mode = 2

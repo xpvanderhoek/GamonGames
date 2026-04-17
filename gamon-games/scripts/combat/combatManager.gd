@@ -344,6 +344,8 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		if active_spell != null:
 			_play_attack_feedback(active_spell, get_node_or_null(ui_player), source_enemy)
 	else:
+		var miss_position := limb.global_position if limb != null and is_instance_valid(limb) else get_viewport().get_visible_rect().size * 0.5
+		_spawn_floating_damage_number(0, miss_position, false, false, "MISS")
 		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(_get_adjusted_hit_chance_percent(limb), 0.1)])
 	_attack_selected = false
 	selected_spell = null
@@ -1007,19 +1009,22 @@ func _apply_player_damage(amount: int, damage_type: SpellData.DamageType = Spell
 		current_state = CombatState.COMBAT_OVER
 	print("Player took %d damage — HP: %d/%d" % [mitigated_amount, RunData.current_health, RunData.max_health])
 
-func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false) -> void:
-	if amount <= 0:
+func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false, custom_text: String = "") -> void:
+	var is_custom_text := not custom_text.is_empty()
+	if amount <= 0 and not is_custom_text:
 		return
 	var is_enemy_damage := not hit_player and not is_heal
 
 	var damage_label := Label.new()
-	damage_label.text = "+%d" % amount if is_heal else "-%d" % amount
+	damage_label.text = custom_text if is_custom_text else ("+%d" % amount if is_heal else "-%d" % amount)
 	damage_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	damage_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	damage_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	damage_label.z_index = 500
-	damage_label.add_theme_font_size_override("font_size", 38 if hit_player else (36 if is_enemy_damage else 34))
-	if is_heal:
+	damage_label.add_theme_font_size_override("font_size", 34 if is_custom_text else (38 if hit_player else (36 if is_enemy_damage else 34)))
+	if is_custom_text:
+		damage_label.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92, 1.0))
+	elif is_heal:
 		damage_label.add_theme_color_override("font_color", Color(0.45, 1.0, 0.62, 1.0))
 	else:
 		damage_label.add_theme_color_override("font_color", Color(1.0, 0.33, 0.28, 1.0) if hit_player else Color(1.0, 0.82, 0.22, 1.0))
