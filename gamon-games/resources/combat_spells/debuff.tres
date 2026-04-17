@@ -9,6 +9,7 @@ spell_id = "debuff"
 spell_name = "debuff"
 spell_type = 2
 target_scope = 1
+damage_over_time = 3
 icon = ExtResource("1_kblbj")
 duration_rounds = 2
 incoming_damage_multiplier_delta = 0.5

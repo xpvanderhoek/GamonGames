@@ -353,6 +353,10 @@ func _perform_enemy_turn() -> void:
 		if not is_instance_valid(attacking_enemy) or not attacking_enemy.is_alive:
 			continue
 
+		_apply_enemy_damage_over_time(attacking_enemy)
+		if not is_instance_valid(attacking_enemy) or not attacking_enemy.is_alive:
+			continue
+
 		_refresh_turns_order_ui(attacking_enemy)
 
 		var attack_limb := _choose_enemy_attack_limb(attacking_enemy)
@@ -458,6 +462,7 @@ func _append_player_effect(spell: SpellData) -> void:
 
 	var has_effect := spell.outgoing_damage_flat_bonus != 0 \
 		or not is_zero_approx(spell.outgoing_damage_multiplier_delta) \
+		or spell.damage_over_time != 0 \
 		or not is_zero_approx(spell.player_physical_defense_delta) \
 		or not is_zero_approx(spell.player_magic_defense_delta)
 	if not has_effect:
@@ -481,6 +486,9 @@ func _append_player_effect(spell: SpellData) -> void:
 		"icon": spell.icon,
 		"outgoing_flat": spell.outgoing_damage_flat_bonus,
 		"outgoing_mult_delta": spell.outgoing_damage_multiplier_delta,
+		"damage_over_time": spell.damage_over_time,
+		"damage_type": int(spell.damage_type),
+		"target_scope": int(spell.target_scope),
 		"physical_defense_delta": spell.player_physical_defense_delta,
 		"magic_defense_delta": spell.player_magic_defense_delta,
 	})
@@ -493,6 +501,7 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 
 	var has_effect := not is_zero_approx(spell.outgoing_damage_multiplier_delta) \
 		or not is_zero_approx(spell.incoming_damage_multiplier_delta) \
+		or spell.damage_over_time != 0 \
 		or not is_zero_approx(spell.target_physical_defense_delta) \
 		or not is_zero_approx(spell.target_magic_defense_delta)
 	if not has_effect:
@@ -505,6 +514,9 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 		"spell_id": spell.spell_id,
 		"outgoing_mult_delta": spell.outgoing_damage_multiplier_delta,
 		"incoming_mult_delta": spell.incoming_damage_multiplier_delta,
+		"damage_over_time": spell.damage_over_time,
+		"damage_type": int(spell.damage_type),
+		"target_scope": int(spell.target_scope),
 		"physical_defense_delta": spell.target_physical_defense_delta,
 		"magic_defense_delta": spell.target_magic_defense_delta,
 		"spell_name": spell.spell_name,
@@ -703,6 +715,78 @@ func _get_enemy_incoming_multiplier(source_enemy: CombatEntity, source_limb: Com
 			total_multiplier += float(effect.get("incoming_mult_delta", 0.0))
 
 	return max(0.0, total_multiplier)
+
+func _apply_enemy_damage_over_time(target_enemy: CombatEntity) -> void:
+	if target_enemy == null or not is_instance_valid(target_enemy) or not target_enemy.is_alive:
+		return
+
+	_cleanup_expired_effects()
+
+	var enemy_id := target_enemy.get_instance_id()
+	var enemy_effects: Array = _enemy_effects.get(enemy_id, [])
+	for raw_effect in enemy_effects:
+		var effect := raw_effect as Dictionary
+		if effect.is_empty():
+			continue
+		_apply_enemy_effect_damage_over_time(target_enemy, effect, null)
+
+	var limb_effects_by_enemy := _enemy_limb_effects.get(enemy_id, {}) as Dictionary
+	for limb_id in limb_effects_by_enemy.keys():
+		var target_limb := instance_from_id(int(limb_id)) as CombatLimb
+		if target_limb == null or not is_instance_valid(target_limb) or target_limb.is_destroyed:
+			continue
+
+		var limb_effects: Array = limb_effects_by_enemy.get(limb_id, [])
+		for raw_effect in limb_effects:
+			var effect := raw_effect as Dictionary
+			if effect.is_empty():
+				continue
+			_apply_enemy_effect_damage_over_time(target_enemy, effect, target_limb)
+
+func _apply_enemy_effect_damage_over_time(target_enemy: CombatEntity, effect: Dictionary, target_limb: CombatLimb = null) -> void:
+	if target_enemy == null or not is_instance_valid(target_enemy) or effect.is_empty():
+		return
+
+	var damage_over_time := int(effect.get("damage_over_time", 0))
+	if damage_over_time <= 0:
+		return
+
+	var damage_type := int(effect.get("damage_type", int(SpellData.DamageType.PHYSICAL))) as SpellData.DamageType
+	var target_scope := int(effect.get("target_scope", int(TargetScope.LIMB))) as TargetScope
+	var target_limbs: Array[CombatLimb] = []
+
+	if target_limb != null and is_instance_valid(target_limb) and not target_limb.is_destroyed:
+		target_limbs.append(target_limb)
+	elif target_scope == TargetScope.WHOLE_ENEMY:
+		var first_alive_limb := _get_first_alive_enemy_limb(target_enemy)
+		if first_alive_limb != null:
+			target_limbs.append(first_alive_limb)
+	else:
+		var first_alive_limb := _get_first_alive_enemy_limb(target_enemy)
+		if first_alive_limb != null:
+			target_limbs.append(first_alive_limb)
+
+	if target_limbs.is_empty():
+		return
+
+	for affected_limb in target_limbs:
+		var incoming_multiplier := _get_enemy_incoming_multiplier(target_enemy, affected_limb)
+		var final_damage := int(round(float(damage_over_time) * incoming_multiplier))
+		var enemy_defense := _get_enemy_total_defense_for_damage_type(target_enemy, affected_limb, damage_type)
+		final_damage = _apply_defense_to_damage(final_damage, enemy_defense)
+		final_damage = max(0, final_damage)
+		if final_damage > 0:
+			target_enemy.take_damage(affected_limb, final_damage)
+
+func _get_first_alive_enemy_limb(target_enemy: CombatEntity) -> CombatLimb:
+	if target_enemy == null or not is_instance_valid(target_enemy):
+		return null
+
+	for limb in target_enemy.limbs:
+		if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
+			return limb
+
+	return null
 
 func _resolve_target_scope(spell: SpellData) -> TargetScope:
 	if spell != null:

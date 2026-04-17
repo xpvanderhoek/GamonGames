@@ -29,6 +29,10 @@ enum VfxAnchor {
 @export var spell_type: SpellType = SpellType.ATTACK
 @export var target_scope: TargetScope = TargetScope.LIMB
 @export var damage: int = 0
+@export var damage_over_time: int = 0
+@export var energy: int = 0
+@export_range(0, 100, 1) var accuracy: float = 1
+
 @export var damage_type: DamageType = DamageType.PHYSICAL
 @export_range(0.0, 100.0, 0.1) var weight: float = 1.0
 @export var icon: Texture2D
