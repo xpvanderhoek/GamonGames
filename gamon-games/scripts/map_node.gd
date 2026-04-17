@@ -43,7 +43,7 @@ func set_data(new_data: MapNodeData):
 	data = new_data
 	sprite.texture = ICONS[data.type]
 
-func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if not available or not event.is_action_pressed("mousebutton_left"):
 		return
 	

@@ -48,6 +48,7 @@ var _enemy_effects: Dictionary = {}
 var _enemy_limb_effects: Dictionary = {}
 var _spell_buttons: Array[Button] = []
 var _button_spells: Dictionary = {}
+var _is_exiting_combat: bool = false
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
@@ -80,8 +81,20 @@ func _input(event): #Temporary
 		_exit_combat()
 
 func _exit_combat():
+	if _is_exiting_combat:
+		return
+	_is_exiting_combat = true
 	# Temporary
 	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+
+func _on_combat_victory() -> void:
+	if current_state == CombatState.COMBAT_OVER:
+		return
+	current_state = CombatState.COMBAT_OVER
+	_set_enemy_targeting_enabled(false)
+	_update_button_states()
+	_refresh_turns_order_ui()
+	_exit_combat()
 
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	_queued_encounter_scenes = encounter_enemy_scenes.duplicate()
@@ -288,9 +301,7 @@ func _on_enemy_died(_entity: CombatEntity) -> void:
 		_refresh_turns_order_ui()
 		return
 
-	current_state = CombatState.COMBAT_OVER
-	_update_button_states()
-	_refresh_turns_order_ui()
+	_on_combat_victory()
 
 func _setup_target_scope_selectors() -> void:
 	if attack_scope_option != null:
@@ -357,6 +368,9 @@ func _perform_enemy_turn() -> void:
 		if not is_instance_valid(attacking_enemy) or not attacking_enemy.is_alive:
 			continue
 
+		if _is_enemy_stunned(attacking_enemy):
+			continue
+
 		_refresh_turns_order_ui(attacking_enemy)
 
 		var attack_limb := _choose_enemy_attack_limb(attacking_enemy)
@@ -379,6 +393,8 @@ func _choose_enemy_attack_limb(source_enemy: CombatEntity) -> CombatLimb:
 	var candidates: Array[CombatLimb] = []
 	for limb in source_enemy.limbs:
 		if limb.is_destroyed:
+			continue
+		if _is_enemy_limb_stunned(source_enemy, limb):
 			continue
 		if limb.has_attack_options():
 			candidates.append(limb)
@@ -463,6 +479,7 @@ func _append_player_effect(spell: SpellData) -> void:
 	var has_effect := spell.outgoing_damage_flat_bonus != 0 \
 		or not is_zero_approx(spell.outgoing_damage_multiplier_delta) \
 		or spell.damage_over_time != 0 \
+		or spell.stun_turns \
 		or not is_zero_approx(spell.player_physical_defense_delta) \
 		or not is_zero_approx(spell.player_magic_defense_delta)
 	if not has_effect:
@@ -487,6 +504,7 @@ func _append_player_effect(spell: SpellData) -> void:
 		"outgoing_flat": spell.outgoing_damage_flat_bonus,
 		"outgoing_mult_delta": spell.outgoing_damage_multiplier_delta,
 		"damage_over_time": spell.damage_over_time,
+		"stun_turns": bool(spell.stun_turns),
 		"damage_type": int(spell.damage_type),
 		"target_scope": int(spell.target_scope),
 		"physical_defense_delta": spell.player_physical_defense_delta,
@@ -502,6 +520,7 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 	var has_effect := not is_zero_approx(spell.outgoing_damage_multiplier_delta) \
 		or not is_zero_approx(spell.incoming_damage_multiplier_delta) \
 		or spell.damage_over_time != 0 \
+		or spell.stun_turns \
 		or not is_zero_approx(spell.target_physical_defense_delta) \
 		or not is_zero_approx(spell.target_magic_defense_delta)
 	if not has_effect:
@@ -515,6 +534,7 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 		"outgoing_mult_delta": spell.outgoing_damage_multiplier_delta,
 		"incoming_mult_delta": spell.incoming_damage_multiplier_delta,
 		"damage_over_time": spell.damage_over_time,
+		"stun_turns": bool(spell.stun_turns),
 		"damage_type": int(spell.damage_type),
 		"target_scope": int(spell.target_scope),
 		"physical_defense_delta": spell.target_physical_defense_delta,
@@ -758,9 +778,9 @@ func _apply_enemy_effect_damage_over_time(target_enemy: CombatEntity, effect: Di
 	if target_limb != null and is_instance_valid(target_limb) and not target_limb.is_destroyed:
 		target_limbs.append(target_limb)
 	elif target_scope == TargetScope.WHOLE_ENEMY:
-		var first_alive_limb := _get_first_alive_enemy_limb(target_enemy)
-		if first_alive_limb != null:
-			target_limbs.append(first_alive_limb)
+		for limb in target_enemy.limbs:
+			if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
+				target_limbs.append(limb)
 	else:
 		var first_alive_limb := _get_first_alive_enemy_limb(target_enemy)
 		if first_alive_limb != null:
@@ -777,6 +797,41 @@ func _apply_enemy_effect_damage_over_time(target_enemy: CombatEntity, effect: Di
 		final_damage = max(0, final_damage)
 		if final_damage > 0:
 			target_enemy.take_damage(affected_limb, final_damage)
+
+func _is_enemy_stunned(target_enemy: CombatEntity) -> bool:
+	if target_enemy == null or not is_instance_valid(target_enemy):
+		return false
+
+	_cleanup_expired_effects()
+
+	var enemy_effects: Array = _enemy_effects.get(target_enemy.get_instance_id(), [])
+	for raw_effect in enemy_effects:
+		var effect := raw_effect as Dictionary
+		if effect.is_empty():
+			continue
+		if bool(effect.get("stun_turns", false)):
+			return true
+
+	return false
+
+func _is_enemy_limb_stunned(target_enemy: CombatEntity, target_limb: CombatLimb) -> bool:
+	if target_enemy == null or not is_instance_valid(target_enemy):
+		return false
+	if target_limb == null or not is_instance_valid(target_limb):
+		return false
+
+	_cleanup_expired_effects()
+
+	var limb_effects_by_enemy := _enemy_limb_effects.get(target_enemy.get_instance_id(), {}) as Dictionary
+	var limb_effects: Array = limb_effects_by_enemy.get(target_limb.get_instance_id(), [])
+	for raw_effect in limb_effects:
+		var effect := raw_effect as Dictionary
+		if effect.is_empty():
+			continue
+		if bool(effect.get("stun_turns", false)):
+			return true
+
+	return false
 
 func _get_first_alive_enemy_limb(target_enemy: CombatEntity) -> CombatLimb:
 	if target_enemy == null or not is_instance_valid(target_enemy):
@@ -966,9 +1021,7 @@ func _end_enemy_turn() -> void:
 		_refresh_turns_order_ui()
 		return
 	if not _has_alive_enemies():
-		current_state = CombatState.COMBAT_OVER
-		_update_button_states()
-		_refresh_turns_order_ui()
+		_on_combat_victory()
 		return
 	current_round += 1
 	current_state = CombatState.PLAYER_TURN

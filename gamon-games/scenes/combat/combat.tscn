@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b1r88pxgxdvwr"]
 
-[ext_resource type="Texture2D" uid="uid://cmdoqc1f1ncv7" path="res://assets/Placeholders/knight1_1_claymore.png" id="3_rnhwr"]
+[ext_resource type="Texture2D" path="res://assets/Placeholders/knight1_1_claymore.png" id="3_rnhwr"]
 [ext_resource type="PackedScene" uid="uid://cw35es2dvr2it" path="res://scenes/UI/health_bar.tscn" id="4_4voa6"]
 [ext_resource type="PackedScene" uid="uid://c4v6x4ghgyn5j" path="res://scenes/combat/enemies/ttt.tscn" id="4_ijgaf"]
 [ext_resource type="PackedScene" uid="uid://bxmn5l71j2q2d" path="res://scenes/combat/ui/SpellButton.tscn" id="4_jgg25"]

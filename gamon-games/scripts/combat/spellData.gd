@@ -29,7 +29,6 @@ enum VfxAnchor {
 @export var spell_type: SpellType = SpellType.ATTACK
 @export var target_scope: TargetScope = TargetScope.LIMB
 @export var damage: int = 0
-@export var damage_over_time: int = 0
 @export var energy: int = 0
 @export_range(0, 100, 1) var accuracy: float = 1
 
@@ -55,3 +54,5 @@ enum VfxAnchor {
 @export_range(-100.0, 100.0, 0.1) var target_physical_defense_delta: float = 0.0
 @export_range(-100.0, 100.0, 0.1) var target_magic_defense_delta: float = 0.0
 
+@export var damage_over_time: int = 0
+@export var stun_turns: bool = false

@@ -4,6 +4,8 @@ extends Node2D
 @onready var map_nodes: Node2D = $MapNodes
 
 func _ready() -> void:
+	if not RunData.run_active:
+		RunData.new_run()
 	_setup_map_nodes()
 	_update_node_availability()
 
@@ -22,7 +24,7 @@ func _setup_map_nodes():
 				data.type = MapNodeData.Type.COMBAT
 			else:
 				var rand_idx = randi_range(0, MapNodeData.Type.size() - 1)
-				data.type = rand_idx
+				data.type = rand_idx as MapNodeData.Type
 			
 			RunData.map_nodes_data.append(data)
 			
@@ -72,7 +74,7 @@ func _update_node_availability() -> void:
 		if nodes_list.size() > 0:
 			nodes_list[0].available = true
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	draw_dotted_line()
 
 func draw_dotted_line():
