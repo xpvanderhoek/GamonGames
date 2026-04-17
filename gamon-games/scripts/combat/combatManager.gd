@@ -263,14 +263,6 @@ func _cancel_selected_spell() -> void:
 	_clear_spell_cursor_overlay()
 	_update_button_states()
 
-	for enemy in enemy_entities:
-		if enemy == null or not is_instance_valid(enemy):
-			continue
-		if enemy.has_method("clear_current_highlight"):
-			enemy.clear_current_highlight()
-		if enemy.has_method("set_spell_targeting_preview"):
-			enemy.set_spell_targeting_preview(false, false, null)
-
 func _select_spell_by_index(index: int) -> void:
 	if index < 0 or index >= mini(6, _spell_buttons.size()):
 		return

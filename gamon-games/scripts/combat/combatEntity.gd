@@ -212,7 +212,8 @@ func set_targeting_mode(enabled: bool, highlight_whole_enemy: bool = false) -> v
 	single_highlight_enabled = enabled
 	whole_enemy_highlight_enabled = enabled and highlight_whole_enemy
 	if not enabled:
-		clear_current_highlight()
+		_clear_current_highlight_visuals()
+		_refresh_spell_targeting_visuals()
 		return
 	_refresh_highlight()
 
