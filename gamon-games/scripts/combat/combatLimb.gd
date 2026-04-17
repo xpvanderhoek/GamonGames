@@ -165,9 +165,11 @@ func _play_destroy_animation() -> void:
 		visible = false
 		return
 
-	var existing_tween = get_meta("destroy_tween", null)
-	if existing_tween is Tween:
-		(existing_tween as Tween).kill()
+	if has_meta("destroy_tween"):
+		var existing_tween = get_meta("destroy_tween")
+		if existing_tween is Tween:
+			(existing_tween as Tween).kill()
+		remove_meta("destroy_tween")
 
 	var break_offset := Vector2(randf_range(-8.0, 8.0), randf_range(8.0, 18.0))
 	var tween := create_tween()
@@ -180,7 +182,11 @@ func _play_destroy_animation() -> void:
 	tween.tween_property(self, "modulate", Color(0.2, 0.1, 0.1, 0.0), 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_property(self, "scale", _initial_scale * 0.58, 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_property(self, "position", _initial_position + break_offset, 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	tween.finished.connect(_finalize_destroy_visual)
+	tween.finished.connect(func():
+		if is_instance_valid(self):
+			remove_meta("destroy_tween")
+			_finalize_destroy_visual()
+	)
 
 func _finalize_destroy_visual() -> void:
 	visible = false

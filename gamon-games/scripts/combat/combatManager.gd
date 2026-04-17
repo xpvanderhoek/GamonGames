@@ -1,9 +1,9 @@
 class_name CombatManager
 extends CanvasLayer
 
-const TURN_ORDER_ENTRY_SCENE := preload("res://Scenes/combat/ui/TurnOrderEntry.tscn")
-const SPELL_BUTTON_SCENE := preload("res://Scenes/combat/ui/SpellButton.tscn")
-const BUFF_ICON_SCENE := preload("res://Scenes/combat/ui/BuffIcon.tscn")
+const TURN_ORDER_ENTRY_SCENE := preload("res://scenes/combat/ui/TurnOrderEntry.tscn")
+const SPELL_BUTTON_SCENE := preload("res://scenes/combat/ui/SpellButton.tscn")
+const BUFF_ICON_SCENE := preload("res://scenes/combat/ui/BuffIcon.tscn")
 
 enum CombatState { 
 	PLAYER_TURN,
@@ -336,9 +336,11 @@ func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
 	if impact_node == null:
 		return
 
-	var existing_tween = impact_node.get_meta("impact_tween", null)
-	if existing_tween is Tween:
-		(existing_tween as Tween).kill()
+	if impact_node.has_meta("impact_tween"):
+		var existing_tween = impact_node.get_meta("impact_tween")
+		if existing_tween is Tween:
+			(existing_tween as Tween).kill()
+		impact_node.remove_meta("impact_tween")
 
 	var base_scale := impact_node.scale
 	var base_position := impact_node.position
@@ -353,6 +355,10 @@ func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
 	tween.tween_property(impact_node, "scale", base_scale, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.set_parallel(true)
 	tween.tween_property(impact_node, "position", base_position, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.finished.connect(func():
+		if is_instance_valid(impact_node):
+			impact_node.remove_meta("impact_tween")
+	)
 
 func _setup_target_scope_selectors() -> void:
 	if attack_scope_option != null:

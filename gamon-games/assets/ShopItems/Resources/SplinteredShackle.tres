@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://cx3biwxt8rm43"]
 
-[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://Scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://d3uyhr53t8eob" path="res://Assets/ShopItems/Textures/Splintered Shackle.png" id="2_5yq5r"]
+[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://d3uyhr53t8eob" path="res://assets/ShopItems/Textures/Splintered Shackle.png" id="2_5yq5r"]
 
 [resource]
 script = ExtResource("1_script")
