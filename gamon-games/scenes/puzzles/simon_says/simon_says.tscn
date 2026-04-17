@@ -1,0 +1,209 @@
+[gd_scene format=3 uid="uid://dip87pnxytcc5"]
+
+[ext_resource type="Script" uid="uid://c5xnmi2opdjbb" path="res://scripts/puzzles/simon_says/simon_says.gd" id="1_0oafj"]
+[ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://assets/placeholders/puzzle/stone table.png" id="2_bwhsd"]
+[ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
+[ext_resource type="Texture2D" uid="uid://divcn52ai7dw6" path="res://assets/placeholders/puzzle/tombstone.png" id="4_bwhsd"]
+[ext_resource type="Texture2D" uid="uid://h264litjey6" path="res://assets/placeholders/puzzle/bone.png" id="5_bogql"]
+[ext_resource type="Texture2D" uid="uid://clx43tbnk5b5n" path="res://assets/placeholders/puzzle/mouse-left-button.svg" id="6_0oafj"]
+[ext_resource type="Texture2D" uid="uid://y6fgp3gbp8as" path="res://assets/placeholders/puzzle/arrow.png" id="7_s13xn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
+font_color = Color(0.3529412, 0.3529412, 0.3529412, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bogql"]
+font_size = 70
+font_color = Color(0.3529412, 0.3529412, 0.3529412, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_sgwws"]
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_0oafj"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
+
+[node name="SimonSays" type="Control" unique_id=1237460606]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0oafj")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=642298664]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bwhsd")
+expand_mode = 2
+
+[node name="topleft" parent="." unique_id=470095919 instance=ExtResource("3_bogql")]
+layout_mode = 0
+offset_left = 298.0
+offset_top = 81.0
+offset_right = 633.5556
+offset_bottom = 405.44446
+
+[node name="topmid" parent="." unique_id=716709725 instance=ExtResource("3_bogql")]
+layout_mode = 0
+offset_left = 490.0
+offset_top = 88.0
+offset_right = 825.55554
+offset_bottom = 412.44443
+
+[node name="topright" parent="." unique_id=820805330 instance=ExtResource("3_bogql")]
+layout_mode = 0
+offset_left = 678.0
+offset_top = 88.0
+offset_right = 1013.55554
+offset_bottom = 410.22226
+
+[node name="midleft" parent="." unique_id=528311950 instance=ExtResource("3_bogql")]
+layout_mode = 0
+offset_left = 305.0
+offset_top = 248.0
+offset_right = 642.7778
+offset_bottom = 576.8889
+
+[node name="midmid" parent="." unique_id=650777621 instance=ExtResource("3_bogql")]
+layout_mode = 0
+offset_left = 499.0
+offset_top = 256.0
+offset_right = 834.55554
+offset_bottom = 576.0
+
+[node name="midright" parent="." unique_id=96318376 instance=ExtResource("3_bogql")]
+layout_mode = 0
+offset_left = 690.0
+offset_top = 257.0
+offset_right = 1027.7778
+offset_bottom = 574.7778
+
+[node name="bottomleft" parent="." unique_id=1590645181 instance=ExtResource("3_bogql")]
+layout_mode = 0
+offset_left = 315.0
+offset_top = 414.0
+offset_right = 655.0
+offset_bottom = 740.6667
+
+[node name="bottommid" parent="." unique_id=912756650 instance=ExtResource("3_bogql")]
+layout_mode = 0
+offset_left = 507.0
+offset_top = 421.0
+offset_right = 847.0
+offset_bottom = 745.4444
+
+[node name="bottomright" parent="." unique_id=1527618845 instance=ExtResource("3_bogql")]
+layout_mode = 0
+offset_left = 693.0
+offset_top = 422.0
+offset_right = 1026.3335
+offset_bottom = 750.8889
+
+[node name="Pngimg_comGravestonePng35" type="Sprite2D" parent="." unique_id=1511149445]
+position = Vector2(169, 416)
+scale = Vector2(0.39682543, 0.3567901)
+texture = ExtResource("4_bwhsd")
+
+[node name="RoundLabel" type="Label" parent="." unique_id=1117392395]
+layout_mode = 0
+offset_left = 110.4024
+offset_top = 353.92352
+offset_right = 200.02347
+offset_bottom = 386.92352
+rotation = -0.23212878
+text = "Round:"
+label_settings = SubResource("LabelSettings_bwhsd")
+horizontal_alignment = 1
+
+[node name="RoundNumberLabel" type="Label" parent="." unique_id=1320825437]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -465.8039
+offset_top = 44.863342
+offset_right = -374.0583
+offset_bottom = 153.25827
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.23212878
+text = "1"
+label_settings = SubResource("LabelSettings_bogql")
+horizontal_alignment = 1
+
+[node name="580b585b2Edbce24c47b2a12" type="Sprite2D" parent="." unique_id=977035026]
+position = Vector2(1009, 560)
+scale = Vector2(0.5198198, 0.5885609)
+texture = ExtResource("5_bogql")
+
+[node name="VersionLabel" type="Label" parent="." unique_id=299659955]
+layout_mode = 0
+offset_left = 934.00006
+offset_top = 563.0
+offset_right = 1076.0
+offset_bottom = 586.0
+rotation = -0.20943952
+text = "Normal"
+label_settings = SubResource("LabelSettings_sgwws")
+horizontal_alignment = 1
+
+[node name="MouseLeftButton" type="Sprite2D" parent="." unique_id=2079907741]
+visible = false
+position = Vector2(80, 62)
+rotation = 0.57595867
+scale = Vector2(0.11862962, 0.13505109)
+texture = ExtResource("6_0oafj")
+
+[node name="Arrow" type="Sprite2D" parent="." unique_id=231044794]
+visible = false
+position = Vector2(126, 99.99999)
+rotation = 0.57595867
+scale = Vector2(0.355, 0.265)
+texture = ExtResource("7_s13xn")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=647806681]
+visible = false
+layout_mode = 0
+offset_left = 166.0
+offset_top = 100.00001
+offset_right = 206.0
+offset_bottom = 140.00002
+rotation = 0.57595867
+
+[node name="Bone" type="Sprite2D" parent="." unique_id=1659875245]
+visible = false
+position = Vector2(1015.5856, 180.73311)
+rotation = 1.1641346
+scale = Vector2(0.5444601, 0.6347534)
+texture = ExtResource("5_bogql")
+
+[node name="Vice_versa_hint" type="Label" parent="." unique_id=1095332853]
+visible = false
+layout_mode = 0
+offset_left = 967.9999
+offset_top = 85.00005
+offset_right = 1168.9999
+offset_bottom = 129.00006
+rotation = 0.93375117
+text = "1, 3, 6 -> 6, 3, 1"
+label_settings = SubResource("LabelSettings_0oafj")
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="." unique_id=1815418118]
+visible = false
+layout_mode = 0
+offset_left = 516.99994
+offset_top = 593.0
+offset_right = 595.99994
+offset_bottom = 624.0
+scale = Vector2(1.665, 1.665)
+text = "Continue"
+
+[connection signal="pressed" from="Button" to="." method="_on_continue_pressed"]

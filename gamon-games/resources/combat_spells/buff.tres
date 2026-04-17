@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://6v0aa72wsqee"]
 
-[ext_resource type="Texture2D" uid="uid://bnx1uxhbo2kos" path="res://assets/Placeholders/ui/absorbing_robe.png" id="1_f4ejj"]
+[ext_resource type="Texture2D" uid="uid://bnx1uxhbo2kos" path="res://assets/placeholders/ui/absorbing_robe.png" id="1_f4ejj"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_ga2yp"]
 
 [resource]
