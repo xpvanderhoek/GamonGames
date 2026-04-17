@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://cedm4csvjps4k"]
 
-[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://Scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://cavsp82ps1vug" path="res://Assets/ShopItems/Textures/The Shroud of Malice.png" id="2_aphkt"]
+[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cavsp82ps1vug" path="res://assets/ShopItems/Textures/The Shroud of Malice.png" id="2_aphkt"]
 
 [resource]
 script = ExtResource("1_script")

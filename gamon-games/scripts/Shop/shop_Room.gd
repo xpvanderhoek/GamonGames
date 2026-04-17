@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var item_scene: PackedScene 
-@export_dir var resources_folder: String = "res://Assets/ShopItems/Resources"
+@export_dir var resources_folder: String = "res://assets/ShopItems/Resources"
 
 const TIER_1_BASE_WEIGHT := 70.0
 const TIER_2_BASE_WEIGHT := 20.0
