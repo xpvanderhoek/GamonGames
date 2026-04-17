@@ -1,15 +1,19 @@
 extends Node2D
 
 @export var item_data: ItemData
-@onready var sprite = $Sprite2D
-@onready var price_label = $PriceLabel
-@onready var prompt = $Prompt
-
-var player_in_range: bool = false
+@onready var sprite = $Item
+@onready var price_label = $PriceTag/PriceLabel
+@onready var shadow = $Shadow
+@onready var buy_button = $BuyItemButton
 
 func _ready():
 	_on_item_data_assigned()
-	prompt.hide()
+	_sync_shadow_sprite()
+	buy_button.shop_item = self
+
+func _sync_shadow_sprite():
+	shadow.texture = sprite.texture
+	shadow.scale = Vector2(sprite.scale.x, sprite.scale.x * 0.3)
 
 func _on_item_data_assigned():
 	if item_data:
@@ -34,9 +38,8 @@ func _on_item_data_assigned():
 				var scale_factor = min(max_size / tex_size.x, max_size / tex_size.y)
 				sprite.scale = Vector2(scale_factor, scale_factor)
 
-func _unhandled_input(event):
-	if event.is_action_pressed("interact") and player_in_range:
-		buy_item()
+		_sync_shadow_sprite()
+
 
 func buy_item():
 	if RunData.coins >= item_data.cost:
@@ -45,15 +48,3 @@ func buy_item():
 			queue_free()
 		else:
 			print("Cannot pick up item right now.")
-
-func _on_buy_zone_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Player"):
-		player_in_range = true
-		if item_data:
-			prompt.text = "[E] Buy " + item_data.item_name + " (" + str(item_data.cost) + ")"
-			prompt.show()
-
-func _on_buy_zone_body_exited(body: Node2D) -> void:
-	if body.is_in_group("Player"):
-		player_in_range = false
-		prompt.hide()
