@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dt2v2gfpb8qbv"]
 
 [ext_resource type="Script" uid="uid://kber2r1esl2u" path="res://scripts/map_node.gd" id="1_0xswi"]
-[ext_resource type="Texture2D" uid="uid://t0j06pwyh47h" path="res://assets/Placeholders/crossed.png" id="3_0xswi"]
+[ext_resource type="Texture2D" uid="uid://t0j06pwyh47h" path="res://assets/placeholders/crossed.png" id="3_0xswi"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_whnn0"]
 load_path = "res://.godot/imported/map_icon_combat.png-781ae3b1bbb74d4f5b91d5f8b6b560d8.ctex"
