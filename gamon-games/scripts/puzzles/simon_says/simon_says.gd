@@ -88,7 +88,6 @@ func switchDisabled(variable: bool):
 	
 func fail():
 	animate_labels(coinLabel, totalCoins)
-	RunData.coins = RunData.coins + coin_amount
 	totalCoins.text = str(RunData.coins)
 	switchDisabled(true)
 	changeColor(Color(2, 0.5, 0.5))
