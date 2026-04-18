@@ -5,7 +5,9 @@ class_name SimonSays
 @onready var roundLabel: Label = $RoundNumberLabel
 @onready var versionLabel: Label = $VersionLabel
 @onready var coinLabel: Label = $CoinLabel
+@onready var totalCoins: Label = $TotalCoinsLabel
 
+var coin_amount: int = 0
 var sequence: Array[int] = []
 var player_input: Array[int] = []
 var pulse_active = false
@@ -24,6 +26,7 @@ func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	await get_tree().create_timer(0.2).timeout
 
 func _ready():
+	totalCoins.text = str(RunData.coins)
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))
 	sequence.append(randi() % buttons.size())
@@ -34,7 +37,7 @@ func _ready():
 	next_round()
 		
 func next_round():
-	calculate_coins(sequence.size())
+	calculate_coins()
 	changeColor(Color(0.9, 0.9, 0.9))
 	switchDisabled(true)
 		
@@ -84,13 +87,19 @@ func switchDisabled(variable: bool):
 	
 	
 func fail():
+	RunData.coins = RunData.coins + coin_amount
+	totalCoins.text = str(RunData.coins)
 	switchDisabled(true)
 	changeColor(Color(2, 0.5, 0.5))
 	
 	$Button.visible = true
 	
-func calculate_coins(round: int):
-	coinLabel.text = str(round * 2)
+func print_coins(coins: int):
+	coinLabel.text = str(coins)
+	
+func calculate_coins():
+	coin_amount = coin_amount + 1
+	print_coins(coin_amount)
 	
 func _on_button_pressed(idx):
 	pulse_active = false

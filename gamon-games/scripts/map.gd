@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var dotted_line: Line2D = $DottedLine
 @onready var map_nodes: Node2D = $MapNodes
+@onready var coins: Label = $CoinLabel
 
 var enemy_scenes := [
 	"res://scenes/combat/enemies/ttt.tscn"
@@ -10,6 +11,7 @@ var enemy_scenes := [
 func _ready() -> void:
 	if not RunData.run_active:
 		RunData.new_run()
+	coins.text = str(RunData.coins)
 	_setup_map_nodes()
 	_update_node_availability()
 
@@ -74,6 +76,7 @@ func _on_map_node_selected(data: MapNodeData) -> void:
 			TransitionManager.change_scene("res://scenes/Shop/ShopRoom.tscn", TransitionManager.TransitionType.FADE)
 
 func _update_node_availability() -> void:
+	coins.text = str(RunData.coins)
 	for node in map_nodes.get_children():
 		node.available = false
 	

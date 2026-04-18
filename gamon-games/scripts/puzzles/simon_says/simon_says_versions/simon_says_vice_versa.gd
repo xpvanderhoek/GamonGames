@@ -22,3 +22,7 @@ func checkCorrect(clicked_button: int, click_position: int):
 		
 		next_round()
 		return
+		
+func calculate_coins():
+	coin_amount = coin_amount + 4
+	print_coins(coin_amount)

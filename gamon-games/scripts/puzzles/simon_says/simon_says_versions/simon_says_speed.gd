@@ -14,3 +14,7 @@ func show_sequence():
 		await get_tree().create_timer(0.02).timeout
 	
 	can_click = true
+
+func calculate_coins():
+	coin_amount = coin_amount + 2
+	print_coins(coin_amount)
