@@ -2,9 +2,13 @@ extends Node2D
 
 @export var item_data: ItemData
 @onready var sprite = $Item
+@onready var price_tag = $PriceTag
 @onready var price_label = $PriceTag/PriceLabel
 @onready var shadow = $Shadow
 @onready var buy_button = $BuyItemButton
+@onready var buy_smoke: GPUParticles2D = $BuySmoke
+
+var _is_being_purchased := false
 
 func _ready():
 	_on_item_data_assigned()
@@ -42,9 +46,40 @@ func _on_item_data_assigned():
 
 
 func buy_item():
+	if _is_being_purchased:
+		return
+
 	if RunData.coins >= item_data.cost:
 		if RunData.add_item(item_data):
 			RunData.coins -= item_data.cost
+			_is_being_purchased = true
+			await _play_buy_smoke_effect()
 			queue_free()
 		else:
 			print("Cannot pick up item right now.")
+
+func _play_buy_smoke_effect() -> void:
+	if buy_button:
+		buy_button.visible = false
+
+	if buy_smoke:
+		buy_smoke.position = sprite.position
+		buy_smoke.emitting = false
+		buy_smoke.restart()
+		buy_smoke.emitting = true
+
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(sprite, "position:y", sprite.position.y - 18.0, 0.3)
+	tween.tween_property(sprite, "modulate:a", 0.0, 0.3)
+	tween.tween_property(price_tag, "position:y", price_tag.position.y - 14.0, 0.25)
+	tween.tween_property(price_tag, "modulate:a", 0.0, 0.25)
+	tween.tween_property(shadow, "modulate:a", 0.0, 0.25)
+	tween.tween_property(sprite, "scale", sprite.scale * 1.18, 0.3)
+	await tween.finished
+
+	var smoke_wait := 0.2
+	if buy_smoke:
+		smoke_wait = max(smoke_wait, buy_smoke.lifetime)
+
+	await get_tree().create_timer(smoke_wait).timeout

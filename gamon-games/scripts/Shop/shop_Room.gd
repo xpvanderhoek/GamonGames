@@ -11,10 +11,16 @@ const TIER_3_BASE_WEIGHT := 10.0
 
 @onready var spawn_positions = [$Parallax2D2/Item1, $Parallax2D2/Item2, $Parallax2D2/Item3]
 @onready var parallax_layers = [$Parallax2D, $Parallax2D2]
+@onready var exit_button = [$Parallax2D2/ExitButton/Button]
 
 var _parallax_offset := Vector2.ZERO
 
 func _ready():
+	if exit_button != null:
+		var on_exit_pressed := Callable(self, "_exit_shop")
+		if not exit_button[0].pressed.is_connected(on_exit_pressed):
+			exit_button[0].pressed.connect(on_exit_pressed)
+
 	spawn_shop_inventory()
 
 func _process(delta: float):
@@ -36,7 +42,7 @@ func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		_exit_shop()
 
-func _exit_shop(): #Temporary
+func _exit_shop(): 
 	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
 
 func spawn_shop_inventory():
