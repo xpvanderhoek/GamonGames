@@ -84,7 +84,7 @@ func _animate_exp_bar(from_exp: int, to_exp: int) -> void:
 		tween.tween_callback(func():
 			
 			pass
-		).set_delay(0.2)
+		).set_delay(0.5)
 		current_anim_exp = level_up_exp
 		
 	
