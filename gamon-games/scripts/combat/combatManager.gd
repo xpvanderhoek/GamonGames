@@ -4,6 +4,7 @@ extends CanvasLayer
 const TURN_ORDER_ENTRY_SCENE := preload("res://scenes/combat/ui/TurnOrderEntry.tscn")
 const SPELL_BUTTON_SCENE := preload("res://scenes/combat/ui/SpellButton.tscn")
 const BUFF_ICON_SCENE := preload("res://scenes/combat/ui/BuffIcon.tscn")
+const COMBAT_SUMMARY_SCENE := preload("res://scenes/combat/ui/combat_summary.tscn")
 
 enum CombatState { 
 	PLAYER_TURN,
@@ -51,6 +52,7 @@ var _spell_buttons: Array[Button] = []
 var _button_spells: Dictionary = {}
 var _is_exiting_combat: bool = false
 var _spell_cursor_overlay: TextureRect = null
+var _exp_gained_this_combat: int = 0
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
@@ -115,7 +117,18 @@ func _on_combat_victory() -> void:
 	_set_enemy_targeting_enabled(false)
 	_update_button_states()
 	_refresh_turns_order_ui()
-	_exit_combat()
+	await get_tree().create_timer(1.2).timeout
+	_show_victory_summary()
+
+func _show_victory_summary() -> void:
+	if COMBAT_SUMMARY_SCENE == null:
+		_exit_combat()
+		return
+		
+	var summary = COMBAT_SUMMARY_SCENE.instantiate()
+	summary.continue_pressed.connect(_exit_combat)
+	add_child(summary)
+	summary.setup(_exp_gained_this_combat)
 
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	_queued_encounter_scenes = encounter_enemy_scenes.duplicate()
@@ -451,6 +464,7 @@ func _roll_player_hit_on_limb(limb: CombatLimb) -> bool:
 
 func _on_enemy_died(_entity: CombatEntity) -> void:
 	if _entity != null and is_instance_valid(_entity):
+		_exp_gained_this_combat += _entity.exp_reward
 		_enemy_effects.erase(_entity.get_instance_id())
 		_enemy_limb_effects.erase(_entity.get_instance_id())
 		_refresh_enemy_buffs_ui()
