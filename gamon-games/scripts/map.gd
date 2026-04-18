@@ -74,6 +74,9 @@ func _on_map_node_selected(data: MapNodeData) -> void:
 		
 		MapNodeData.Type.SHOP:
 			TransitionManager.change_scene("res://scenes/Shop/ShopRoom.tscn", TransitionManager.TransitionType.FADE)
+		
+		MapNodeData.Type.PUZZLE:
+			TransitionManager.change_scene("res://scenes/puzzles/simon_says/start_simon.tscn")
 
 func _update_node_availability() -> void:
 	coins.text = str(RunData.coins)

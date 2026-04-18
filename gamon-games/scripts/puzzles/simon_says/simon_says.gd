@@ -117,7 +117,7 @@ func _on_button_pressed(idx):
 	can_click = true
 	
 func _on_continue_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/puzzles/simon_says/start_simon.tscn")
+	TransitionManager.change_scene("res://scenes/map.tscn")
 	queue_free()
 	
 func animate_labels(label_a: Label, label_b: Label):
