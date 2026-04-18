@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://he84ol6onw33"]
 
-[ext_resource type="Script" uid="uid://rlut218wvpdb" path="res://scenes/puzzles/sliding_puzzle.gd" id="1_mdru0"]
+[ext_resource type="Script" path="res://scenes/puzzles/sliding_puzzle.gd" id="1_mdru0"]
 
-[node name="SlidingPuzzle" type="Control" unique_id=685469517]
+[node name="SlidingPuzzle" type="Control" unique_id=1018377517]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_mdru0")
@@ -13,6 +13,11 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="StatusLabel" type="Label" parent="." unique_id=1528404870]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="CoinLabel" type="Label" parent="." unique_id=1119918420]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0

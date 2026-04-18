@@ -6,6 +6,8 @@ const TILE_GAP      := 6
 const SHUFFLE_MOVES := 400000
 const ANIM_TIME     := 0.12
 
+
+
 @onready var grid_container : GridContainer = $GridContainer
 @onready var status_label   : Label         = $StatusLabel
 
