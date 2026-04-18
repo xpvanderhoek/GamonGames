@@ -6,10 +6,10 @@ const TILE_GAP      := 6
 const SHUFFLE_MOVES := 400000
 const ANIM_TIME     := 0.12
 
-
-
 @onready var grid_container : GridContainer = $GridContainer
 @onready var status_label   : Label         = $StatusLabel
+@onready var coin_amount	: Label 		= $CoinLabel
+@onready var total_coins	: Label			= $TotalCoinLabel
 
 var tile_values : Array = []
 var tile_buttons : Array = []
@@ -22,18 +22,45 @@ var animating   : bool = false
 var time_elapsed : float = 0.0
 var timer_running : bool = false
 
+var coins = 200
+var last_coin_tick : int = 0
+
 var move_tween : Tween
+var shake_intensity : float = 0.0
+var base_coin_pos : Vector2
 
 func _ready() -> void:
+	total_coins.text = str(RunData.coins)
+	coin_amount.text = str(coins)
+	base_coin_pos = coin_amount.position
 	_create_buttons()
 	_setup_grid()
 	_shuffle_solvable()
-	_refresh_tiles()
+	_refresh_tiles()	
 
-
+func _decrease_coins() -> void:
+	if coins > 0:
+		coins -= 1
+		coin_amount.text = str(coins)
+		
 func _process(delta: float) -> void:
 	if timer_running and not solved:
 		time_elapsed += delta
+		
+		var current_second := int(time_elapsed)
+		
+		if current_second > last_coin_tick:
+			last_coin_tick = current_second
+			_decrease_coins()
+			shake_intensity = min(3.00 / coins, 10.0)
+		if coins != 0:
+			_animate_coin_label(delta)
+		else: 
+			shake_intensity = 0
+			_animate_coin_label(delta)
+		
+		
+		
 		_update_ui()
 
 func _create_buttons() -> void:
@@ -97,7 +124,24 @@ func _on_tile_pressed(slot: int) -> void:
 		_animate_move_counter()
 		move_count += 1
 
-
+func _animate_coin_label(delta: float) -> void:
+	if not timer_running or solved:
+		coin_amount.position = base_coin_pos
+		coin_amount.scale = Vector2.ONE
+		return
+	
+	var strength = shake_intensity
+	
+	# random shake
+	var offset_x = randf_range(-1, 1) * strength
+	var offset_y = randf_range(-1, 1) * strength
+	
+	coin_amount.position = base_coin_pos + Vector2(offset_x, offset_y)
+	
+	var scale_amount = 1.0 + (strength * 0.02)
+	coin_amount.scale = Vector2(scale_amount, scale_amount)
+	
+	
 func _animate_swap(from_idx: int, to_idx: int) -> void:
 	animating = true
 
