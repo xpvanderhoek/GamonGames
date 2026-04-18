@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://he84ol6onw33"]
 
-[ext_resource type="Script" path="res://scenes/puzzles/sliding_puzzle.gd" id="1_mdru0"]
+[ext_resource type="Script" uid="uid://rlut218wvpdb" path="res://scripts/puzzles/sliding_puzzle/sliding_puzzle.gd" id="1_mdru0"]
 
 [node name="SlidingPuzzle" type="Control" unique_id=1018377517]
 layout_mode = 3
