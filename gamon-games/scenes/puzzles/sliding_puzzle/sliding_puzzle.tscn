@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://he84ol6onw33"]
 
 [ext_resource type="Script" uid="uid://rlut218wvpdb" path="res://scripts/puzzles/sliding_puzzle/sliding_puzzle.gd" id="1_v7cav"]
+[ext_resource type="Texture2D" uid="uid://ciek1uoimyqnx" path="res://assets/Placeholders/Puzzle/sliding_puzzle/koala.webp" id="2_3tfod"]
 [ext_resource type="Texture2D" uid="uid://80dsky5u1kk8" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_sc7lg"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3tfod"]
@@ -19,6 +20,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_v7cav")
+puzzle_texture = ExtResource("2_3tfod")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=934734883]
 layout_mode = 1
