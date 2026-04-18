@@ -14,6 +14,10 @@ const TIER_3_BASE_WEIGHT := 10.0
 @onready var exit_button = [$Parallax2D2/ExitButton/Button]
 
 var _parallax_offset := Vector2.ZERO
+var _shop_chatter_timer: Timer
+
+const SHOP_CHATTER_MIN_SEC := 20.0
+const SHOP_CHATTER_MAX_SEC := 40.0
 
 func _ready():
 	if exit_button != null:
@@ -22,6 +26,30 @@ func _ready():
 			exit_button[0].pressed.connect(on_exit_pressed)
 
 	spawn_shop_inventory()
+	_setup_shop_dialogue_flow()
+
+func _setup_shop_dialogue_flow() -> void:
+	if not PlayerStats.knows_avarus and DialogueManager.has_dialogue("Avarus_intro"):
+		DialogueManager.start_dialogue("Avarus_intro")
+		PlayerStats.knows_avarus = true
+
+	_setup_shop_chatter_timer()
+
+func _setup_shop_chatter_timer() -> void:
+	_shop_chatter_timer = Timer.new()
+	_shop_chatter_timer.one_shot = true
+	_shop_chatter_timer.wait_time = randf_range(SHOP_CHATTER_MIN_SEC, SHOP_CHATTER_MAX_SEC)
+	_shop_chatter_timer.timeout.connect(_on_shop_chatter_timeout)
+	add_child(_shop_chatter_timer)
+	_shop_chatter_timer.start()
+
+func _on_shop_chatter_timeout() -> void:
+	if DialogueManager.has_dialogue("Avarus_idle") and not DialogueManager.is_in_dialogue:
+		DialogueManager.start_random_line_dialogue("Avarus_idle")
+
+	if _shop_chatter_timer != null:
+		_shop_chatter_timer.wait_time = randf_range(SHOP_CHATTER_MIN_SEC, SHOP_CHATTER_MAX_SEC)
+		_shop_chatter_timer.start()
 
 func _process(delta: float):
 	var half := get_viewport_rect().size * 0.5
@@ -43,6 +71,7 @@ func _input(event):
 		_exit_shop()
 
 func _exit_shop(): 
+	DialogueManager.cancel_dialogue()
 	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
 
 func spawn_shop_inventory():

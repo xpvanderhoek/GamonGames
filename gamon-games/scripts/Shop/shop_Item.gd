@@ -9,6 +9,9 @@ extends Node2D
 @onready var buy_smoke: GPUParticles2D = $BuySmoke
 
 var _is_being_purchased := false
+var _last_no_coins_dialogue_ms := -100000
+
+const NO_COINS_DIALOGUE_COOLDOWN_MS := 700
 
 func _ready():
 	_on_item_data_assigned()
@@ -48,6 +51,8 @@ func _on_item_data_assigned():
 func buy_item():
 	if _is_being_purchased:
 		return
+	if DialogueManager.is_in_dialogue:
+		return
 
 	if RunData.coins >= item_data.cost:
 		if RunData.add_item(item_data):
@@ -57,6 +62,14 @@ func buy_item():
 			queue_free()
 		else:
 			print("Cannot pick up item right now.")
+	else:
+		var now_ms := Time.get_ticks_msec()
+		if now_ms - _last_no_coins_dialogue_ms < NO_COINS_DIALOGUE_COOLDOWN_MS:
+			return
+
+		_last_no_coins_dialogue_ms = now_ms
+		if DialogueManager.has_dialogue("Avarus_no_coins"):
+			DialogueManager.start_random_line_dialogue("Avarus_no_coins")
 
 func _play_buy_smoke_effect() -> void:
 	if buy_button:

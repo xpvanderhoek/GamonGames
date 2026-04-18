@@ -7,8 +7,8 @@ var original_scale: Vector2
 
 func _ready():
 	original_scale = button.scale
-	# Set pivot to center so scaling happens from center
 	button.pivot_offset = button.size / 2
+	button.focus_mode = Control.FOCUS_NONE
 	button.pressed.connect(_on_button_pressed)
 	button.mouse_entered.connect(_on_button_hover)
 	button.mouse_exited.connect(_on_button_unhover)
