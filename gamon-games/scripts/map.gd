@@ -25,7 +25,7 @@ func _setup_map_nodes():
 			
 			# previous node being null means its the first node, so default to combat.
 			if previous_node == null:
-				data.type = MapNodeData.Type.PUZZLE
+				data.type = MapNodeData.Type.COMBAT
 			else:
 				var rand_idx = randi_range(0, MapNodeData.Type.size() - 1)
 				data.type = rand_idx as MapNodeData.Type
