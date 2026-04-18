@@ -23,9 +23,6 @@ mouse_filter = 2
 texture = ExtResource("2_ltalu")
 expand_mode = 1
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=991902612]
-position = Vector2(570, 324)
-
 [node name="Player" type="Sprite2D" parent="." unique_id=888851307]
 position = Vector2(148, 493.99997)
 scale = Vector2(0.8511, 0.85109985)
@@ -55,6 +52,8 @@ offset_bottom = 612.0
 
 [node name="Container" type="HBoxContainer" parent="SpellsPanel" unique_id=1942063916]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
 
 [node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=672937389]
 anchors_preset = 7

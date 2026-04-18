@@ -232,34 +232,60 @@ func _select_spell(spell: SpellData) -> void:
 	_update_button_states()
 
 func _rebuild_spells_panel() -> void:
-	for child in spells_panel.get_children():
-		child.queue_free()
-
 	_spell_buttons.clear()
 	_button_spells.clear()
 
-	for spell in RunData.spells:
-		if spell == null:
-			continue
-
-		var spell_button := SPELL_BUTTON_SCENE.instantiate() as Button
-		spell_button.name = "BtnSpell_%s" % (spell.spell_id if not spell.spell_id.is_empty() else str(_spell_buttons.size()))
-		spells_panel.add_child(spell_button)
-		_configure_spell_button(spell_button, spell)
+	var existing_buttons := spells_panel.get_children()
+	
+	for slot_index in range(6):
+		var spell_button: Button = null
+		
+		if slot_index < existing_buttons.size():
+			spell_button = existing_buttons[slot_index] as Button
+		else:
+			spell_button = SPELL_BUTTON_SCENE.instantiate() as Button
+			spell_button.name = "Action%d" % (slot_index + 1)
+			spells_panel.add_child(spell_button)
+		
 		_spell_buttons.append(spell_button)
-		_button_spells[spell_button] = spell
+		
+		if slot_index < RunData.spells.size() and RunData.spells[slot_index] != null:
+			var spell := RunData.spells[slot_index]
+			_configure_spell_button(spell_button, spell)
+			_button_spells[spell_button] = spell
+		else:
+			_configure_empty_spell_button(spell_button)
 
 func _configure_spell_button(button: Button, spell: SpellData) -> void:
 	var bind_label = button.get_node_or_null("Bind") as Label
-	bind_label.text = str(_spell_buttons.size() + 1)
+	var slot_index := _spell_buttons.find(button)
+	if bind_label != null:
+		bind_label.text = str(slot_index + 1)
 
 	button.tooltip_text = _build_spell_tooltip(spell)
 	if spell != null and spell.icon != null:
 		button.icon = spell.icon
+	
+	button.disabled = false
+	button.modulate = Color.WHITE
 
 	var on_pressed := Callable(self, "_on_spell_button_pressed").bind(button)
 	if not button.pressed.is_connected(on_pressed):
 		button.pressed.connect(on_pressed)
+
+func _configure_empty_spell_button(button: Button) -> void:
+	var bind_label = button.get_node_or_null("Bind") as Label
+	var slot_index := _spell_buttons.find(button)
+	if bind_label != null:
+		bind_label.text = str(slot_index + 1)
+	
+	button.icon = null
+	button.tooltip_text = ""
+	button.disabled = true
+	
+	var on_pressed := Callable(self, "_on_spell_button_pressed").bind(button)
+	if button.pressed.is_connected(on_pressed):
+		button.pressed.disconnect(on_pressed)
 
 func _build_spell_tooltip(spell: SpellData) -> String:
 	if spell == null:
@@ -394,7 +420,15 @@ func _update_button_states() -> void:
 	var should_disable_buttons := current_state != CombatState.PLAYER_TURN or _attack_selected or not _has_alive_enemies()
 	for spell_button in _spell_buttons:
 		if is_instance_valid(spell_button):
-			spell_button.disabled = should_disable_buttons
+			if spell_button not in _button_spells:
+				spell_button.disabled = true
+				spell_button.modulate = Color(0.4, 0.4, 0.4, 1.0)
+			else:
+				spell_button.disabled = should_disable_buttons
+				if should_disable_buttons:
+					spell_button.modulate = Color(0.4, 0.4, 0.4, 1.0)
+				else:
+					spell_button.modulate = Color.WHITE
 
 func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> void:
 	if current_state != CombatState.PLAYER_TURN:
@@ -1353,6 +1387,10 @@ func _begin_player_turn() -> void:
 	_clear_spell_cursor_overlay()
 	_update_button_states()
 	_refresh_turns_order_ui()
+	
+	for enemy in enemy_entities:
+		if enemy != null and is_instance_valid(enemy):
+			enemy._refresh_highlight()
 
 func _update_enemy_spell_targeting_preview() -> void:
 	var spell_icon: Texture2D = null
