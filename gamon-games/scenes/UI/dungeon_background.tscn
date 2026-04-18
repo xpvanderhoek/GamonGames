@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://buhhjboqhp4kx"]
 
-[ext_resource type="Texture2D" uid="uid://dqm8vhhbc83x6" path="res://Scenes/combat/dungeon_background.png" id="1_rcyld"]
+[ext_resource type="Texture2D" uid="uid://dqm8vhhbc83x6" path="res://scenes/combat/dungeon_background.png" id="1_rcyld"]
 
 [node name="Node2D" type="Node2D" unique_id=1458397100]
 

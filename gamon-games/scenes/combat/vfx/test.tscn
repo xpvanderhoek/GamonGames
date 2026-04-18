@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://mefrqehh2onn"]
 
-[ext_resource type="Texture2D" uid="uid://c3gjg5bqvnbhx" path="res://assets/placeholders/enemies/mauler_head.png" id="1_bh2oj"]
+[ext_resource type="Texture2D" uid="uid://3aiko5d0vmjl" path="res://assets/ShopItems/Textures/Fortune's Ledger.png" id="1_yk03o"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mumhx"]
 particle_flag_disable_z = true
@@ -18,6 +18,6 @@ turbulence_enabled = true
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1395312198]
 amount = 61
-texture = ExtResource("1_bh2oj")
+texture = ExtResource("1_yk03o")
 lifetime = 11.35
 process_material = SubResource("ParticleProcessMaterial_mumhx")

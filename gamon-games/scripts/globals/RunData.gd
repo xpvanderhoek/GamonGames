@@ -49,6 +49,7 @@ var current_health : int = 100:
 
 var current_map_node: MapNodeData = null
 var map_nodes_data: Array[MapNodeData] = []
+var current_encounter: Array[PackedScene] = []
 var items : Array[ItemData] = [] 
 var consumables : Array = [null, null, null, null, null]
 

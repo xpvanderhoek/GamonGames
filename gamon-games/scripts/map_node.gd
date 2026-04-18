@@ -5,7 +5,8 @@ signal selected(map_node: MapNode)
 
 const ICONS := {
 	MapNodeData.Type.COMBAT: preload("res://assets/map/icons/map_icon_combat.png"),
-	MapNodeData.Type.SHOP: preload("res://assets/map/icons/map_icon_shop.png")
+	MapNodeData.Type.SHOP: preload("res://assets/map/icons/map_icon_shop.png"),
+	MapNodeData.Type.PUZZLE: preload("res://assets/map/icons/map_icon_puzzle.png")
 }
 
 @onready var sprite : Sprite2D = $Visuals/Sprite2D
@@ -43,7 +44,7 @@ func set_data(new_data: MapNodeData):
 	data = new_data
 	sprite.texture = ICONS[data.type]
 
-func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if not available or not event.is_action_pressed("mousebutton_left"):
 		return
 	

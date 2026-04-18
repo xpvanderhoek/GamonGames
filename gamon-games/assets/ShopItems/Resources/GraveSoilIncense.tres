@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://dl1ghcmvkidxt"]
 
-[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://Scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://fbbwhgqh8cjf" path="res://Assets/ShopItems/Textures/Grave-soil Incense.png" id="2_xf2hj"]
+[ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://fbbwhgqh8cjf" path="res://assets/ShopItems/Textures/Grave-soil Incense.png" id="2_xf2hj"]
 
 [resource]
 script = ExtResource("1_script")

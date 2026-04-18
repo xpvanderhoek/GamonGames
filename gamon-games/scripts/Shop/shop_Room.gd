@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var item_scene: PackedScene 
-@export_dir var resources_folder: String = "res://Assets/ShopItems/Resources"
+@export_dir var resources_folder: String = "res://assets/ShopItems/Resources"
 @export var mouse_parallax_strength := Vector2(18.0, 10.0)
 @export_range(1.0, 30.0, 0.1) var mouse_parallax_smoothing := 8.0
 
