@@ -88,7 +88,7 @@ func switchDisabled(variable: bool):
 	
 func fail():
 	animate_labels(coinLabel, totalCoins)
-	totalCoins.text = str(RunData.coins)
+	
 	switchDisabled(true)
 	changeColor(Color(2, 0.5, 0.5))
 	
@@ -136,18 +136,18 @@ func animate_labels(label_a: Label, label_b: Label):
 		0.5
 	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	
+	
 	tween.parallel().tween_property(label_a, "modulate:a", 0.0, 0.5)
 	tween.parallel().tween_property(label_a, "scale", Vector2(0.6, 0.6), 0.5)
 	
-	tween.chain()
+	tween.tween_callback(func():
+		RunData.coins += coin_amount
+		totalCoins.text = str(RunData.coins)
+		label_a.queue_free()
+	)
 	
 	tween.tween_property(label_b, "scale", Vector2(1.2, 0.8), 0.1)
 	
 	tween.tween_property(label_b, "scale", Vector2(1.5, 1.2), 0.15)
 	
 	tween.tween_property(label_b, "scale", Vector2(1, 1), 0.2)
-	
-	tween.tween_callback(func():
-		RunData.coins += coin_amount
-		label_a.queue_free()
-	)
