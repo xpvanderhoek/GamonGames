@@ -277,4 +277,5 @@ func _check_win() -> void:
 
 func _on_button_pressed() -> void:
 	TransitionManager.change_scene("res://scenes/map.tscn")
+	await get_tree().create_timer(2.0).timeout
 	queue_free()
