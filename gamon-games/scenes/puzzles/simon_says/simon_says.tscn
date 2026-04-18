@@ -28,6 +28,7 @@ font_color = Color(0.7137255, 0.7137255, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_iikmj"]
 font_size = 46
+font_color = Color(0.2509804, 0.20784314, 0.1254902, 1)
 
 [node name="SimonSays" type="Control" unique_id=1237460606]
 layout_mode = 3
@@ -229,7 +230,8 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -146.0
-offset_bottom = 51.0
+offset_right = -9.0
+offset_bottom = 64.0
 grow_horizontal = 0
 text = "0"
 label_settings = SubResource("LabelSettings_iikmj")

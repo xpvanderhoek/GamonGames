@@ -87,6 +87,7 @@ func switchDisabled(variable: bool):
 	
 	
 func fail():
+	animate_labels(coinLabel, totalCoins)
 	RunData.coins = RunData.coins + coin_amount
 	totalCoins.text = str(RunData.coins)
 	switchDisabled(true)
@@ -119,3 +120,35 @@ func _on_button_pressed(idx):
 func _on_continue_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/puzzles/simon_says/start_simon.tscn")
 	queue_free()
+	
+func animate_labels(label_a: Label, label_b: Label):
+	await get_tree().process_frame
+	
+	var tween = create_tween()
+	
+	label_b.pivot_offset = Vector2(label_b.size.x, label_b.size.y / 2)
+	
+	var target_pos = label_b.position
+	
+	tween.parallel().tween_property(
+		label_a,
+		"position",
+		target_pos,
+		0.5
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	
+	tween.parallel().tween_property(label_a, "modulate:a", 0.0, 0.5)
+	tween.parallel().tween_property(label_a, "scale", Vector2(0.6, 0.6), 0.5)
+	
+	tween.chain()
+	
+	tween.tween_property(label_b, "scale", Vector2(1.2, 0.8), 0.1)
+	
+	tween.tween_property(label_b, "scale", Vector2(1.5, 1.2), 0.15)
+	
+	tween.tween_property(label_b, "scale", Vector2(1, 1), 0.2)
+	
+	tween.tween_callback(func():
+		RunData.coins += coin_amount
+		label_a.queue_free()
+	)
