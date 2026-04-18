@@ -11,13 +11,6 @@ var scripts = {
 	"inverted": preload("res://scripts/puzzles/simon_says/simon_says_versions/simon_says_inverted.gd")
 }
 
-func start_game(mode: String):
-	var game = SimonSaysGameScene.instantiate()
-	game.set_script(scripts[mode])
-	
-	get_tree().root.add_child(game)
-	queue_free()
-
 func start_random_game():
 	var game := SimonSaysGameScene.instantiate()
 	var rand_idx = RunData.rng.randi_range(0, scripts.size() - 1)
