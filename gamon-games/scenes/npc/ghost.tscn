@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://car332irwafr"]
 
 [ext_resource type="Script" uid="uid://q68nqexmyl8q" path="res://scripts/npc/ghost.gd" id="1_434k8"]
-[ext_resource type="Texture2D" uid="uid://bll3l6ukip0w0" path="res://assets/Placeholders/ghost_placeholder.png" id="2_434k8"]
+[ext_resource type="Texture2D" uid="uid://bll3l6ukip0w0" path="res://assets/placeholders/ghost_placeholder.png" id="2_434k8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_434k8"]
 size = Vector2(16.843575, 25.013554)

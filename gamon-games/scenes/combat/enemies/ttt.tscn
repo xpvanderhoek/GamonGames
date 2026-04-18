@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://c4v6x4ghgyn5j"]
 
 [ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_dvbgm"]
-[ext_resource type="Texture2D" uid="uid://c00yinhi0j7pd" path="res://assets/Placeholders/enemies/torso.png" id="2_q3xq3"]
+[ext_resource type="Texture2D" uid="uid://c00yinhi0j7pd" path="res://assets/placeholders/enemies/torso.png" id="2_q3xq3"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="3_w2142"]
 [ext_resource type="Texture2D" uid="uid://dsxoo5xbeqhc" path="res://assets/Placeholders/enemies/head.png" id="4_w3sxh"]
 [ext_resource type="Texture2D" uid="uid://j1m2vp1g8ig8" path="res://assets/Placeholders/enemies/left_hand.png" id="5_8f83m"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="6_e5vg6"]
+[ext_resource type="Resource" uid="uid://brqp1tf0obe77" path="res://resources/combat_spells/basic_attack.tres" id="7_6gc6u"]
 [ext_resource type="Texture2D" uid="uid://dmvr7hisp4pak" path="res://assets/Placeholders/enemies/right_hand.png" id="7_kbcej"]
 
 [node name="ttt" type="Control" unique_id=1680014499]
@@ -41,6 +43,7 @@ texture = ExtResource("5_8f83m")
 script = ExtResource("3_w2142")
 limb_name = "Left Hand"
 max_health = 50
+attacks = Array[ExtResource("6_e5vg6")]([ExtResource("7_6gc6u")])
 
 [node name="right_hand" type="Sprite2D" parent="." unique_id=1029105267]
 position = Vector2(62, 173)

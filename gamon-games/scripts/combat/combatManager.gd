@@ -1,9 +1,9 @@
 class_name CombatManager
 extends CanvasLayer
 
-const TURN_ORDER_ENTRY_SCENE := preload("res://Scenes/combat/ui/TurnOrderEntry.tscn")
-const SPELL_BUTTON_SCENE := preload("res://Scenes/combat/ui/SpellButton.tscn")
-const BUFF_ICON_SCENE := preload("res://Scenes/combat/ui/BuffIcon.tscn")
+const TURN_ORDER_ENTRY_SCENE := preload("res://scenes/combat/ui/TurnOrderEntry.tscn")
+const SPELL_BUTTON_SCENE := preload("res://scenes/combat/ui/SpellButton.tscn")
+const BUFF_ICON_SCENE := preload("res://scenes/combat/ui/BuffIcon.tscn")
 
 enum CombatState { 
 	PLAYER_TURN,
@@ -22,7 +22,7 @@ enum TargetScope {
 
 @export var player_base_damage: int = 25
 @export var enemy_entity_path: NodePath
-@export var enemy_container_path: NodePath = NodePath("HBoxContainer")
+@export var enemy_container_path: NodePath = NodePath("EnemyContainer")
 @export var ui_player: NodePath = NodePath("Player")
 @export var turns_order_path: NodePath = NodePath("TurnsOrder")
 @export var player_turn_icon: Texture2D
@@ -30,6 +30,7 @@ enum TargetScope {
 @export var turns_order_min_visible_rows: int = 8
 @export var player_max_health: int = 100
 @export_range(0.0, 100.0, 0.1) var player_hit_chance_bonus_percent: float = 20.0
+@export_range(0.0, 200.0, 1.0) var attack_lunge_distance: float = 42.0
 @export var attack_target_scope: TargetScope = TargetScope.LIMB
 @export var debuff_target_scope: TargetScope = TargetScope.LIMB
 
@@ -48,13 +49,15 @@ var _enemy_effects: Dictionary = {}
 var _enemy_limb_effects: Dictionary = {}
 var _spell_buttons: Array[Button] = []
 var _button_spells: Dictionary = {}
+var _is_exiting_combat: bool = false
+var _spell_cursor_overlay: TextureRect = null
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
-@onready var spells_panel: HBoxContainer = $SpellsPanel
-@onready var lbl_player_health: Label = $PlayerHealth
-@onready var lbl_turns_order: Label = $TurnsOrderInfo
-@onready var turns_order_container: VBoxContainer = $TurnsOrder
+@onready var spells_panel: HBoxContainer = $SpellsPanel/Container
+@onready var lbl_player_health: Label = $HealthBar/HealthLabel
+@onready var lbl_turns_order: Label = $TurnsOrderUI/RoundValue
+@onready var turns_order_container: VBoxContainer = $TurnsOrderUI/Panel
 @onready var player_buffs_panel: HBoxContainer = get_node_or_null("BuffsPanel") as HBoxContainer
 @onready var attack_scope_option: OptionButton = get_node_or_null("TargetingPanel/AttackScopeOption") as OptionButton
 @onready var debuff_scope_option: OptionButton = get_node_or_null("TargetingPanel/DebuffScopeOption") as OptionButton
@@ -62,6 +65,8 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 func _ready() -> void:
 	if _queued_encounter_scenes.size() > 0:
 		_spawn_encounter_enemies(_queued_encounter_scenes)
+	elif RunData.current_encounter.size() > 0:
+		_spawn_encounter_enemies(RunData.current_encounter)
 
 	current_round = 1
 	_refresh_enemy_entities()
@@ -69,11 +74,48 @@ func _ready() -> void:
 	_refresh_enemy_buffs_ui()
 	_refresh_player_buffs_ui()
 	_update_player_health_label()
+	_setup_spell_cursor_overlay()
 	_rebuild_spells_panel()
 	_setup_target_scope_selectors()
 
 	RunData.health_changed.connect(_update_player_health_label)
 	_begin_player_turn()
+
+func _input(event): #Temporary
+	if event.is_action_pressed("ui_cancel"):
+		if _attack_selected:
+			_cancel_selected_spell()
+			get_viewport().set_input_as_handled()
+			return
+		# _exit_combat()
+		return
+
+	if event is InputEventKey:
+		var key_event := event as InputEventKey
+		if key_event.pressed and not key_event.echo:
+			var spell_index := _get_spell_index_from_key_event(key_event)
+			if spell_index >= 0:
+				_select_spell_by_index(spell_index)
+				get_viewport().set_input_as_handled()
+
+func _process(_delta: float) -> void:
+	_update_spell_cursor_overlay_position()
+
+func _exit_combat():
+	if _is_exiting_combat:
+		return
+	_is_exiting_combat = true
+	# Temporary
+	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+
+func _on_combat_victory() -> void:
+	if current_state == CombatState.COMBAT_OVER:
+		return
+	current_state = CombatState.COMBAT_OVER
+	_set_enemy_targeting_enabled(false)
+	_update_button_states()
+	_refresh_turns_order_ui()
+	_exit_combat()
 
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	_queued_encounter_scenes = encounter_enemy_scenes.duplicate()
@@ -128,6 +170,10 @@ func _register_enemy_entity(entity: CombatEntity) -> void:
 	if not entity.highlighted_limb_clicked.is_connected(on_limb_clicked):
 		entity.highlighted_limb_clicked.connect(on_limb_clicked)
 
+	var on_took_damage := Callable(self, "_on_enemy_took_damage")
+	if not entity.entity_took_damage.is_connected(on_took_damage):
+		entity.entity_took_damage.connect(on_took_damage)
+
 	var on_targeting_changed := Callable(entity, "set_targeting_mode")
 	if not enemy_targeting_changed.is_connected(on_targeting_changed):
 		enemy_targeting_changed.connect(on_targeting_changed)
@@ -168,6 +214,8 @@ func _select_spell(spell: SpellData) -> void:
 	selected_action = CombatAction.ATTACK
 	_attack_selected = true
 	_set_enemy_targeting_enabled(true)
+	_update_enemy_spell_targeting_preview()
+	_update_spell_cursor_overlay()
 	_update_button_states()
 
 func _rebuild_spells_panel() -> void:
@@ -189,7 +237,9 @@ func _rebuild_spells_panel() -> void:
 		_button_spells[spell_button] = spell
 
 func _configure_spell_button(button: Button, spell: SpellData) -> void:
-	button.text = spell.spell_name if spell != null and not spell.spell_name.is_empty() else "Attack"
+	var bind_label = button.get_node_or_null("Bind") as Label
+	bind_label.text = str(_spell_buttons.size() + 1)
+
 	button.tooltip_text = button.text
 	if spell != null and spell.icon != null:
 		button.icon = spell.icon
@@ -201,6 +251,44 @@ func _configure_spell_button(button: Button, spell: SpellData) -> void:
 func _on_spell_button_pressed(button: Button) -> void:
 	var spell := _button_spells.get(button, null) as SpellData
 	_select_spell(spell)
+
+func _cancel_selected_spell() -> void:
+	if current_state != CombatState.PLAYER_TURN or not _attack_selected:
+		return
+
+	_attack_selected = false
+	selected_spell = null
+	_update_enemy_spell_targeting_preview()
+	_set_enemy_targeting_enabled(false)
+	_clear_spell_cursor_overlay()
+	_update_button_states()
+
+func _select_spell_by_index(index: int) -> void:
+	if index < 0 or index >= mini(6, _spell_buttons.size()):
+		return
+
+	var spell_button := _spell_buttons[index]
+	if spell_button == null or not is_instance_valid(spell_button) or spell_button.disabled:
+		return
+
+	_on_spell_button_pressed(spell_button)
+
+func _get_spell_index_from_key_event(event: InputEventKey) -> int:
+	match event.keycode:
+		KEY_1, KEY_KP_1:
+			return 0
+		KEY_2, KEY_KP_2:
+			return 1
+		KEY_3, KEY_KP_3:
+			return 2
+		KEY_4, KEY_KP_4:
+			return 3
+		KEY_5, KEY_KP_5:
+			return 4
+		KEY_6, KEY_KP_6:
+			return 5
+		_:
+			return -1
 
 func _update_button_states() -> void:
 	var should_disable_buttons := current_state != CombatState.PLAYER_TURN or _attack_selected or not _has_alive_enemies()
@@ -254,11 +342,13 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 			_append_enemy_effect(source_enemy, active_spell, limb)
 
 		if active_spell != null:
-			_play_attack_feedback(active_spell, null, source_enemy)
+			_play_attack_feedback(active_spell, get_node_or_null(ui_player), source_enemy)
 	else:
 		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(_get_adjusted_hit_chance_percent(limb), 0.1)])
 	_attack_selected = false
 	selected_spell = null
+	_clear_spell_cursor_overlay()
+	_update_enemy_spell_targeting_preview()
 	source_enemy.clear_current_highlight()
 	_end_player_turn()
 
@@ -280,10 +370,60 @@ func _on_enemy_died(_entity: CombatEntity) -> void:
 		_refresh_turns_order_ui()
 		return
 
-	current_state = CombatState.COMBAT_OVER
-	_update_button_states()
-	_refresh_turns_order_ui()
-	NavigationManager.go_back_to_current_room()
+	_on_combat_victory()
+
+func _on_enemy_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int) -> void:
+	if damage <= 0:
+		return
+
+	var hit_position := Vector2.ZERO
+	if limb != null and is_instance_valid(limb):
+		hit_position = limb.global_position
+	elif entity != null and is_instance_valid(entity):
+		var fallback_limb := _get_first_alive_enemy_limb(entity)
+		if fallback_limb != null:
+			hit_position = fallback_limb.global_position
+		else:
+			hit_position = get_viewport().get_visible_rect().size * 0.5
+	else:
+		hit_position = get_viewport().get_visible_rect().size * 0.5
+
+	_play_enemy_impact_pulse(limb, entity)
+	_spawn_floating_damage_number(damage, hit_position, false)
+
+func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
+	var impact_node: Node2D = null
+	if limb != null and is_instance_valid(limb):
+		impact_node = limb
+	elif entity != null and is_instance_valid(entity):
+		impact_node = _get_first_alive_enemy_limb(entity)
+
+	if impact_node == null:
+		return
+
+	if impact_node.has_meta("impact_tween"):
+		var existing_tween = impact_node.get_meta("impact_tween")
+		if existing_tween is Tween:
+			(existing_tween as Tween).kill()
+		impact_node.remove_meta("impact_tween")
+
+	var base_scale := impact_node.scale
+	var base_position := impact_node.position
+	var knock_offset := Vector2(randf_range(-5.0, 5.0), randf_range(-3.0, 1.5))
+
+	var tween := create_tween()
+	impact_node.set_meta("impact_tween", tween)
+	tween.set_parallel(true)
+	tween.tween_property(impact_node, "scale", base_scale * 1.1, 0.06).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(impact_node, "position", base_position + knock_offset, 0.06).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.set_parallel(false)
+	tween.tween_property(impact_node, "scale", base_scale, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.set_parallel(true)
+	tween.tween_property(impact_node, "position", base_position, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.finished.connect(func():
+		if is_instance_valid(impact_node):
+			impact_node.remove_meta("impact_tween")
+	)
 
 func _setup_target_scope_selectors() -> void:
 	if attack_scope_option != null:
@@ -346,6 +486,13 @@ func _perform_enemy_turn() -> void:
 		if not is_instance_valid(attacking_enemy) or not attacking_enemy.is_alive:
 			continue
 
+		_apply_enemy_damage_over_time(attacking_enemy)
+		if not is_instance_valid(attacking_enemy) or not attacking_enemy.is_alive:
+			continue
+
+		if _is_enemy_stunned(attacking_enemy):
+			continue
+
 		_refresh_turns_order_ui(attacking_enemy)
 
 		var attack_limb := _choose_enemy_attack_limb(attacking_enemy)
@@ -357,7 +504,7 @@ func _perform_enemy_turn() -> void:
 			continue
 
 		await get_tree().create_timer(0.35).timeout
-		await _play_attack_feedback(attack, attacking_enemy, null)
+		await _play_attack_feedback(attack, attacking_enemy, get_node_or_null(ui_player))
 		var outgoing_multiplier := _get_enemy_outgoing_multiplier(attacking_enemy)
 		var damage: int = int(round(float(max(0, attack.damage)) * outgoing_multiplier))
 		_apply_player_damage(damage, attack.damage_type)
@@ -368,6 +515,8 @@ func _choose_enemy_attack_limb(source_enemy: CombatEntity) -> CombatLimb:
 	var candidates: Array[CombatLimb] = []
 	for limb in source_enemy.limbs:
 		if limb.is_destroyed:
+			continue
+		if _is_enemy_limb_stunned(source_enemy, limb):
 			continue
 		if limb.has_attack_options():
 			candidates.append(limb)
@@ -451,6 +600,8 @@ func _append_player_effect(spell: SpellData) -> void:
 
 	var has_effect := spell.outgoing_damage_flat_bonus != 0 \
 		or not is_zero_approx(spell.outgoing_damage_multiplier_delta) \
+		or spell.damage_over_time != 0 \
+		or spell.stun_turns \
 		or not is_zero_approx(spell.player_physical_defense_delta) \
 		or not is_zero_approx(spell.player_magic_defense_delta)
 	if not has_effect:
@@ -474,6 +625,10 @@ func _append_player_effect(spell: SpellData) -> void:
 		"icon": spell.icon,
 		"outgoing_flat": spell.outgoing_damage_flat_bonus,
 		"outgoing_mult_delta": spell.outgoing_damage_multiplier_delta,
+		"damage_over_time": spell.damage_over_time,
+		"stun_turns": bool(spell.stun_turns),
+		"damage_type": int(spell.damage_type),
+		"target_scope": int(spell.target_scope),
 		"physical_defense_delta": spell.player_physical_defense_delta,
 		"magic_defense_delta": spell.player_magic_defense_delta,
 	})
@@ -486,6 +641,8 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 
 	var has_effect := not is_zero_approx(spell.outgoing_damage_multiplier_delta) \
 		or not is_zero_approx(spell.incoming_damage_multiplier_delta) \
+		or spell.damage_over_time != 0 \
+		or spell.stun_turns \
 		or not is_zero_approx(spell.target_physical_defense_delta) \
 		or not is_zero_approx(spell.target_magic_defense_delta)
 	if not has_effect:
@@ -498,6 +655,10 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 		"spell_id": spell.spell_id,
 		"outgoing_mult_delta": spell.outgoing_damage_multiplier_delta,
 		"incoming_mult_delta": spell.incoming_damage_multiplier_delta,
+		"damage_over_time": spell.damage_over_time,
+		"stun_turns": bool(spell.stun_turns),
+		"damage_type": int(spell.damage_type),
+		"target_scope": int(spell.target_scope),
 		"physical_defense_delta": spell.target_physical_defense_delta,
 		"magic_defense_delta": spell.target_magic_defense_delta,
 		"spell_name": spell.spell_name,
@@ -697,6 +858,113 @@ func _get_enemy_incoming_multiplier(source_enemy: CombatEntity, source_limb: Com
 
 	return max(0.0, total_multiplier)
 
+func _apply_enemy_damage_over_time(target_enemy: CombatEntity) -> void:
+	if target_enemy == null or not is_instance_valid(target_enemy) or not target_enemy.is_alive:
+		return
+
+	_cleanup_expired_effects()
+
+	var enemy_id := target_enemy.get_instance_id()
+	var enemy_effects: Array = _enemy_effects.get(enemy_id, [])
+	for raw_effect in enemy_effects:
+		var effect := raw_effect as Dictionary
+		if effect.is_empty():
+			continue
+		_apply_enemy_effect_damage_over_time(target_enemy, effect, null)
+
+	var limb_effects_by_enemy := _enemy_limb_effects.get(enemy_id, {}) as Dictionary
+	for limb_id in limb_effects_by_enemy.keys():
+		var target_limb := instance_from_id(int(limb_id)) as CombatLimb
+		if target_limb == null or not is_instance_valid(target_limb) or target_limb.is_destroyed:
+			continue
+
+		var limb_effects: Array = limb_effects_by_enemy.get(limb_id, [])
+		for raw_effect in limb_effects:
+			var effect := raw_effect as Dictionary
+			if effect.is_empty():
+				continue
+			_apply_enemy_effect_damage_over_time(target_enemy, effect, target_limb)
+
+func _apply_enemy_effect_damage_over_time(target_enemy: CombatEntity, effect: Dictionary, target_limb: CombatLimb = null) -> void:
+	if target_enemy == null or not is_instance_valid(target_enemy) or effect.is_empty():
+		return
+
+	var damage_over_time := int(effect.get("damage_over_time", 0))
+	if damage_over_time <= 0:
+		return
+
+	var damage_type := int(effect.get("damage_type", int(SpellData.DamageType.PHYSICAL))) as SpellData.DamageType
+	var target_scope := int(effect.get("target_scope", int(TargetScope.LIMB))) as TargetScope
+	var target_limbs: Array[CombatLimb] = []
+
+	if target_limb != null and is_instance_valid(target_limb) and not target_limb.is_destroyed:
+		target_limbs.append(target_limb)
+	elif target_scope == TargetScope.WHOLE_ENEMY:
+		for limb in target_enemy.limbs:
+			if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
+				target_limbs.append(limb)
+	else:
+		var first_alive_limb := _get_first_alive_enemy_limb(target_enemy)
+		if first_alive_limb != null:
+			target_limbs.append(first_alive_limb)
+
+	if target_limbs.is_empty():
+		return
+
+	for affected_limb in target_limbs:
+		var incoming_multiplier := _get_enemy_incoming_multiplier(target_enemy, affected_limb)
+		var final_damage := int(round(float(damage_over_time) * incoming_multiplier))
+		var enemy_defense := _get_enemy_total_defense_for_damage_type(target_enemy, affected_limb, damage_type)
+		final_damage = _apply_defense_to_damage(final_damage, enemy_defense)
+		final_damage = max(0, final_damage)
+		if final_damage > 0:
+			target_enemy.take_damage(affected_limb, final_damage)
+
+func _is_enemy_stunned(target_enemy: CombatEntity) -> bool:
+	if target_enemy == null or not is_instance_valid(target_enemy):
+		return false
+
+	_cleanup_expired_effects()
+
+	var enemy_effects: Array = _enemy_effects.get(target_enemy.get_instance_id(), [])
+	for raw_effect in enemy_effects:
+		var effect := raw_effect as Dictionary
+		if effect.is_empty():
+			continue
+		if bool(effect.get("stun_turns", false)):
+			return true
+
+	return false
+
+func _is_enemy_limb_stunned(target_enemy: CombatEntity, target_limb: CombatLimb) -> bool:
+	if target_enemy == null or not is_instance_valid(target_enemy):
+		return false
+	if target_limb == null or not is_instance_valid(target_limb):
+		return false
+
+	_cleanup_expired_effects()
+
+	var limb_effects_by_enemy := _enemy_limb_effects.get(target_enemy.get_instance_id(), {}) as Dictionary
+	var limb_effects: Array = limb_effects_by_enemy.get(target_limb.get_instance_id(), [])
+	for raw_effect in limb_effects:
+		var effect := raw_effect as Dictionary
+		if effect.is_empty():
+			continue
+		if bool(effect.get("stun_turns", false)):
+			return true
+
+	return false
+
+func _get_first_alive_enemy_limb(target_enemy: CombatEntity) -> CombatLimb:
+	if target_enemy == null or not is_instance_valid(target_enemy):
+		return null
+
+	for limb in target_enemy.limbs:
+		if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
+			return limb
+
+	return null
+
 func _resolve_target_scope(spell: SpellData) -> TargetScope:
 	if spell != null:
 		return spell.target_scope as TargetScope
@@ -730,11 +998,61 @@ func _apply_player_damage(amount: int, damage_type: SpellData.DamageType = Spell
 	var mitigated_amount := _apply_player_defense(amount, damage_type)
 	if mitigated_amount <= 0:
 		return
+	var player_hit_position = _get_vfx_anchor_position(null)
 	_flash_player_hit()
 	RunData.current_health -= mitigated_amount 
+	if player_hit_position is Vector2:
+		_spawn_floating_damage_number(mitigated_amount, player_hit_position as Vector2, true)
 	if RunData.current_health <= 0:
 		current_state = CombatState.COMBAT_OVER
 	print("Player took %d damage — HP: %d/%d" % [mitigated_amount, RunData.current_health, RunData.max_health])
+
+func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false) -> void:
+	if amount <= 0:
+		return
+	var is_enemy_damage := not hit_player and not is_heal
+
+	var damage_label := Label.new()
+	damage_label.text = "+%d" % amount if is_heal else "-%d" % amount
+	damage_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	damage_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	damage_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	damage_label.z_index = 500
+	damage_label.add_theme_font_size_override("font_size", 38 if hit_player else (36 if is_enemy_damage else 34))
+	if is_heal:
+		damage_label.add_theme_color_override("font_color", Color(0.45, 1.0, 0.62, 1.0))
+	else:
+		damage_label.add_theme_color_override("font_color", Color(1.0, 0.33, 0.28, 1.0) if hit_player else Color(1.0, 0.82, 0.22, 1.0))
+	damage_label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 0.95))
+	damage_label.add_theme_constant_override("outline_size", 6)
+	add_child(damage_label)
+
+	var start_position := world_position + Vector2(randf_range(-24.0, 24.0), randf_range(-12.0, 8.0))
+	var rise_amount := -84.0
+	var travel_time := 0.58
+	if is_enemy_damage:
+		rise_amount = -102.0
+		travel_time = 0.66
+	var end_position := start_position + Vector2(randf_range(-16.0, 16.0), rise_amount)
+
+	damage_label.global_position = start_position
+	damage_label.scale = Vector2(0.55, 0.55) if is_enemy_damage else Vector2(0.65, 0.65)
+	damage_label.rotation_degrees = randf_range(-8.0, 8.0) if is_enemy_damage else 0.0
+	damage_label.modulate = Color(1.0, 1.0, 1.0, 0.0)
+
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(damage_label, "global_position", end_position, travel_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(damage_label, "scale", Vector2(1.22, 0.94) if is_enemy_damage else Vector2.ONE, 0.14 if is_enemy_damage else 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(damage_label, "modulate:a", 1.0, 0.08)
+	if is_enemy_damage:
+		tween.tween_property(damage_label, "rotation_degrees", 0.0, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.set_parallel(false)
+	tween.tween_interval(0.12 if is_enemy_damage else 0.14)
+	tween.set_parallel(true)
+	tween.tween_property(damage_label, "scale", Vector2(0.9, 0.9), 0.32 if is_enemy_damage else 0.28).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_property(damage_label, "modulate:a", 0.0, 0.32 if is_enemy_damage else 0.28).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.finished.connect(damage_label.queue_free)
 
 func _apply_player_defense(amount: int, damage_type: SpellData.DamageType) -> int:
 	var defense := _get_player_defense_for_damage_type(damage_type)
@@ -808,6 +1126,9 @@ func _apply_player_heal(amount: int) -> void:
 	RunData.current_health = min(RunData.max_health, RunData.current_health + amount)
 	var healed_amount = RunData.current_health - previous_health
 	if healed_amount > 0:
+		var heal_position = _get_vfx_anchor_position(null)
+		if heal_position is Vector2:
+			_spawn_floating_damage_number(healed_amount, heal_position as Vector2, true, true)
 		print("Player healed %d HP — HP: %d/%d" % [healed_amount, RunData.current_health, RunData.max_health])
 
 func _flash_player_hit() -> void:
@@ -821,6 +1142,8 @@ func _flash_player_hit() -> void:
 	tween.tween_property(player_canvas, "modulate", Color(1, 1, 1, 1), 0.22)
 
 func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> void:
+	await _play_attack_lunge(source_entity, target_entity)
+
 	var vfx_lifetime_timer: SceneTreeTimer = null
 
 	if attack.sfx != null:
@@ -841,6 +1164,38 @@ func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target
 
 	if vfx_lifetime_timer != null:
 		await vfx_lifetime_timer.timeout
+
+func _play_attack_lunge(source_entity: Node, target_entity: Node) -> void:
+	if source_entity == null or target_entity == null:
+		return
+	if not is_instance_valid(source_entity) or not is_instance_valid(target_entity):
+		return
+	if not (source_entity is CanvasItem):
+		return
+
+	var source_canvas := source_entity as CanvasItem
+	var raw_target_position: Variant = _get_vfx_anchor_position(target_entity)
+	if not (raw_target_position is Vector2):
+		return
+
+	var start_position: Vector2 = source_canvas.global_position
+	var target_position := raw_target_position as Vector2
+	var attack_direction := target_position - start_position
+	if attack_direction.length_squared() <= 0.01:
+		return
+
+	var lunge_distance := minf(attack_lunge_distance, attack_direction.length() * 0.45)
+	if lunge_distance <= 0.0:
+		return
+
+	var lunge_position := start_position + attack_direction.normalized() * lunge_distance
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(source_canvas, "global_position", lunge_position, 0.09)
+	tween.set_ease(Tween.EASE_IN)
+	tween.tween_property(source_canvas, "global_position", start_position, 0.12)
+	await tween.finished
 
 func _resolve_vfx_position(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> Vector2:
 	match attack.vfx_anchor:
@@ -875,9 +1230,7 @@ func _end_enemy_turn() -> void:
 		_refresh_turns_order_ui()
 		return
 	if not _has_alive_enemies():
-		current_state = CombatState.COMBAT_OVER
-		_update_button_states()
-		_refresh_turns_order_ui()
+		_on_combat_victory()
 		return
 	current_round += 1
 	current_state = CombatState.PLAYER_TURN
@@ -889,9 +1242,65 @@ func _begin_player_turn() -> void:
 	_refresh_player_buffs_ui()
 	_attack_selected = false
 	selected_spell = null
+	_update_enemy_spell_targeting_preview()
 	_set_enemy_targeting_enabled(false)
+	_clear_spell_cursor_overlay()
 	_update_button_states()
 	_refresh_turns_order_ui()
+
+func _update_enemy_spell_targeting_preview() -> void:
+	var spell_icon: Texture2D = null
+	var use_whole_enemy_preview := false
+	if _attack_selected and selected_spell != null:
+		spell_icon = selected_spell.icon
+		use_whole_enemy_preview = _resolve_target_scope(selected_spell) == TargetScope.WHOLE_ENEMY
+
+	for enemy in enemy_entities:
+		if enemy == null or not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
+			continue
+		if enemy.has_method("set_spell_targeting_preview"):
+			enemy.set_spell_targeting_preview(_attack_selected, use_whole_enemy_preview, spell_icon)
+
+func _setup_spell_cursor_overlay() -> void:
+	if _spell_cursor_overlay != null:
+		return
+
+	_spell_cursor_overlay = TextureRect.new()
+	_spell_cursor_overlay.name = "SpellCursorOverlay"
+	_spell_cursor_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_spell_cursor_overlay.visible = false
+	_spell_cursor_overlay.z_index = 1000
+	_spell_cursor_overlay.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_spell_cursor_overlay.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_spell_cursor_overlay.custom_minimum_size = Vector2(28.0, 28.0)
+	add_child(_spell_cursor_overlay)
+
+func _update_spell_cursor_overlay() -> void:
+	if _spell_cursor_overlay == null:
+		return
+
+	if selected_spell == null or selected_spell.icon == null:
+		_clear_spell_cursor_overlay()
+		return
+
+	_spell_cursor_overlay.texture = selected_spell.icon
+	_spell_cursor_overlay.visible = true
+	_update_spell_cursor_overlay_position()
+
+func _update_spell_cursor_overlay_position() -> void:
+	if _spell_cursor_overlay == null or not _spell_cursor_overlay.visible:
+		return
+
+	var icon_size := _spell_cursor_overlay.texture.get_size() if _spell_cursor_overlay.texture != null else Vector2(28.0, 28.0)
+	_spell_cursor_overlay.size = icon_size
+	_spell_cursor_overlay.position = get_viewport().get_mouse_position() + Vector2(18.0, 18.0)
+
+func _clear_spell_cursor_overlay() -> void:
+	if _spell_cursor_overlay == null:
+		return
+
+	_spell_cursor_overlay.visible = false
+	_spell_cursor_overlay.texture = null
 
 func _set_enemy_targeting_enabled(enabled: bool) -> void:
 	var highlight_whole_enemy := enabled and _is_whole_enemy_targeting()

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://bf8am6yl50foj"]
 
-[ext_resource type="Texture2D" uid="uid://dht77d5gney4c" path="res://assets/Placeholders/ui/criticalchance buff.png" id="1_kblbj"]
+[ext_resource type="Texture2D" uid="uid://dht77d5gney4c" path="res://assets/placeholders/ui/criticalchance buff.png" id="1_kblbj"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_hyua3"]
 
 [resource]
@@ -14,3 +14,5 @@ duration_rounds = 2
 incoming_damage_multiplier_delta = 0.5
 target_physical_defense_delta = -25.0
 target_magic_defense_delta = -25.0
+damage_over_time = 5
+stun_turns = true
