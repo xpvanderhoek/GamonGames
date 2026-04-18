@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://he84ol6onw33"]
+
+[ext_resource type="Script" uid="uid://rlut218wvpdb" path="res://scripts/puzzles/sliding_puzzle/sliding_puzzle.gd" id="1_v7cav"]
+[ext_resource type="Texture2D" uid="uid://80dsky5u1kk8" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_sc7lg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3tfod"]
+font_size = 58
+font_color = Color(0.7137255, 0.7137255, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_sc7lg"]
+font_size = 45
+font_color = Color(0.2509804, 0.20784314, 0.1254902, 1)
+
+[node name="SlidingPuzzle" type="Control" unique_id=1018377517]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v7cav")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=934734883]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_sc7lg")
+expand_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=204311612]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StatusLabel" type="Label" parent="." unique_id=1528404870]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="CoinLabel" type="Label" parent="." unique_id=1119918420]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 79.0
+grow_horizontal = 2
+text = "120"
+label_settings = SubResource("LabelSettings_3tfod")
+horizontal_alignment = 1
+
+[node name="TotalCoinLabel" type="Label" parent="." unique_id=925275377]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -139.0
+offset_right = -10.0
+offset_bottom = 63.0
+grow_horizontal = 0
+text = "0"
+label_settings = SubResource("LabelSettings_sc7lg")
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="." unique_id=1949755136]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.00003
+offset_top = -65.0
+offset_right = -1.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(2.025, 2.025)
+text = "Continue"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
