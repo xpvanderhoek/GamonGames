@@ -86,8 +86,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -183.0
-offset_right = 183.0
-offset_bottom = 124.0
+offset_top = 42.465
+offset_right = 182.99994
+offset_bottom = 166.46512
 grow_horizontal = 2
 theme = SubResource("Theme_fh4ca")
 
