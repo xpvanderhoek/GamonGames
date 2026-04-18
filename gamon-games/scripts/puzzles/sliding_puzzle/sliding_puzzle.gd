@@ -271,4 +271,10 @@ func _check_win() -> void:
 	solved = true
 	timer_running = false
 	animate_labels(coin_amount, total_coins)
+	$Button.visible = true
 	status_label.text = "Solved in %d moves | %.1fs" % [move_count, time_elapsed]
+
+
+func _on_button_pressed() -> void:
+	TransitionManager.change_scene("res://scenes/map.tscn")
+	queue_free()
