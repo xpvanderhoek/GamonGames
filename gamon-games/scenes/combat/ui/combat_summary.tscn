@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c4axpc42vwi5s"]
+[gd_scene format=3 uid="uid://cq6axxshidxi"]
 
 [ext_resource type="Script" uid="uid://b02csc7bba82c" path="res://scripts/combat/ui/combat_summary.gd" id="1_0nftf"]
 
@@ -57,6 +57,20 @@ show_percentage = false
 [node name="NextLevel" type="Label" parent="PanelContainer/VBoxContainer/LevelContainer" unique_id=1109297444]
 layout_mode = 2
 text = "lvl 2"
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=1103316941]
+visible = false
+layout_mode = 2
+
+[node name="LevelUp" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1151295992]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Level Up! Choose a spell:"
+
+[node name="SpellOptionsContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=1426779724]
+visible = false
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" unique_id=1881383272]
 layout_mode = 2

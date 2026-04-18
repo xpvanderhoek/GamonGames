@@ -83,6 +83,8 @@ func exit_combat(enemy_killed: bool = false) -> void:
 	get_tree().paused = false
 
 func _on_player_leveled_up():
+	if combat_node != null:
+		return
 	call_deferred("_show_upgrade_screen")
 		
 func _show_upgrade_screen():

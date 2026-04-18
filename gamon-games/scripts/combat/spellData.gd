@@ -25,6 +25,7 @@ enum VfxAnchor {
 }
 
 @export var spell_id: String = ""
+var level: int = 1
 @export var spell_name: String = "Attack"
 @export var spell_type: SpellType = SpellType.ATTACK
 @export var target_scope: TargetScope = TargetScope.LIMB

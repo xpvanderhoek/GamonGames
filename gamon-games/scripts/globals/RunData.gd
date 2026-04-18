@@ -77,10 +77,6 @@ func new_run():
 	run_active = true
 	time_remaining = RUN_DURATION
 	add_spell(BASIC_ATTACK)
-	add_spell(HEAVY_STRIKE)
-	add_spell(BUFF)
-	add_spell(DEBUFF)
-	add_spell(HEAL)
 
 func end_run():
 	run_active = false
@@ -159,5 +155,19 @@ func add_spell(spell: SpellData) -> bool:
 	for existing_spell in spells:
 		if existing_spell.spell_id == spell.spell_id and not existing_spell.spell_id.is_empty():
 			return false
-	spells.append(spell)
+	spells.append(spell.duplicate())
 	return true
+
+func get_spell_by_id(spell_id: String) -> SpellData:
+	for spell in spells:
+		if spell.spell_id == spell_id and not spell.spell_id.is_empty():
+			return spell
+	return null
+
+func upgrade_spell(spell_id: String) -> void:
+	var existing = get_spell_by_id(spell_id)
+	if existing:
+		existing.level += 1
+		existing.damage = int(round(existing.damage * 1.2))
+		if existing.heal_amount > 0:
+			existing.heal_amount = int(round(existing.heal_amount * 1.2))
