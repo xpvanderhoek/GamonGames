@@ -13,7 +13,6 @@ func _ready() -> void:
 
 func setup_skill(skill_data: SkillData):
 	current_skill = skill_data
-	print("Current skill: " + str(current_skill.skill_name))
 	skill_name.text= str(skill_data.skill_name)
 	skill_texture.texture = skill_data.texture
 	
@@ -38,7 +37,7 @@ func _on_buy_button_pressed() -> void:
 	current_skill.current_level += 1
 	
 	if current_skill.affected_stat != "" and current_skill.stat_bonus_per_level > 0:
-		PlayerStats.update_stat(current_skill.affected_stat, current_skill.stat_bonus_per_level)
+		PlayerStats.update_stat(current_skill.affected_stat, current_skill.stat_bonus_per_level, current_skill.current_level)
 	
 	if current_skill.stat_bonus_per_level == 0 and current_skill.max_level == 1:
 		buff_amount.text = "Unlocked"
