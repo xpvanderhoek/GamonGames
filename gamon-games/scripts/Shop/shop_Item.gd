@@ -1,5 +1,8 @@
 extends Node2D
 
+signal item_hover_started(item_data: ItemData)
+signal item_hover_ended
+
 @export var item_data: ItemData
 @onready var sprite = $Item
 @onready var price_tag = $PriceTag
@@ -57,6 +60,7 @@ func buy_item():
 	if RunData.coins >= item_data.cost:
 		if RunData.add_item(item_data):
 			RunData.coins -= item_data.cost
+			item_hover_ended.emit()
 			_is_being_purchased = true
 			await _play_buy_smoke_effect()
 			queue_free()
@@ -70,6 +74,14 @@ func buy_item():
 		_last_no_coins_dialogue_ms = now_ms
 		if DialogueManager.has_dialogue("Avarus_no_coins"):
 			DialogueManager.start_random_line_dialogue("Avarus_no_coins")
+
+func on_hover_started() -> void:
+	if _is_being_purchased:
+		return
+	item_hover_started.emit(item_data)
+
+func on_hover_ended() -> void:
+	item_hover_ended.emit()
 
 func _play_buy_smoke_effect() -> void:
 	if buy_button:

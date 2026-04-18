@@ -4,9 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://dx7qeb3jcuxpw" path="res://Assets/ShopItems/ShopEnvironment/Pricetag.png" id="2_6j5au"]
 [ext_resource type="Texture2D" uid="uid://2f6ei0gykdh6" path="res://Assets/ShopItems/ShopEnvironment/buysign.png" id="3_iahut"]
 [ext_resource type="Script" uid="uid://daxrnhp17dkps" path="res://Scripts/Shop/BuyItemButton.gd" id="4_buybutton"]
-[ext_resource type="AudioStream" uid="uid://o01t8ucwav2d" path="res://Assets/Sounds/ItemboughtSound.mp3" id="5_e78sm"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6j5au"]
+font_color = Color(0.36604783, 0.23913273, 0.16171762, 1)
 shadow_color = Color(0, 0, 0, 1)
 shadow_offset = Vector2(0.165, 0.21)
 
@@ -93,7 +93,3 @@ grow_vertical = 2
 scale = Vector2(0.265, 0.265)
 icon = ExtResource("3_iahut")
 flat = true
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2116143132]
-stream = ExtResource("5_e78sm")
-volume_db = 3.319

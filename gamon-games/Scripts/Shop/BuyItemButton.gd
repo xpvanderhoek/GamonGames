@@ -16,10 +16,14 @@ func _ready():
 func _on_button_hover():
 	button.scale = original_scale * 1.2
 	button.modulate = Color(0.7, 0.7, 0.7)
+	if shop_item and shop_item.has_method("on_hover_started"):
+		shop_item.on_hover_started()
 
 func _on_button_unhover():
 	button.scale = original_scale
 	button.modulate = Color.WHITE
+	if shop_item and shop_item.has_method("on_hover_ended"):
+		shop_item.on_hover_ended()
 
 func _on_button_pressed():
 	if shop_item and shop_item.has_method("buy_item"):

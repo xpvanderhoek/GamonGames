@@ -12,6 +12,8 @@ const TIER_3_BASE_WEIGHT := 10.0
 @onready var spawn_positions = [$Parallax2D2/Item1, $Parallax2D2/Item2, $Parallax2D2/Item3]
 @onready var parallax_layers = [$Parallax2D, $Parallax2D2]
 @onready var exit_button = [$Parallax2D2/ExitButton/Button]
+@onready var item_tooltip_panel: Panel = $CanvasLayer/ItemTooltipPanel
+@onready var item_tooltip_label: Label = $CanvasLayer/ItemTooltipPanel/TooltipLabel
 
 var _parallax_offset := Vector2.ZERO
 var _shop_chatter_timer: Timer
@@ -24,6 +26,9 @@ func _ready():
 		var on_exit_pressed := Callable(self, "_exit_shop")
 		if not exit_button[0].pressed.is_connected(on_exit_pressed):
 			exit_button[0].pressed.connect(on_exit_pressed)
+
+	if item_tooltip_panel:
+		item_tooltip_panel.visible = false
 
 	spawn_shop_inventory()
 	_setup_shop_dialogue_flow()
@@ -95,10 +100,34 @@ func spawn_shop_inventory():
 		var new_item = item_scene.instantiate()
 		spawn_positions[i].add_child(new_item)
 		new_item.position = Vector2.ZERO
+		if new_item.has_signal("item_hover_started"):
+			new_item.item_hover_started.connect(_on_item_hover_started)
+		if new_item.has_signal("item_hover_ended"):
+			new_item.item_hover_ended.connect(_on_item_hover_ended)
 
 		# Pass the specific resource data to the item
 		new_item.item_data = selected_item
 		new_item._on_item_data_assigned()
+
+func _on_item_hover_started(item_data: ItemData) -> void:
+	if item_data == null or item_tooltip_panel == null or item_tooltip_label == null:
+		return
+
+	var lines: Array[String] = []
+	if item_data.item_name.strip_edges() != "":
+		lines.append(item_data.item_name)
+
+	if item_data.effect.strip_edges() != "":
+		lines.append(item_data.effect)
+	elif item_data.lore.strip_edges() != "":
+		lines.append(item_data.lore)
+
+	item_tooltip_label.text = "\n".join(lines)
+	item_tooltip_panel.visible = lines.size() > 0
+
+func _on_item_hover_ended() -> void:
+	if item_tooltip_panel:
+		item_tooltip_panel.visible = false
 
 func _load_shop_items() -> Array[ItemData]:
 	var items: Array[ItemData] = []

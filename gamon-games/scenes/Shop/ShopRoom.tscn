@@ -4,9 +4,16 @@
 [ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://Scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
 [ext_resource type="Texture2D" uid="uid://cuqfib4hrrgh" path="res://Assets/ShopItems/ShopEnvironment/onlybackground.png" id="3_2g6x2"]
 [ext_resource type="Texture2D" uid="uid://dwq2jocxomnv0" path="res://Assets/ShopItems/ShopEnvironment/Goblin.png" id="3_cougk"]
+[ext_resource type="Texture2D" uid="uid://dc7urx4pak0ku" path="res://Assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="3_xqf5f"]
 [ext_resource type="Texture2D" uid="uid://cw12g2bsxu5d8" path="res://Assets/ShopItems/ShopEnvironment/LeaveSign.png" id="4_6tcdb"]
 [ext_resource type="Texture2D" uid="uid://buattucnivv8t" path="res://Assets/ShopItems/ShopEnvironment/Cabinet.png" id="4_cougk"]
 [ext_resource type="Script" uid="uid://c6342sotxx3hs" path="res://Scripts/Shop/ExitHoverButton.gd" id="7_exit_hover"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fh4ca"]
+texture = ExtResource("3_xqf5f")
+
+[sub_resource type="Theme" id="Theme_fh4ca"]
+Panel/styles/panel = SubResource("StyleBoxTexture_fh4ca")
 
 [sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_cougk"]
 
@@ -73,6 +80,26 @@ script = ExtResource("1_2g6x2")
 item_scene = ExtResource("2_6tcdb")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1182942741]
+
+[node name="ItemTooltipPanel" type="Panel" parent="CanvasLayer" unique_id=1620017001]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -183.0
+offset_right = 183.0
+offset_bottom = 124.0
+grow_horizontal = 2
+theme = SubResource("Theme_fh4ca")
+
+[node name="TooltipLabel" type="Label" parent="CanvasLayer/ItemTooltipPanel" unique_id=1620017002]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 354.0
+offset_bottom = 112.0
+theme_override_colors/font_color = Color(0.23921569, 0.16470589, 0.14117648, 1)
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=1523504970]
 scroll_scale = Vector2(0.675, 0.675)
