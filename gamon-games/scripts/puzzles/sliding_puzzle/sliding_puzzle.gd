@@ -3,7 +3,7 @@ extends Control
 const GRID_SIZE     := 4
 const TILE_SIZE     := 100
 const TILE_GAP      := 6
-const SHUFFLE_MOVES := 400000
+const SHUFFLE_MOVES := 1
 const ANIM_TIME     := 0.12
 
 @onready var grid_container : GridContainer = $GridContainer
@@ -136,6 +136,7 @@ func _animate_coin_label(delta: float) -> void:
 	var offset_x = randf_range(-1, 1) * strength
 	var offset_y = randf_range(-1, 1) * strength
 	
+
 	coin_amount.position = base_coin_pos + Vector2(offset_x, offset_y)
 	
 	var scale_amount = 1.0 + (strength * 0.02)
@@ -187,6 +188,38 @@ func _animate_move_counter() -> void:
 	move_count = target
 	_update_ui()
 
+func animate_labels(label_a: Label, label_b: Label):
+	await get_tree().process_frame
+	
+	var tween = create_tween()
+	
+	label_b.pivot_offset = Vector2(label_b.size.x, label_b.size.y / 2)
+	
+	var target_pos = label_b.position
+	
+	tween.parallel().tween_property(
+		label_a,
+		"position",
+		target_pos,
+		0.5
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	
+		
+	tween.parallel().tween_property(label_a, "modulate:a", 0.0, 0.5)
+	tween.parallel().tween_property(label_a, "scale", Vector2(0.6, 0.6), 0.5)
+	
+	tween.tween_callback(func():
+		RunData.coins += coins
+		total_coins.text = str(RunData.coins)
+		label_a.queue_free()
+	)
+	
+	tween.tween_property(label_b, "scale", Vector2(1.2, 0.8), 0.1)
+	
+	tween.tween_property(label_b, "scale", Vector2(1.5, 1.2), 0.15)
+	
+	tween.tween_property(label_b, "scale", Vector2(1, 1), 0.2)
+
 
 func _swap(a: int, b: int) -> void:
 	var tmp = tile_values[a]
@@ -237,10 +270,5 @@ func _check_win() -> void:
 
 	solved = true
 	timer_running = false
+	animate_labels(coin_amount, total_coins)
 	status_label.text = "Solved in %d moves | %.1fs" % [move_count, time_elapsed]
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept"):
-		_setup_grid()
-		_shuffle_solvable()
-		_refresh_tiles()
