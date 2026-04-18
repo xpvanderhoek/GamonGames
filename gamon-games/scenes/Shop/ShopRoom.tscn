@@ -73,21 +73,23 @@ item_scene = ExtResource("2_6tcdb")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1182942741]
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=1523504970]
+scroll_scale = Vector2(0.675, 0.675)
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=975170063]
 position = Vector2(576.00006, 324.00003)
-scale = Vector2(0.3, 0.30000004)
+scale = Vector2(0.31, 0.31)
 texture = ExtResource("3_2g6x2")
 
 [node name="Parallax2D2" type="Parallax2D" parent="." unique_id=1693263178]
+scroll_scale = Vector2(0.345, 0.345)
 
 [node name="Cabinet" type="Sprite2D" parent="Parallax2D2" unique_id=933245951]
-position = Vector2(546.615, 495.875)
+position = Vector2(551.98, 512.258)
 scale = Vector2(0.356, 0.356)
 texture = ExtResource("4_cougk")
 
 [node name="Skeleton2D" type="Skeleton2D" parent="Parallax2D2" unique_id=1773687512]
-position = Vector2(384.885, 246.64)
+position = Vector2(384.885, 261.545)
 rotation = -0.01745329
 scale = Vector2(0.39, 0.39)
 modification_stack = SubResource("SkeletonModificationStack2D_cougk")
@@ -129,11 +131,11 @@ rotation = -1.9634954
 scale = Vector2(0.99999577, 0.99999577)
 rest = Transform2D(-0.3826818, -0.92387563, 0.92387563, -0.3826818, -73.92858, 145.10928)
 
-[node name="Item1" type="Marker2D" parent="." unique_id=1340818154]
-position = Vector2(350.345, 420)
+[node name="Item1" type="Marker2D" parent="Parallax2D2" unique_id=1340818154]
+position = Vector2(355.71002, 436.383)
 
-[node name="Item2" type="Marker2D" parent="." unique_id=1264630883]
-position = Vector2(552.215, 420)
+[node name="Item2" type="Marker2D" parent="Parallax2D2" unique_id=1264630883]
+position = Vector2(557.5801, 436.383)
 
-[node name="Item3" type="Marker2D" parent="." unique_id=41246958]
-position = Vector2(752.77, 420)
+[node name="Item3" type="Marker2D" parent="Parallax2D2" unique_id=41246958]
+position = Vector2(758.135, 436.383)

@@ -2,15 +2,35 @@ extends Node2D
 
 @export var item_scene: PackedScene 
 @export_dir var resources_folder: String = "res://Assets/ShopItems/Resources"
+@export var mouse_parallax_strength := Vector2(18.0, 10.0)
+@export_range(1.0, 30.0, 0.1) var mouse_parallax_smoothing := 8.0
 
 const TIER_1_BASE_WEIGHT := 70.0
 const TIER_2_BASE_WEIGHT := 20.0
 const TIER_3_BASE_WEIGHT := 10.0
 
-@onready var spawn_positions = [$Item1, $Item2, $Item3]
+@onready var spawn_positions = [$Parallax2D2/Item1, $Parallax2D2/Item2, $Parallax2D2/Item3]
+@onready var parallax_layers = [$Parallax2D, $Parallax2D2]
+
+var _parallax_offset := Vector2.ZERO
 
 func _ready():
 	spawn_shop_inventory()
+
+func _process(delta: float):
+	var half := get_viewport_rect().size * 0.5
+	if half.x == 0.0 or half.y == 0.0:
+		return
+
+	var mouse := get_viewport().get_mouse_position()
+	var offset := Vector2(
+		(mouse.x - half.x) / half.x,
+		(mouse.y - half.y) / half.y
+	) * mouse_parallax_strength
+
+	_parallax_offset = _parallax_offset.lerp(offset, mouse_parallax_smoothing * delta)
+	for layer in parallax_layers:
+		layer.scroll_offset = _parallax_offset * layer.scroll_scale
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
