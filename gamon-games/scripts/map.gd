@@ -32,9 +32,11 @@ func _setup_map_nodes():
 			if previous_node == null:
 				data.type = MapNodeData.Type.COMBAT
 			else:
-				var rand_idx = randi_range(0, MapNodeData.Type.size() - 1)
-				data.type = rand_idx as MapNodeData.Type
+				# RANDOM NODE-TYPE PICKER -- TURNED OFF FOR PLAYTEST
+				#var rand_idx = randi_range(0, MapNodeData.Type.size() - 1)
+				#data.type = rand_idx as MapNodeData.Type
 			
+				data.type = MapNodeData.Type[node.map_node_type]
 			if data.type == MapNodeData.Type.COMBAT:
 				var enemy_count = randi_range(1, 3)
 				for i in range(enemy_count):

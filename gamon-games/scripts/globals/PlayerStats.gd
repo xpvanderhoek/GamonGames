@@ -20,6 +20,19 @@ var stats = {
 	"magic_defense": 10.0,
 }
 
+var base_stats = {
+	"health": 100.0,
+	"damage": 1000.0,
+	"precision": 100.0,
+	"gold_gain": 1.0,
+	"debuff_resistance": 10.0,
+	"speed": 3000.0,
+	"defence": 10.0,
+	"luck": 0.0,
+	"physical_defense": 10.0,
+	"magic_defense": 10.0,
+}
+
 var upgrade_levels = {
 	"health": 0,
 	"damage": 0,
@@ -55,18 +68,20 @@ func get_stat_value(stat_name: String) -> float:
 		push_error("Stat '%s' does not exist" % stat_name)
 		return 0.0
 
-func update_stat(stat_name: String, value: float) -> float:
+
+func update_stat(stat_name: String, value: float, level: int = 1) -> float:
 	if not stat_name in stats:
 		push_error("Stat '%s' does not exist" % stat_name)
 		return 0.0
 	
 	var current_stat_value = get_stat_value(stat_name)
-	var multiplier = 1.0 + (value / 100.0)
-	var new_stat_value: float = current_stat_value * multiplier
+	var base_stat_value = base_stats[stat_name]
+	var bonus = base_stat_value * (value / 100.0) * level
+	var new_stat_value: float = base_stat_value + bonus
 	
 	stats[stat_name] = new_stat_value
 	stats_changed.emit(stat_name, new_stat_value)
-	print("Updated %s: %d to %d" % [stat_name, current_stat_value, new_stat_value])
+	print("Updated %s: %.2f to %.2f" % [stat_name, current_stat_value, new_stat_value])
 	
 	return new_stat_value
 
@@ -95,8 +110,8 @@ func upgrade_stat(stat_name: String) -> bool:
 		print("Stat '%s' is already at max level (%d)" % [stat_name, config.max])
 		return false
 	
-	update_stat(stat_name, config.percent)
 	upgrade_levels[stat_name] += 1
+	update_stat(stat_name, config.percent, upgrade_levels[stat_name])
 	upgrade_completed.emit(stat_name, upgrade_levels[stat_name])
 	print("Upgraded %s to level %d" % [stat_name, upgrade_levels[stat_name]])
 	
@@ -128,5 +143,4 @@ func reset_stats() -> void:
 func apply_skill_bonuses(skills: Array) -> void:
 	for skill in skills:
 		if skill is SkillData and skill.current_level > 0 and skill.affected_stat != "":
-			for i in range(skill.current_level):
-				update_stat(skill.affected_stat, skill.stat_bonus_per_level)
+			update_stat(skill.affected_stat, skill.stat_bonus_per_level, skill.current_level)
