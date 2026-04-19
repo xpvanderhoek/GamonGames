@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://dfgacxhmow3xg"]
+
+[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="1_r0db5"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_qk4kk"]
+
+[resource]
+script = ExtResource("2_qk4kk")
+spell_id = "pilar_of_flame"
+spell_name = "Pilar Of Flame"
+target_scope = 1
+min_damage = 10
+max_damage = 12
+energy = 3
+accuracy = 100.0
+damage_type = 1
+weight = 100.0
+icon = ExtResource("1_r0db5")
+vfx_anchor = 1
+vfx_lifetime = 1.0

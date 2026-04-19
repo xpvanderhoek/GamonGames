@@ -26,7 +26,7 @@ signal entity_died(entity: CombatEntity)
 signal entity_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int)
 signal highlighted_limb_clicked(limb: CombatLimb)
 
-var exp_reward: int = 50
+var exp_reward: int = 100
 
 func get_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
 	match damage_type:

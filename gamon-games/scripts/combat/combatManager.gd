@@ -19,6 +19,7 @@ enum CombatAction {
 enum TargetScope {
 	LIMB,
 	WHOLE_ENEMY,
+	ALL_ENEMIES,
 }
 
 @export var player_base_damage: int = 25
@@ -32,6 +33,9 @@ enum TargetScope {
 @export var player_max_health: int = 100
 @export_range(0.0, 100.0, 0.1) var player_hit_chance_bonus_percent: float = 20.0
 @export_range(0.0, 200.0, 1.0) var attack_lunge_distance: float = 42.0
+@export_range(0.0, 1.0, 0.01) var multi_hit_delay_seconds: float = 0.1
+@export_range(0.0, 1.0, 0.01) var enemy_attack_telegraph_seconds: float = 0.4
+@export_range(1.0, 1.5, 0.01) var enemy_attack_telegraph_scale: float = 1.14
 @export var attack_target_scope: TargetScope = TargetScope.LIMB
 @export var debuff_target_scope: TargetScope = TargetScope.LIMB
 
@@ -313,8 +317,16 @@ func _build_spell_tooltip(spell: SpellData) -> String:
 		lines.append("Energy: %d" % spell.energy)
 	if spell.accuracy > 0.0:
 		lines.append("Accuracy: %s%%" % str(snappedf(spell.accuracy, 0.1)))
-	if spell.damage > 0:
-		lines.append("Damage: %d (%s)" % [spell.damage, _damage_type_to_text(spell.damage_type)])
+	if spell.has_damage():
+		var min_damage := spell.get_min_damage()
+		var max_damage := spell.get_max_damage()
+		var attacks := spell.get_attack_count()
+		if min_damage == max_damage:
+			lines.append("Damage: %d (%s)" % [min_damage, _damage_type_to_text(spell.damage_type)])
+		else:
+			lines.append("Damage: %d-%d (%s)" % [min_damage, max_damage, _damage_type_to_text(spell.damage_type)])
+		if attacks > 1:
+			lines.append("Hits: %d" % attacks)
 	if spell.heal_amount > 0:
 		lines.append("Heal: %d" % spell.heal_amount)
 
@@ -364,6 +376,8 @@ func _target_scope_to_text(target_scope: SpellData.TargetScope) -> String:
 			return "Limb"
 		SpellData.TargetScope.WHOLE_ENEMY:
 			return "Whole Enemy"
+		SpellData.TargetScope.ALL_ENEMIES:
+			return "All Enemies"
 		_:
 			return "Unknown"
 
@@ -473,8 +487,14 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 	if limb.is_destroyed:
 		return
 
-	var target_limbs := _get_target_limbs(source_enemy, limb, selected_spell)
-	if target_limbs.is_empty():
+	var resolved_scope := _resolve_target_scope(selected_spell)
+	var target_enemies: Array[CombatEntity] = []
+	if resolved_scope == TargetScope.ALL_ENEMIES:
+		target_enemies = _get_alive_enemies()
+	else:
+		target_enemies.append(source_enemy)
+
+	if target_enemies.is_empty():
 		return
 
 	var active_spell := selected_spell
@@ -485,30 +505,44 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		var spell_type := SpellData.SpellType.ATTACK
 		var attack_damage_type := SpellData.DamageType.PHYSICAL
 		var can_deal_damage := true
+		var attack_count := 1
 		if active_spell != null:
-			spell_damage = active_spell.damage
+			spell_damage = active_spell.roll_damage()
 			spell_type = active_spell.spell_type
 			attack_damage_type = active_spell.damage_type
-			can_deal_damage = active_spell.damage > 0
+			can_deal_damage = active_spell.has_damage()
+			attack_count = active_spell.get_attack_count()
 
 		if can_deal_damage and (spell_type == SpellData.SpellType.ATTACK or spell_type == SpellData.SpellType.DEBUFF):
 			var player_modifiers := _get_player_outgoing_modifiers()
 			var outgoing_multiplier := float(player_modifiers.get("mult", 1.0))
 			var outgoing_flat := int(player_modifiers.get("flat", 0))
-			var raw_damage = RunData.get_stat("damage") + spell_damage + outgoing_flat
-			for target_limb in target_limbs:
-				if target_limb.is_destroyed:
-					continue
-				var incoming_multiplier := _get_enemy_incoming_multiplier(source_enemy, target_limb)
-				var final_damage := int(round(float(raw_damage) * outgoing_multiplier * incoming_multiplier))
-				var enemy_defense := _get_enemy_total_defense_for_damage_type(source_enemy, target_limb, attack_damage_type)
-				final_damage = _apply_defense_to_damage(final_damage, enemy_defense)
-				final_damage = max(0, final_damage)
-				if final_damage > 0:
-					source_enemy.take_damage(target_limb, final_damage)
+			for _attack_iteration in range(attack_count):
+				if active_spell != null:
+					spell_damage = active_spell.roll_damage()
+				var raw_damage = RunData.get_stat("damage") + spell_damage + outgoing_flat
+				for target_enemy in target_enemies:
+					if target_enemy == null or not is_instance_valid(target_enemy) or not target_enemy.is_alive:
+						continue
+					var target_limbs := _get_target_limbs(target_enemy, limb, selected_spell)
+					for target_limb in target_limbs:
+						if target_limb.is_destroyed:
+							continue
+						var incoming_multiplier := _get_enemy_incoming_multiplier(target_enemy, target_limb)
+						var final_damage := int(round(float(raw_damage) * outgoing_multiplier * incoming_multiplier))
+						var enemy_defense := _get_enemy_total_defense_for_damage_type(target_enemy, target_limb, attack_damage_type)
+						final_damage = _apply_defense_to_damage(final_damage, enemy_defense)
+						final_damage = max(0, final_damage)
+						if final_damage > 0:
+							target_enemy.take_damage(target_limb, final_damage)
+				if _attack_iteration < attack_count - 1 and multi_hit_delay_seconds > 0.0:
+					await get_tree().create_timer(multi_hit_delay_seconds).timeout
 
 		if active_spell != null and active_spell.spell_type == SpellData.SpellType.DEBUFF:
-			_append_enemy_effect(source_enemy, active_spell, limb)
+			for target_enemy in target_enemies:
+				if target_enemy == null or not is_instance_valid(target_enemy) or not target_enemy.is_alive:
+					continue
+				_append_enemy_effect(target_enemy, active_spell, limb)
 
 		if active_spell != null:
 			_play_attack_feedback(active_spell, get_node_or_null(ui_player), source_enemy)
@@ -602,6 +636,7 @@ func _setup_target_scope_selectors() -> void:
 		attack_scope_option.clear()
 		attack_scope_option.add_item("Limb", TargetScope.LIMB)
 		attack_scope_option.add_item("Whole Enemy", TargetScope.WHOLE_ENEMY)
+		attack_scope_option.add_item("All Enemies", TargetScope.ALL_ENEMIES)
 		_select_option_by_id(attack_scope_option, int(attack_target_scope))
 		var on_attack_scope_selected := Callable(self, "_on_attack_scope_selected")
 		if not attack_scope_option.item_selected.is_connected(on_attack_scope_selected):
@@ -611,6 +646,7 @@ func _setup_target_scope_selectors() -> void:
 		debuff_scope_option.clear()
 		debuff_scope_option.add_item("Limb", TargetScope.LIMB)
 		debuff_scope_option.add_item("Whole Enemy", TargetScope.WHOLE_ENEMY)
+		debuff_scope_option.add_item("All Enemies", TargetScope.ALL_ENEMIES)
 		_select_option_by_id(debuff_scope_option, int(debuff_target_scope))
 		var on_debuff_scope_selected := Callable(self, "_on_debuff_scope_selected")
 		if not debuff_scope_option.item_selected.is_connected(on_debuff_scope_selected):
@@ -675,18 +711,26 @@ func _perform_enemy_turn() -> void:
 		if attack == null:
 			continue
 
-		await get_tree().create_timer(0.35).timeout
+		await _telegraph_enemy_attack(attacking_enemy, attack_limb, attack)
 		await _play_attack_feedback(attack, attacking_enemy, get_node_or_null(ui_player))
 		var outgoing_multiplier := _get_enemy_outgoing_multiplier(attacking_enemy)
-		var damage: int = int(round(float(max(0, attack.damage)) * outgoing_multiplier))
-		_apply_player_damage(damage, attack.damage_type)
-		if current_state == CombatState.COMBAT_OVER:
-			return
+		var attack_count := attack.get_attack_count()
+		for _attack_iteration in range(attack_count):
+			if current_state == CombatState.COMBAT_OVER:
+				return
+			var damage: int = int(round(float(attack.roll_damage()) * outgoing_multiplier))
+			_apply_player_damage(damage, attack.damage_type)
+			if current_state == CombatState.COMBAT_OVER:
+				return
+			if _attack_iteration < attack_count - 1 and multi_hit_delay_seconds > 0.0:
+				await get_tree().create_timer(multi_hit_delay_seconds).timeout
 
 	_end_enemy_turn()
 
 func _choose_enemy_attack_limb(source_enemy: CombatEntity) -> CombatLimb:
 	var candidates: Array[CombatLimb] = []
+	var candidate_weights: Array[float] = []
+	var total_weight := 0.0
 	for limb in source_enemy.limbs:
 		if limb.is_destroyed:
 			continue
@@ -694,9 +738,78 @@ func _choose_enemy_attack_limb(source_enemy: CombatEntity) -> CombatLimb:
 			continue
 		if limb.has_attack_options():
 			candidates.append(limb)
+			var limb_weight := 0.0
+			for attack in limb.get_attack_options():
+				limb_weight += maxf(0.0, attack.weight)
+			candidate_weights.append(limb_weight)
+			total_weight += limb_weight
 	if candidates.is_empty():
 		return null
+
+	if total_weight <= 0.0:
+		return candidates[randi() % candidates.size()]
+
+	var roll := randf() * total_weight
+	var cumulative := 0.0
+	for idx in range(candidates.size()):
+		var weight := candidate_weights[idx]
+		if weight <= 0.0:
+			continue
+		cumulative += weight
+		if roll < cumulative:
+			return candidates[idx]
+
+	for idx in range(candidates.size()):
+		if candidate_weights[idx] > 0.0:
+			return candidates[idx]
+
 	return candidates[randi() % candidates.size()]
+
+func _telegraph_enemy_attack(source_enemy: CombatEntity, attack_limb: CombatLimb, attack: SpellData) -> void:
+	if enemy_attack_telegraph_seconds <= 0.0:
+		return
+	if source_enemy == null or not is_instance_valid(source_enemy):
+		return
+	if attack_limb == null or not is_instance_valid(attack_limb) or attack_limb.is_destroyed:
+		return
+
+	var highlighted_limbs: Array[CombatLimb] = []
+	var highlight_whole_enemy := false
+	if attack != null:
+		highlight_whole_enemy = attack.target_scope == SpellData.TargetScope.WHOLE_ENEMY or attack.target_scope == SpellData.TargetScope.ALL_ENEMIES
+
+	if highlight_whole_enemy:
+		for limb in source_enemy.limbs:
+			if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
+				limb.set_highlighted()
+				highlighted_limbs.append(limb)
+	else:
+		attack_limb.set_highlighted()
+		highlighted_limbs.append(attack_limb)
+
+	var original_scales: Array[Vector2] = []
+	for limb in highlighted_limbs:
+		if limb == null or not is_instance_valid(limb):
+			original_scales.append(Vector2.ONE)
+			continue
+		original_scales.append(limb.scale)
+		limb.modulate = Color(1.0, 0.14, 0.14, 1.0)
+		var pulse_tween := create_tween()
+		pulse_tween.set_parallel(true)
+		pulse_tween.tween_property(limb, "modulate", Color(1.0, 0.08, 0.08, 1.0), enemy_attack_telegraph_seconds * 0.75).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		pulse_tween.tween_property(limb, "scale", limb.scale * enemy_attack_telegraph_scale, enemy_attack_telegraph_seconds * 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		pulse_tween.set_parallel(false)
+		pulse_tween.set_parallel(true)
+		pulse_tween.tween_property(limb, "modulate", Color(1.0, 0.18, 0.18, 1.0), enemy_attack_telegraph_seconds * 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		pulse_tween.tween_property(limb, "scale", original_scales[-1], enemy_attack_telegraph_seconds * 0.55).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
+	await get_tree().create_timer(enemy_attack_telegraph_seconds).timeout
+
+	for idx in range(highlighted_limbs.size()):
+		var limb := highlighted_limbs[idx]
+		if limb != null and is_instance_valid(limb):
+			limb.scale = original_scales[idx]
+			limb.set_unhighlighted()
 
 func _reset_combat_effects() -> void:
 	_player_effects.clear()
@@ -841,7 +954,7 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 	}
 
 	var enemy_id := target_enemy.get_instance_id()
-	if _resolve_target_scope(spell) == TargetScope.WHOLE_ENEMY:
+	if _resolve_target_scope(spell) != TargetScope.LIMB:
 		var enemy_effects: Array = _enemy_effects.get(enemy_id, [])
 		for index in range(enemy_effects.size()):
 			var existing_effect := enemy_effects[index] as Dictionary
@@ -1073,7 +1186,7 @@ func _apply_enemy_effect_damage_over_time(target_enemy: CombatEntity, effect: Di
 
 	if target_limb != null and is_instance_valid(target_limb) and not target_limb.is_destroyed:
 		target_limbs.append(target_limb)
-	elif target_scope == TargetScope.WHOLE_ENEMY:
+	elif target_scope == TargetScope.WHOLE_ENEMY or target_scope == TargetScope.ALL_ENEMIES:
 		for limb in target_enemy.limbs:
 			if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
 				target_limbs.append(limb)
@@ -1147,15 +1260,16 @@ func _resolve_target_scope(spell: SpellData) -> TargetScope:
 func _is_whole_enemy_targeting() -> bool:
 	if not _attack_selected:
 		return false
-	return _resolve_target_scope(selected_spell) == TargetScope.WHOLE_ENEMY
+	var scope := _resolve_target_scope(selected_spell)
+	return scope == TargetScope.WHOLE_ENEMY or scope == TargetScope.ALL_ENEMIES
 
 func _get_target_limbs(source_enemy: CombatEntity, hovered_limb: CombatLimb, spell: SpellData) -> Array[CombatLimb]:
 	if source_enemy == null or not is_instance_valid(source_enemy):
 		return []
-	if hovered_limb == null or not is_instance_valid(hovered_limb):
-		return []
-
-	if _resolve_target_scope(spell) == TargetScope.LIMB:
+	var resolved_scope := _resolve_target_scope(spell)
+	if resolved_scope == TargetScope.LIMB:
+		if hovered_limb == null or not is_instance_valid(hovered_limb):
+			return []
 		return [hovered_limb]
 
 	var target_limbs: Array[CombatLimb] = []
@@ -1425,6 +1539,19 @@ func _begin_player_turn() -> void:
 	_cleanup_expired_effects()
 	_refresh_enemy_buffs_ui()
 	_refresh_player_buffs_ui()
+	if _is_player_stunned():
+		var player_anchor = _get_vfx_anchor_position(null)
+		if player_anchor is Vector2:
+			_spawn_floating_damage_number(0, player_anchor as Vector2, true, false, "DISABLED")
+		_attack_selected = false
+		selected_spell = null
+		_update_enemy_spell_targeting_preview()
+		_set_enemy_targeting_enabled(false)
+		_clear_spell_cursor_overlay()
+		_update_button_states()
+		_refresh_turns_order_ui()
+		_end_player_turn()
+		return
 	var regen_amount: int = maxi(0, int(round(float(RunData.get_stat("energy_regen")))))
 	_regenerate_player_energy(regen_amount)
 	_attack_selected = false
@@ -1438,6 +1565,12 @@ func _begin_player_turn() -> void:
 	for enemy in enemy_entities:
 		if enemy != null and is_instance_valid(enemy):
 			enemy._refresh_highlight()
+
+func _is_player_stunned() -> bool:
+	for effect in _player_effects:
+		if bool(effect.get("stun_turns", false)):
+			return true
+	return false
 
 func _regenerate_player_energy(amount: int) -> void:
 	if amount <= 0:
@@ -1461,7 +1594,8 @@ func _update_enemy_spell_targeting_preview() -> void:
 	var use_whole_enemy_preview := false
 	if _attack_selected and selected_spell != null:
 		spell_icon = selected_spell.icon
-		use_whole_enemy_preview = _resolve_target_scope(selected_spell) == TargetScope.WHOLE_ENEMY
+		var resolved_scope := _resolve_target_scope(selected_spell)
+		use_whole_enemy_preview = resolved_scope == TargetScope.WHOLE_ENEMY or resolved_scope == TargetScope.ALL_ENEMIES
 
 	for enemy in enemy_entities:
 		if enemy == null or not is_instance_valid(enemy) or enemy.is_queued_for_deletion():

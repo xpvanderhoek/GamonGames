@@ -1,10 +1,7 @@
 extends Node
 
 const BASIC_ATTACK = preload("res://resources/combat_spells/basic_attack.tres")
-const HEAVY_STRIKE = preload("res://resources/combat_spells/heavy_strike.tres")
-const BUFF = preload("res://resources/combat_spells/buff.tres")
-const DEBUFF = preload("res://resources/combat_spells/debuff.tres")
-const HEAL = preload("res://resources/combat_spells/heal.tres")
+const BLOCK = preload("res://resources/combat_spells/block.tres")
 
 const RUN_DURATION := 600.0 # 10 minutes
 var random_seed : int = 0
@@ -91,6 +88,7 @@ func new_run():
 	run_active = true
 	time_remaining = RUN_DURATION
 	add_spell(BASIC_ATTACK)
+	add_spell(BLOCK)
 
 func reset_energy() -> void:
 	max_energy = 10
@@ -187,5 +185,11 @@ func upgrade_spell(spell_id: String) -> void:
 	if existing:
 		existing.level += 1
 		existing.damage = int(round(existing.damage * 1.2))
+		if existing.min_damage >= 0:
+			existing.min_damage = int(round(existing.min_damage * 1.2))
+		if existing.max_damage >= 0:
+			existing.max_damage = int(round(existing.max_damage * 1.2))
+		if existing.min_damage >= 0 and existing.max_damage >= 0 and existing.max_damage < existing.min_damage:
+			existing.max_damage = existing.min_damage
 		if existing.heal_amount > 0:
 			existing.heal_amount = int(round(existing.heal_amount * 1.2))

@@ -1,13 +1,16 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://bmysqykthm5qc"]
 
-[ext_resource type="Texture2D" uid="uid://cydiwpld3gxpm" path="res://Assets/Placeholders/ui/blade_master.png" id="1_en65a"]
+[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="1_en65a"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_bxno7"]
 
 [resource]
 script = ExtResource("2_bxno7")
 spell_id = "cleave"
 spell_name = "Cleave"
-damage = 5
+target_scope = 1
+min_damage = 8
+max_damage = 15
+energy = 4
 accuracy = 100.0
 weight = 100.0
 icon = ExtResource("1_en65a")

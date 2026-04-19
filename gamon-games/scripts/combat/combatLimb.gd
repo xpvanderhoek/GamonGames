@@ -59,7 +59,27 @@ func choose_attack() -> SpellData:
 	if options.size() == 1:
 		return options[0]
 
-	# add later weighting based on attacks
+	var total_weight := 0.0
+	for attack in options:
+		total_weight += maxf(0.0, attack.weight)
+
+	if total_weight <= 0.0:
+		return options[randi() % options.size()]
+
+	var roll := randf() * total_weight
+	var cumulative := 0.0
+	for attack in options:
+		var weight := maxf(0.0, attack.weight)
+		if weight <= 0.0:
+			continue
+		cumulative += weight
+		if roll < cumulative:
+			return attack
+
+	for attack in options:
+		if attack.weight > 0.0:
+			return attack
+
 	return options[randi() % options.size()]
 
 func _ready() -> void:

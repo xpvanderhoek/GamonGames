@@ -4,10 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
 [ext_resource type="Texture2D" uid="uid://cuqfib4hrrgh" path="res://assets/ShopItems/ShopEnvironment/onlybackground.png" id="3_2g6x2"]
 [ext_resource type="Texture2D" uid="uid://dwq2jocxomnv0" path="res://assets/ShopItems/ShopEnvironment/Goblin.png" id="3_cougk"]
-[ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://Assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="3_xqf5f"]
-[ext_resource type="Texture2D" uid="uid://cc8kljam087th" path="res://Assets/ShopItems/ShopEnvironment/LeaveSign.png" id="4_6tcdb"]
+[ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="3_xqf5f"]
+[ext_resource type="Texture2D" uid="uid://cc8kljam087th" path="res://assets/ShopItems/ShopEnvironment/LeaveSign.png" id="4_6tcdb"]
 [ext_resource type="Texture2D" uid="uid://buattucnivv8t" path="res://assets/ShopItems/ShopEnvironment/Cabinet.png" id="4_cougk"]
-[ext_resource type="Script" path="res://Scripts/Shop/ExitHoverButton.gd" id="7_exit_hover"]
+[ext_resource type="Script" path="res://scripts/Shop/ExitHoverButton.gd" id="7_exit_hover"]
 [ext_resource type="Texture2D" uid="uid://c60gbhy7lsm1i" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="9_t6u03"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fh4ca"]
