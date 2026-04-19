@@ -20,7 +20,6 @@ func _ready() -> void:
 	_on_exp_changed(RunData.current_exp)
 	_on_health_changed()
 	
-	_setup_skill_tree_overlay()
 	_apply_skill_tree_bonuses()
 	
 	upgrade_screen.upgrade_selected.connect(_on_upgrade_selected)
@@ -109,31 +108,9 @@ func _input(event):
 		 
 	if event.is_action("ui_text_delete_word"):
 		DialogueManager.start_dialogue("intro")
-	
-	# Debug for now, because limbo world doesn't exist
-	if event.is_action_pressed("open_skill_tree_debug"):
-		_toggle_skill_tree()
 
 func _process(delta: float) -> void:
 	RunData.update_timer(delta)
-
-func _setup_skill_tree_overlay() -> void:
-	var skill_tree_scene = load("res://scenes/skilltree/skill_tree_screen.tscn")
-	skill_tree_overlay = skill_tree_scene.instantiate()
-	
-	var canvas_layer = CanvasLayer.new()
-	canvas_layer.layer = 100
-	add_child(canvas_layer)
-	canvas_layer.add_child(skill_tree_overlay)
-	
-	skill_tree_overlay.visible = false
-
-func _toggle_skill_tree() -> void:
-	if skill_tree_overlay == null:
-		return
-	
-	skill_tree_overlay.visible = !skill_tree_overlay.visible
-	get_tree().paused = skill_tree_overlay.visible
 
 func _apply_skill_tree_bonuses() -> void:
 	var skills: Array = []
