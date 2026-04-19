@@ -679,6 +679,8 @@ func _perform_enemy_turn() -> void:
 		var outgoing_multiplier := _get_enemy_outgoing_multiplier(attacking_enemy)
 		var damage: int = int(round(float(max(0, attack.damage)) * outgoing_multiplier))
 		_apply_player_damage(damage, attack.damage_type)
+		if current_state == CombatState.COMBAT_OVER:
+			return
 
 	_end_enemy_turn()
 
@@ -1176,7 +1178,15 @@ func _apply_player_damage(amount: int, damage_type: SpellData.DamageType = Spell
 		_spawn_floating_damage_number(mitigated_amount, player_hit_position as Vector2, true)
 	if RunData.current_health <= 0:
 		current_state = CombatState.COMBAT_OVER
+		_restart_run_on_player_death()
 	print("Player took %d damage — HP: %d/%d" % [mitigated_amount, RunData.current_health, RunData.max_health])
+
+func _restart_run_on_player_death() -> void:
+	if _is_exiting_combat:
+		return
+	_is_exiting_combat = true
+	RunData.end_run()
+	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
 
 func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false, custom_text: String = "") -> void:
 	var is_custom_text := not custom_text.is_empty()
