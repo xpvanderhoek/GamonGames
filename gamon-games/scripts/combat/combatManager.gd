@@ -242,6 +242,7 @@ func _select_spell(spell: SpellData) -> void:
 	_update_enemy_spell_targeting_preview()
 	_update_spell_cursor_overlay()
 	_update_button_states()
+	_refresh_limb_highlighting_from_mouse()
 
 func _rebuild_spells_panel() -> void:
 	_spell_buttons.clear()
@@ -1516,6 +1517,26 @@ func _set_enemy_targeting_enabled(enabled: bool) -> void:
 	_enemy_targeting_enabled = enabled
 	_whole_enemy_highlight_enabled = highlight_whole_enemy
 	enemy_targeting_changed.emit(enabled, highlight_whole_enemy)
+
+func _refresh_limb_highlighting_from_mouse() -> void:
+	if not _attack_selected or not _enemy_targeting_enabled:
+		return
+
+	var mouse_pos := get_viewport().get_mouse_position()
+
+	for enemy in enemy_entities:
+		if enemy == null or not is_instance_valid(enemy):
+			continue
+		for limb in enemy.limbs:
+			if limb == null or not is_instance_valid(limb) or limb.is_destroyed:
+				continue
+			if limb is Sprite2D and limb.texture != null:
+				var texture_size := limb.texture.get_size()
+				var limb_rect := Rect2(limb.global_position - texture_size * 0.5, texture_size)
+				if limb_rect.has_point(mouse_pos):
+					if limb.has_method("set_current_highlight"):
+						limb.set_current_highlight()
+					return
 
 func _update_player_health_label() -> void:
 	lbl_player_health.text = "HP: %d/%d" % [RunData.current_health, RunData.max_health]
