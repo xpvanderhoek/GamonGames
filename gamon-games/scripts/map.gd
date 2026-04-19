@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var dotted_line: Line2D = $DottedLine
 @onready var map_nodes: Node2D = $MapNodes
+@onready var coins: Label = $CoinLabel
 
 var enemy_scenes := [
 	"res://scenes/combat/enemies/ttt.tscn"
@@ -15,6 +16,7 @@ var puzzles := [
 func _ready() -> void:
 	if not RunData.run_active:
 		RunData.new_run()
+	coins.text = str(RunData.coins)
 	_setup_map_nodes()
 	_update_node_availability()
 
@@ -83,6 +85,7 @@ func pick_type_map(array: Array):
 	return array[array_number]
 
 func _update_node_availability() -> void:
+	coins.text = str(RunData.coins)
 	for node in map_nodes.get_children():
 		node.available = false
 	
