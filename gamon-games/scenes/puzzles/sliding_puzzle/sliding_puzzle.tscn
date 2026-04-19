@@ -1,8 +1,13 @@
 [gd_scene format=3 uid="uid://he84ol6onw33"]
 
 [ext_resource type="Script" uid="uid://rlut218wvpdb" path="res://scripts/puzzles/sliding_puzzle/sliding_puzzle.gd" id="1_v7cav"]
-[ext_resource type="Texture2D" uid="uid://xs2wt7jkfevy" path="res://assets/Placeholders/Puzzle/sliding_puzzle/tijger.jpg" id="2_3tfod"]
+[ext_resource type="Texture2D" uid="uid://c8ntkqy7y8c00" path="res://assets/Placeholders/Puzzle/sliding_puzzle/rodepanda.jpg" id="2_3tfod"]
+[ext_resource type="Texture2D" uid="uid://ciek1uoimyqnx" path="res://assets/Placeholders/Puzzle/sliding_puzzle/koala.webp" id="2_la3wc"]
 [ext_resource type="Texture2D" uid="uid://80dsky5u1kk8" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_sc7lg"]
+[ext_resource type="Texture2D" uid="uid://xs2wt7jkfevy" path="res://assets/Placeholders/Puzzle/sliding_puzzle/tijger.jpg" id="4_rn1xw"]
+[ext_resource type="Texture2D" uid="uid://ca1ejej7wx4f3" path="res://assets/Placeholders/Puzzle/sliding_puzzle/dog.jpg" id="5_pv4rj"]
+[ext_resource type="Texture2D" uid="uid://fhka50y645uh" path="res://assets/Placeholders/Puzzle/sliding_puzzle/panda.jpg" id="6_3q5v1"]
+[ext_resource type="Texture2D" uid="uid://jb43uwftviui" path="res://assets/Placeholders/Puzzle/sliding_puzzle/penguin.webp" id="7_x4kj6"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3tfod"]
 font_size = 58
@@ -20,7 +25,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_v7cav")
-puzzle_texture = ExtResource("2_3tfod")
+all_puzzle_textures = Array[Texture2D]([ExtResource("2_la3wc"), ExtResource("2_3tfod"), ExtResource("4_rn1xw"), ExtResource("5_pv4rj"), ExtResource("6_3q5v1"), ExtResource("7_x4kj6")])
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=934734883]
 layout_mode = 1
