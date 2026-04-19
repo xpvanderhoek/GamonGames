@@ -327,6 +327,8 @@ func _animate_gap_to_zero() -> void:
 	, start_gap, end_gap, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	
 func _check_win() -> void:
+	if coins == 0:
+		$Button.visible = true
 	for i in range(tile_values.size() - 1):
 		if tile_values[i] != i + 1:
 			return
