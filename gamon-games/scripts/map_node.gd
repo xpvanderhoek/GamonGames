@@ -11,6 +11,7 @@ const ICONS := {
 
 @onready var sprite : Sprite2D = $Visuals/Sprite2D
 @onready var animation_player : AnimationPlayer = $AnimationPlayer
+@export_enum("COMBAT", "PUZZLE", "SHOP") var map_node_type: String = "COMBAT"
 
 var available := false : set = set_available
 var data : MapNodeData : set = set_data
