@@ -14,12 +14,13 @@ const TIER_3_BASE_WEIGHT := 10.0
 @onready var exit_button = [$Parallax2D2/ExitButton/Button]
 @onready var item_tooltip_panel: Panel = $CanvasLayer/ItemTooltipPanel
 @onready var item_tooltip_label: Label = $CanvasLayer/ItemTooltipPanel/TooltipLabel
+@onready var coins: Label = $Parallax2D2/Sprite2D/CoinLabel
 
 var _parallax_offset := Vector2.ZERO
 var _shop_chatter_timer: Timer
 
-const SHOP_CHATTER_MIN_SEC := 20.0
-const SHOP_CHATTER_MAX_SEC := 40.0
+const SHOP_CHATTER_MIN_SEC := 10.0
+const SHOP_CHATTER_MAX_SEC := 25.0
 
 func _ready():
 	if exit_button != null:
@@ -30,6 +31,7 @@ func _ready():
 	if item_tooltip_panel:
 		item_tooltip_panel.visible = false
 
+	coins.text = str(RunData.coins)
 	spawn_shop_inventory()
 	_setup_shop_dialogue_flow()
 
@@ -57,6 +59,7 @@ func _on_shop_chatter_timeout() -> void:
 		_shop_chatter_timer.start()
 
 func _process(delta: float):
+	coins.text = str(RunData.coins)
 	var half := get_viewport_rect().size * 0.5
 	if half.x == 0.0 or half.y == 0.0:
 		return
