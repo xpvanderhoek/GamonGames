@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://80wse1xg4dkb"]
 
-[ext_resource type="Script" uid="uid://bngpt3prf6s3c" path="res://scripts/skilltree/skilldata.gd" id="1_cry6t"]
+[ext_resource type="Script" uid="uid://bngpt3prf6s3c" path="res://scripts/skill_list/skilldata.gd" id="1_cry6t"]
 [ext_resource type="Texture2D" uid="uid://bhw5v8m453e43" path="res://assets/skilltreepng.webp" id="2_yqjv5"]
 
 [resource]

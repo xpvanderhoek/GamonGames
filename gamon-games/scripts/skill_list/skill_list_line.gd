@@ -5,6 +5,7 @@ class_name SkillListLine
 @onready var skill_name: Label = $SkillName
 @onready var buff_amount: Label = $BuffAmount
 @onready var marrow_shards_amount_label: Label = $MarrowShardsAmountLabel
+@onready var buy_button: Button = $BuyButton
 
 var current_skill: SkillData
 
@@ -15,6 +16,7 @@ func setup_skill(skill_data: SkillData):
 	current_skill = skill_data
 	skill_name.text= str(skill_data.skill_name)
 	skill_texture.texture = skill_data.texture
+	buy_button.tooltip_text = skill_data.tooltip_text
 	
 	if current_skill.stat_bonus_per_level == 0 and current_skill.max_level == 1:
 		buff_amount.text = "Locked"
