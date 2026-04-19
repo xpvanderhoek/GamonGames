@@ -22,6 +22,14 @@ font_color = Color(0, 0, 0, 1)
 font_size = 24
 font_color = Color(0, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_s13xn"]
+font_size = 60
+font_color = Color(0.7137255, 0.7137255, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_iikmj"]
+font_size = 46
+font_color = Color(0.2509804, 0.20784314, 0.1254902, 1)
+
 [node name="SimonSays" type="Control" unique_id=1237460606]
 layout_mode = 3
 anchors_preset = 15
@@ -205,5 +213,28 @@ offset_right = 595.99994
 offset_bottom = 624.0
 scale = Vector2(1.665, 1.665)
 text = "Continue"
+
+[node name="CoinLabel" type="Label" parent="." unique_id=1493621846]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 75.0
+grow_horizontal = 2
+text = "0"
+label_settings = SubResource("LabelSettings_s13xn")
+horizontal_alignment = 1
+
+[node name="TotalCoinsLabel" type="Label" parent="." unique_id=1852610075]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -146.0
+offset_right = -9.0
+offset_bottom = 64.0
+grow_horizontal = 0
+text = "0"
+label_settings = SubResource("LabelSettings_iikmj")
+horizontal_alignment = 2
 
 [connection signal="pressed" from="Button" to="." method="_on_continue_pressed"]
