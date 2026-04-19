@@ -13,6 +13,13 @@ var current_health: int
 var is_destroyed: bool = false
 var is_highlighted: bool = false
 var is_aoe_highlighted: bool = false
+var _spell_targeting_enabled: bool = false
+var _spell_targeting_hovered: bool = false
+var _spell_targeting_icon: Texture2D = null
+var _spell_targeting_frame_sprite: Sprite2D = null
+var _spell_targeting_icon_sprite: Sprite2D = null
+var _initial_scale: Vector2 = Vector2.ONE
+var _initial_position: Vector2 = Vector2.ZERO
 
 # Auto generate collision polygon
 var alpha_threshold: float = 0.2 # Threshold for generating collision polygons from texture alpha
@@ -56,6 +63,8 @@ func choose_attack() -> SpellData:
 	return options[randi() % options.size()]
 
 func _ready() -> void:
+	_initial_scale = scale
+	_initial_position = position
 	current_health = max_health
 	if visible and texture:
 		_setup_click_area()
@@ -127,6 +136,64 @@ func set_aoe_unhighlighted() -> void:
 	is_aoe_highlighted = false
 	modulate = Color.GREEN if is_highlighted else Color.WHITE
 
+func set_spell_targeting_preview(enabled: bool, hovered: bool, spell_icon: Texture2D = null) -> void:
+	_spell_targeting_enabled = enabled and not is_destroyed
+	_spell_targeting_hovered = hovered and _spell_targeting_enabled
+	_spell_targeting_icon = spell_icon
+	_ensure_spell_targeting_visuals()
+	_update_spell_targeting_visuals()
+
+func _ensure_spell_targeting_visuals() -> void:
+	if _spell_targeting_frame_sprite == null:
+		_spell_targeting_frame_sprite = Sprite2D.new()
+		_spell_targeting_frame_sprite.name = "SpellTargetFrame"
+		_spell_targeting_frame_sprite.centered = true
+		_spell_targeting_frame_sprite.z_index = 40
+		_spell_targeting_frame_sprite.texture = _create_spell_target_frame_texture()
+		add_child(_spell_targeting_frame_sprite)
+
+	if _spell_targeting_icon_sprite == null:
+		_spell_targeting_icon_sprite = Sprite2D.new()
+		_spell_targeting_icon_sprite.name = "SpellTargetIcon"
+		_spell_targeting_icon_sprite.centered = true
+		_spell_targeting_icon_sprite.z_index = 41
+		add_child(_spell_targeting_icon_sprite)
+
+func _create_spell_target_frame_texture() -> Texture2D:
+	var image := Image.create(48, 48, false, Image.FORMAT_RGBA8)
+	image.fill(Color(0.0, 0.0, 0.0, 0.0))
+	for y in range(48):
+		for x in range(48):
+			var is_border := x < 4 or x >= 44 or y < 4 or y >= 44
+			if is_border:
+				image.set_pixel(x, y, Color(1.0, 1.0, 1.0, 0.9))
+	return ImageTexture.create_from_image(image)
+
+func _update_spell_targeting_visuals() -> void:
+	if _spell_targeting_frame_sprite == null or _spell_targeting_icon_sprite == null:
+		return
+
+	if is_destroyed or not _spell_targeting_enabled:
+		_spell_targeting_frame_sprite.visible = false
+		_spell_targeting_icon_sprite.visible = false
+		_spell_targeting_icon_sprite.texture = null
+		return
+
+	_spell_targeting_frame_sprite.visible = true
+	_spell_targeting_icon_sprite.visible = _spell_targeting_hovered and _spell_targeting_icon != null
+
+	if _spell_targeting_icon != null:
+		_spell_targeting_icon_sprite.texture = _spell_targeting_icon
+		var icon_size := _spell_targeting_icon.get_size()
+		if icon_size.x > 0.0 and icon_size.y > 0.0:
+			var frame_size := Vector2(48.0, 48.0)
+			var padding := 10.0
+			var available_size := frame_size - Vector2(padding, padding)
+			var scale_factor := minf(available_size.x / icon_size.x, available_size.y / icon_size.y)
+			_spell_targeting_icon_sprite.scale = Vector2.ONE * scale_factor
+	else:
+		_spell_targeting_icon_sprite.texture = null
+
 func take_damage(amount: int) -> void:
 	if is_destroyed:
 		return
@@ -141,9 +208,61 @@ func take_damage(amount: int) -> void:
 		destroy_limb()
 
 func destroy_limb() -> void:
+	if is_destroyed:
+		return
 	is_destroyed = true
-	visible = false
+	is_highlighted = false
+	is_aoe_highlighted = false
+	_spell_targeting_enabled = false
+	_spell_targeting_hovered = false
+	_spell_targeting_icon = null
+	if _spell_targeting_frame_sprite != null:
+		_spell_targeting_frame_sprite.visible = false
+	if _spell_targeting_icon_sprite != null:
+		_spell_targeting_icon_sprite.visible = false
+
+	var click_area := get_node_or_null("ClickArea") as Area2D
+	if click_area != null:
+		click_area.input_pickable = false
+		click_area.monitoring = false
+		click_area.monitorable = false
+
 	limb_destroyed.emit(self)
+	_play_destroy_animation()
+
+func _play_destroy_animation() -> void:
+	if not is_inside_tree():
+		visible = false
+		return
+
+	if has_meta("destroy_tween"):
+		var existing_tween = get_meta("destroy_tween")
+		if existing_tween is Tween:
+			(existing_tween as Tween).kill()
+		remove_meta("destroy_tween")
+
+	var break_offset := Vector2(randf_range(-8.0, 8.0), randf_range(8.0, 18.0))
+	var tween := create_tween()
+	set_meta("destroy_tween", tween)
+	tween.set_parallel(true)
+	tween.tween_property(self, "modulate", Color(1.25, 0.45, 0.45, 0.95), 0.07).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "scale", _initial_scale * 1.12, 0.07).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.set_parallel(false)
+	tween.set_parallel(true)
+	tween.tween_property(self, "modulate", Color(0.2, 0.1, 0.1, 0.0), 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "scale", _initial_scale * 0.58, 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "position", _initial_position + break_offset, 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.finished.connect(func():
+		if is_instance_valid(self):
+			remove_meta("destroy_tween")
+			_finalize_destroy_visual()
+	)
+
+func _finalize_destroy_visual() -> void:
+	visible = false
+	scale = _initial_scale
+	position = _initial_position
+	modulate = Color.WHITE
 
 func heal(amount: int) -> void:
 	if is_destroyed:

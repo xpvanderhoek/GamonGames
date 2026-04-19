@@ -14,3 +14,5 @@ duration_rounds = 2
 incoming_damage_multiplier_delta = 0.5
 target_physical_defense_delta = -25.0
 target_magic_defense_delta = -25.0
+damage_over_time = 5
+stun_turns = true

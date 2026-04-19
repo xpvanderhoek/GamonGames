@@ -17,12 +17,6 @@ func _ready() -> void:
 
 func _on_start_run_btn_pressed() -> void:
 	get_tree().paused = false
-	if PlayerStats.knows_ghost:
-		RunData.new_run()
-		TransitionManager.transition_newrun(NavigationManager.get_new_random_room())
-	else:
-		TransitionManager.transition_newrun(NavigationManager.scene_room_limbo)
-	
 	queue_free()
 
 

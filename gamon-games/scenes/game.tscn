@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://dibe1nlseg240"]
 
-[ext_resource type="PackedScene" uid="uid://dhexr8smtlsmo" path="res://scenes/character.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://cpgo21foq05vw" path="res://scripts/UI/game.gd" id="1_qxrlw"]
 [ext_resource type="PackedScene" uid="uid://disygs63m04ag" path="res://scenes/start_run.tscn" id="2_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cw35es2dvr2it" path="res://scenes/UI/health_bar.tscn" id="3_p57ef"]
@@ -16,12 +15,6 @@ script = ExtResource("1_qxrlw")
 
 [node name="RoomContainer" type="Node2D" parent="." unique_id=97497814]
 process_mode = 1
-
-[node name="Character" parent="." unique_id=1981490291 instance=ExtResource("1_ebmjs")]
-process_mode = 1
-position = Vector2(400, 300)
-scale = Vector2(5, 5)
-combat_scene_path = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1035846177]
 
@@ -50,6 +43,7 @@ layout_mode = 2
 anchors_preset = 2
 anchor_top = 1.0
 anchor_right = 0.0
+anchor_bottom = 1.0
 offset_left = 13.0
 offset_top = -34.0
 offset_right = 13.0

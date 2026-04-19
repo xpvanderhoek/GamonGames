@@ -12,13 +12,13 @@ signal dialogue_completed
 @onready var text_label = $Panel/RichTextLabel
 
 func _ready():
-	DialogueManager.register_ui(self)
 	hide()
 	typing_timer = Timer.new()
 	typing_timer.wait_time = typing_speed
 	typing_timer.one_shot = false
 	typing_timer.connect("timeout", Callable(self, "_typewriter_step"))
 	add_child(typing_timer)
+	DialogueManager.register_ui(self)
 
 func start_dialogue(dialogue):
 	current_dialogue = dialogue
@@ -35,6 +35,8 @@ func show_line():
 	name_label.text = line["speaker"]
 	text_label.text = ""
 	char_index = 0
+	if typing_timer == null:
+		return
 	typing_timer.start()
 
 func _typewriter_step():
@@ -65,3 +67,13 @@ func _input(event):
 			next_line()
 		elif event.is_action_pressed("ui_text_backspace"):
 			previous_line()
+
+func force_close_dialogue() -> void:
+	if typing_timer != null:
+		typing_timer.stop()
+
+	current_dialogue = []
+	index = 0
+	char_index = 0
+	hide()
+	dialogue_completed.emit()

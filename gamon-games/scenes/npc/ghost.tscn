@@ -1,23 +1,41 @@
 [gd_scene format=3 uid="uid://car332irwafr"]
 
 [ext_resource type="Script" uid="uid://q68nqexmyl8q" path="res://scripts/npc/ghost.gd" id="1_434k8"]
-[ext_resource type="Texture2D" uid="uid://bmm0652fritil" path="res://assets/Placeholders/ghost.png" id="2_klo5b"]
+[ext_resource type="Texture2D" uid="uid://bll3l6ukip0w0" path="res://assets/placeholders/ghost_placeholder.png" id="2_434k8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_434k8"]
 size = Vector2(16.843575, 25.013554)
 
 [node name="Ghost" type="Node2D" unique_id=1417627856]
 script = ExtResource("1_434k8")
+prompt_text = "talk"
 metadata/_custom_type_script = "uid://dv00pim1t28o3"
 
+[node name="InteractionLabel" type="Label" parent="." unique_id=509524311]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.0
+offset_top = -222.0
+offset_right = 47.5
+offset_bottom = -168.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 39
+text = "TALK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2081916548]
-texture = ExtResource("2_klo5b")
+texture = ExtResource("2_434k8")
 
 [node name="InteractableArea" type="Area2D" parent="." unique_id=1416217248]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="InteractableArea" unique_id=325747224]
-position = Vector2(-41, -2)
-polygon = PackedVector2Array(-58, 165, 131, 28, 243, 78, 53, 232)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="InteractableArea" unique_id=1652807321]
+polygon = PackedVector2Array(4, -166, 4, -163.7, 2.899994, -162, -15.199997, -162, -17.199997, -158, -22.899994, -158, -32.899994, -146, -38.9, -146, -63.800003, -120, -66, -120, -66, -112.9, -71.7, -108, -74, -108, -74, -100.9, -79.7, -96, -82, -96, -82, -89.1, -83.7, -88, -86, -88, -86, -81.1, -87.7, -80, -90, -80, -90, -73.1, -91.7, -72, -94, -72, -94, -65.1, -95.7, -64, -98, -64, -98, -53.1, -99.7, -52, -102, -52, -102, -41.1, -103.7, -40, -106, -40, -106, -25.100006, -107.7, -24, -110, -24, -110, -5.100006, -111.7, -4, -114, -4, -114, 74.8, -110.8, 78, -110, 78, -110, 99.20001, -106, 101.20001, -106, 127.20001, -102, 129.20001, -102, 146.70001, -88, 163.6, -88, 166, -45.199997, 166, -38.300003, 159.1, -36, 160.20001, -36, 162, 6.800003, 162, 14, 154.79999, 14, 154, 14.800003, 154, 16.800003, 158, 58.899994, 158, 67.899994, 148, 70, 148, 70, 141.20001, 74, 139.20001, 74, 117.20001, 70.8, 114, 70, 114, 70, 93.20001, 66.8, 90, 65.8, 90, 63.800003, 70, 62, 70, 62, 45.199997, 66, 43.199997, 66, 21.100006, 67.7, 20, 70, 20, 70, 9.100006, 71.7, 8, 74, 8, 74, 0.69999695, 82, -9.300003, 82, -15.199997, 91.79999, -24, 94, -24, 94, -31.199997, 103.79999, -40, 106, -40, 106, -54.800003, 110, -56.800003, 110, -99.2, 106, -101.3, 106, -111, 98, -117, 98, -122.9, 80, -140, 80, -142, 72.899994, -142, 68, -147.8, 68, -150, 61.100006, -150, 60, -151.7, 60, -154, 53.100006, -154, 52, -155.7, 52, -158, 45.199997, -158, 43.199997, -162, 33.100006, -162, 32, -163.7, 32, -166)
 
 [node name="Hitbox" type="StaticBody2D" parent="." unique_id=2048237287]
 

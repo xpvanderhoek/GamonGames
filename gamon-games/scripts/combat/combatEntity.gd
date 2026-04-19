@@ -12,6 +12,11 @@ var _hovered_limbs: Array[CombatLimb] = []
 var _highlighted_limb: CombatLimb = null
 var _aoe_highlighted_limbs: Array[CombatLimb] = [] 
 var _group_highlighted_limbs: Array[CombatLimb] = []
+var _spell_targeting_enabled: bool = false
+var _spell_targeting_whole_enemy: bool = false
+var _spell_targeting_icon: Texture2D = null
+var _spell_targeting_center_frame: TextureRect = null
+var _spell_targeting_center_icon: TextureRect = null
 
 var block_click_emit: bool = false
 var single_highlight_enabled: bool = true
@@ -58,6 +63,7 @@ func _on_limb_mouse_exited(limb: CombatLimb) -> void:
 func _refresh_highlight() -> void:
 	if not single_highlight_enabled:
 		_clear_current_highlight_visuals()
+		_refresh_spell_targeting_visuals()
 		return
 
 	var top_limb: CombatLimb = null
@@ -68,9 +74,11 @@ func _refresh_highlight() -> void:
 	if whole_enemy_highlight_enabled:
 		if top_limb == null:
 			_clear_current_highlight_visuals()
+			_refresh_spell_targeting_visuals()
 			return
 
 		if top_limb == _highlighted_limb and not _group_highlighted_limbs.is_empty():
+			_refresh_spell_targeting_visuals()
 			return
 
 		_clear_current_highlight_visuals()
@@ -79,15 +87,19 @@ func _refresh_highlight() -> void:
 			if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
 				limb.set_highlighted()
 				_group_highlighted_limbs.append(limb)
+		_refresh_spell_targeting_visuals()
 		return
 
 	if top_limb == _highlighted_limb:
+		_refresh_spell_targeting_visuals()
 		return
 
 	_clear_current_highlight_visuals()
 	_highlighted_limb = top_limb
 	if _highlighted_limb != null:
 		_highlighted_limb.set_highlighted()
+
+	_refresh_spell_targeting_visuals()
 
 func _clear_current_highlight_visuals() -> void:
 	if _highlighted_limb != null:
@@ -102,6 +114,95 @@ func _clear_current_highlight_visuals() -> void:
 func clear_current_highlight() -> void:
 	_hovered_limbs.clear()
 	_clear_current_highlight_visuals()
+	_refresh_spell_targeting_visuals()
+
+func _create_spell_target_frame_texture() -> Texture2D:
+	var image := Image.create(48, 48, false, Image.FORMAT_RGBA8)
+	image.fill(Color(0.0, 0.0, 0.0, 0.0))
+	for y in range(48):
+		for x in range(48):
+			var is_border := x < 4 or x >= 44 or y < 4 or y >= 44
+			if is_border:
+				image.set_pixel(x, y, Color(1.0, 1.0, 1.0, 0.9))
+	return ImageTexture.create_from_image(image)
+
+func set_spell_targeting_preview(enabled: bool, whole_enemy: bool, spell_icon: Texture2D = null) -> void:
+	_spell_targeting_enabled = enabled
+	_spell_targeting_whole_enemy = whole_enemy and enabled
+	_spell_targeting_icon = spell_icon
+	_refresh_spell_targeting_visuals()
+
+func _refresh_spell_targeting_visuals() -> void:
+	_ensure_spell_targeting_center_visuals()
+	_update_spell_targeting_center_visuals()
+
+	for limb in limbs:
+		if limb == null or not is_instance_valid(limb):
+			continue
+		if _spell_targeting_whole_enemy:
+			limb.set_spell_targeting_preview(false, false, null)
+		else:
+			limb.set_spell_targeting_preview(_spell_targeting_enabled, limb == _highlighted_limb, _spell_targeting_icon)
+
+func _ensure_spell_targeting_center_visuals() -> void:
+	if _spell_targeting_center_frame == null:
+		_spell_targeting_center_frame = TextureRect.new()
+		_spell_targeting_center_frame.name = "SpellTargetCenterFrame"
+		_spell_targeting_center_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_spell_targeting_center_frame.z_index = 42
+		_spell_targeting_center_frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_spell_targeting_center_frame.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		_spell_targeting_center_frame.custom_minimum_size = Vector2(48.0, 48.0)
+		_spell_targeting_center_frame.texture = _create_spell_target_frame_texture()
+		_spell_targeting_center_frame.visible = false
+		_spell_targeting_center_frame.top_level = true
+		add_child(_spell_targeting_center_frame)
+
+	if _spell_targeting_center_icon == null:
+		_spell_targeting_center_icon = TextureRect.new()
+		_spell_targeting_center_icon.name = "SpellTargetCenterIcon"
+		_spell_targeting_center_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_spell_targeting_center_icon.z_index = 43
+		_spell_targeting_center_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_spell_targeting_center_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		_spell_targeting_center_icon.custom_minimum_size = Vector2(48.0, 48.0)
+		_spell_targeting_center_icon.visible = false
+		_spell_targeting_center_icon.top_level = true
+		add_child(_spell_targeting_center_icon)
+
+func _update_spell_targeting_center_visuals() -> void:
+	if _spell_targeting_center_frame == null or _spell_targeting_center_icon == null:
+		return
+
+	if not is_alive or not _spell_targeting_enabled or not _spell_targeting_whole_enemy:
+		_spell_targeting_center_frame.visible = false
+		_spell_targeting_center_icon.visible = false
+		_spell_targeting_center_icon.texture = null
+		return
+
+	var center_position := _get_spell_targeting_center_position()
+	_spell_targeting_center_frame.size = Vector2(48.0, 48.0)
+	_spell_targeting_center_frame.global_position = center_position - (_spell_targeting_center_frame.size * 0.5)
+	_spell_targeting_center_frame.visible = true
+
+	_spell_targeting_center_icon.size = Vector2(48.0, 48.0)
+	_spell_targeting_center_icon.global_position = _spell_targeting_center_frame.global_position
+	_spell_targeting_center_icon.visible = _highlighted_limb != null and _spell_targeting_icon != null
+	_spell_targeting_center_icon.texture = _spell_targeting_icon if _spell_targeting_center_icon.visible else null
+
+func _get_spell_targeting_center_position() -> Vector2:
+	var sum_position := Vector2.ZERO
+	var count := 0
+	for limb in limbs:
+		if limb == null or not is_instance_valid(limb) or limb.is_destroyed:
+			continue
+		sum_position += limb.global_position
+		count += 1
+	if count > 0:
+		return sum_position / float(count)
+	if _highlighted_limb != null and is_instance_valid(_highlighted_limb):
+		return _highlighted_limb.global_position
+	return Vector2.ZERO
 
 func set_targeting_enabled(enabled: bool) -> void:
 	set_targeting_mode(enabled, false)
@@ -111,7 +212,8 @@ func set_targeting_mode(enabled: bool, highlight_whole_enemy: bool = false) -> v
 	single_highlight_enabled = enabled
 	whole_enemy_highlight_enabled = enabled and highlight_whole_enemy
 	if not enabled:
-		clear_current_highlight()
+		_clear_current_highlight_visuals()
+		_refresh_spell_targeting_visuals()
 		return
 	_refresh_highlight()
 
