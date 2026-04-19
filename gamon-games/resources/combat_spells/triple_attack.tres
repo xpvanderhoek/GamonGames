@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://5nopcxc4jtfp"]
+
+[ext_resource type="Texture2D" uid="uid://cydiwpld3gxpm" path="res://Assets/Placeholders/ui/blade_master.png" id="1_p13sb"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_gvh21"]
+
+[resource]
+script = ExtResource("2_gvh21")
+spell_id = "triple_attack"
+spell_name = "Triple Attack"
+damage = 5
+accuracy = 100.0
+weight = 100.0
+icon = ExtResource("1_p13sb")
+vfx_anchor = 1
+vfx_lifetime = 1.0

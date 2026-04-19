@@ -47,6 +47,18 @@ var current_health : int = 100:
 		current_health = value
 		health_changed.emit()
 
+var max_energy: int = 10:
+	set(value):
+		max_energy = maxi(0, value)
+		if current_energy > max_energy:
+			current_energy = max_energy
+		energy_changed.emit(current_energy)
+
+var current_energy: int = 10:
+	set(value):
+		current_energy = clampi(value, 0, max_energy)
+		energy_changed.emit(current_energy)
+
 var current_map_node: MapNodeData = null
 var map_nodes_data: Array[MapNodeData] = []
 var current_encounter: Array[PackedScene] = []
@@ -62,6 +74,7 @@ signal time_remaining_changed(new_amount)
 signal exp_changed(new_amount)
 signal level_changed(new_amount)
 signal marrow_shards_changed(new_amount)
+signal energy_changed(new_amount)
 
 func new_run():
 	random_seed = randi()
@@ -73,14 +86,15 @@ func new_run():
 	consumables = [null, null, null, null, null]
 	max_health = PlayerStats.stats["health"]
 	current_health = max_health
+	reset_energy()
 	current_exp = 0
 	run_active = true
 	time_remaining = RUN_DURATION
 	add_spell(BASIC_ATTACK)
-	add_spell(HEAVY_STRIKE)
-	add_spell(BUFF)
-	add_spell(DEBUFF)
-	add_spell(HEAL)
+
+func reset_energy() -> void:
+	max_energy = 10
+	current_energy = max_energy
 
 func end_run():
 	run_active = false
@@ -159,5 +173,19 @@ func add_spell(spell: SpellData) -> bool:
 	for existing_spell in spells:
 		if existing_spell.spell_id == spell.spell_id and not existing_spell.spell_id.is_empty():
 			return false
-	spells.append(spell)
+	spells.append(spell.duplicate())
 	return true
+
+func get_spell_by_id(spell_id: String) -> SpellData:
+	for spell in spells:
+		if spell.spell_id == spell_id and not spell.spell_id.is_empty():
+			return spell
+	return null
+
+func upgrade_spell(spell_id: String) -> void:
+	var existing = get_spell_by_id(spell_id)
+	if existing:
+		existing.level += 1
+		existing.damage = int(round(existing.damage * 1.2))
+		if existing.heal_amount > 0:
+			existing.heal_amount = int(round(existing.heal_amount * 1.2))

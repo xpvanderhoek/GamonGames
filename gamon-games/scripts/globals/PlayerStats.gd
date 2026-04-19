@@ -8,7 +8,8 @@ signal upgrade_completed(stat_name: String, level: int)
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh
-	"damage": 1000.0,      # Anatomy Mastery
+	"damage": 0.0,      # Anatomy Mastery
+	"energy_regen": 2.0,
 	"precision": 100.0,       # Steady Hand
 	"gold_gain": 1.0,         # Scavenger's Eye
 	"debuff_resistance": 10.0, # Iron Will
@@ -35,6 +36,7 @@ var base_stats = {
 var upgrade_levels = {
 	"health": 0,
 	"damage": 0,
+	"energy_regen": 0,
 	"precision": 0,
 	"gold_gain": 0,
 	"debuff_resistance": 0,
@@ -43,6 +45,20 @@ var upgrade_levels = {
 	"luck": 0,
 	"physical_defense": 0,
 	"magic_defense": 0,
+}
+
+var upgrade_costs = {
+	"health": {"min": 100, "max": 1000},
+	"damage": {"min": 500, "max": 2500},
+	"energy_regen": {"min": 200, "max": 1400},
+	"precision": {"min": 150, "max": 1500},
+	"gold_gain": {"min": 400, "max": 2000},
+	"debuff_resistance": {"min": 300, "max": 1500},
+	"speed": {"min": 400, "max": 2000},
+	"defence": {"min": 100, "max": 1000},
+	"luck": {"min": 200, "max": 1200},
+	"physical_defense": {"min": 100, "max": 1000},
+	"magic_defense": {"min": 100, "max": 1000},
 }
 
 func get_stat_value(stat_name: String) -> float:
@@ -77,6 +93,7 @@ func upgrade_stat(stat_name: String) -> bool:
 	var upgrade_config = {
 		"health": {"max": 10, "percent": 5.0},
 		"damage": {"max": 5, "percent": 3.0},
+		"energy_regen": {"max": 10, "percent": 10.0},
 		"precision": {"max": 10, "percent": 2.0},
 		"gold_gain": {"max": 5, "percent": 5.0},
 		"debuff_resistance": {"max": 5, "percent": 5.0},
@@ -106,7 +123,19 @@ func get_upgrade_level(stat_name: String) -> int:
 	return 0
 
 func reset_stats() -> void:
-	stats = base_stats.duplicate()
+	stats = {
+		"health": 100.0,
+		"damage": 20,
+		"energy_regen": 2.0,
+		"precision": 100.0,
+		"gold_gain": 1.0,
+		"debuff_resistance": 10.0,
+		"speed": 100.0,
+		"defence": 10.0,
+		"luck": 0.0,
+		"physical_defense": 10.0,
+		"magic_defense": 10.0,
+	}
 	
 	for key in upgrade_levels:
 		upgrade_levels[key] = 0

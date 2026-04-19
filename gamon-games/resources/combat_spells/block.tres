@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://ceahsv0oku7qe"]
+
+[ext_resource type="Texture2D" uid="uid://cydiwpld3gxpm" path="res://Assets/Placeholders/ui/blade_master.png" id="1_v0vkc"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_61hga"]
+
+[resource]
+script = ExtResource("2_61hga")
+spell_id = "block"
+spell_name = "Block"
+damage = 5
+accuracy = 100.0
+weight = 100.0
+icon = ExtResource("1_v0vkc")
+vfx_anchor = 1
+vfx_lifetime = 1.0

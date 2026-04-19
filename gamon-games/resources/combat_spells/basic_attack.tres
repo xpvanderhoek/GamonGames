@@ -8,6 +8,7 @@ script = ExtResource("1_spelldata")
 spell_id = "basic_attack"
 spell_name = "Basic Attack"
 damage = 5
+energy = 1
 accuracy = 100.0
 weight = 100.0
 icon = ExtResource("1_ylob2")

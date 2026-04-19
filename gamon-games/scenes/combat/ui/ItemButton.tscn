@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bnspxqohk3rfu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_laywg"]
+bg_color = Color(0.7254902, 0.7254902, 0.7254902, 0.3882353)
+
+[node name="ItemButton" type="Panel" unique_id=1649103459]
+custom_minimum_size = Vector2(32, 32)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1127.0
+offset_bottom = -623.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_laywg")
