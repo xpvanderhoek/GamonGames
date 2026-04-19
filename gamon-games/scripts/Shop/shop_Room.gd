@@ -19,8 +19,8 @@ const TIER_3_BASE_WEIGHT := 10.0
 var _parallax_offset := Vector2.ZERO
 var _shop_chatter_timer: Timer
 
-const SHOP_CHATTER_MIN_SEC := 20.0
-const SHOP_CHATTER_MAX_SEC := 40.0
+const SHOP_CHATTER_MIN_SEC := 10.0
+const SHOP_CHATTER_MAX_SEC := 25.0
 
 func _ready():
 	if exit_button != null:
