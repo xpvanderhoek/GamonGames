@@ -5,6 +5,7 @@ var all_colors: Array[Color] = []
 var colored_sequence: Array[Dictionary] = []
 
 func _ready():
+	totalCoins.text = str(RunData.coins)
 	all_colors.append(Color(0.0, 0.0, 0.616, 1.0))
 	all_colors.append(Color(0.514, 0.514, 0.0, 1.0))
 	all_colors.append(Color(0.549, 0.0, 0.549, 1.0))
@@ -28,6 +29,7 @@ func _ready():
 	
 
 func next_round():
+	calculate_coins()
 	var show_bad_color: bool = true
 	changeColor(Color(0.9, 0.9, 0.9))
 	switchDisabled(true)
@@ -84,3 +86,9 @@ func checkCorrect(clicked_button: int, click_position: int):
 		
 		next_round()
 		return
+
+func calculate_coins():
+	coin_amount = coin_amount + 2
+	print_coins(coin_amount)
+	
+	

@@ -2,28 +2,33 @@ extends Node2D
 
 @onready var dotted_line: Line2D = $DottedLine
 @onready var map_nodes: Node2D = $MapNodes
+@onready var coins: Label = $CoinLabel
 
 var enemy_scenes := [
 	"res://scenes/combat/enemies/ttt.tscn"
 ]
 
+var puzzles := [
+	"res://scenes/puzzles/sliding_puzzle/sliding_puzzle.tscn",
+	"res://scenes/puzzles/simon_says/start_simon.tscn"
+]
+
 func _ready() -> void:
 	if not RunData.run_active:
 		RunData.new_run()
+	coins.text = str(RunData.coins)
 	_setup_map_nodes()
 	_update_node_availability()
 
 func _setup_map_nodes():
 	var nodes_list := map_nodes.get_children()
 	
-	# If we don't have saved map data, generate it
 	if RunData.map_nodes_data.is_empty():
 		var previous_node : MapNodeData = null
 		
 		for node in nodes_list:
 			var data : MapNodeData = MapNodeData.new()
 			
-			# previous node being null means its the first node, so default to combat.
 			if previous_node == null:
 				data.type = MapNodeData.Type.COMBAT
 			else:
@@ -48,7 +53,6 @@ func _setup_map_nodes():
 				
 			previous_node = data
 	else:
-		# Use the saved map data
 		for i in range(nodes_list.size()):
 			var node = nodes_list[i]
 			var data = RunData.map_nodes_data[i]
@@ -57,7 +61,6 @@ func _setup_map_nodes():
 			node.selected.connect(_on_map_node_selected)
 
 func _on_map_node_selected(data: MapNodeData) -> void:
-	# Store the selected node for when we return
 	RunData.current_map_node = data
 	
 	match data.type:
@@ -72,8 +75,17 @@ func _on_map_node_selected(data: MapNodeData) -> void:
 		
 		MapNodeData.Type.SHOP:
 			TransitionManager.change_scene("res://scenes/Shop/ShopRoom.tscn", TransitionManager.TransitionType.FADE)
+		
+		MapNodeData.Type.PUZZLE:
+			TransitionManager.change_scene(pick_type_map(puzzles))
+			
+
+func pick_type_map(array: Array):
+	var array_number = randi_range(0, array.size() - 1)
+	return array[array_number]
 
 func _update_node_availability() -> void:
+	coins.text = str(RunData.coins)
 	for node in map_nodes.get_children():
 		node.available = false
 	

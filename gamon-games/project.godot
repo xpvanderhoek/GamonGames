@@ -23,6 +23,7 @@ AnimationManager="*uid://car5ovidbulrc"
 RunData="*uid://v8oh1j7mo6xp"
 PlayerStats="*uid://blaa2ldagphrn"
 DialogueManager="*uid://cdsxgwq8b0vwp"
+NavigationManager="*uid://dnruitng07ior"
 
 [display]
 
