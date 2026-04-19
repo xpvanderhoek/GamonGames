@@ -6,8 +6,47 @@
 [ext_resource type="Texture2D" uid="uid://dsxoo5xbeqhc" path="res://assets/Placeholders/enemies/head.png" id="4_w3sxh"]
 [ext_resource type="Texture2D" uid="uid://j1m2vp1g8ig8" path="res://assets/Placeholders/enemies/left_hand.png" id="5_8f83m"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="6_e5vg6"]
-[ext_resource type="Resource" uid="uid://brqp1tf0obe77" path="res://resources/combat_spells/basic_attack.tres" id="7_6gc6u"]
+[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="6_piwf1"]
 [ext_resource type="Texture2D" uid="uid://dmvr7hisp4pak" path="res://assets/Placeholders/enemies/right_hand.png" id="7_kbcej"]
+
+[sub_resource type="Resource" id="Resource_nsp1d"]
+script = ExtResource("6_e5vg6")
+spell_id = "basic_attack"
+spell_name = "Basic Attack"
+min_damage = 1
+max_damage = 2
+energy = 1
+accuracy = 50.0
+icon = ExtResource("6_piwf1")
+vfx_anchor = 1
+vfx_lifetime = 1.0
+
+[sub_resource type="Resource" id="Resource_6gc6u"]
+script = ExtResource("6_e5vg6")
+spell_id = "triple_attack"
+spell_name = "Triple Attack"
+min_damage = 1
+max_damage = 10
+attack_count = 3
+energy = 3
+accuracy = 80.0
+weight = 100.0
+icon = ExtResource("6_piwf1")
+vfx_anchor = 1
+vfx_lifetime = 1.0
+
+[sub_resource type="Resource" id="Resource_e5vg6"]
+script = ExtResource("6_e5vg6")
+spell_id = "basic_attack"
+spell_name = "Basic Attack"
+min_damage = 5
+max_damage = 10
+energy = 1
+accuracy = 100.0
+weight = 50.0
+icon = ExtResource("6_piwf1")
+vfx_anchor = 1
+vfx_lifetime = 1.0
 
 [node name="ttt" type="Control" unique_id=1680014499]
 custom_minimum_size = Vector2(250, 350)
@@ -24,6 +63,7 @@ scale = Vector2(0.4423119, 0.4423119)
 texture = ExtResource("2_q3xq3")
 script = ExtResource("3_w2142")
 limb_name = "Torso"
+max_health = 70
 is_vital = true
 
 [node name="head" type="Sprite2D" parent="." unique_id=433218234]
@@ -32,9 +72,10 @@ scale = Vector2(0.44132692, 0.44720063)
 texture = ExtResource("4_w3sxh")
 script = ExtResource("3_w2142")
 limb_name = "Head"
-max_health = 50
+max_health = 30
 is_vital = true
-hit_chance_percent = 50.0
+hit_chance_percent = 35.0
+attacks = Array[ExtResource("6_e5vg6")]([SubResource("Resource_nsp1d")])
 
 [node name="left_hand" type="Sprite2D" parent="." unique_id=1018948439]
 position = Vector2(191, 129.00002)
@@ -42,8 +83,8 @@ scale = Vector2(0.50949365, 0.50949365)
 texture = ExtResource("5_8f83m")
 script = ExtResource("3_w2142")
 limb_name = "Left Hand"
-max_health = 50
-attacks = Array[ExtResource("6_e5vg6")]([ExtResource("7_6gc6u")])
+max_health = 25
+attacks = Array[ExtResource("6_e5vg6")]([SubResource("Resource_6gc6u")])
 
 [node name="right_hand" type="Sprite2D" parent="." unique_id=1029105267]
 position = Vector2(62, 173)
@@ -51,7 +92,8 @@ scale = Vector2(0.50949365, 0.50949365)
 texture = ExtResource("7_kbcej")
 script = ExtResource("3_w2142")
 limb_name = "Right Hand"
-max_health = 50
+max_health = 25
+attacks = Array[ExtResource("6_e5vg6")]([SubResource("Resource_e5vg6")])
 
 [node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
 layout_mode = 1

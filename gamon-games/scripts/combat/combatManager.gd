@@ -34,6 +34,8 @@ enum TargetScope {
 @export_range(0.0, 100.0, 0.1) var player_hit_chance_bonus_percent: float = 20.0
 @export_range(0.0, 200.0, 1.0) var attack_lunge_distance: float = 42.0
 @export_range(0.0, 1.0, 0.01) var multi_hit_delay_seconds: float = 0.1
+@export_range(0.0, 1.0, 0.01) var enemy_attack_telegraph_seconds: float = 0.4
+@export_range(1.0, 1.5, 0.01) var enemy_attack_telegraph_scale: float = 1.14
 @export var attack_target_scope: TargetScope = TargetScope.LIMB
 @export var debuff_target_scope: TargetScope = TargetScope.LIMB
 
@@ -709,7 +711,7 @@ func _perform_enemy_turn() -> void:
 		if attack == null:
 			continue
 
-		await get_tree().create_timer(0.35).timeout
+		await _telegraph_enemy_attack(attacking_enemy, attack_limb, attack)
 		await _play_attack_feedback(attack, attacking_enemy, get_node_or_null(ui_player))
 		var outgoing_multiplier := _get_enemy_outgoing_multiplier(attacking_enemy)
 		var attack_count := attack.get_attack_count()
@@ -727,6 +729,8 @@ func _perform_enemy_turn() -> void:
 
 func _choose_enemy_attack_limb(source_enemy: CombatEntity) -> CombatLimb:
 	var candidates: Array[CombatLimb] = []
+	var candidate_weights: Array[float] = []
+	var total_weight := 0.0
 	for limb in source_enemy.limbs:
 		if limb.is_destroyed:
 			continue
@@ -734,9 +738,78 @@ func _choose_enemy_attack_limb(source_enemy: CombatEntity) -> CombatLimb:
 			continue
 		if limb.has_attack_options():
 			candidates.append(limb)
+			var limb_weight := 0.0
+			for attack in limb.get_attack_options():
+				limb_weight += maxf(0.0, attack.weight)
+			candidate_weights.append(limb_weight)
+			total_weight += limb_weight
 	if candidates.is_empty():
 		return null
+
+	if total_weight <= 0.0:
+		return candidates[randi() % candidates.size()]
+
+	var roll := randf() * total_weight
+	var cumulative := 0.0
+	for idx in range(candidates.size()):
+		var weight := candidate_weights[idx]
+		if weight <= 0.0:
+			continue
+		cumulative += weight
+		if roll < cumulative:
+			return candidates[idx]
+
+	for idx in range(candidates.size()):
+		if candidate_weights[idx] > 0.0:
+			return candidates[idx]
+
 	return candidates[randi() % candidates.size()]
+
+func _telegraph_enemy_attack(source_enemy: CombatEntity, attack_limb: CombatLimb, attack: SpellData) -> void:
+	if enemy_attack_telegraph_seconds <= 0.0:
+		return
+	if source_enemy == null or not is_instance_valid(source_enemy):
+		return
+	if attack_limb == null or not is_instance_valid(attack_limb) or attack_limb.is_destroyed:
+		return
+
+	var highlighted_limbs: Array[CombatLimb] = []
+	var highlight_whole_enemy := false
+	if attack != null:
+		highlight_whole_enemy = attack.target_scope == SpellData.TargetScope.WHOLE_ENEMY or attack.target_scope == SpellData.TargetScope.ALL_ENEMIES
+
+	if highlight_whole_enemy:
+		for limb in source_enemy.limbs:
+			if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
+				limb.set_highlighted()
+				highlighted_limbs.append(limb)
+	else:
+		attack_limb.set_highlighted()
+		highlighted_limbs.append(attack_limb)
+
+	var original_scales: Array[Vector2] = []
+	for limb in highlighted_limbs:
+		if limb == null or not is_instance_valid(limb):
+			original_scales.append(Vector2.ONE)
+			continue
+		original_scales.append(limb.scale)
+		limb.modulate = Color(1.0, 0.14, 0.14, 1.0)
+		var pulse_tween := create_tween()
+		pulse_tween.set_parallel(true)
+		pulse_tween.tween_property(limb, "modulate", Color(1.0, 0.08, 0.08, 1.0), enemy_attack_telegraph_seconds * 0.75).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		pulse_tween.tween_property(limb, "scale", limb.scale * enemy_attack_telegraph_scale, enemy_attack_telegraph_seconds * 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		pulse_tween.set_parallel(false)
+		pulse_tween.set_parallel(true)
+		pulse_tween.tween_property(limb, "modulate", Color(1.0, 0.18, 0.18, 1.0), enemy_attack_telegraph_seconds * 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		pulse_tween.tween_property(limb, "scale", original_scales[-1], enemy_attack_telegraph_seconds * 0.55).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
+	await get_tree().create_timer(enemy_attack_telegraph_seconds).timeout
+
+	for idx in range(highlighted_limbs.size()):
+		var limb := highlighted_limbs[idx]
+		if limb != null and is_instance_valid(limb):
+			limb.scale = original_scales[idx]
+			limb.set_unhighlighted()
 
 func _reset_combat_effects() -> void:
 	_player_effects.clear()

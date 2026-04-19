@@ -7,7 +7,6 @@
 script = ExtResource("1_spelldata")
 spell_id = "basic_attack"
 spell_name = "Basic Attack"
-damage = 5
 min_damage = 5
 max_damage = 10
 energy = 1
