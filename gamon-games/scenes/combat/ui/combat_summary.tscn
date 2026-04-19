@@ -1,6 +1,22 @@
 [gd_scene format=3 uid="uid://cq6axxshidxi"]
 
 [ext_resource type="Script" uid="uid://b02csc7bba82c" path="res://scripts/combat/ui/combat_summary.gd" id="1_0nftf"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_umpm6"]
+[ext_resource type="Resource" path="res://resources/combat_spells/armor_breaker.tres" id="3_p5i7c"]
+[ext_resource type="Resource" path="res://resources/combat_spells/bash.tres" id="4_12x0l"]
+[ext_resource type="Resource" uid="uid://brqp1tf0obe77" path="res://resources/combat_spells/basic_attack.tres" id="5_mjw7h"]
+[ext_resource type="Resource" uid="uid://ceahsv0oku7qe" path="res://resources/combat_spells/block.tres" id="6_c73a6"]
+[ext_resource type="Resource" path="res://resources/combat_spells/cleave.tres" id="7_e664x"]
+[ext_resource type="Resource" path="res://resources/combat_spells/fireball.tres" id="8_3fp37"]
+[ext_resource type="Resource" path="res://resources/combat_spells/fire_storm.tres" id="9_s26j3"]
+[ext_resource type="Resource" path="res://resources/combat_spells/flex.tres" id="10_lnvcs"]
+[ext_resource type="Resource" path="res://resources/combat_spells/freeze.tres" id="11_l8bn4"]
+[ext_resource type="Resource" path="res://resources/combat_spells/paralyzer.tres" id="12_wd3v1"]
+[ext_resource type="Resource" path="res://resources/combat_spells/pilar_of_flame.tres" id="13_tcb1w"]
+[ext_resource type="Resource" path="res://resources/combat_spells/scream.tres" id="14_s4ajs"]
+[ext_resource type="Resource" path="res://resources/combat_spells/sharp_blade.tres" id="15_yyjfr"]
+[ext_resource type="Resource" path="res://resources/combat_spells/stone_skin.tres" id="16_6u4mx"]
+[ext_resource type="Resource" path="res://resources/combat_spells/triple_attack.tres" id="17_syuct"]
 
 [node name="CombatSummary" type="Control" unique_id=1025159308]
 layout_mode = 3
@@ -10,6 +26,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0nftf")
+SPELLS = Array[ExtResource("2_umpm6")]([ExtResource("3_p5i7c"), ExtResource("4_12x0l"), ExtResource("5_mjw7h"), ExtResource("6_c73a6"), ExtResource("7_e664x"), ExtResource("8_3fp37"), ExtResource("9_s26j3"), ExtResource("10_lnvcs"), ExtResource("11_l8bn4"), ExtResource("12_wd3v1"), ExtResource("13_tcb1w"), ExtResource("14_s4ajs"), ExtResource("15_yyjfr"), ExtResource("16_6u4mx"), ExtResource("17_syuct")])
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=468126359]
 custom_minimum_size = Vector2(400, 250)
