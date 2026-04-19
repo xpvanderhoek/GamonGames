@@ -11,6 +11,7 @@ signal continue_pressed
 @onready var level_up: Label = $PanelContainer/VBoxContainer/LevelUp
 @onready var spell_options_container: VBoxContainer = $PanelContainer/VBoxContainer/SpellOptionsContainer
 
+@export var SPELLS: Array[SpellData] = []
 const SPELL_DIR := "res://resources/combat_spells/"
 
 var _target_exp: int = 0
@@ -51,6 +52,8 @@ func setup(exp_gained: int) -> void:
 	_animate_exp_bar(starting_exp, _target_exp)
 
 func _load_all_spells() -> void:
+	_all_spells = SPELLS
+	return
 	var dir = DirAccess.open(SPELL_DIR)
 	if dir == null:
 		return

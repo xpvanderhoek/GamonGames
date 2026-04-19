@@ -1294,7 +1294,6 @@ func _apply_player_damage(amount: int, damage_type: SpellData.DamageType = Spell
 	if RunData.current_health <= 0:
 		current_state = CombatState.COMBAT_OVER
 		_restart_run_on_player_death()
-	print("Player took %d damage — HP: %d/%d" % [mitigated_amount, RunData.current_health, RunData.max_health])
 
 func _restart_run_on_player_death() -> void:
 	if _is_exiting_combat:
