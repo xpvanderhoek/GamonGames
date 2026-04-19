@@ -106,7 +106,7 @@ font_color = Color(0.57715225, 0.47292823, 0.33508357, 1)
 [node name="ShopRoom" type="Node2D" unique_id=334542622]
 script = ExtResource("1_2g6x2")
 item_scene = ExtResource("2_6tcdb")
-shop_items = Array[ExtResource("3_wb3sn")]([ExtResource("10_shop_item"), ExtResource("11_shop_item"), ExtResource("12_shop_item"), ExtResource("13_shop_item"), ExtResource("14_shop_item"), ExtResource("15_shop_item"), ExtResource("16_shop_item"), ExtResource("17_shop_item"), ExtResource("18_shop_item"), ExtResource("19_shop_item"), ExtResource("20_shop_item"), ExtResource("21_shop_item"), ExtResource("22_shop_item"), ExtResource("23_shop_item"), ExtResource("24_shop_item"), ExtResource("25_shop_item"), ExtResource("26_shop_item"), ExtResource("27_shop_item"), ExtResource("28_shop_item"), ExtResource("29_shop_item"), ExtResource("30_shop_item"), ExtResource("31_shop_item"), ExtResource("32_shop_item")])
+shop_items = [ExtResource("10_shop_item"), ExtResource("11_shop_item"), ExtResource("12_shop_item"), ExtResource("13_shop_item"), ExtResource("14_shop_item"), ExtResource("15_shop_item"), ExtResource("16_shop_item"), ExtResource("17_shop_item"), ExtResource("18_shop_item"), ExtResource("19_shop_item"), ExtResource("20_shop_item"), ExtResource("21_shop_item"), ExtResource("22_shop_item"), ExtResource("23_shop_item"), ExtResource("24_shop_item"), ExtResource("25_shop_item"), ExtResource("26_shop_item"), ExtResource("27_shop_item"), ExtResource("28_shop_item"), ExtResource("29_shop_item"), ExtResource("30_shop_item"), ExtResource("31_shop_item"), ExtResource("32_shop_item")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1182942741]
 
