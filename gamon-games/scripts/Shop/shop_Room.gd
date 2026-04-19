@@ -1,7 +1,8 @@
 extends Node2D
 
 @export var item_scene: PackedScene 
-@export_dir var resources_folder: String = "res://assets/ShopItems/Resources"
+@export var resources_folder: String = "res://assets/ShopItems/Resources"
+@export var shop_items: Array[ItemData] = []
 @export var mouse_parallax_strength := Vector2(18.0, 10.0)
 @export_range(1.0, 30.0, 0.1) var mouse_parallax_smoothing := 8.0
 
@@ -133,11 +134,7 @@ func _on_item_hover_ended() -> void:
 		item_tooltip_panel.visible = false
 
 func _load_shop_items() -> Array[ItemData]:
-	var items: Array[ItemData] = []
-	var dir = DirAccess.open(resources_folder)
-	for file in dir.get_files():
-		items.append(load("%s/%s" % [resources_folder, file]) as ItemData)
-	return items
+	return shop_items.duplicate()
 
 func _roll_item_from_pool(pool: Array[ItemData], luck_value: float) -> ItemData:
 	if pool.is_empty():
