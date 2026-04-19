@@ -8,7 +8,8 @@ signal upgrade_completed(stat_name: String, level: int)
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh
-	"damage": 1000,      # Anatomy Mastery
+	"damage": 0.0,      # Anatomy Mastery
+	"energy_regen": 2.0,
 	"precision": 100.0,       # Steady Hand
 	"gold_gain": 1.0,         # Scavenger's Eye
 	"debuff_resistance": 10.0, # Iron Will
@@ -22,6 +23,7 @@ var stats = {
 var upgrade_levels = {
 	"health": 0,
 	"damage": 0,
+	"energy_regen": 0,
 	"precision": 0,
 	"gold_gain": 0,
 	"debuff_resistance": 0,
@@ -35,6 +37,7 @@ var upgrade_levels = {
 var upgrade_costs = {
 	"health": {"min": 100, "max": 1000},
 	"damage": {"min": 500, "max": 2500},
+	"energy_regen": {"min": 200, "max": 1400},
 	"precision": {"min": 150, "max": 1500},
 	"gold_gain": {"min": 400, "max": 2000},
 	"debuff_resistance": {"min": 300, "max": 1500},
@@ -75,6 +78,7 @@ func upgrade_stat(stat_name: String) -> bool:
 	var upgrade_config = {
 		"health": {"max": 10, "percent": 5.0},
 		"damage": {"max": 5, "percent": 3.0},
+		"energy_regen": {"max": 10, "percent": 10.0},
 		"precision": {"max": 10, "percent": 2.0},
 		"gold_gain": {"max": 5, "percent": 5.0},
 		"debuff_resistance": {"max": 5, "percent": 5.0},
@@ -107,6 +111,7 @@ func reset_stats() -> void:
 	stats = {
 		"health": 100.0,
 		"damage": 20,
+		"energy_regen": 2.0,
 		"precision": 100.0,
 		"gold_gain": 1.0,
 		"debuff_resistance": 10.0,

@@ -58,6 +58,7 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
 @onready var spells_panel: HBoxContainer = $SpellsPanel/Container
 @onready var lbl_player_health: Label = $HealthBar/HealthLabel
+@onready var lbl_player_energy: Label = $EnergyPanel/Value
 @onready var lbl_turns_order: Label = $TurnsOrderUI/RoundValue
 @onready var turns_order_container: VBoxContainer = $TurnsOrderUI/Panel
 @onready var player_buffs_panel: HBoxContainer = get_node_or_null("BuffsPanel") as HBoxContainer
@@ -75,12 +76,15 @@ func _ready() -> void:
 	_reset_combat_effects()
 	_refresh_enemy_buffs_ui()
 	_refresh_player_buffs_ui()
+	RunData.reset_energy()
 	_update_player_health_label()
+	_update_player_energy_label()
 	_setup_spell_cursor_overlay()
 	_rebuild_spells_panel()
 	_setup_target_scope_selectors()
 
 	RunData.health_changed.connect(_update_player_health_label)
+	RunData.energy_changed.connect(_update_player_energy_label)
 	_begin_player_turn()
 
 func _input(event): #Temporary
@@ -141,6 +145,8 @@ func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	_reset_combat_effects()
 	_refresh_enemy_buffs_ui()
 	_refresh_player_buffs_ui()
+	RunData.reset_energy()
+	_update_player_energy_label()
 	_begin_player_turn()
 
 func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> void:
@@ -208,7 +214,11 @@ func select_attack() -> void:
 func _select_spell(spell: SpellData) -> void:
 	if current_state != CombatState.PLAYER_TURN or not _has_alive_enemies():
 		return
+	if spell != null and not _can_afford_spell(spell):
+		return
 	if spell != null and spell.spell_type == SpellData.SpellType.BUFF:
+		if not _spend_spell_energy(spell):
+			return
 		_append_player_effect(spell)
 		_play_attack_feedback(spell, null, null)
 		_attack_selected = false
@@ -216,6 +226,8 @@ func _select_spell(spell: SpellData) -> void:
 		_end_player_turn()
 		return
 	if spell != null and spell.spell_type == SpellData.SpellType.HEAL:
+		if not _spend_spell_energy(spell):
+			return
 		_apply_player_heal(spell.heal_amount)
 		_play_attack_feedback(spell, null, null)
 		_attack_selected = false
@@ -424,11 +436,31 @@ func _update_button_states() -> void:
 				spell_button.disabled = true
 				spell_button.modulate = Color(0.4, 0.4, 0.4, 1.0)
 			else:
-				spell_button.disabled = should_disable_buttons
-				if should_disable_buttons:
+				var spell := _button_spells.get(spell_button, null) as SpellData
+				var lacks_energy := spell != null and not _can_afford_spell(spell)
+				spell_button.disabled = should_disable_buttons or lacks_energy
+				if should_disable_buttons or lacks_energy:
 					spell_button.modulate = Color(0.4, 0.4, 0.4, 1.0)
 				else:
 					spell_button.modulate = Color.WHITE
+
+func _get_spell_energy_cost(spell: SpellData) -> int:
+	if spell == null:
+		return 0
+	return maxi(0, spell.energy)
+
+func _can_afford_spell(spell: SpellData) -> bool:
+	return RunData.current_energy >= _get_spell_energy_cost(spell)
+
+func _spend_spell_energy(spell: SpellData) -> bool:
+	var spell_cost := _get_spell_energy_cost(spell)
+	if spell_cost <= 0:
+		return true
+	if RunData.current_energy < spell_cost:
+		return false
+	RunData.current_energy -= spell_cost
+	_update_button_states()
+	return true
 
 func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> void:
 	if current_state != CombatState.PLAYER_TURN:
@@ -445,6 +477,8 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		return
 
 	var active_spell := selected_spell
+	if active_spell != null and not _spend_spell_energy(active_spell):
+		return
 	if _roll_player_hit_on_limb(limb):
 		var spell_damage := 0
 		var spell_type := SpellData.SpellType.ATTACK
@@ -1380,6 +1414,8 @@ func _begin_player_turn() -> void:
 	_cleanup_expired_effects()
 	_refresh_enemy_buffs_ui()
 	_refresh_player_buffs_ui()
+	var regen_amount: int = maxi(0, int(round(float(RunData.get_stat("energy_regen")))))
+	_regenerate_player_energy(regen_amount)
 	_attack_selected = false
 	selected_spell = null
 	_update_enemy_spell_targeting_preview()
@@ -1391,6 +1427,23 @@ func _begin_player_turn() -> void:
 	for enemy in enemy_entities:
 		if enemy != null and is_instance_valid(enemy):
 			enemy._refresh_highlight()
+
+func _regenerate_player_energy(amount: int) -> void:
+	if amount <= 0:
+		return
+	var previous_energy := RunData.current_energy
+	RunData.current_energy = mini(RunData.max_energy, RunData.current_energy + amount)
+	var gained_energy := RunData.current_energy - previous_energy
+	if gained_energy <= 0:
+		return
+	var energy_position = _get_energy_label_world_position()
+	if energy_position != null:
+		_spawn_floating_damage_number(gained_energy, energy_position as Vector2, true, true)
+
+func _get_energy_label_world_position() -> Variant:
+	if lbl_player_energy == null or not is_instance_valid(lbl_player_energy):
+		return null
+	return lbl_player_energy.global_position + (lbl_player_energy.size * 0.5)
 
 func _update_enemy_spell_targeting_preview() -> void:
 	var spell_icon: Texture2D = null
@@ -1456,6 +1509,9 @@ func _set_enemy_targeting_enabled(enabled: bool) -> void:
 
 func _update_player_health_label() -> void:
 	lbl_player_health.text = "HP: %d/%d" % [RunData.current_health, RunData.max_health]
+
+func _update_player_energy_label(_new_value: int = 0) -> void:
+	lbl_player_energy.text = "%d/%d" % [RunData.current_energy, RunData.max_energy]
 
 func _refresh_turns_order_ui(current_enemy_actor: CombatEntity = null) -> void:
 	if turns_order_container == null:
