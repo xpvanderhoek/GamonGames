@@ -1,64 +1,95 @@
 [gd_scene format=3 uid="uid://ccjrv1y6hb003"]
 
-[ext_resource type="Script" uid="uid://u67a3erwqvta" path="res://scripts/Shop/shop_Item.gd" id="1_6j5au"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_4rgw3"]
-shadow_size = 8
-shadow_color = Color(0, 0, 0, 0.6313726)
-shadow_offset = Vector2(-0.05, 0.29)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_4rgw3"]
+[ext_resource type="Script" uid="uid://u67a3erwqvta" path="res://Scripts/Shop/shop_Item.gd" id="1_6j5au"]
+[ext_resource type="Texture2D" uid="uid://dx7qeb3jcuxpw" path="res://Assets/ShopItems/ShopEnvironment/Pricetag.png" id="2_6j5au"]
+[ext_resource type="Texture2D" uid="uid://2f6ei0gykdh6" path="res://Assets/ShopItems/ShopEnvironment/buysign.png" id="3_iahut"]
+[ext_resource type="Script" uid="uid://daxrnhp17dkps" path="res://Scripts/Shop/BuyItemButton.gd" id="4_buybutton"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6j5au"]
-shadow_size = 5
+font_color = Color(0.36604783, 0.23913273, 0.16171762, 1)
 shadow_color = Color(0, 0, 0, 1)
 shadow_offset = Vector2(0.165, 0.21)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6j5au"]
+[sub_resource type="Gradient" id="Gradient_smoke_gray"]
+offsets = PackedFloat32Array(0, 0.32, 0.66, 1)
+colors = PackedColorArray(0.34, 0.34, 0.34, 0.85, 0.48, 0.48, 0.48, 0.82, 0.62, 0.62, 0.62, 0.76, 0.78, 0.78, 0.78, 0.68)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_smoke_gray"]
+gradient = SubResource("Gradient_smoke_gray")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_smoke"]
+lifetime_randomness = 0.45
+emission_shape_offset = Vector3(0, 19, 0)
+emission_shape = 3
+emission_box_extents = Vector3(22.64, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 55.0
+initial_velocity_min = 40.0
+initial_velocity_max = 85.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 5.0
+color = Color(0.72, 0.72, 0.72, 0.8)
+color_ramp = SubResource("GradientTexture1D_smoke_gray")
 
 [node name="ShopItem" type="Node2D" unique_id=1373492305]
 script = ExtResource("1_6j5au")
 
-[node name="Prompt" type="Label" parent="." unique_id=1566797129]
+[node name="PriceTag" type="Sprite2D" parent="." unique_id=2143198069]
+position = Vector2(-55.000004, -24.000002)
+scale = Vector2(0.17, 0.17)
+texture = ExtResource("2_6j5au")
+
+[node name="PriceLabel" type="Label" parent="PriceTag" unique_id=1458447901]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -54.0
-offset_top = -91.37
-offset_right = 54.0
-offset_bottom = -68.37
+offset_left = -200.97055
+offset_top = -29.411755
+offset_right = -153.71054
+offset_bottom = -6.4117546
 grow_horizontal = 2
-text = "Press E to buy"
-label_settings = SubResource("LabelSettings_4rgw3")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=386328136]
-
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=680122689]
-scale = Vector2(4.4, 4.4)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1548185246]
-scale = Vector2(0.6, 0.6)
-shape = SubResource("CircleShape2D_4rgw3")
-
-[node name="PriceLabel" type="Label" parent="." unique_id=1458447901]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -65.0
-offset_top = 29.000004
-offset_right = -17.740002
-offset_bottom = 52.000004
-grow_horizontal = 2
-scale = Vector2(2.835, 2.835)
+rotation = 0.2443461
+scale = Vector2(3.265, 3.265)
 text = "99999"
 label_settings = SubResource("LabelSettings_6j5au")
 horizontal_alignment = 1
 
-[node name="Buy_Zone" type="Area2D" parent="." unique_id=184301952]
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1947229268]
+modulate = Color(0, 0, 0, 0.44705883)
+position = Vector2(5, 20)
+scale = Vector2(1, 0.3)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Buy_Zone" unique_id=810062944]
-scale = Vector2(5.105, 5.105)
-shape = SubResource("CircleShape2D_6j5au")
+[node name="Item" type="Sprite2D" parent="." unique_id=386328136]
 
-[connection signal="body_entered" from="Buy_Zone" to="." method="_on_buy_zone_body_entered"]
-[connection signal="body_exited" from="Buy_Zone" to="." method="_on_buy_zone_body_exited"]
+[node name="BuySmoke" type="GPUParticles2D" parent="." unique_id=1200044111]
+emitting = false
+amount = 200
+lifetime = 1.4
+interp_to_end = 0.032
+one_shot = true
+explosiveness = 0.85
+randomness = 0.66
+fixed_fps = 60
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_smoke")
+
+[node name="BuyItemButton" type="Node2D" parent="." unique_id=2116143130]
+position = Vector2(0, 42.675)
+script = ExtResource("4_buybutton")
+
+[node name="Button" type="Button" parent="BuyItemButton" unique_id=2116143131]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -174.0
+offset_top = -42.0
+offset_right = 174.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.265, 0.265)
+icon = ExtResource("3_iahut")
+flat = true

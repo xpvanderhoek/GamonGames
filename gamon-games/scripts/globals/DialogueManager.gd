@@ -55,6 +55,42 @@ func start_dialogue(key: String) -> void:
 	is_in_dialogue = false
 	dialogue_finished.emit()
 
+func start_random_line_dialogue(key: String) -> void:
+	if is_in_dialogue:
+		return
+
+	if dialogue_ui == null:
+		return
+
+	if not dialogue_data.has(key):
+		push_error("Dialogue key not found: %s" % key)
+		return
+
+	var pool: Variant = dialogue_data[key]
+	if not (pool is Array) or pool.is_empty():
+		push_error("Dialogue pool is empty or invalid: %s" % key)
+		return
+
+	var picked: Variant = pool[randi() % pool.size()]
+	if not (picked is Dictionary):
+		push_error("Dialogue line has invalid format in key: %s" % key)
+		return
+
+	is_in_dialogue = true
+	dialogue_ui.show()
+	await dialogue_ui.start_dialogue([picked])
+	is_in_dialogue = false
+	dialogue_finished.emit()
+
+func cancel_dialogue() -> void:
+	pending_dialogue_key = null
+	if dialogue_ui != null and dialogue_ui.has_method("force_close_dialogue"):
+		dialogue_ui.force_close_dialogue()
+
+	if is_in_dialogue:
+		is_in_dialogue = false
+		dialogue_finished.emit()
+
 
 func has_dialogue(key: String) -> bool:
 	return dialogue_data.has(key)
