@@ -1,15 +1,22 @@
-[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://dq5ex1kbt02ry"]
+[gd_resource type="Resource" script_class="SpellData" format=3]
 
-[ext_resource type="Texture2D" uid="uid://cydiwpld3gxpm" path="res://Assets/Placeholders/ui/blade_master.png" id="1_a4ljg"]
-[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_848sm"]
+[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
 
 [resource]
-script = ExtResource("2_848sm")
+script = ExtResource("1_spelldata")
 spell_id = "flex"
 spell_name = "Flex"
-damage = 5
+spell_type = 1
+target_scope = 0
+min_damage = 0
+max_damage = 0
+energy = 2
 accuracy = 100.0
 weight = 100.0
-icon = ExtResource("1_a4ljg")
-vfx_anchor = 1
+icon = ExtResource("1_icon")
+vfx_anchor = 0
 vfx_lifetime = 1.0
+duration_rounds = 2
+outgoing_damage_flat_bonus = 12
+stun_turns = true

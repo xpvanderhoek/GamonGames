@@ -16,6 +16,7 @@ enum DamageType {
 enum TargetScope {
 	LIMB,
 	WHOLE_ENEMY,
+	ALL_ENEMIES,
 }
 
 enum VfxAnchor {
@@ -29,7 +30,9 @@ var level: int = 1
 @export var spell_name: String = "Attack"
 @export var spell_type: SpellType = SpellType.ATTACK
 @export var target_scope: TargetScope = TargetScope.LIMB
-@export var damage: int = 0
+@export var min_damage: int = -1
+@export var max_damage: int = -1
+@export_range(1, 20, 1) var attack_count: int = 1
 @export var energy: int = 0
 @export_range(0, 100, 1) var accuracy: float = 1
 
@@ -57,3 +60,27 @@ var level: int = 1
 
 @export var damage_over_time: int = 0
 @export var stun_turns: bool = false
+
+func get_min_damage() -> int:
+	if min_damage >= 0:
+		return max(0, min_damage)
+	return 0
+
+func get_max_damage() -> int:
+	var resolved_min := get_min_damage()
+	if max_damage >= 0:
+		return max(resolved_min, max_damage)
+	return resolved_min
+
+func has_damage() -> bool:
+	return get_max_damage() > 0
+
+func get_attack_count() -> int:
+	return maxi(1, attack_count)
+
+func roll_damage() -> int:
+	var low := get_min_damage()
+	var high := get_max_damage()
+	if high <= low:
+		return low
+	return randi_range(low, high)

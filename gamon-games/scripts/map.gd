@@ -25,6 +25,7 @@ func _setup_map_nodes():
 	
 	if RunData.map_nodes_data.is_empty():
 		var previous_node : MapNodeData = null
+		var combat_encounter_index := 0
 		
 		for node in nodes_list:
 			var data : MapNodeData = MapNodeData.new()
@@ -38,7 +39,14 @@ func _setup_map_nodes():
 			
 				data.type = MapNodeData.Type[node.map_node_type]
 			if data.type == MapNodeData.Type.COMBAT:
-				var enemy_count = randi_range(1, 3)
+				var enemy_count := 0
+				if combat_encounter_index == 0:
+					enemy_count = 1
+				elif combat_encounter_index == 1:
+					enemy_count = 2
+				else:
+					enemy_count = randi_range(1, 3)
+				combat_encounter_index += 1
 				for i in range(enemy_count):
 					var random_enemy = enemy_scenes[randi() % enemy_scenes.size()]
 					data.enemies.append(random_enemy)
