@@ -16,7 +16,8 @@ var tile_buttons : Array = []
 var tile_labels : Array = []
 var air_index   : int = 0
 
-@export var puzzle_texture : Texture2D
+@export var all_puzzle_textures: Array[Texture2D]
+var puzzle_texture: Texture2D
 
 var move_count  : int = 0
 var solved      : bool = false
@@ -38,7 +39,7 @@ func _ready() -> void:
 	total_coins.text = str(RunData.coins)
 	coin_amount.text = str(coins)
 	base_coin_pos = coin_amount.position
-
+	puzzle_texture = all_puzzle_textures[randi_range(0, all_puzzle_textures.size() - 1)]
 	_create_buttons()
 	_setup_grid()
 	_shuffle_solvable()
