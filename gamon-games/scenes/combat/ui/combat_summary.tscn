@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://cq6axxshidxi"]
+
+[ext_resource type="Script" uid="uid://b02csc7bba82c" path="res://scripts/combat/ui/combat_summary.gd" id="1_0nftf"]
+
+[node name="CombatSummary" type="Control" unique_id=1025159308]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0nftf")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=468126359]
+custom_minimum_size = Vector2(400, 250)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=803802532]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1159640957]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Room cleared!"
+
+[node name="ExpRecieved" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1742423957]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "EXP Received: 0"
+
+[node name="LevelContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=61898245]
+layout_mode = 2
+alignment = 1
+
+[node name="CurrentLevel" type="Label" parent="PanelContainer/VBoxContainer/LevelContainer" unique_id=355470675]
+layout_mode = 2
+text = "lvl 1"
+
+[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer/LevelContainer" unique_id=1659218011]
+custom_minimum_size = Vector2(200, 20)
+layout_mode = 2
+show_percentage = false
+
+[node name="NextLevel" type="Label" parent="PanelContainer/VBoxContainer/LevelContainer" unique_id=1109297444]
+layout_mode = 2
+text = "lvl 2"
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=1103316941]
+visible = false
+layout_mode = 2
+
+[node name="LevelUp" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1151295992]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Level Up! Choose a spell:"
+
+[node name="SpellOptionsContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=1426779724]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" unique_id=1881383272]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+
+[node name="ContinueButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer" unique_id=751938234]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Continue"

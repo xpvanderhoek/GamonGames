@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SpellData" format=3]
+
+[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
+
+[resource]
+script = ExtResource("1_spelldata")
+spell_id = "paralyzer"
+spell_name = "Paralyzer"
+spell_type = 2
+target_scope = 0
+min_damage = 0
+max_damage = 0
+energy = 3
+accuracy = 100.0
+weight = 100.0
+icon = ExtResource("1_icon")
+vfx_anchor = 1
+vfx_lifetime = 1.0
+duration_rounds = 1
+stun_turns = true

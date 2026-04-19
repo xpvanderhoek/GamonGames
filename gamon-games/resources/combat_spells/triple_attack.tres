@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://5nopcxc4jtfp"]
+
+[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="1_p13sb"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_gvh21"]
+
+[resource]
+script = ExtResource("2_gvh21")
+spell_id = "triple_attack"
+spell_name = "Triple Attack"
+min_damage = 5
+max_damage = 10
+attack_count = 3
+energy = 3
+accuracy = 100.0
+weight = 100.0
+icon = ExtResource("1_p13sb")
+vfx_anchor = 1
+vfx_lifetime = 1.0

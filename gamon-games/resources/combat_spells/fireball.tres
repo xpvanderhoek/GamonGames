@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://b1ejt0ft0t4px"]
+
+[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="1_qck2a"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_i1ylf"]
+
+[resource]
+script = ExtResource("2_i1ylf")
+spell_id = "fireball"
+spell_name = "Fireball"
+spell_type = 2
+min_damage = 5
+max_damage = 10
+energy = 2
+accuracy = 100.0
+damage_type = 1
+weight = 100.0
+icon = ExtResource("1_qck2a")
+vfx_anchor = 1
+vfx_lifetime = 1.0
+duration_rounds = 2
+damage_over_time = 3
