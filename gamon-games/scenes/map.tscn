@@ -1,9 +1,13 @@
-[gd_scene format=3 uid="uid://c7kb8r2bxnm6p"]
+[gd_scene format=3 uid="uid://ctc0o0gqj1d72"]
 
 [ext_resource type="Script" uid="uid://dph5dxbxjgxy7" path="res://scripts/map.gd" id="1_0cso3"]
 [ext_resource type="Texture2D" uid="uid://bsbnniqwip2hb" path="res://assets/map/map_foreground.png" id="1_gldc4"]
 [ext_resource type="PackedScene" path="res://scenes/map_node.tscn" id="2_0cso3"]
 [ext_resource type="Texture2D" uid="uid://c61vg1skpn6y0" path="res://assets/map/map_line_dash.png" id="3_2klcf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0cso3"]
+font_size = 67
+font_color = Color(0.57715225, 0.47292823, 0.33508357, 1)
 
 [node name="Map" type="Node2D" unique_id=1667129948]
 script = ExtResource("1_0cso3")
@@ -44,3 +48,12 @@ position = Vector2(682, 349)
 
 [node name="MapNode4" parent="MapNodes" unique_id=1905499765 instance=ExtResource("2_0cso3")]
 position = Vector2(925, 306)
+
+[node name="CoinLabel" type="Label" parent="." unique_id=428784600]
+offset_left = 925.0
+offset_top = 61.0
+offset_right = 1016.0
+offset_bottom = 107.0
+text = "0"
+label_settings = SubResource("LabelSettings_0cso3")
+horizontal_alignment = 2

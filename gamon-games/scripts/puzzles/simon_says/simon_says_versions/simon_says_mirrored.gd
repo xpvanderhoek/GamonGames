@@ -31,5 +31,7 @@ func _on_button_pressed(idx):
 	checkCorrect(buttons.size() - 1 - idx, pos)
 	
 	can_click = true
-	
-	
+
+func calculate_coins():
+	coin_amount = coin_amount + 3
+	print_coins(coin_amount)
