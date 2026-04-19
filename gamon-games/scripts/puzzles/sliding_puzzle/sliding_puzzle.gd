@@ -13,7 +13,10 @@ const ANIM_TIME     := 0.12
 
 var tile_values : Array = []
 var tile_buttons : Array = []
+var tile_labels : Array = []
 var air_index   : int = 0
+
+@export var puzzle_texture : Texture2D
 
 var move_count  : int = 0
 var solved      : bool = false
@@ -25,6 +28,8 @@ var timer_running : bool = false
 var coins = 200
 var last_coin_tick : int = 0
 
+var piece_size: Texture2D
+
 var move_tween : Tween
 var shake_intensity : float = 0.0
 var base_coin_pos : Vector2
@@ -33,6 +38,7 @@ func _ready() -> void:
 	total_coins.text = str(RunData.coins)
 	coin_amount.text = str(coins)
 	base_coin_pos = coin_amount.position
+
 	_create_buttons()
 	_setup_grid()
 	_shuffle_solvable()
@@ -78,12 +84,27 @@ func _create_buttons() -> void:
 
 	for i in range(total):
 		var btn := Button.new()
+		btn.expand_icon = true
 		btn.custom_minimum_size = Vector2(TILE_SIZE, TILE_SIZE)
+		btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		btn.set_meta("slot", i)
 		btn.pressed.connect(_on_tile_pressed.bind(i))
-		grid_container.add_child(btn)
 
+		grid_container.add_child(btn)
 		tile_buttons.append(btn)
+
+		var label := Label.new()
+		label.name = "NumberLabel"
+		label.text = str(i + 1)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		label.size = Vector2(TILE_SIZE, TILE_SIZE)
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+		btn.add_child(label)
+
+		tile_labels.append(label)
 
 
 func _setup_grid() -> void:
@@ -132,7 +153,6 @@ func _animate_coin_label(delta: float) -> void:
 	
 	var strength = shake_intensity
 	
-	# random shake
 	var offset_x = randf_range(-1, 1) * strength
 	var offset_y = randf_range(-1, 1) * strength
 	
@@ -233,18 +253,50 @@ func _swap(a: int, b: int) -> void:
 
 
 func _refresh_tiles() -> void:
-	var neighbors = _get_neighbors(air_index)
+	if puzzle_texture == null:
+		return
+	
+	var size = puzzle_texture.get_size()
+	var square_size = min(size.x, size.y)
+
+	var offset = Vector2(
+		(size.x - square_size) / 2,
+		(size.y - square_size) / 2
+	)
+
+	var piece_size = Vector2(square_size, square_size) / GRID_SIZE
 
 	for i in range(tile_values.size()):
 		var btn : Button = tile_buttons[i]
+		var label : Label = tile_labels[i]
+		label.add_theme_color_override("font_color", Color.WHITE)
+		label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.5))
+		label.add_theme_constant_override("outline_size", 2)
+
+		btn.disabled = false
+		btn.icon = null
+		label.visible = true
 
 		if tile_values[i] == 0:
-			btn.text = ""
 			btn.disabled = true
-		else:
-			btn.text = str(tile_values[i])
-			btn.disabled = false
+			btn.icon = null
+			label.visible = false
+			continue
 
+		label.text = str(tile_values[i])
+
+		var value = tile_values[i] - 1
+		var row = value / GRID_SIZE
+		var col = value % GRID_SIZE
+
+		var atlas := AtlasTexture.new()
+		atlas.atlas = puzzle_texture
+		atlas.region = Rect2(
+			offset + Vector2(col, row) * piece_size,
+			piece_size
+		)
+
+		btn.icon = atlas
 
 func _update_ui() -> void:
 	status_label.text = "Moves: %d | Time: %.1fs" % [move_count, time_elapsed]
@@ -263,6 +315,17 @@ func _get_neighbors(flat_idx: int) -> Array:
 
 	return result
 
+func _animate_gap_to_zero() -> void:
+	var tween = create_tween()
+
+	var start_gap := TILE_GAP
+	var end_gap := 0.0
+
+	tween.tween_method(func(value):
+		grid_container.add_theme_constant_override("h_separation", int(value))
+		grid_container.add_theme_constant_override("v_separation", int(value))
+	, start_gap, end_gap, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	
 func _check_win() -> void:
 	for i in range(tile_values.size() - 1):
 		if tile_values[i] != i + 1:
@@ -270,10 +333,13 @@ func _check_win() -> void:
 
 	solved = true
 	timer_running = false
+
+	_animate_gap_to_zero()
+	
+
 	animate_labels(coin_amount, total_coins)
 	$Button.visible = true
 	status_label.text = "Solved in %d moves | %.1fs" % [move_count, time_elapsed]
-
 
 func _on_button_pressed() -> void:
 	TransitionManager.change_scene("res://scenes/map.tscn")
