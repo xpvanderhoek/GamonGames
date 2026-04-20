@@ -287,3 +287,4 @@ func die() -> void:
 			limb.destroy_limb()
 	entity_died.emit(self)
 	RunData.add_exp(exp_reward)
+	RunData.coins += 15
