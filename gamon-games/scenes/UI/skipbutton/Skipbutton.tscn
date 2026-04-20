@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bnlu4c13jyfkc"]
+
+[ext_resource type="Script" path="res://Scenes/UI/skipbutton/skipbutton.gd" id="1_9mcqj"]
+
+[node name="Skipbutton" type="Control" unique_id=15965707]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -190.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 70.0
+grow_horizontal = 0
+script = ExtResource("1_9mcqj")
+
+[node name="Button" type="Button" parent="." unique_id=1902411011]
+layout_mode = 0
+offset_right = 170.0
+offset_bottom = 50.0
+text = "Skip Puzzle"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
