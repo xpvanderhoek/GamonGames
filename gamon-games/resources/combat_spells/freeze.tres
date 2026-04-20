@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://y4qrkefn2l4k"]
 
-[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="1_g0o6u"]
+[ext_resource type="Texture2D" uid="uid://nq7y1vw4wbbk" path="res://assets/Placeholders/ui/ice-spell-cast.png" id="1_g0o6u"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_t5nyw"]
 
 [resource]

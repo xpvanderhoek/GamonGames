@@ -83,6 +83,7 @@ func new_run():
 	consumables = [null, null, null, null, null]
 	max_health = PlayerStats.stats["health"]
 	current_health = max_health
+	spells.clear()
 	reset_energy()
 	current_exp = 0
 	run_active = true

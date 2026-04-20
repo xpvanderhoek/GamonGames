@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="SpellData" format=3]
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://bwbnex6gsf7cc"]
 
-[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="1_icon"]
+[ext_resource type="Texture2D" uid="uid://jhruwtg5qep3" path="res://assets/Placeholders/ui/sword-brandish.png" id="1_r0rvb"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
 
 [resource]
@@ -8,14 +8,12 @@ script = ExtResource("1_spelldata")
 spell_id = "sharp_blade"
 spell_name = "Sharp Blade"
 spell_type = 1
-target_scope = 0
 min_damage = 0
 max_damage = 0
 energy = 2
 accuracy = 100.0
 weight = 100.0
-icon = ExtResource("1_icon")
-vfx_anchor = 0
+icon = ExtResource("1_r0rvb")
 vfx_lifetime = 1.0
 duration_rounds = 2
 outgoing_damage_flat_bonus = 8

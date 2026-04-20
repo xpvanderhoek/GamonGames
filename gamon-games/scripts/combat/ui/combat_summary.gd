@@ -128,6 +128,7 @@ func _on_animation_finished() -> void:
 			continue_button.disabled = false
 
 func _show_spell_options() -> void:
+	var combat_manager := get_parent() as CombatManager
 	var shuffled_spells = _all_spells.duplicate()
 	shuffled_spells.shuffle()
 	var options: Array[SpellData] = []
@@ -152,7 +153,8 @@ func _show_spell_options() -> void:
 		
 		if spell.icon:
 			button.icon = spell.icon
-		
+
+		button.tooltip_text = combat_manager.build_spell_tooltip(spell)
 		button.custom_minimum_size = Vector2(0, 30)
 		button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		button.pressed.connect(_on_spell_option_selected.bind(spell))
