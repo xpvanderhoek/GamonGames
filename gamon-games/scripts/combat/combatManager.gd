@@ -279,7 +279,7 @@ func _configure_spell_button(button: Button, spell: SpellData) -> void:
 	if bind_label != null:
 		bind_label.text = str(slot_index + 1)
 
-	button.tooltip_text = _build_spell_tooltip(spell)
+	button.tooltip_text = build_spell_tooltip(spell)
 	if spell != null and spell.icon != null:
 		button.icon = spell.icon
 	
@@ -304,7 +304,7 @@ func _configure_empty_spell_button(button: Button) -> void:
 	if button.pressed.is_connected(on_pressed):
 		button.pressed.disconnect(on_pressed)
 
-func _build_spell_tooltip(spell: SpellData) -> String:
+func build_spell_tooltip(spell: SpellData) -> String:
 	if spell == null:
 		return ""
 
