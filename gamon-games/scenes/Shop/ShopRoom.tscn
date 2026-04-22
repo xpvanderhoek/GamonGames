@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
 [ext_resource type="Texture2D" uid="uid://cuqfib4hrrgh" path="res://assets/ShopItems/ShopEnvironment/onlybackground.png" id="3_2g6x2"]
 [ext_resource type="Texture2D" uid="uid://dwq2jocxomnv0" path="res://assets/ShopItems/ShopEnvironment/Goblin.png" id="3_cougk"]
+[ext_resource type="Script" uid="uid://b7cli1nhudpxr" path="res://scripts/Items/ItemData.gd" id="3_lwfny"]
 [ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="3_xqf5f"]
 [ext_resource type="Texture2D" uid="uid://cc8kljam087th" path="res://assets/ShopItems/ShopEnvironment/LeaveSign.png" id="4_6tcdb"]
 [ext_resource type="Texture2D" uid="uid://buattucnivv8t" path="res://assets/ShopItems/ShopEnvironment/Cabinet.png" id="4_cougk"]
@@ -32,6 +33,7 @@
 [ext_resource type="Resource" uid="uid://bs4tcrv4d0qpt" path="res://assets/ShopItems/Resources/VialOfStagnantTime.tres" id="30_shop_item"]
 [ext_resource type="Resource" uid="uid://drj8ypf4y6jep" path="res://assets/ShopItems/Resources/VipersTongue.tres" id="31_shop_item"]
 [ext_resource type="Resource" uid="uid://bsjm8nf1coqo3" path="res://assets/ShopItems/Resources/WitheredAchillesHeel.tres" id="32_shop_item"]
+[ext_resource type="PackedScene" uid="uid://nwlygbpretr2" path="res://scenes/UI/ShopDialogueUI.tscn" id="34_7l5ap"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fh4ca"]
 texture = ExtResource("3_xqf5f")
@@ -106,7 +108,7 @@ font_color = Color(0.57715225, 0.47292823, 0.33508357, 1)
 [node name="ShopRoom" type="Node2D" unique_id=334542622]
 script = ExtResource("1_2g6x2")
 item_scene = ExtResource("2_6tcdb")
-shop_items = [ExtResource("10_shop_item"), ExtResource("11_shop_item"), ExtResource("12_shop_item"), ExtResource("13_shop_item"), ExtResource("14_shop_item"), ExtResource("15_shop_item"), ExtResource("16_shop_item"), ExtResource("17_shop_item"), ExtResource("18_shop_item"), ExtResource("19_shop_item"), ExtResource("20_shop_item"), ExtResource("21_shop_item"), ExtResource("22_shop_item"), ExtResource("23_shop_item"), ExtResource("24_shop_item"), ExtResource("25_shop_item"), ExtResource("26_shop_item"), ExtResource("27_shop_item"), ExtResource("28_shop_item"), ExtResource("29_shop_item"), ExtResource("30_shop_item"), ExtResource("31_shop_item"), ExtResource("32_shop_item")]
+shop_items = Array[ExtResource("3_lwfny")]([ExtResource("10_shop_item"), ExtResource("11_shop_item"), ExtResource("12_shop_item"), ExtResource("13_shop_item"), ExtResource("14_shop_item"), ExtResource("15_shop_item"), ExtResource("16_shop_item"), ExtResource("17_shop_item"), ExtResource("18_shop_item"), ExtResource("19_shop_item"), ExtResource("20_shop_item"), ExtResource("21_shop_item"), ExtResource("22_shop_item"), ExtResource("23_shop_item"), ExtResource("24_shop_item"), ExtResource("25_shop_item"), ExtResource("26_shop_item"), ExtResource("27_shop_item"), ExtResource("28_shop_item"), ExtResource("29_shop_item"), ExtResource("30_shop_item"), ExtResource("31_shop_item"), ExtResource("32_shop_item")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1182942741]
 
@@ -236,3 +238,8 @@ offset_right = -461.3037
 offset_bottom = -264.7619
 text = "0"
 label_settings = SubResource("LabelSettings_xqf5f")
+
+[node name="SpeechBubble" parent="Parallax2D2" unique_id=629855543 instance=ExtResource("34_7l5ap")]
+offset = Vector2(93.075, 50.555)
+scale = Vector2(0.455, 0.455)
+transform = Transform2D(0.455, 0, 0, 0.455, 93.075, 50.555)

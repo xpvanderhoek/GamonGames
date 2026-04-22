@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://nwlygbpretr2"]
 
-[ext_resource type="Script" uid="uid://u0cwoa47ppdk" path="res://scripts/UI/dialogue_ui.gd" id="1_py86t"]
+[ext_resource type="Script" uid="uid://cctxtt8i70yym" path="res://scripts/UI/shop_dialogue_ui.gd" id="1_py86t"]
 [ext_resource type="Texture2D" uid="uid://bku15yo5oj6wy" path="res://assets/ShopItems/ShopEnvironment/textbubblething.png" id="2_f5jth"]
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=629855543]
@@ -21,7 +21,7 @@ offset_left = -1462.5494
 offset_top = -788.8783
 offset_right = -1291.5494
 offset_bottom = -746.8783
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 84
 text = "Placeholder"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Sprite2D" unique_id=303301482]
@@ -31,12 +31,12 @@ anchor_top = 0.365
 anchor_right = 0.47500002
 anchor_bottom = 0.365
 offset_left = -1844.8002
-offset_top = -833.70667
-offset_right = -906.8002
-offset_bottom = -702.70667
+offset_top = -765.44
+offset_right = -792.3556
+offset_bottom = -370.0622
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/normal_font_size = 20
+theme_override_font_sizes/normal_font_size = 66
 theme_override_font_sizes/bold_font_size = 20
 theme_override_font_sizes/bold_italics_font_size = 20
 theme_override_font_sizes/italics_font_size = 20

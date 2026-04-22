@@ -2,6 +2,7 @@ extends Node2D
 
 signal item_hover_started(item_data: ItemData)
 signal item_hover_ended
+signal no_coins_attempted
 
 @export var item_data: ItemData
 @onready var sprite = $Item
@@ -14,7 +15,7 @@ signal item_hover_ended
 var _is_being_purchased := false
 var _last_no_coins_dialogue_ms := -100000
 
-const NO_COINS_DIALOGUE_COOLDOWN_MS := 700
+const NO_COINS_DIALOGUE_COOLDOWN_MS := 2000
 
 func _ready():
 	_on_item_data_assigned()
@@ -72,8 +73,7 @@ func buy_item():
 			return
 
 		_last_no_coins_dialogue_ms = now_ms
-		if DialogueManager.has_dialogue("Avarus_no_coins"):
-			DialogueManager.start_random_line_dialogue("Avarus_no_coins")
+		no_coins_attempted.emit()
 
 func on_hover_started() -> void:
 	if _is_being_purchased:
