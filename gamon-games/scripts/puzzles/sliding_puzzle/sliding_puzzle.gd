@@ -40,6 +40,7 @@ var puzzle_explained = preload("res://scenes/puzzles/puzzle_explained/puzzle_exp
 
 func _ready() -> void:
 	if !PuzzleData.knows_slide_puzzle:
+		PuzzleData.knows_slide_puzzle = true
 		var explanation = puzzle_explained.instantiate()
 		get_tree().current_scene.add_child(explanation)
 		explanation.setup(data.title, data.description, data.tips, data.reward)

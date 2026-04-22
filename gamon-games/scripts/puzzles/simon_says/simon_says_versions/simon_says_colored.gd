@@ -8,6 +8,8 @@ func get_puzzle_data() -> String:
 	return "simon says color"
 
 func _ready():
+	if !PuzzleData.knows_simon_says_color:
+		open_explaination(PuzzleData.knows_simon_says_color)
 	totalCoins.text = str(RunData.coins)
 	all_colors.append(Color(0.0, 0.0, 0.616, 1.0))
 	all_colors.append(Color(0.514, 0.514, 0.0, 1.0))

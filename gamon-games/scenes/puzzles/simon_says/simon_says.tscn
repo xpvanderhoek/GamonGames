@@ -245,4 +245,13 @@ offset_top = 17.0
 offset_right = -968.0
 offset_bottom = 67.0
 
+[node name="Button2" type="Button" parent="." unique_id=1895553852]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 591.0
+offset_right = 56.0
+offset_bottom = 628.0
+text = "?"
+
 [connection signal="pressed" from="Button" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_explanation_pressed"]

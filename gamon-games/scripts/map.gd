@@ -9,7 +9,8 @@ var enemy_scenes := [
 ]
 
 var puzzles := [
-	"res://scenes/puzzles/sliding_puzzle/sliding_puzzle.tscn"
+	"res://scenes/puzzles/sliding_puzzle/sliding_puzzle.tscn",
+	"res://scenes/puzzles/simon_says/start_simon.tscn"
 ]
 
 func _ready() -> void:

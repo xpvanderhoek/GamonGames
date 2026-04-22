@@ -1,6 +1,8 @@
 extends SimonSays
 
 func _ready():
+	if !PuzzleData.knows_simon_says_inverted:
+		open_explaination(PuzzleData.knows_simon_says_inverted)
 	versionLabel.text = "Inverted Says"
 	super._ready()
 	

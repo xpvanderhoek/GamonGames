@@ -4,6 +4,8 @@ func get_puzzle_data() -> String:
 	return "simon says speed"
 
 func _ready():
+	if !PuzzleData.knows_simon_says_speed:
+		open_explaination(PuzzleData.knows_simon_says_speed)
 	versionLabel.text = "Speedy Says"
 	super._ready()
 

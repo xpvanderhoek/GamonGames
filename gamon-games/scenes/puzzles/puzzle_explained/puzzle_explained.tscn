@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="2_em7wq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m01jj"]
-font_size = 25
+font_size = 40
 font_color = Color(0.46657193, 0.36677432, 0.22552383, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_22v06"]
@@ -51,6 +51,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_em7wq")
+
+[node name="Panel" type="Panel" parent="." unique_id=184586557]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=308145677]
 layout_mode = 1

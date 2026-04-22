@@ -31,11 +31,14 @@ func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	buttons[idx].modulate = Color(1,1,1)
 	await get_tree().create_timer(0.2).timeout
 
+func open_explaination(puzzle = PuzzleData.knows_simon_says_normal) -> void:
+	puzzle = true
+	var explanation = puzzle_explained.instantiate()
+	get_tree().current_scene.add_child(explanation)
+	explanation.setup(data.title, data.description, data.tips, data.reward)
+	
+
 func _ready():
-	if !PuzzleData.knows_slide_puzzle:
-		var explanation = puzzle_explained.instantiate()
-		get_tree().current_scene.add_child(explanation)
-		explanation.setup(data.title, data.description, data.tips, data.reward)
 	totalCoins.text = str(RunData.coins)
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))
@@ -161,3 +164,7 @@ func animate_labels(label_a: Label, label_b: Label):
 	tween.tween_property(label_b, "scale", Vector2(1.5, 1.2), 0.15)
 	
 	tween.tween_property(label_b, "scale", Vector2(1, 1), 0.2)
+
+
+func _on_explanation_pressed() -> void:
+	open_explaination()

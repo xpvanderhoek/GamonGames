@@ -7,7 +7,7 @@ const PUZZLES := {
 				"Werk rij voor rij",
 				"Begin vanaf boven"
 			],
-			"reward": "Hoe sneller je hem oplost, hoe meer coins te verdienen valt. \nElke seconde gaat er 1 coin af\nSucces!"
+			"reward": "Hoe sneller je hem oplost, hoe meer coins te verdienen valt.\nElke seconde gaat er 1 coin af.\nSucces!"
 		},
 		"EN": {
 			"title": "Slide Puzzle",
@@ -16,7 +16,7 @@ const PUZZLES := {
 				"Work row by row",
 				"Start from the top"
 			],
-			"reward": "The faster you solve it, the more coins you can earn. \n1 coin is deducted every second\nGood Luck!"
+			"reward": "The faster you solve it, the more coins you can earn.\n1 coin is deducted every second\nGood Luck!"
 		}
 	},
 	"simon says normal": {
@@ -120,7 +120,7 @@ const PUZZLES := {
 	"simon says color": {
 		"NL": {
 			"title": "Colored Says (Gekleurd)",
-			"description": "Onthoud de volgorde en herhaal deze correct. \n Maar er komen meerdere kleuren en je moet de aangegeven kleur aanklikken en de rest met rust laten",
+			"description": "Onthoud de volgorde en herhaal deze correct. \n Maar er komen meerdere kleuren.\nJe moet de aangegeven kleur aanklikken en de rest met rust laten",
 			"tips": [
 				"Vind een patroon dat makkelijk te onthouden is",
 				"Onthoud alleen de aangegeven kleur"
@@ -129,7 +129,7 @@ const PUZZLES := {
 		},
 		"EN": {
 			"title": "Simon Says (Color)",
-			"description": "Remember the sequence and repeat it correctly.\nMultiple colors will appear, but only press the indicated color and ignore the others.",
+			"description": "Remember the sequence and repeat it correctly.\nMultiple colors will appear.\nBut only press the indicated color and ignore the others.",
 			"tips": [
 				"Look for patterns that are easy to remember",
 				"Focus only on the indicated color"

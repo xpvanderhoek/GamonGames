@@ -6,7 +6,9 @@ extends Control
 @onready var reward: Label = $TextureRect/VBoxContainer/Reward
 
 func _ready() -> void:
-	pass
+	modulate.a = 0.0
+	var tween = create_tween()
+	tween.tween_property(self, "modulate:a", 1.0, 0.25)
 
 func setup(title_text: String = "", description_text: String = "", tips: Array = [], reward_text: String = "") -> void:
 	title.text = title_text
