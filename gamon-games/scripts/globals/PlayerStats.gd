@@ -3,17 +3,10 @@ extends Node
 
 var knows_avarus : bool = false
 var knows_ghost : bool = true
-var knows_slide_puzzle: bool = false
-var slide_puzzle_size: int = 2
-var failed_slide_puzzle_times: int = 0
+
+
 signal stats_changed(stat_name: String, new_value: float)
 signal upgrade_completed(stat_name: String, level: int)
-
-func increase_grid_size():
-	slide_puzzle_size = clamp(slide_puzzle_size + 1, 2, 999)
-
-func decrease_grid_size():
-	slide_puzzle_size = clamp(slide_puzzle_size - 1, 2, 999)
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh

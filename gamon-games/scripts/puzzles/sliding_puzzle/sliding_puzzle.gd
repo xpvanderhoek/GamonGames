@@ -1,6 +1,6 @@
 extends Control
 
-var GRID_SIZE     := PlayerStats.slide_puzzle_size
+var GRID_SIZE     := PuzzleData.slide_puzzle_size
 const TILE_SIZE     := 100
 const TILE_GAP      := 6
 const SHUFFLE_MOVES := 400000
@@ -26,7 +26,7 @@ var animating   : bool = false
 var time_elapsed : float = 0.0
 var timer_running : bool = false
 
-var coins: int = int(3.125 * pow(PlayerStats.slide_puzzle_size, 3))
+var coins: int = int(3.125 * pow(PuzzleData.slide_puzzle_size, 3))
 var last_coin_tick : int = 0
 
 var piece_size: Texture2D
@@ -36,7 +36,7 @@ var shake_intensity : float = 0.0
 var base_coin_pos : Vector2
 
 func _ready() -> void:
-	if !PlayerStats.knows_slide_puzzle:
+	if !PuzzleData.knows_slide_puzzle:
 		pass
 	total_coins.text = str(RunData.coins)
 	coin_amount.text = str(coins)
@@ -55,11 +55,7 @@ func _decrease_coins() -> void:
 func _process(delta: float) -> void:
 	if coins == 0:
 		$Button.visible = true
-		if PlayerStats.failed_slide_puzzle_times > 1:
-			PlayerStats.decrease_grid_size()
-			PlayerStats.failed_slide_puzzle_times = 0
-		else:
-			PlayerStats.failed_slide_puzzle_times += 1
+		PuzzleData.decrease_grid_size()
 	if timer_running and not solved:
 		time_elapsed += delta
 		
@@ -344,8 +340,7 @@ func _check_win(checkSolved: bool = false) -> bool:
 	timer_running = false
 
 	if !checkSolved:
-		PlayerStats.failed_slide_puzzle_times = 0
-		PlayerStats.increase_grid_size()
+		PuzzleData.increase_grid_size()
 		_animate_gap_to_zero()
 		animate_labels(coin_amount, total_coins)
 		$Button.visible = true
