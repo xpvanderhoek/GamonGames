@@ -1,5 +1,8 @@
 extends SimonSays
 
+func get_puzzle_data() -> String:
+	return "simon says speed"
+
 func _ready():
 	versionLabel.text = "Speedy Says"
 	super._ready()

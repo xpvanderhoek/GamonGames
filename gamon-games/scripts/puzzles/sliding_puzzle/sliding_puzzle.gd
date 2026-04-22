@@ -42,7 +42,7 @@ func _ready() -> void:
 	if !PuzzleData.knows_slide_puzzle:
 		var explanation = puzzle_explained.instantiate()
 		get_tree().current_scene.add_child(explanation)
-		explanation.setup(data.title, data.description, data.tips)
+		explanation.setup(data.title, data.description, data.tips, data.reward)
 	total_coins.text = str(RunData.coins)
 	coin_amount.text = str(coins)
 	base_coin_pos = coin_amount.position

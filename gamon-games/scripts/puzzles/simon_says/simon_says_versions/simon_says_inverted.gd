@@ -4,6 +4,9 @@ func _ready():
 	versionLabel.text = "Inverted Says"
 	super._ready()
 	
+func get_puzzle_data() -> String:
+	return "simon says inverted"
+
 func show_sequence():
 	can_click = false
 	

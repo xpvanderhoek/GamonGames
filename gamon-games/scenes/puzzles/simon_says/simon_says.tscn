@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://dip87pnxytcc5"]
 
 [ext_resource type="Script" uid="uid://c5xnmi2opdjbb" path="res://scripts/puzzles/simon_says/simon_says.gd" id="1_0oafj"]
-[ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
+[ext_resource type="Texture2D" uid="uid://80dsky5u1kk8" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
 [ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
-[ext_resource type="Texture2D" uid="uid://c0u8i3yhmbk1n" path="res://assets/placeholders/puzzle/tombstone.png" id="4_bwhsd"]
-[ext_resource type="Texture2D" uid="uid://dm0cpxqyi4b7q" path="res://assets/placeholders/puzzle/bone.png" id="5_bogql"]
-[ext_resource type="Texture2D" uid="uid://clx43tbnk5b5n" path="res://assets/Placeholders/Puzzle/mouse-left-button.svg" id="6_0oafj"]
-[ext_resource type="Texture2D" uid="uid://kef182q8o7ea" path="res://assets/placeholders/puzzle/arrow.png" id="7_s13xn"]
+[ext_resource type="Texture2D" uid="uid://cmjdknrp3ln4j" path="res://assets/placeholders/puzzle/tombstone.png" id="4_bwhsd"]
+[ext_resource type="Texture2D" uid="uid://dx3lnhm0hdvk2" path="res://assets/placeholders/puzzle/bone.png" id="5_bogql"]
+[ext_resource type="Texture2D" uid="uid://dmgbeqca82wpy" path="res://assets/Placeholders/Puzzle/mouse-left-button.svg" id="6_0oafj"]
+[ext_resource type="Texture2D" uid="uid://d0jqnmjb5mpe5" path="res://assets/placeholders/puzzle/arrow.png" id="7_s13xn"]
 [ext_resource type="PackedScene" uid="uid://bnlu4c13jyfkc" path="res://scenes/UI/skipbutton/Skipbutton.tscn" id="8_8w86a"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]

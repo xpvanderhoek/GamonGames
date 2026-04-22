@@ -1,5 +1,8 @@
 extends SimonSays
 
+func get_puzzle_data() -> String:
+	return "simon says reverse"
+
 func _ready():
 	versionLabel.text = "Says Simon"
 	$Bone.visible = true

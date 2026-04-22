@@ -13,6 +13,12 @@ var player_input: Array[int] = []
 var pulse_active = false
 var can_click := false
 
+var data = PuzzleTexts.PUZZLES[get_puzzle_data()][RunData.language]
+var puzzle_explained = preload("res://scenes/puzzles/puzzle_explained/puzzle_explained.tscn")
+
+
+func get_puzzle_data() -> String:
+	return "simon says normal"
 
 func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	var idx = sequence[0]
@@ -26,6 +32,10 @@ func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	await get_tree().create_timer(0.2).timeout
 
 func _ready():
+	if !PuzzleData.knows_slide_puzzle:
+		var explanation = puzzle_explained.instantiate()
+		get_tree().current_scene.add_child(explanation)
+		explanation.setup(data.title, data.description, data.tips, data.reward)
 	totalCoins.text = str(RunData.coins)
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))

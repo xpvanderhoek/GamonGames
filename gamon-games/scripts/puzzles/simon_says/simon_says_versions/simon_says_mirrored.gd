@@ -4,6 +4,8 @@ func _ready():
 	versionLabel.text = "syaS NomiS (Mirrored)"
 	super._ready()
 	
+func get_puzzle_data() -> String:
+	return "simon says mirror"
 	
 func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	var idx = sequence[0]

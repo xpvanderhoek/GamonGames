@@ -16,6 +16,9 @@ font_color = Color(0.46666667, 0.36862746, 0.22745098, 1)
 line_spacing = 6.5
 font_color = Color(0.10123109, 0.46549785, 0.1493175, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_kwsnp"]
+font_color = Color(0.46666667, 0.36862746, 0.22745098, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kwsnp"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -109,6 +112,12 @@ text = "
 [Placeholder]
 "
 label_settings = SubResource("LabelSettings_em7wq")
+horizontal_alignment = 1
+
+[node name="Reward" type="Label" parent="TextureRect/VBoxContainer" unique_id=1259730152]
+layout_mode = 2
+text = "[Placeholder]"
+label_settings = SubResource("LabelSettings_kwsnp")
 horizontal_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="TextureRect/VBoxContainer" unique_id=284134381]
