@@ -1,6 +1,6 @@
 extends Control
 
-const GRID_SIZE     := 4
+var GRID_SIZE     := PlayerStats.slide_puzzle_size
 const TILE_SIZE     := 100
 const TILE_GAP      := 6
 const SHUFFLE_MOVES := 400000
@@ -26,7 +26,7 @@ var animating   : bool = false
 var time_elapsed : float = 0.0
 var timer_running : bool = false
 
-var coins = 200
+var coins: int = int(3.125 * pow(PlayerStats.slide_puzzle_size, 3))
 var last_coin_tick : int = 0
 
 var piece_size: Texture2D
@@ -36,6 +36,8 @@ var shake_intensity : float = 0.0
 var base_coin_pos : Vector2
 
 func _ready() -> void:
+	if !PlayerStats.knows_slide_puzzle:
+		pass
 	total_coins.text = str(RunData.coins)
 	coin_amount.text = str(coins)
 	base_coin_pos = coin_amount.position
@@ -43,7 +45,7 @@ func _ready() -> void:
 	_create_buttons()
 	_setup_grid()
 	_shuffle_solvable()
-	_refresh_tiles()	
+	_refresh_tiles()
 
 func _decrease_coins() -> void:
 	if coins > 0:
@@ -53,6 +55,11 @@ func _decrease_coins() -> void:
 func _process(delta: float) -> void:
 	if coins == 0:
 		$Button.visible = true
+		if PlayerStats.failed_slide_puzzle_times > 1:
+			PlayerStats.decrease_grid_size()
+			PlayerStats.failed_slide_puzzle_times = 0
+		else:
+			PlayerStats.failed_slide_puzzle_times += 1
 	if timer_running and not solved:
 		time_elapsed += delta
 		
@@ -127,12 +134,12 @@ func _setup_grid() -> void:
 	time_elapsed = 0.0
 
 func _shuffle_solvable() -> void:
-	randomize()
-
-	for _i in range(SHUFFLE_MOVES):
-		var neighbors := _get_neighbors(air_index)
-		var pick: int = neighbors[randi() % neighbors.size()]
-		_swap(air_index, pick)
+	while _check_win(true):
+		randomize()
+		for _i in range(SHUFFLE_MOVES):
+			var neighbors := _get_neighbors(air_index)
+			var pick: int = neighbors[randi() % neighbors.size()]
+			_swap(air_index, pick)
 
 
 func _on_tile_pressed(slot: int) -> void:
@@ -190,7 +197,7 @@ func _animate_swap(from_idx: int, to_idx: int) -> void:
 	btn_to.global_position   = pos_to
 
 	animating = false
-	_check_win()
+	solved = _check_win()
 	_update_ui()
 
 
@@ -329,20 +336,24 @@ func _animate_gap_to_zero() -> void:
 		grid_container.add_theme_constant_override("v_separation", int(value))
 	, start_gap, end_gap, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	
-func _check_win() -> void:
+func _check_win(checkSolved: bool = false) -> bool:
 	for i in range(tile_values.size() - 1):
 		if tile_values[i] != i + 1:
-			return
+			return false
 
-	solved = true
 	timer_running = false
 
-	_animate_gap_to_zero()
+	if !checkSolved:
+		PlayerStats.failed_slide_puzzle_times = 0
+		PlayerStats.increase_grid_size()
+		_animate_gap_to_zero()
+		animate_labels(coin_amount, total_coins)
+		$Button.visible = true
 	
-
-	animate_labels(coin_amount, total_coins)
-	$Button.visible = true
+	
 	status_label.text = "Solved in %d moves | %.1fs" % [move_count, time_elapsed]
+	
+	return true
 
 func _on_button_pressed() -> void:
 	TransitionManager.change_scene("res://scenes/map.tscn")
