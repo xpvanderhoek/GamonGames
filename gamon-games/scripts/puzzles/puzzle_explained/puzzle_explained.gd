@@ -3,7 +3,7 @@ extends Control
 @onready var title: Label = $TextureRect/VBoxContainer/Title
 @onready var description: Label = $TextureRect/VBoxContainer/Description
 @onready var hints: Label = $TextureRect/VBoxContainer/Tips
-@onready var reward: Label = $TextureRect/VBoxContainer/Reward
+@onready var reward: RichTextLabel = $TextureRect/VBoxContainer/Reward
 
 func _ready() -> void:
 	modulate.a = 0.0
