@@ -35,9 +35,12 @@ var move_tween : Tween
 var shake_intensity : float = 0.0
 var base_coin_pos : Vector2
 
+var puzzle_explained = preload("res://scenes/puzzles/puzzle_explained/puzzle_explained.tscn")
+
 func _ready() -> void:
 	if !PuzzleData.knows_slide_puzzle:
-		pass
+		var explanation = puzzle_explained.instantiate()
+		get_tree().current_scene.add_child(explanation)
 	total_coins.text = str(RunData.coins)
 	coin_amount.text = str(coins)
 	base_coin_pos = coin_amount.position

@@ -2,6 +2,19 @@
 
 [ext_resource type="Script" uid="uid://df655q3qte0ag" path="res://scripts/puzzles/puzzle_explained/continue_button.gd" id="1_f6edx"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f6edx"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.05490196, 0.05490196, 0.05490196, 1)
+skew = Vector2(0.2, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
 [sub_resource type="LabelSettings" id="LabelSettings_22v06"]
 
 [node name="slide_puzzle_explained" type="Control" unique_id=1567702652]
@@ -15,17 +28,17 @@ grow_vertical = 2
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=217784537]
 custom_minimum_size = Vector2(400, 250)
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
+anchors_preset = -1
+anchor_left = 0.21700001
+anchor_top = 0.106000006
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -0.4840088
+offset_top = -0.18800354
+offset_right = 326.5
+offset_bottom = 255.5
+theme_override_styles/panel = SubResource("StyleBoxFlat_f6edx")
+metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=741279617]
 layout_mode = 2
@@ -41,6 +54,16 @@ text = "[Placeholder]"
 layout_mode = 2
 size_flags_horizontal = 4
 text = "[Placeholder]
+
+[Placeholder]
+
+[Placeholder]
+
+[Placeholder]
+
+[Placeholder]
+
+[Placeholder]
 
 "
 label_settings = SubResource("LabelSettings_22v06")
