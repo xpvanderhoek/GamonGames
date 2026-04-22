@@ -79,13 +79,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -80.00003
-offset_top = -65.0
-offset_right = -1.0
-offset_bottom = -34.0
+offset_left = -74.5
+offset_top = -73.359985
+offset_right = 74.5
+offset_bottom = -20.359985
 grow_horizontal = 2
 grow_vertical = 0
-scale = Vector2(2.025, 2.025)
+theme_override_font_sizes/font_size = 32
 text = "Continue"
 
 [node name="Skipbutton" parent="." unique_id=15965707 instance=ExtResource("9_3q5v1")]

@@ -39,6 +39,9 @@ func open_explaination(puzzle = PuzzleData.knows_simon_says_normal) -> void:
 	
 
 func _ready():
+	var continue_button = PuzzleTexts.CONTINUE[RunData.language]
+	$Button.text = continue_button
+	versionLabel.text = data.title
 	totalCoins.text = str(RunData.coins)
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))

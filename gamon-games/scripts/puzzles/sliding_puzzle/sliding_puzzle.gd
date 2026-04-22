@@ -39,6 +39,8 @@ var data = PuzzleTexts.PUZZLES["slide"][RunData.language]
 var puzzle_explained = preload("res://scenes/puzzles/puzzle_explained/puzzle_explained.tscn")
 
 func _ready() -> void:
+	var continue_button = PuzzleTexts.CONTINUE[RunData.language]
+	$Button.text = continue_button
 	if !PuzzleData.knows_slide_puzzle:
 		PuzzleData.knows_slide_puzzle = true
 		var explanation = puzzle_explained.instantiate()

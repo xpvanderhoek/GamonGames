@@ -19,8 +19,8 @@ func _ready():
 	$Arrow.visible = true
 	$ColorRect.color = good_color
 	$ColorRect.visible = true
+	versionLabel.text = data.title
 	sequence.append(randi() % buttons.size())
-	versionLabel.text = "Colors Says"
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))
 	colored_sequence.append({

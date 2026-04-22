@@ -6,7 +6,6 @@ func get_puzzle_data() -> String:
 func _ready():
 	if !PuzzleData.knows_simon_says_speed:
 		open_explaination(PuzzleData.knows_simon_says_speed)
-	versionLabel.text = "Speedy Says"
 	super._ready()
 
 func show_sequence():

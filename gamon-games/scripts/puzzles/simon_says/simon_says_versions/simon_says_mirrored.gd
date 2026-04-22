@@ -3,7 +3,6 @@ extends SimonSays
 func _ready():
 	if !PuzzleData.knows_simon_says_mirror:
 		open_explaination(PuzzleData.knows_simon_says_mirror)
-	versionLabel.text = "syaS NomiS (Mirrored)"
 	super._ready()
 	
 func get_puzzle_data() -> String:

@@ -207,12 +207,19 @@ horizontal_alignment = 1
 
 [node name="Button" type="Button" parent="." unique_id=1815418118]
 visible = false
-layout_mode = 0
-offset_left = 516.99994
-offset_top = 593.0
-offset_right = 595.99994
-offset_bottom = 624.0
-scale = Vector2(1.665, 1.665)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -74.5
+offset_top = -57.210022
+offset_right = 74.5
+offset_bottom = -4.210022
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
 text = "Continue"
 
 [node name="CoinLabel" type="Label" parent="." unique_id=1493621846]

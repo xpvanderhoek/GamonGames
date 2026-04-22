@@ -99,7 +99,7 @@ const PUZZLES := {
 	},
 	"simon says inverted": {
 		"NL": {
-			"title": "Inverted Says (Tegenovergesteld)",
+			"title": "Inverted Says",
 			"description": "Onthoud de volgorde en herhaal deze correct. \n Maar alle knoppen geven licht, behalve degene die jij nodig hebt!",
 			"tips": [
 				"Vind een patroon dat makkelijk te onthouden is",
@@ -137,4 +137,19 @@ const PUZZLES := {
 			"reward": "You earn [color=#1a7726]3 coins[/color] for every round you survive\nGood luck!"
 		}
 	}
+}
+
+const SKIPPUZZLE := {
+	"NL": "Puzzel Overslaan",
+	"EN": "Skip Puzzle"
+}
+
+const CONTINUE := {
+	"NL": "Doorgaan",
+	"EN": "Continue"
+}
+
+const CLOSEEXPLANATION := {
+	"NL": "Speel",
+	"EN": "Play"
 }

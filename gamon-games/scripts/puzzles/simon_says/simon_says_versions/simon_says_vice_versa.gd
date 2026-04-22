@@ -6,7 +6,6 @@ func get_puzzle_data() -> String:
 func _ready():
 	if !PuzzleData.knows_simon_says_reverse:
 		open_explaination(PuzzleData.knows_simon_says_reverse)
-	versionLabel.text = "Says Simon"
 	$Bone.visible = true
 	$Vice_versa_hint.visible = true
 	super._ready()
