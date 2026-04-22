@@ -2,13 +2,18 @@ extends Button
 
 var play = PuzzleTexts.CLOSEEXPLANATION[RunData.language]
 
-func _ready() -> void:
-	text = play
+func knows(puzzle_id: String) -> bool:
+	return PuzzleData.knows_puzzles.get(puzzle_id, false)
+	
+func setup_button_lock(puzzle_id: String, delay: float = 8.0) -> void:
+	if PuzzleData.knows_puzzles["slide"]:
+		return
+	
 	disabled = true
 	modulate.a = 0.5
 	scale = Vector2(0.95, 0.95)
 	
-	await get_tree().create_timer(8.0).timeout
+	await get_tree().create_timer(delay).timeout
 	
 	disabled = false
 	
@@ -19,8 +24,12 @@ func _ready() -> void:
 	tween.parallel().tween_property(self, "modulate:a", 1.0, 0.3)
 	tween.parallel().tween_property(self, "scale", Vector2(1, 1), 0.3)
 
+func _ready() -> void:
+	text = play
+	setup_button_lock("")
+
 func _on_pressed() -> void:
-	PuzzleData.knows_slide_puzzle = true
+	PuzzleData.knows_puzzles["slide"] = true
 	
 	var root = get_parent().get_parent().get_parent().get_parent()
 	

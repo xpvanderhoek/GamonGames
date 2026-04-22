@@ -1,12 +1,10 @@
 extends SimonSays
 
 func _ready():
-	if !PuzzleData.knows_simon_says_inverted:
-		open_explaination(PuzzleData.knows_simon_says_inverted)
 	super._ready()
 	
 func get_puzzle_data() -> String:
-	return "simon says inverted"
+	return "simon_says_inverted"
 
 func show_sequence():
 	can_click = false

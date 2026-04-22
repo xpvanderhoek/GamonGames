@@ -1,11 +1,9 @@
 extends SimonSays
 
 func get_puzzle_data() -> String:
-	return "simon says reverse"
+	return "simon_says_reverse"
 
 func _ready():
-	if !PuzzleData.knows_simon_says_reverse:
-		open_explaination(PuzzleData.knows_simon_says_reverse)
 	$Bone.visible = true
 	$Vice_versa_hint.visible = true
 	super._ready()

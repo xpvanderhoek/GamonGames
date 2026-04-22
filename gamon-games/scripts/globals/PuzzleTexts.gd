@@ -19,7 +19,7 @@ const PUZZLES := {
 			"reward": "The faster you solve it, the more coins you can earn.\n1 coin is deducted every second\nGood Luck!"
 		}
 	},
-	"simon says normal": {
+	"simon_says_normal": {
 		"NL": {
 			"title": "Simon Says (Normaal)",
 			"description": "Onthoud de volgorde en herhaal deze correct.",
@@ -37,7 +37,7 @@ const PUZZLES := {
 			"reward": "You earn [color=#1a7726]1 coin[/color] for every round you survive\nGood luck!"
 		}
 	},
-	"simon says speed": {
+	"simon_says_speed": {
 		"NL": {
 			"title": "Simon Says (Snelheid)",
 			"description": "Onthoud de volgorde en herhaal deze correct, maar de knoppen flikkeren sneller",
@@ -55,7 +55,7 @@ const PUZZLES := {
 			"reward": "You earn [color=#1a7726]2 coins[/color] for every round you survive\nGood luck!"
 		}
 	},
-	"simon says mirror": {
+	"simon_says_mirror": {
 		"NL": {
 			"title": "syaS somiS (Gespiegeld)",
 			"description": "Onthoud de volgorde en herhaal deze correct. \n Maar let op, doe hetgene in spiegelbeeld van wat hij laat zien.",
@@ -75,7 +75,7 @@ const PUZZLES := {
 			"reward": "You earn [color=#1a7726]3 coins[/color] for every round you survive\nGood luck!"
 		}
 	},
-	"simon says reverse": {
+	"simon_says_reverse": {
 		"NL": {
 			"title": "Says Simon (Omgedraaid)",
 			"description": "Onthoud de volgorde en herhaal deze correct. \n Maar let op, de volgorde die gespeeld wordt, moet je andersom herhalen.\nVan het einde naar het begin dus!",
@@ -97,7 +97,7 @@ const PUZZLES := {
 			"reward": "You earn [color=#1a7726]4 coins[/color] for every round you survive\nGood luck!"
 		}
 	},
-	"simon says inverted": {
+	"simon_says_inverted": {
 		"NL": {
 			"title": "Inverted Says",
 			"description": "Onthoud de volgorde en herhaal deze correct. \n Maar alle knoppen geven licht, behalve degene die jij nodig hebt!",
@@ -117,7 +117,7 @@ const PUZZLES := {
 			"reward": "You earn [color=#1a7726]3 coins[/color] for every round you survive\nGood luck!"
 		}
 	},
-	"simon says color": {
+	"simon_says_color": {
 		"NL": {
 			"title": "Colored Says (Gekleurd)",
 			"description": "Onthoud de volgorde en herhaal deze correct. \n Maar er komen meerdere kleuren.\nJe moet de aangegeven kleur aanklikken en de rest met rust laten",

@@ -3,13 +3,13 @@ extends SimonSays
 var good_color: Color = Color(0.95, 0.95, 0.95)
 var all_colors: Array[Color] = []
 var colored_sequence: Array[Dictionary] = []
-
+	
 func get_puzzle_data() -> String:
-	return "simon says color"
+	return "simon_says_color"
 
 func _ready():
-	if !PuzzleData.knows_simon_says_color:
-		open_explaination(PuzzleData.knows_simon_says_color)
+	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
+		open_explaination(PuzzleData.knows_puzzles[get_puzzle_data()])
 	totalCoins.text = str(RunData.coins)
 	all_colors.append(Color(0.0, 0.0, 0.616, 1.0))
 	all_colors.append(Color(0.514, 0.514, 0.0, 1.0))

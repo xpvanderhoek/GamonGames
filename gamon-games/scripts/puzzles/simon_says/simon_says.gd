@@ -18,7 +18,7 @@ var puzzle_explained = preload("res://scenes/puzzles/puzzle_explained/puzzle_exp
 
 
 func get_puzzle_data() -> String:
-	return "simon says normal"
+	return "simon_says_normal"
 
 func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	var idx = sequence[0]
@@ -31,14 +31,16 @@ func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	buttons[idx].modulate = Color(1,1,1)
 	await get_tree().create_timer(0.2).timeout
 
-func open_explaination(puzzle = PuzzleData.knows_simon_says_normal) -> void:
-	puzzle = true
+func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -> void:
 	var explanation = puzzle_explained.instantiate()
 	get_tree().current_scene.add_child(explanation)
 	explanation.setup(data.title, data.description, data.tips, data.reward)
+	puzzle = true
 	
 
 func _ready():
+	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
+		open_explaination(PuzzleData.knows_puzzles[get_puzzle_data()])
 	var continue_button = PuzzleTexts.CONTINUE[RunData.language]
 	$Button.text = continue_button
 	versionLabel.text = data.title

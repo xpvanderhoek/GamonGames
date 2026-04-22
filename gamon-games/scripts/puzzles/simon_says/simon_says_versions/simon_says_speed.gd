@@ -1,11 +1,9 @@
 extends SimonSays
 
 func get_puzzle_data() -> String:
-	return "simon says speed"
+	return "simon_says_speed"
 
 func _ready():
-	if !PuzzleData.knows_simon_says_speed:
-		open_explaination(PuzzleData.knows_simon_says_speed)
 	super._ready()
 
 func show_sequence():
