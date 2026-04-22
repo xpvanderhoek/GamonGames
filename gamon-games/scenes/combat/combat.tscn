@@ -34,9 +34,9 @@ metadata/_custom_type_script = "uid://emcsn5t5bncn"
 script = ExtResource("7_4a6i5")
 text = "Actions are done using moves.
 
-Using a move costs [color=#d1ae3d]Power[/color]. Some moves are stronger than others, and will require more [color=#d1ae3d]Power[/color], so choose wisely.
+Using a move costs [color=#d1ae3d]Energy[/color]. Some moves are stronger than others, and will require more [color=#d1ae3d]Energy[/color], so choose wisely.
 
-After each round, 2 of your [color=#d1ae3d]Power[/color] points get replenished."
+After each round, 2 of your [color=#d1ae3d]Energy[/color] points get replenished."
 image = ExtResource("10_mrrmw")
 metadata/_custom_type_script = "uid://emcsn5t5bncn"
 
