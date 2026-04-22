@@ -1,6 +1,6 @@
 extends Node
 
-
+var knows_combat : bool = false
 var knows_avarus : bool = false
 var knows_ghost : bool = true
 signal stats_changed(stat_name: String, new_value: float)

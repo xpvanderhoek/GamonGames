@@ -4,10 +4,41 @@
 [ext_resource type="Texture2D" uid="uid://cwp4d5bjoxefw" path="res://assets/player.png" id="3_ltalu"]
 [ext_resource type="PackedScene" uid="uid://cw35es2dvr2it" path="res://scenes/UI/health_bar.tscn" id="4_4voa6"]
 [ext_resource type="PackedScene" uid="uid://bnspxqohk3rfu" path="res://scenes/combat/ui/ItemButton.tscn" id="5_4voa6"]
+[ext_resource type="PackedScene" uid="uid://c80vkx6l0g4kf" path="res://scenes/UI/tutorial/tutorial_overlay.tscn" id="6_jgg25"]
+[ext_resource type="Script" uid="uid://emcsn5t5bncn" path="res://scripts/UI/tutorial/tutorial_page.gd" id="7_4a6i5"]
 [ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://scripts/combat/combatManager.gd" id="7_mgr"]
+[ext_resource type="Texture2D" uid="uid://gw64ydpfhgj0" path="res://assets/ui/tutorial/combat_limb_targeting.png" id="8_3dmww"]
+[ext_resource type="Texture2D" uid="uid://c7bqxupngctv7" path="res://assets/ui/tutorial/combat_limb_removal.png" id="9_gwckk"]
+[ext_resource type="Texture2D" uid="uid://cidxjam3g8djk" path="res://assets/ui/tutorial/combat_moves.png" id="10_mrrmw"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ijgaf"]
 blend_mode = 1
+
+[sub_resource type="Resource" id="Resource_h2sm1"]
+script = ExtResource("7_4a6i5")
+text = "Defeat enemies by attacking their [color=#d1ae3d]limbs[/color]!
+
+Hover over an enemy's limbs and click to attack them!"
+image = ExtResource("8_3dmww")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
+
+[sub_resource type="Resource" id="Resource_si0bq"]
+script = ExtResource("7_4a6i5")
+text = "Limbs aren't permanent, doing enough damage to a limb will result in it being [color=#d1ae3d]cut off[/color]!
+
+An enemy with missing limbs has a lowered [color=#d1ae3d]defense[/color] and [color=#d1ae3d]damage[/color] output."
+image = ExtResource("9_gwckk")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
+
+[sub_resource type="Resource" id="Resource_j3cqa"]
+script = ExtResource("7_4a6i5")
+text = "Actions are done using moves.
+
+Using a move costs [color=#d1ae3d]Power[/color]. Some moves are stronger than others, and will require more [color=#d1ae3d]Power[/color], so choose wisely.
+
+After each round, 2 of your [color=#d1ae3d]Power[/color] points get replenished."
+image = ExtResource("10_mrrmw")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
 
 [node name="Combat" type="CanvasLayer" unique_id=294642076]
 script = ExtResource("7_mgr")
@@ -184,3 +215,7 @@ layout_mode = 2
 
 [node name="ItemButton9" parent="Panel/GridContainer" unique_id=572885561 instance=ExtResource("5_4voa6")]
 layout_mode = 2
+
+[node name="TutorialOverlay" parent="." unique_id=282468504 instance=ExtResource("6_jgg25")]
+visible = false
+pages = Array[ExtResource("7_4a6i5")]([SubResource("Resource_h2sm1"), SubResource("Resource_si0bq"), SubResource("Resource_j3cqa")])
