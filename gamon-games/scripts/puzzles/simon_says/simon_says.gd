@@ -33,7 +33,7 @@ func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 
 func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -> void:
 	var explanation = puzzle_explained.instantiate()
-	get_tree().current_scene.add_child(explanation)
+	add_child(explanation)
 	explanation.setup(data.title, data.description, data.tips, data.reward)
 	puzzle = true
 	
@@ -111,6 +111,56 @@ func fail():
 	changeColor(Color(2, 0.5, 0.5))
 	
 	$Button.visible = true
+	save_run_data(sequence.size(), coin_amount)
+
+func save_run_data(round: int, coins: int) -> void:
+	var path = "user://runs.json"
+	print("\n📦 SAVE RUN DATA START")
+	print("➡️ Pad:", path)
+
+	var runs: Array = []
+
+	# BESTAAT BESTAND?
+	if FileAccess.file_exists(path):
+		print("📁 Bestand bestaat, openen...")
+
+		var file = FileAccess.open(path, FileAccess.READ)
+		var content = file.get_as_text()
+		file.close()
+
+		print("📄 Raw content:", content)
+
+		if content != "":
+			runs = JSON.parse_string(content)
+
+			if runs == null:
+				print("⚠️ JSON parse faalde, reset naar lege array")
+				runs = []
+			else:
+				print("✅ Huidige runs geladen:", runs)
+	else:
+		print("🆕 Geen bestaand bestand, nieuwe runs array")
+
+	# NIEUWE RUN
+	var run_data = {
+		"round": round,
+		"coins": coins,
+		"time": Time.get_datetime_string_from_system()
+	}
+
+	print("➕ Nieuwe run data:", run_data)
+
+	runs.append(run_data)
+
+	print("📊 Totale runs na append:", runs)
+
+	# OPSLAAN
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	file.store_string(JSON.stringify(runs, "\t"))
+	file.close()
+
+	print("💾 Opslaan voltooid!")
+	print("📦 SAVE RUN DATA END\n")
 	
 func print_coins(coins: int):
 	coinLabel.text = str(coins)
@@ -135,7 +185,6 @@ func _on_button_pressed(idx):
 	can_click = true
 	
 func _on_continue_pressed() -> void:
-	TransitionManager.change_scene("res://scenes/map.tscn")
 	queue_free()
 	
 func animate_labels(label_a: Label, label_b: Label):
