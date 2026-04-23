@@ -20,3 +20,13 @@ func setup(title_text: String = "", description_text: String = "", tips: Array =
 
 	hints.text = all_tips
 	reward.text = reward_text
+
+
+func _on_continue_button_pressed() -> void:
+	PuzzleData.knows_puzzles["slide"] = true
+	
+	var tween = create_tween()
+	tween.tween_property(self, "modulate:a", 0.0, 0.3)
+	
+	await tween.finished
+	queue_free()
