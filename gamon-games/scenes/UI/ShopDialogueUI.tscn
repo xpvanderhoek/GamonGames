@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://nwlygbpretr2"]
+
+[ext_resource type="Script" uid="uid://cctxtt8i70yym" path="res://scripts/UI/shop_dialogue_ui.gd" id="1_py86t"]
+[ext_resource type="Texture2D" uid="uid://bku15yo5oj6wy" path="res://assets/ShopItems/ShopEnvironment/textbubblething.png" id="2_f5jth"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=629855543]
+script = ExtResource("1_py86t")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1238751486]
+position = Vector2(603, 260)
+scale = Vector2(0.35156247, 0.3515625)
+texture = ExtResource("2_f5jth")
+
+[node name="Label" type="Label" parent="Sprite2D" unique_id=273352150]
+anchors_preset = -1
+anchor_left = 0.333
+anchor_top = 0.27100003
+anchor_right = 0.333
+anchor_bottom = 0.27100003
+offset_left = -1462.5494
+offset_top = -788.8783
+offset_right = -1291.5494
+offset_bottom = -746.8783
+theme_override_colors/font_color = Color(0.48235294, 0.49803922, 0.4, 1)
+theme_override_font_sizes/font_size = 84
+text = "Placeholder"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Sprite2D" unique_id=303301482]
+anchors_preset = -1
+anchor_left = 0.47500002
+anchor_top = 0.365
+anchor_right = 0.47500002
+anchor_bottom = 0.365
+offset_left = -1844.8002
+offset_top = -765.44
+offset_right = -792.3556
+offset_bottom = -370.0622
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/default_color = Color(0.25882354, 0.29803923, 0.16470589, 1)
+theme_override_font_sizes/normal_font_size = 66
+theme_override_font_sizes/bold_font_size = 20
+theme_override_font_sizes/bold_italics_font_size = 20
+theme_override_font_sizes/italics_font_size = 20
+theme_override_font_sizes/mono_font_size = 20
+bbcode_enabled = true
+text = "Lorem Ipsum"
