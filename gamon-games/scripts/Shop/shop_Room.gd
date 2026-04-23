@@ -100,7 +100,7 @@ func _exit_shop() -> void:
 	if _shop_chatter_timer != null:
 		_shop_chatter_timer.stop()
 
-	var played_exit_bark := _show_random_bark(SHOP_DIALOGUE_EXIT_KEY, 4.0)
+	var played_exit_bark := _show_random_bark(SHOP_DIALOGUE_EXIT_KEY, 3.0)
 	if played_exit_bark and _shop_dialogue_ui != null:
 		await _shop_dialogue_ui.bark_finished
 
