@@ -116,8 +116,8 @@ func fail():
 
 		var center = get_viewport().get_visible_rect().size / 2
 
-		tween.tween_property(lives, "global_position", center, 0.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		tween.tween_property(lives, "modulate:a", 0.0, 0.3)
+		tween.tween_property(lives, "global_position", center, 3).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(lives, "modulate:a", 0.0, 1.0)
 		
 		await tween.finished
 		
