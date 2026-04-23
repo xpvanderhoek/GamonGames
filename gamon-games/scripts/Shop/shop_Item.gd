@@ -11,6 +11,7 @@ signal no_coins_attempted
 @onready var shadow = $Shadow
 @onready var buy_button = $BuyItemButton
 @onready var buy_smoke: GPUParticles2D = $BuySmoke
+@onready var item_hover_area: Area2D = $Item/ItemHoverArea
 
 var _is_being_purchased := false
 var _last_no_coins_dialogue_ms := -100000
@@ -21,6 +22,10 @@ func _ready():
 	_on_item_data_assigned()
 	_sync_shadow_sprite()
 	buy_button.shop_item = self
+	
+	if item_hover_area:
+		item_hover_area.mouse_entered.connect(_on_item_hover)
+		item_hover_area.mouse_exited.connect(_on_item_unhover)
 
 func _sync_shadow_sprite():
 	shadow.texture = sprite.texture
@@ -82,6 +87,14 @@ func on_hover_started() -> void:
 
 func on_hover_ended() -> void:
 	item_hover_ended.emit()
+
+func _on_item_hover() -> void:
+	if _is_being_purchased:
+		return
+	on_hover_started()
+
+func _on_item_unhover() -> void:
+	on_hover_ended()
 
 func _play_buy_smoke_effect() -> void:
 	if buy_button:
