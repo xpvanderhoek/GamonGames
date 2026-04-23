@@ -1,9 +1,11 @@
 extends SimonSays
 
 func _ready():
-	versionLabel.text = "Inverted Says"
 	super._ready()
 	
+func get_puzzle_data() -> String:
+	return "simon_says_inverted"
+
 func show_sequence():
 	can_click = false
 	

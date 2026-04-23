@@ -6,6 +6,8 @@ const SPELL_BUTTON_SCENE := preload("res://scenes/combat/ui/SpellButton.tscn")
 const BUFF_ICON_SCENE := preload("res://scenes/combat/ui/BuffIcon.tscn")
 const COMBAT_SUMMARY_SCENE := preload("res://scenes/combat/ui/combat_summary.tscn")
 
+@onready var tutorial_overlay: CanvasLayer = $TutorialOverlay
+
 enum CombatState { 
 	PLAYER_TURN,
 	ENEMY_TURN,
@@ -90,6 +92,12 @@ func _ready() -> void:
 	RunData.health_changed.connect(_update_player_health_label)
 	RunData.energy_changed.connect(_update_player_energy_label)
 	_begin_player_turn()
+	
+	if PlayerStats.knows_combat:
+		tutorial_overlay.visible = false
+	else:
+		tutorial_overlay.visible = true
+		
 
 func _input(event): #Temporary
 	if event.is_action_pressed("ui_cancel"):
@@ -549,7 +557,6 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 	else:
 		var miss_position := limb.global_position if limb != null and is_instance_valid(limb) else get_viewport().get_visible_rect().size * 0.5
 		_spawn_floating_damage_number(0, miss_position, false, false, "MISS")
-		print("Player missed %s (%s%% hit chance)" % [limb.limb_name, snappedf(_get_adjusted_hit_chance_percent(limb), 0.1)])
 	_attack_selected = false
 	selected_spell = null
 	_clear_spell_cursor_overlay()

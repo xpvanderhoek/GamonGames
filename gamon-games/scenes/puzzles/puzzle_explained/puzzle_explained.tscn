@@ -1,0 +1,157 @@
+[gd_scene format=3 uid="uid://bt2bfd43lcrbv"]
+
+[ext_resource type="Texture2D" uid="uid://bsbnniqwip2hb" path="res://assets/map/map_foreground.png" id="1_346cx"]
+[ext_resource type="Script" uid="uid://dospgqtjnei6w" path="res://scripts/puzzles/puzzle_explained/puzzle_explained.gd" id="1_em7wq"]
+[ext_resource type="Script" uid="uid://df655q3qte0ag" path="res://scripts/puzzles/puzzle_explained/continue_button.gd" id="1_f6edx"]
+[ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="2_em7wq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_m01jj"]
+font_size = 40
+font_color = Color(0.46657193, 0.36677432, 0.22552383, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_22v06"]
+font_color = Color(0.46666667, 0.36862746, 0.22745098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_em7wq"]
+line_spacing = 6.5
+font_color = Color(0.10123109, 0.46549785, 0.1493175, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kwsnp"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_346cx"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.46666667, 0.36862746, 0.22745098, 0.21176471)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="slide_puzzle_explained" type="Control" unique_id=1567702652]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_em7wq")
+
+[node name="Panel" type="Panel" parent="." unique_id=184586557]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=308145677]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 974.44
+offset_top = -57.9
+offset_right = 595.50757
+offset_bottom = 83.58191
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5707964
+texture = ExtResource("1_346cx")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect" unique_id=741279617]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.076000005
+anchor_top = -0.224
+anchor_right = 0.91600007
+anchor_bottom = 1.2340001
+offset_left = 0.14696121
+offset_top = 1130.544
+offset_right = 484.0202
+offset_bottom = 628.4792
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5707964
+alignment = 1
+
+[node name="Title" type="Label" parent="TextureRect/VBoxContainer" unique_id=1346544228]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "[Placeholder]"
+label_settings = SubResource("LabelSettings_m01jj")
+
+[node name="Description" type="Label" parent="TextureRect/VBoxContainer" unique_id=452728130]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.46666667, 0.36862746, 0.22745098, 1)
+text = "[Placeholder]
+
+[Placeholder]
+
+[Placeholder]
+
+[Placeholder]
+
+[Placeholder]"
+label_settings = SubResource("LabelSettings_22v06")
+horizontal_alignment = 1
+
+[node name="Tips" type="Label" parent="TextureRect/VBoxContainer" unique_id=2080755433]
+layout_mode = 2
+text = "
+[Placeholder]
+[Placeholder]
+"
+label_settings = SubResource("LabelSettings_em7wq")
+horizontal_alignment = 1
+
+[node name="Reward" type="RichTextLabel" parent="TextureRect/VBoxContainer" unique_id=1279432425]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.46666667, 0.36862746, 0.22745098, 1)
+bbcode_enabled = true
+text = "[Placeholder]"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect/VBoxContainer" unique_id=284134381]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_top = 20
+
+[node name="TextureButton" type="TextureButton" parent="TextureRect/VBoxContainer/MarginContainer" unique_id=984093069]
+layout_mode = 2
+size_flags_stretch_ratio = 23.85
+texture_normal = ExtResource("2_em7wq")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ContinueButton" type="Button" parent="TextureRect/VBoxContainer/MarginContainer" unique_id=1639509065]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.46666667, 0.36862746, 0.22745098, 1)
+theme_override_colors/font_pressed_color = Color(0.46666667, 0.36862746, 0.22745098, 1)
+theme_override_colors/font_hover_color = Color(0.46666667, 0.36862746, 0.22745098, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.46666667, 0.36862746, 0.22745098, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 0.5019608)
+theme_override_styles/normal = SubResource("StyleBoxFlat_kwsnp")
+theme_override_styles/hover = SubResource("StyleBoxFlat_346cx")
+text = "Play"
+script = ExtResource("1_f6edx")
+
+[connection signal="pressed" from="TextureRect/VBoxContainer/MarginContainer/ContinueButton" to="." method="_on_continue_button_pressed"]

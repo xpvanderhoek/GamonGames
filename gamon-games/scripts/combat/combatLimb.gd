@@ -219,7 +219,6 @@ func take_damage(amount: int) -> void:
 		return
 
 	current_health = max(0, current_health - amount)
-	print(limb_name, " took ", amount, " damage — HP: ", current_health, "/", max_health)
 	limb_damaged.emit(self, amount, current_health)
 
 	_flash_hit()

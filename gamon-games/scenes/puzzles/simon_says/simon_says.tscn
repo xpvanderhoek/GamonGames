@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://dip87pnxytcc5"]
 
 [ext_resource type="Script" uid="uid://c5xnmi2opdjbb" path="res://scripts/puzzles/simon_says/simon_says.gd" id="1_0oafj"]
-[ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
+[ext_resource type="Texture2D" uid="uid://80dsky5u1kk8" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
 [ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
-[ext_resource type="Texture2D" uid="uid://c0u8i3yhmbk1n" path="res://assets/placeholders/puzzle/tombstone.png" id="4_bwhsd"]
-[ext_resource type="Texture2D" uid="uid://dm0cpxqyi4b7q" path="res://assets/placeholders/puzzle/bone.png" id="5_bogql"]
-[ext_resource type="Texture2D" uid="uid://clx43tbnk5b5n" path="res://assets/Placeholders/Puzzle/mouse-left-button.svg" id="6_0oafj"]
-[ext_resource type="Texture2D" uid="uid://kef182q8o7ea" path="res://assets/placeholders/puzzle/arrow.png" id="7_s13xn"]
+[ext_resource type="Texture2D" uid="uid://cmjdknrp3ln4j" path="res://assets/placeholders/puzzle/tombstone.png" id="4_bwhsd"]
+[ext_resource type="Texture2D" uid="uid://dx3lnhm0hdvk2" path="res://assets/placeholders/puzzle/bone.png" id="5_bogql"]
+[ext_resource type="Texture2D" uid="uid://dmgbeqca82wpy" path="res://assets/Placeholders/Puzzle/mouse-left-button.svg" id="6_0oafj"]
+[ext_resource type="Texture2D" uid="uid://d0jqnmjb5mpe5" path="res://assets/placeholders/puzzle/arrow.png" id="7_s13xn"]
 [ext_resource type="PackedScene" uid="uid://bnlu4c13jyfkc" path="res://scenes/UI/skipbutton/Skipbutton.tscn" id="8_8w86a"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
@@ -207,12 +207,19 @@ horizontal_alignment = 1
 
 [node name="Button" type="Button" parent="." unique_id=1815418118]
 visible = false
-layout_mode = 0
-offset_left = 516.99994
-offset_top = 593.0
-offset_right = 595.99994
-offset_bottom = 624.0
-scale = Vector2(1.665, 1.665)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -74.5
+offset_top = -57.210022
+offset_right = 74.5
+offset_bottom = -4.210022
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
 text = "Continue"
 
 [node name="CoinLabel" type="Label" parent="." unique_id=1493621846]
@@ -245,4 +252,13 @@ offset_top = 17.0
 offset_right = -968.0
 offset_bottom = 67.0
 
+[node name="Button2" type="Button" parent="." unique_id=1895553852]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 591.0
+offset_right = 56.0
+offset_bottom = 628.0
+text = "?"
+
 [connection signal="pressed" from="Button" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_explanation_pressed"]
