@@ -13,6 +13,12 @@ var player_input: Array[int] = []
 var pulse_active = false
 var can_click := false
 
+var data = PuzzleTexts.PUZZLES[get_puzzle_data()][RunData.language]
+var puzzle_explained = preload("res://scenes/puzzles/puzzle_explained/puzzle_explained.tscn")
+
+
+func get_puzzle_data() -> String:
+	return "simon_says_normal"
 
 func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	var idx = sequence[0]
@@ -25,7 +31,19 @@ func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	buttons[idx].modulate = Color(1,1,1)
 	await get_tree().create_timer(0.2).timeout
 
+func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -> void:
+	var explanation = puzzle_explained.instantiate()
+	get_tree().current_scene.add_child(explanation)
+	explanation.setup(data.title, data.description, data.tips, data.reward)
+	puzzle = true
+	
+
 func _ready():
+	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
+		open_explaination(PuzzleData.knows_puzzles[get_puzzle_data()])
+	var continue_button = PuzzleTexts.CONTINUE[RunData.language]
+	$Button.text = continue_button
+	versionLabel.text = data.title
 	totalCoins.text = str(RunData.coins)
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))
@@ -151,3 +169,7 @@ func animate_labels(label_a: Label, label_b: Label):
 	tween.tween_property(label_b, "scale", Vector2(1.5, 1.2), 0.15)
 	
 	tween.tween_property(label_b, "scale", Vector2(1, 1), 0.2)
+
+
+func _on_explanation_pressed() -> void:
+	open_explaination()

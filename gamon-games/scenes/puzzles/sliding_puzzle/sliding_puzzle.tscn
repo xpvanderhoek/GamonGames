@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://he84ol6onw33"]
 
 [ext_resource type="Script" uid="uid://rlut218wvpdb" path="res://scripts/puzzles/sliding_puzzle/sliding_puzzle.gd" id="1_v7cav"]
-[ext_resource type="Texture2D" uid="uid://dk2vyq562y6xs" path="res://assets/Placeholders/Puzzle/sliding_puzzle/rodepanda.jpg" id="2_3tfod"]
-[ext_resource type="Texture2D" uid="uid://bf11t2k4vc42k" path="res://assets/Placeholders/Puzzle/sliding_puzzle/koala.webp" id="2_la3wc"]
-[ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_sc7lg"]
-[ext_resource type="Texture2D" uid="uid://cjnbxx56rwdxx" path="res://assets/Placeholders/Puzzle/sliding_puzzle/tijger.jpg" id="4_rn1xw"]
-[ext_resource type="Texture2D" uid="uid://ca1ejej7wx4f3" path="res://assets/Placeholders/Puzzle/sliding_puzzle/dog.jpg" id="5_pv4rj"]
-[ext_resource type="Texture2D" uid="uid://fhka50y645uh" path="res://assets/Placeholders/Puzzle/sliding_puzzle/panda.jpg" id="6_3q5v1"]
-[ext_resource type="Texture2D" uid="uid://jb43uwftviui" path="res://assets/Placeholders/Puzzle/sliding_puzzle/penguin.webp" id="7_x4kj6"]
+[ext_resource type="Texture2D" uid="uid://c8ntkqy7y8c00" path="res://assets/Placeholders/Puzzle/sliding_puzzle/rodepanda.jpg" id="2_3tfod"]
+[ext_resource type="Texture2D" uid="uid://ciek1uoimyqnx" path="res://assets/Placeholders/Puzzle/sliding_puzzle/koala.webp" id="2_la3wc"]
+[ext_resource type="Texture2D" uid="uid://80dsky5u1kk8" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_sc7lg"]
+[ext_resource type="Texture2D" uid="uid://xs2wt7jkfevy" path="res://assets/Placeholders/Puzzle/sliding_puzzle/tijger.jpg" id="4_rn1xw"]
+[ext_resource type="Texture2D" uid="uid://bbm8m5y3jnrrv" path="res://assets/Placeholders/Puzzle/sliding_puzzle/dog.jpg" id="5_pv4rj"]
+[ext_resource type="Texture2D" uid="uid://j4eu7p1pc507" path="res://assets/Placeholders/Puzzle/sliding_puzzle/panda.jpg" id="6_3q5v1"]
+[ext_resource type="Texture2D" uid="uid://by6106ixqf6rq" path="res://assets/Placeholders/Puzzle/sliding_puzzle/penguin.webp" id="7_x4kj6"]
 [ext_resource type="PackedScene" uid="uid://bnlu4c13jyfkc" path="res://scenes/UI/skipbutton/Skipbutton.tscn" id="9_3q5v1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3tfod"]
@@ -79,13 +79,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -80.00003
-offset_top = -65.0
-offset_right = -1.0
-offset_bottom = -34.0
+offset_left = -74.5
+offset_top = -73.359985
+offset_right = 74.5
+offset_bottom = -20.359985
 grow_horizontal = 2
 grow_vertical = 0
-scale = Vector2(2.025, 2.025)
+theme_override_font_sizes/font_size = 32
 text = "Continue"
 
 [node name="Skipbutton" parent="." unique_id=15965707 instance=ExtResource("9_3q5v1")]

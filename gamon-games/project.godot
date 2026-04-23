@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="GamonGames"
+config/name="Curefinder"
 run/main_scene="uid://ctc0o0gqj1d72"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://cwp4d5bjoxefw"
 
 [autoload]
 
@@ -24,10 +24,11 @@ RunData="*uid://v8oh1j7mo6xp"
 PlayerStats="*uid://blaa2ldagphrn"
 DialogueManager="*uid://cdsxgwq8b0vwp"
 NavigationManager="*uid://dnruitng07ior"
+PuzzleData="*uid://dre243a5elcje"
+PuzzleTexts="*uid://cw0prrlqfph4m"
 
 [display]
 
-window/size/mode=2
 window/stretch/mode="canvas_items"
 
 [global_group]

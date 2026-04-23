@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bnlu4c13jyfkc"]
 
-[ext_resource type="Script" path="res://Scenes/UI/skipbutton/skipbutton.gd" id="1_9mcqj"]
+[ext_resource type="Script" uid="uid://c5e2sjeqbuarh" path="res://Scenes/UI/skipbutton/skipbutton.gd" id="1_9mcqj"]
 
 [node name="Skipbutton" type="Control" unique_id=15965707]
 layout_mode = 3
