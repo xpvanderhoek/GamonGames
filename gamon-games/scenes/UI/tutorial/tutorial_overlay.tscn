@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://c80vkx6l0g4kf"]
+
+[ext_resource type="Script" uid="uid://dcepokqishiur" path="res://scripts/UI/tutorial/tutorial_overlay.gd" id="1_ooshf"]
+[ext_resource type="Texture2D" uid="uid://gw64ydpfhgj0" path="res://assets/ui/tutorial/combat_limb_targeting.png" id="1_p7s34"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_07g78"]
+bg_color = Color(0.09277264, 0.14177725, 0.12733826, 1)
+
+[node name="TutorialOverlay" type="CanvasLayer" unique_id=282468504]
+script = ExtResource("1_ooshf")
+title = "Combat 101"
+
+[node name="Panel" type="Panel" parent="." unique_id=1774782240]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_07g78")
+
+[node name="TitleLabel" type="Label" parent="Panel" unique_id=74767038]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -115.0
+offset_top = 20.0
+offset_right = 115.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.84984905, 0.7404566, 0.33635396, 1)
+theme_override_font_sizes/font_size = 36
+text = "Lorem Ipsum"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PageNumberLabel" type="Label" parent="Panel" unique_id=1564398861]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -47.5
+offset_top = 73.0
+offset_right = 47.5
+offset_bottom = 96.0
+grow_horizontal = 2
+text = "(Page 1 of n)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ImageContainer" type="Control" parent="Panel" unique_id=1540356257]
+anchors_preset = 0
+offset_left = 139.0
+offset_top = 178.0
+offset_right = 573.0
+offset_bottom = 483.0
+
+[node name="Image" type="TextureRect" parent="Panel/ImageContainer" unique_id=561380921]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -217.5
+offset_top = -153.5
+offset_right = 217.5
+offset_bottom = 153.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_p7s34")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Text" type="RichTextLabel" parent="Panel" unique_id=671145385]
+layout_mode = 0
+offset_left = 617.0
+offset_top = 170.0
+offset_right = 1039.0
+offset_bottom = 488.0
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "Defeat [b]enemies[/b] by attacking body parts!
+
+Hover over an enemies limbs to attack them."
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="Panel" unique_id=2131562447]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -30.0
+offset_right = 93.0
+offset_bottom = 30.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "◀ Back"
+
+[node name="NextButton" type="Button" parent="Panel" unique_id=1579099109]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -91.0
+offset_top = -30.0
+offset_right = -20.0
+offset_bottom = 30.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 18
+text = "Next ▶"
+
+[node name="ExitButton" type="Button" parent="Panel" unique_id=1397633749]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -65.0
+offset_top = -113.0
+offset_right = 65.0
+offset_bottom = -74.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 22
+text = "I'm Ready!!!"
+
+[connection signal="pressed" from="Panel/BackButton" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Panel/NextButton" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Panel/ExitButton" to="." method="_on_exit_pressed"]
