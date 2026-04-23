@@ -6,19 +6,25 @@ var colored_sequence: Array[Dictionary] = []
 	
 func get_puzzle_data() -> String:
 	return "simon_says_color"
+	
+func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -> void:
+	var explanation = puzzle_explained.instantiate()
+	get_tree().current_scene.add_child(explanation)
+	explanation.setup(data.title, data.description, data.tips, data.reward, good_color)
+	puzzle = true
 
 func _ready():
-	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
-		open_explaination(PuzzleData.knows_puzzles[get_puzzle_data()])
 	totalCoins.text = str(RunData.coins)
 	all_colors.append(Color(0.0, 0.0, 0.616, 1.0))
 	all_colors.append(Color(0.514, 0.514, 0.0, 1.0))
 	all_colors.append(Color(0.549, 0.0, 0.549, 1.0))
 	good_color = all_colors[randi() % all_colors.size()]
+	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
+		open_explaination(PuzzleData.knows_puzzles[get_puzzle_data()])
 	$MouseLeftButton.visible = true
 	$Arrow.visible = true
-	$ColorRect.color = good_color
-	$ColorRect.visible = true
+	$TextureRect2.modulate = good_color
+	$TextureRect2.visible = true
 	versionLabel.text = data.title
 	sequence.append(randi() % buttons.size())
 	switchDisabled(true)

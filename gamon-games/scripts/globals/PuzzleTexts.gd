@@ -123,7 +123,8 @@ const PUZZLES := {
 			"description": "Onthoud de volgorde en herhaal deze correct. \n Maar er komen meerdere kleuren.\nJe moet de aangegeven kleur aanklikken en de rest met rust laten",
 			"tips": [
 				"Vind een patroon dat makkelijk te onthouden is",
-				"Onthoud alleen de aangegeven kleur"
+				"Onthoud alleen de aangegeven kleur",
+				"Nu moet je alleen de knoppen met deze kleur indrukken: "
 			],
 			"reward": "Deze puzzel levert [color=#1a7726]3 coins[/color] op per ronde dat je overleeft\nSucces!"
 		},
@@ -132,7 +133,8 @@ const PUZZLES := {
 			"description": "Remember the sequence and repeat it correctly.\nMultiple colors will appear.\nBut only press the indicated color and ignore the others.",
 			"tips": [
 				"Look for patterns that are easy to remember",
-				"Focus only on the indicated color"
+				"Focus only on the indicated color",
+				"Now you only need to press the buttons with this color: "
 			],
 			"reward": "You earn [color=#1a7726]3 coins[/color] for every round you survive\nGood luck!"
 		}
