@@ -145,7 +145,7 @@ func save_run_data(round: int, coins: int) -> void:
 	var run_data = {
 		"round": round,
 		"coins": coins,
-		"time": Time.get_datetime_string_from_system()
+		"mode": get_puzzle_data()
 	}
 
 	print("➕ Nieuwe run data:", run_data)
