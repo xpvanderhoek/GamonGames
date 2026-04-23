@@ -6,6 +6,7 @@ class_name SimonSays
 @onready var versionLabel: Label = $VersionLabel
 @onready var coinLabel: Label = $CoinLabel
 @onready var totalCoins: Label = $TotalCoinsLabel
+@onready var lives: TextureRect = $Lives
 
 var coin_amount: int = 0
 var sequence: Array[int] = []
@@ -105,6 +106,27 @@ func switchDisabled(variable: bool):
 	
 	
 func fail():
+	if lives.visible == true:
+		changeColor(Color(2, 0.5, 0.5))
+		await get_tree().create_timer(0.4).timeout
+		changeColor(Color(0.9, 0.9, 0.9))
+		await get_tree().create_timer(0.2).timeout
+
+		var tween = create_tween()
+
+		var center = get_viewport().get_visible_rect().size / 2
+
+		tween.tween_property(lives, "global_position", center, 0.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(lives, "modulate:a", 0.0, 0.3)
+		
+		await tween.finished
+		
+		await get_tree().create_timer(0.4).timeout
+		
+		lives.visible = false
+		player_input.clear()
+		show_sequence()
+		return
 	animate_labels(coinLabel, totalCoins)
 	
 	switchDisabled(true)
