@@ -70,15 +70,18 @@
   ],
   "Avarus_intro": [
 	  {"speaker": "AVARUS", "text": "Welcome to my stall, traveler. Avarus the Gilded, at your service."},
-	  {"speaker": "YOU", "text": "Avarus... the Gilded?"},
 	  {"speaker": "AVARUS", "text": "A title earned over a long and expensive life."},
-	  {"speaker": "YOU", "text": "You are... mostly stone."},
-	  {"speaker": "AVARUS", "text": "Mostly. Efficient, durable, and rarely interrupted by sleep."},
-	  {"speaker": "YOU", "text": "And your arm?"},
-	  {"speaker": "AVARUS", "text": "Stubborn flesh. Useful for counting and pointing at merchandise."},
-	  {"speaker": "YOU", "text": "Your eyes are gold."},
-	  {"speaker": "AVARUS", "text": "A practical reminder to focus on value."},
+	  {"speaker": "AVARUS", "text": "Yes, I am mostly stone. Efficient, durable, and rarely interrupted by sleep."},
+	  {"speaker": "AVARUS", "text": "The arm stayed flesh. Better for counting coins and pointing at expensive mistakes."},
+	  {"speaker": "AVARUS", "text": "And the eyes? Gold. A practical reminder to keep my focus on value."},
 	  {"speaker": "AVARUS", "text": "Now then, browse. If anything calls your name, bring Lirah."}
+  ],
+  "Avarus_shop_enter": [
+	  {"speaker": "AVARUS", "text": "Back so soon? Good. Profit dislikes silence."},
+	  {"speaker": "AVARUS", "text": "Welcome back. Try to buy before you bleed."},
+	  {"speaker": "AVARUS", "text": "The shelves missed you. My ledger did not."},
+	  {"speaker": "AVARUS", "text": "Step in, spend wisely, leave breathing. In that order."},
+	  {"speaker": "AVARUS", "text": "Ah, a returning customer. My favorite species."}
   ],
   "Avarus_idle": [
 	  {"speaker": "AVARUS", "text": "Take your time. Stone has all of it."},
@@ -121,5 +124,12 @@
 	  {"speaker": "AVARUS", "text": "If you hear pebbles shifting, that is just my ego."},
 	  {"speaker": "AVARUS", "text": "Every item here has a story. Most end in screaming."},
 	  {"speaker": "AVARUS", "text": "My shelves are honest. They tell you exactly what you can afford."}
+  ],
+  "Avarus_shop_exit": [
+	  {"speaker": "AVARUS", "text": "Leaving already? The dungeon always sends you back."},
+	  {"speaker": "AVARUS", "text": "Go earn more Lirah. I will still be here."},
+	  {"speaker": "AVARUS", "text": "Mind your limbs out there. They are expensive to replace."},
+	  {"speaker": "AVARUS", "text": "Try not to die too far from my shop."},
+	  {"speaker": "AVARUS", "text": "Until next time, customer. Bring coins, not excuses."}
   ]
 }
