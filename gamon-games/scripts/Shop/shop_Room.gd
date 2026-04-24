@@ -9,6 +9,11 @@ extends Node2D
 const TIER_1_BASE_WEIGHT := 70.0
 const TIER_2_BASE_WEIGHT := 20.0
 const TIER_3_BASE_WEIGHT := 10.0
+const SHOP_DIALOGUE_FIRST_KEY := "Avarus_intro"
+const SHOP_DIALOGUE_ENTER_KEY := "Avarus_shop_enter"
+const SHOP_DIALOGUE_IDLE_KEY := "Avarus_idle"
+const SHOP_DIALOGUE_EXIT_KEY := "Avarus_shop_exit"
+const SHOP_DIALOGUE_NO_COINS_KEY := "Avarus_no_coins"
 
 @onready var spawn_positions = [$Parallax2D2/Item1, $Parallax2D2/Item2, $Parallax2D2/Item3]
 @onready var parallax_layers = [$Parallax2D, $Parallax2D2]
@@ -19,6 +24,8 @@ const TIER_3_BASE_WEIGHT := 10.0
 
 var _parallax_offset := Vector2.ZERO
 var _shop_chatter_timer: Timer
+@onready var _shop_dialogue_ui: CanvasLayer = $Parallax2D2/SpeechBubble
+var _is_exiting := false
 
 const SHOP_CHATTER_MIN_SEC := 10.0
 const SHOP_CHATTER_MAX_SEC := 25.0
@@ -34,15 +41,19 @@ func _ready():
 
 	coins.text = str(RunData.coins)
 	spawn_shop_inventory()
-	_setup_shop_dialogue_flow()
+	_setup_shop_dialogue_system()
 
-func _setup_shop_dialogue_flow() -> void:
-	if not PlayerStats.knows_avarus and DialogueManager.has_dialogue("Avarus_intro"):
-		DialogueManager.start_dialogue("Avarus_intro")
+func _setup_shop_dialogue_system() -> void:
+	if _shop_dialogue_ui != null and not _shop_dialogue_ui.is_node_ready():
+		await _shop_dialogue_ui.ready
+
+	if not PlayerStats.knows_avarus:
+		await _show_bark_sequence(SHOP_DIALOGUE_FIRST_KEY, 4)
 		PlayerStats.knows_avarus = true
+	else:
+		_show_random_bark(SHOP_DIALOGUE_ENTER_KEY, 4.0)
 
 	_setup_shop_chatter_timer()
-
 func _setup_shop_chatter_timer() -> void:
 	_shop_chatter_timer = Timer.new()
 	_shop_chatter_timer.one_shot = true
@@ -52,8 +63,10 @@ func _setup_shop_chatter_timer() -> void:
 	_shop_chatter_timer.start()
 
 func _on_shop_chatter_timeout() -> void:
-	if DialogueManager.has_dialogue("Avarus_idle") and not DialogueManager.is_in_dialogue:
-		DialogueManager.start_random_line_dialogue("Avarus_idle")
+	if _is_exiting:
+		return
+
+	_show_random_bark(SHOP_DIALOGUE_IDLE_KEY, 4.0)
 
 	if _shop_chatter_timer != null:
 		_shop_chatter_timer.wait_time = randf_range(SHOP_CHATTER_MIN_SEC, SHOP_CHATTER_MAX_SEC)
@@ -79,9 +92,40 @@ func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		_exit_shop()
 
-func _exit_shop(): 
+func _exit_shop() -> void:
+	if _is_exiting:
+		return
+
+	_is_exiting = true
+	if _shop_chatter_timer != null:
+		_shop_chatter_timer.stop()
+
+	var played_exit_bark := _show_random_bark(SHOP_DIALOGUE_EXIT_KEY, 3.0)
+	if played_exit_bark and _shop_dialogue_ui != null:
+		await _shop_dialogue_ui.bark_finished
+
 	DialogueManager.cancel_dialogue()
 	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+
+func _show_random_bark(key: String, duration_sec: float = 4.0) -> bool:
+	if _shop_dialogue_ui == null or not _shop_dialogue_ui.has_method("show_bark"):
+		return false
+
+	if not DialogueManager.has_dialogue(key):
+		return false
+
+	var pool: Variant = DialogueManager.dialogue_data[key]
+	if not (pool is Array) or pool.is_empty():
+		return false
+
+	var line: Variant = pool[RunData.rng.randi_range(0, pool.size() - 1)]
+	if not (line is Dictionary):
+		return false
+
+	if line.is_empty():
+		return false
+
+	return _shop_dialogue_ui.show_bark(line, duration_sec)
 
 func spawn_shop_inventory():
 	var item_pool := _load_shop_items()
@@ -108,6 +152,8 @@ func spawn_shop_inventory():
 			new_item.item_hover_started.connect(_on_item_hover_started)
 		if new_item.has_signal("item_hover_ended"):
 			new_item.item_hover_ended.connect(_on_item_hover_ended)
+		if new_item.has_signal("no_coins_attempted"):
+			new_item.no_coins_attempted.connect(_on_item_no_coins_attempted)
 
 		# Pass the specific resource data to the item
 		new_item.item_data = selected_item
@@ -132,6 +178,33 @@ func _on_item_hover_started(item_data: ItemData) -> void:
 func _on_item_hover_ended() -> void:
 	if item_tooltip_panel:
 		item_tooltip_panel.visible = false
+
+func _on_item_no_coins_attempted() -> void:
+	_show_random_bark(SHOP_DIALOGUE_NO_COINS_KEY, 4.0)
+
+func _show_bark_sequence(key: String, duration_sec: float = 3.4) -> bool:
+	if _shop_dialogue_ui == null or not _shop_dialogue_ui.has_method("show_bark"):
+		return false
+
+	if not DialogueManager.has_dialogue(key):
+		return false
+
+	var pool: Variant = DialogueManager.dialogue_data[key]
+	if not (pool is Array) or pool.is_empty():
+		return false
+
+	var played_any := false
+	for line in pool:
+		if _is_exiting:
+			break
+		if not (line is Dictionary):
+			continue
+
+		if _shop_dialogue_ui.show_bark(line, duration_sec):
+			played_any = true
+			await _shop_dialogue_ui.bark_finished
+
+	return played_any
 
 func _load_shop_items() -> Array[ItemData]:
 	return shop_items.duplicate()
