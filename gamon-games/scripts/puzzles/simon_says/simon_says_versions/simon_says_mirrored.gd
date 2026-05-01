@@ -35,4 +35,5 @@ func _on_button_pressed(idx):
 
 func calculate_coins():
 	coin_amount = coin_amount + 3
+	show_coin_popup(3)
 	print_coins(coin_amount)
