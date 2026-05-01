@@ -114,10 +114,48 @@ func fail():
 	
 func print_coins(coins: int):
 	coinLabel.text = str(coins)
+	shake_control(coinLabel, 3.0, 0.15)
 	
 func calculate_coins():
 	coin_amount = coin_amount + 1
+	show_coin_popup(1)
 	print_coins(coin_amount)
+	
+func show_coin_popup(amount: int) -> void:
+	var popup = Label.new()
+	popup.text = "+" + str(amount)
+	popup.modulate = Color(1, 1, 0)
+
+	coinLabel.get_parent().add_child(popup)
+	var rect = coinLabel.get_global_rect()
+	popup.global_position = rect.get_center()
+	popup.add_theme_font_size_override("font_size", 28)
+
+	var tween = create_tween()
+
+	tween.tween_property(popup, "position:y", popup.position.y - 30, 0.5)
+	tween.parallel().tween_property(popup, "modulate:a", 0.0, 0.5)
+
+	tween.finished.connect(func():
+		popup.queue_free()
+	)
+
+func shake_control(node: Control, strength := 4.0, duration := 0.2) -> void:
+	var original_pos = node.position
+	var tween = create_tween()
+
+	var steps = 6
+	var step_time = duration / steps
+
+	for i in range(steps):
+		var offset = Vector2(
+			randf_range(-strength, strength),
+			randf_range(-strength, strength)
+		)
+
+		tween.tween_property(node, "position", original_pos + offset, step_time)
+
+	tween.tween_property(node, "position", original_pos, step_time)
 	
 func _on_button_pressed(idx):
 	pulse_active = false
