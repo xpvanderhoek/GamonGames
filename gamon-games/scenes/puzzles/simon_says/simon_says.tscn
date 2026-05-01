@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dmgbeqca82wpy" path="res://assets/Placeholders/Puzzle/mouse-left-button.svg" id="6_0oafj"]
 [ext_resource type="Texture2D" uid="uid://d0jqnmjb5mpe5" path="res://assets/Placeholders/Puzzle/arrow.png" id="7_s13xn"]
 [ext_resource type="PackedScene" uid="uid://bnlu4c13jyfkc" path="res://scenes/UI/skipbutton/Skipbutton.tscn" id="8_8w86a"]
+[ext_resource type="Texture2D" uid="uid://bjeq4g53b8ymj" path="res://assets/Placeholders/Puzzle/Simon_says_button.png" id="8_iikmj"]
 [ext_resource type="Texture2D" uid="uid://bxffbjpqptt4l" path="res://assets/Placeholders/Puzzle/Heart.png" id="8_iikmj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
@@ -166,26 +167,34 @@ horizontal_alignment = 1
 
 [node name="MouseLeftButton" type="Sprite2D" parent="." unique_id=2079907741]
 visible = false
-position = Vector2(80, 62)
+position = Vector2(57.000008, 132)
 rotation = 0.57595867
 scale = Vector2(0.11862962, 0.13505109)
 texture = ExtResource("6_0oafj")
 
 [node name="Arrow" type="Sprite2D" parent="." unique_id=231044794]
 visible = false
-position = Vector2(126, 99.99999)
+position = Vector2(103.99999, 171)
 rotation = 0.57595867
 scale = Vector2(0.355, 0.265)
 texture = ExtResource("7_s13xn")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=647806681]
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=723511215]
 visible = false
-layout_mode = 0
-offset_left = 166.0
-offset_top = 100.00001
-offset_right = 206.0
-offset_bottom = 140.00002
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.017
+anchor_right = 0.97800004
+anchor_bottom = 1.0
+offset_left = 147.0
+offset_top = 149.984
+offset_right = -903.656
+offset_bottom = -412.0
+grow_horizontal = 2
+grow_vertical = 2
 rotation = 0.57595867
+texture = ExtResource("8_iikmj")
+expand_mode = 1
 
 [node name="Bone" type="Sprite2D" parent="." unique_id=1659875245]
 visible = false
