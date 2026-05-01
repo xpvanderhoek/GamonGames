@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dmgbeqca82wpy" path="res://assets/Placeholders/Puzzle/mouse-left-button.svg" id="6_0oafj"]
 [ext_resource type="Texture2D" uid="uid://d0jqnmjb5mpe5" path="res://assets/Placeholders/Puzzle/arrow.png" id="7_s13xn"]
 [ext_resource type="PackedScene" uid="uid://bnlu4c13jyfkc" path="res://scenes/UI/skipbutton/Skipbutton.tscn" id="8_8w86a"]
+[ext_resource type="Texture2D" uid="uid://bxffbjpqptt4l" path="res://assets/Placeholders/Puzzle/Heart.png" id="8_iikmj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
 font_color = Color(0.3529412, 0.3529412, 0.3529412, 1)
@@ -232,14 +233,30 @@ text = "0"
 label_settings = SubResource("LabelSettings_s13xn")
 horizontal_alignment = 1
 
+[node name="Lives" type="TextureRect" parent="." unique_id=1548841904]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1063.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = -556.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_iikmj")
+expand_mode = 1
+
 [node name="TotalCoinsLabel" type="Label" parent="." unique_id=1852610075]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -146.0
-offset_right = -9.0
-offset_bottom = 64.0
+offset_left = -470.0
+offset_top = 13.0
+offset_right = -333.0
+offset_bottom = 77.0
 grow_horizontal = 0
 text = "0"
 label_settings = SubResource("LabelSettings_iikmj")
