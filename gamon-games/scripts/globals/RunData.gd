@@ -61,7 +61,7 @@ var current_map_node: MapNodeData = null
 var map_nodes_data: Array[MapNodeData] = []
 var current_encounter: Array[PackedScene] = []
 var items : Array[ItemData] = [] 
-var consumables : Array = [null, null, null, null, null]
+var consumables : Array = [null, null, null, null, null, null, null, null, null]
 
 # Values are placeholders for now, needs testing
 var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000]
@@ -81,7 +81,7 @@ func new_run():
 	map_nodes_data.clear()
 	current_map_node = null
 	items.clear()
-	consumables = [null, null, null, null, null]
+	consumables = [null, null, null, null, null, null, null, null, null]
 	max_health = PlayerStats.stats["health"]
 	current_health = max_health
 	spells.clear()
@@ -127,11 +127,20 @@ func add_item(item: Resource) -> bool:
 	items.append(item_data)
 	return true
 
-func get_stat(buff_type : String):
-	var total = PlayerStats.stats[buff_type]
-	if total == null:
-		print ("Speed is giving null")
-		return
+func get_stat(buff_type: String):
+	var stat_key := buff_type.to_lower()
+	if stat_key == "hp_max":
+		stat_key = "health"
+	elif stat_key == "defense":
+		stat_key = "defence"
+	elif stat_key == "cooldown":
+		stat_key = "cooldown"
+
+	if not PlayerStats.stats.has(stat_key):
+		print("Unknown stat '%s'" % buff_type)
+		return 0
+
+	var total = float(PlayerStats.stats[stat_key])
 	for item in items:
 		if item.buff_type.to_lower() == buff_type.to_lower():
 			total += item.buff_value
@@ -186,7 +195,6 @@ func upgrade_spell(spell_id: String) -> void:
 	var existing = get_spell_by_id(spell_id)
 	if existing:
 		existing.level += 1
-		existing.damage = int(round(existing.damage * 1.2))
 		if existing.min_damage >= 0:
 			existing.min_damage = int(round(existing.min_damage * 1.2))
 		if existing.max_damage >= 0:

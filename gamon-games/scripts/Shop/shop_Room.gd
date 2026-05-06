@@ -243,4 +243,4 @@ func _get_weight_for_item(item: ItemData, luck_value: float) -> float:
 			return 1.0
 
 func _get_total_luck() -> float:
-	return PlayerStats.stats.luck
+	return float(RunData.get_stat("luck"))
