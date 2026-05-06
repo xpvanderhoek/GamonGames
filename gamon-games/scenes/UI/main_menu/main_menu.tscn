@@ -122,8 +122,6 @@ offset_bottom = 636.0
 texture = ExtResource("4_7pp57")
 expand_mode = 1
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1898748518]
-
 [connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
