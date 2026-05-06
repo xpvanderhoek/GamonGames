@@ -1607,7 +1607,7 @@ func _update_enemy_spell_targeting_preview() -> void:
 		if enemy == null or not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
 			continue
 		if enemy.has_method("set_spell_targeting_preview"):
-			enemy.set_spell_targeting_preview(_attack_selected, use_whole_enemy_preview, spell_icon)
+			enemy.set_spell_targeting_preview(_attack_selected, use_whole_enemy_preview, spell_icon, player_hit_chance_bonus_percent)
 
 func _setup_spell_cursor_overlay() -> void:
 	if _spell_cursor_overlay != null:

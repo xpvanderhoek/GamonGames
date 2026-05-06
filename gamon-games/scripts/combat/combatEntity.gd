@@ -15,6 +15,7 @@ var _group_highlighted_limbs: Array[CombatLimb] = []
 var _spell_targeting_enabled: bool = false
 var _spell_targeting_whole_enemy: bool = false
 var _spell_targeting_icon: Texture2D = null
+var _spell_targeting_hit_bonus_percent: float = 0.0
 var _spell_targeting_center_frame: TextureRect = null
 var _spell_targeting_center_icon: TextureRect = null
 
@@ -126,10 +127,11 @@ func _create_spell_target_frame_texture() -> Texture2D:
 				image.set_pixel(x, y, Color(1.0, 1.0, 1.0, 0.9))
 	return ImageTexture.create_from_image(image)
 
-func set_spell_targeting_preview(enabled: bool, whole_enemy: bool, spell_icon: Texture2D = null) -> void:
+func set_spell_targeting_preview(enabled: bool, whole_enemy: bool, spell_icon: Texture2D = null, hit_bonus_percent: float = 0.0) -> void:
 	_spell_targeting_enabled = enabled
 	_spell_targeting_whole_enemy = whole_enemy and enabled
 	_spell_targeting_icon = spell_icon
+	_spell_targeting_hit_bonus_percent = hit_bonus_percent
 	_refresh_spell_targeting_visuals()
 
 func _refresh_spell_targeting_visuals() -> void:
@@ -139,10 +141,14 @@ func _refresh_spell_targeting_visuals() -> void:
 	for limb in limbs:
 		if limb == null or not is_instance_valid(limb):
 			continue
-		if _spell_targeting_whole_enemy:
-			limb.set_spell_targeting_preview(false, false, null)
-		else:
-			limb.set_spell_targeting_preview(_spell_targeting_enabled, limb == _highlighted_limb, _spell_targeting_icon)
+		limb.set_spell_targeting_preview(_spell_targeting_enabled, limb == _highlighted_limb and not _spell_targeting_whole_enemy, _spell_targeting_icon, _build_spell_targeting_preview_text(limb))
+
+func _build_spell_targeting_preview_text(limb: CombatLimb) -> String:
+	if limb == null or not is_instance_valid(limb):
+		return ""
+
+	var adjusted_hit_chance := clampf(limb.hit_chance_percent + _spell_targeting_hit_bonus_percent, 0.0, 100.0)
+	return "%s%%\n%d/%d HP" % [str(snappedf(adjusted_hit_chance, 0.1)), limb.current_health, limb.max_health]
 
 func _ensure_spell_targeting_center_visuals() -> void:
 	if _spell_targeting_center_frame == null:
