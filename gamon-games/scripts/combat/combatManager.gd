@@ -1306,8 +1306,13 @@ func _restart_run_on_player_death() -> void:
 	if _is_exiting_combat:
 		return
 	_is_exiting_combat = true
+
 	RunData.end_run()
-	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+
+	var game_over = preload("res://Scenes/UI/GameOver.tscn").instantiate()
+	get_tree().current_scene.add_child(game_over)
+
+	get_tree().paused = true
 
 func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false, custom_text: String = "") -> void:
 	var is_custom_text := not custom_text.is_empty()
