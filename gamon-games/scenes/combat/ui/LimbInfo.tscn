@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://b1g34qb6x8p2n"]
+
+[node name="LimbHealthInfo" type="Node2D" unique_id=172652536]
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=120535141]
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=925482227]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1712158643]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = -3
+
+[node name="Name" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1798474291]
+layout_mode = 2
+text = "Head"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2006005603]
+layout_mode = 2
+text = "50/50"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HitChance" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=210739228]
+layout_mode = 2
+text = "50%"
+horizontal_alignment = 1
+vertical_alignment = 1

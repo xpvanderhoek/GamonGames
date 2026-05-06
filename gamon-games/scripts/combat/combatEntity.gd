@@ -62,15 +62,16 @@ func _on_limb_mouse_exited(limb: CombatLimb) -> void:
 	_refresh_highlight()
 
 func _refresh_highlight() -> void:
-	if not single_highlight_enabled:
-		_clear_current_highlight_visuals()
-		_refresh_spell_targeting_visuals()
-		return
-
 	var top_limb: CombatLimb = null
 	for limb in _hovered_limbs:
 		if top_limb == null or limb.get_index() > top_limb.get_index():
 			top_limb = limb
+
+	if not single_highlight_enabled:
+		_clear_current_highlight_visuals()
+		_highlighted_limb = top_limb
+		_refresh_spell_targeting_visuals()
+		return
 
 	if whole_enemy_highlight_enabled:
 		if top_limb == null:
@@ -137,18 +138,13 @@ func set_spell_targeting_preview(enabled: bool, whole_enemy: bool, spell_icon: T
 func _refresh_spell_targeting_visuals() -> void:
 	_ensure_spell_targeting_center_visuals()
 	_update_spell_targeting_center_visuals()
+	var any_limb_hovered := _highlighted_limb != null
 
 	for limb in limbs:
 		if limb == null or not is_instance_valid(limb):
 			continue
-		limb.set_spell_targeting_preview(_spell_targeting_enabled, limb == _highlighted_limb and not _spell_targeting_whole_enemy, _spell_targeting_icon, _build_spell_targeting_preview_text(limb))
-
-func _build_spell_targeting_preview_text(limb: CombatLimb) -> String:
-	if limb == null or not is_instance_valid(limb):
-		return ""
-
-	var adjusted_hit_chance := clampf(limb.hit_chance_percent + _spell_targeting_hit_bonus_percent, 0.0, 100.0)
-	return "%s%%\n%d/%d HP" % [str(snappedf(adjusted_hit_chance, 0.1)), limb.current_health, limb.max_health]
+		var should_show_preview := _spell_targeting_enabled or any_limb_hovered
+		limb.set_spell_targeting_preview(should_show_preview, limb == _highlighted_limb and not _spell_targeting_whole_enemy, _spell_targeting_icon, limb.limb_name, limb.current_health, limb.max_health, clampf(limb.hit_chance_percent + _spell_targeting_hit_bonus_percent, 0.0, 100.0))
 
 func _ensure_spell_targeting_center_visuals() -> void:
 	if _spell_targeting_center_frame == null:

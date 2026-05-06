@@ -1,6 +1,8 @@
 class_name CombatLimb
 extends Sprite2D
 
+const LIMB_INFO_SCENE := preload("res://scenes/combat/ui/LimbInfo.tscn")
+
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
 @export var is_vital: bool = false
@@ -18,8 +20,15 @@ var _spell_targeting_hovered: bool = false
 var _spell_targeting_icon: Texture2D = null
 var _spell_targeting_frame_sprite: Sprite2D = null
 var _spell_targeting_icon_sprite: Sprite2D = null
-var _spell_targeting_text_label: Label = null
-var _spell_targeting_preview_text: String = ""
+var _spell_targeting_info_root: Node2D = null
+var _spell_targeting_panel: PanelContainer = null
+var _spell_targeting_name_label: Label = null
+var _spell_targeting_health_label: Label = null
+var _spell_targeting_hit_label: Label = null
+var _spell_targeting_limb_name: String = ""
+var _spell_targeting_limb_current_health: int = 0
+var _spell_targeting_limb_max_health: int = 0
+var _spell_targeting_limb_hit_chance_percent: float = 0.0
 var _initial_scale: Vector2 = Vector2.ONE
 var _initial_position: Vector2 = Vector2.ZERO
 
@@ -92,7 +101,7 @@ func _ready() -> void:
 		_setup_click_area()
 
 func _process(_delta: float) -> void:
-	if _spell_targeting_text_label != null and _spell_targeting_text_label.visible:
+	if _spell_targeting_info_root != null and _spell_targeting_info_root.visible:
 		_sync_spell_targeting_text_position()
 
 func _setup_click_area() -> void:
@@ -162,11 +171,14 @@ func set_aoe_unhighlighted() -> void:
 	is_aoe_highlighted = false
 	modulate = Color.GREEN if is_highlighted else Color.WHITE
 
-func set_spell_targeting_preview(enabled: bool, hovered: bool, spell_icon: Texture2D = null, preview_text: String = "") -> void:
+func set_spell_targeting_preview(enabled: bool, hovered: bool, spell_icon: Texture2D = null, limb_name: String = "", current_health: int = 0, max_health: int = 0, hit_chance_percent: float = 0.0) -> void:
 	_spell_targeting_enabled = enabled and not is_destroyed
 	_spell_targeting_hovered = hovered and _spell_targeting_enabled
 	_spell_targeting_icon = spell_icon
-	_spell_targeting_preview_text = preview_text
+	_spell_targeting_limb_name = limb_name
+	_spell_targeting_limb_current_health = current_health
+	_spell_targeting_limb_max_health = max_health
+	_spell_targeting_limb_hit_chance_percent = hit_chance_percent
 	_ensure_spell_targeting_visuals()
 	_update_spell_targeting_visuals()
 
@@ -188,26 +200,16 @@ func _ensure_spell_targeting_visuals() -> void:
 		_spell_targeting_icon_sprite.z_index = 41
 		add_child(_spell_targeting_icon_sprite)
 
-	if _spell_targeting_text_label == null:
-		_spell_targeting_text_label = Label.new()
-		_spell_targeting_text_label.name = "SpellTargetText"
-		_spell_targeting_text_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_spell_targeting_text_label.z_index = 42
-		_spell_targeting_text_label.top_level = true
-		_spell_targeting_text_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_spell_targeting_text_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_spell_targeting_text_label.autowrap_mode = TextServer.AUTOWRAP_OFF
-		_spell_targeting_text_label.clip_text = false
-		_spell_targeting_text_label.custom_minimum_size = Vector2(96.0, 40.0)
-		_spell_targeting_text_label.size = _spell_targeting_text_label.custom_minimum_size
-		_spell_targeting_text_label.visible = false
-		var label_settings := LabelSettings.new()
-		label_settings.font_size = 12
-		label_settings.outline_size = 3
-		label_settings.outline_color = Color(0.0, 0.0, 0.0, 1.0)
-		label_settings.font_color = Color(1.0, 1.0, 1.0, 1.0)
-		_spell_targeting_text_label.label_settings = label_settings
-		add_child(_spell_targeting_text_label)
+	if _spell_targeting_info_root == null:
+		_spell_targeting_info_root = LIMB_INFO_SCENE.instantiate() as Node2D
+		_spell_targeting_info_root.name = "LimbHealthInfo"
+		_spell_targeting_info_root.z_index = 42
+		_spell_targeting_info_root.top_level = true
+		add_child(_spell_targeting_info_root)
+		_spell_targeting_panel = _spell_targeting_info_root.get_node_or_null("PanelContainer") as PanelContainer
+		_spell_targeting_name_label = _spell_targeting_info_root.get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Name") as Label
+		_spell_targeting_health_label = _spell_targeting_info_root.get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Health") as Label
+		_spell_targeting_hit_label = _spell_targeting_info_root.get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/HitChance") as Label
 
 func _create_spell_target_frame_texture() -> Texture2D:
 	var image := Image.create(48, 48, false, Image.FORMAT_RGBA8)
@@ -227,8 +229,8 @@ func _update_spell_targeting_visuals() -> void:
 		_spell_targeting_frame_sprite.visible = false
 		_spell_targeting_icon_sprite.visible = false
 		_spell_targeting_icon_sprite.texture = null
-		if _spell_targeting_text_label != null:
-			_spell_targeting_text_label.visible = false
+		if _spell_targeting_info_root != null:
+			_spell_targeting_info_root.visible = false
 		return
 
 	_spell_targeting_frame_sprite.visible = true
@@ -248,23 +250,30 @@ func _update_spell_targeting_visuals() -> void:
 		_spell_targeting_icon_sprite.texture = null
 
 func _update_spell_targeting_text_visuals() -> void:
-	if _spell_targeting_text_label == null:
+	if _spell_targeting_info_root == null or _spell_targeting_panel == null:
 		return
 
-	if is_destroyed or not _spell_targeting_enabled or _spell_targeting_preview_text.is_empty():
-		_spell_targeting_text_label.visible = false
+	if is_destroyed or not _spell_targeting_enabled:
+		_spell_targeting_info_root.visible = false
 		return
 
-	_spell_targeting_text_label.text = _spell_targeting_preview_text
-	_spell_targeting_text_label.size = _spell_targeting_text_label.custom_minimum_size
-	_spell_targeting_text_label.visible = true
+	if _spell_targeting_name_label != null:
+		_spell_targeting_name_label.text = _spell_targeting_limb_name
+		_spell_targeting_name_label.visible = _spell_targeting_hovered
+	if _spell_targeting_health_label != null:
+		_spell_targeting_health_label.text = "%d / %d" % [_spell_targeting_limb_current_health, _spell_targeting_limb_max_health]
+	if _spell_targeting_hit_label != null:
+		_spell_targeting_hit_label.text = "%.1f%%" % _spell_targeting_limb_hit_chance_percent
+
+	_spell_targeting_panel.size = _spell_targeting_panel.get_combined_minimum_size()
+	_spell_targeting_info_root.visible = true
 	_sync_spell_targeting_text_position()
 
 func _sync_spell_targeting_text_position() -> void:
-	if _spell_targeting_text_label == null:
+	if _spell_targeting_info_root == null or _spell_targeting_panel == null:
 		return
 
-	_spell_targeting_text_label.global_position = global_position - (_spell_targeting_text_label.size * 0.5)
+	_spell_targeting_info_root.global_position = global_position - (_spell_targeting_panel.size * 0.5)
 
 func take_damage(amount: int) -> void:
 	if is_destroyed:
@@ -292,8 +301,8 @@ func destroy_limb() -> void:
 		_spell_targeting_frame_sprite.visible = false
 	if _spell_targeting_icon_sprite != null:
 		_spell_targeting_icon_sprite.visible = false
-	if _spell_targeting_text_label != null:
-		_spell_targeting_text_label.visible = false
+	if _spell_targeting_info_root != null:
+		_spell_targeting_info_root.visible = false
 
 	var click_area := get_node_or_null("ClickArea") as Area2D
 	if click_area != null:
