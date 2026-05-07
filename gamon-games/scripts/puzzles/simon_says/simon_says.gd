@@ -16,7 +16,7 @@ var can_click := false
 
 var data = PuzzleTexts.PUZZLES[get_puzzle_data()][RunData.language]
 var puzzle_explained = preload("res://scenes/puzzles/puzzle_explained/puzzle_explained.tscn")
-
+var risk_and_reward = preload("res://scenes/puzzles/simon_says/risk_and_reward.tscn")
 
 func get_puzzle_data() -> String:
 	return "simon_says_normal"
@@ -37,7 +37,11 @@ func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -
 	get_tree().current_scene.add_child(explanation)
 	explanation.setup(data.title, data.description, data.tips, data.reward)
 	puzzle = true
-	
+
+func risk_and_reward_round(round: int):
+	if not (round % 5):
+		return
+	get_tree().current_scene.add_child(risk_and_reward)
 
 func _ready():
 	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
