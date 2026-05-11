@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://r0hh32i5n6tg"]
+[gd_resource type="Resource" format=3 uid="uid://r0hh32i5n6tg"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://d11xh862t8f4y" path="res://assets/ShopItems/Textures/The Hollow Heart.png" id="2_4swnh"]
+[ext_resource type="Texture2D" uid="uid://dd5wl4s55asj" path="res://assets/ShopItems/Textures/The Hollow Heart.png" id="2_4swnh"]
 
 [resource]
 script = ExtResource("1_script")
 item_name = "The Hollow Heart"
-effect = "Heal 15 HP on Kill. No Potions"
+effect = "Heal 15 HP on kill. +50 Max HP. No consumables can be used this run."
 lore = "To live, something else must always die."
 category = "Tier II"
 texture = ExtResource("2_4swnh")
 cost = 60
 buff_type = "HP_Max"
-buff_value = 15.0
+buff_value = 50.0

@@ -15,7 +15,7 @@ const SHOP_DIALOGUE_IDLE_KEY := "Avarus_idle"
 const SHOP_DIALOGUE_EXIT_KEY := "Avarus_shop_exit"
 const SHOP_DIALOGUE_NO_COINS_KEY := "Avarus_no_coins"
 
-@onready var spawn_positions = [$Parallax2D2/Item1, $Parallax2D2/Item2, $Parallax2D2/Item3]
+@onready var spawn_positions = [$Parallax2D2/Item1, $Parallax2D2/Item2, $Parallax2D2/Item3, $Parallax2D2/Item4, $Parallax2D2/Item5, $Parallax2D2/Item6]
 @onready var parallax_layers = [$Parallax2D, $Parallax2D2]
 @onready var exit_button = [$Parallax2D2/ExitButton/Button]
 @onready var item_tooltip_panel: Panel = $CanvasLayer/ItemTooltipPanel

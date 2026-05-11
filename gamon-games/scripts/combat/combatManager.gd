@@ -5,6 +5,7 @@ const TURN_ORDER_ENTRY_SCENE := preload("res://scenes/combat/ui/TurnOrderEntry.t
 const SPELL_BUTTON_SCENE := preload("res://scenes/combat/ui/SpellButton.tscn")
 const BUFF_ICON_SCENE := preload("res://scenes/combat/ui/BuffIcon.tscn")
 const COMBAT_SUMMARY_SCENE := preload("res://scenes/combat/ui/combat_summary.tscn")
+const COMBAT_ITEM_EFFECTS_SCRIPT := preload("res://scripts/combat/combat_item_effects.gd")
 
 @onready var tutorial_overlay: CanvasLayer = $TutorialOverlay
 
@@ -62,6 +63,7 @@ var _spell_cursor_overlay: TextureRect = null
 var _exp_gained_this_combat: int = 0
 var _consumable_buttons: Array = []
 var _pending_consumable_status: Dictionary = {}
+var _item_effects = null
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
@@ -92,6 +94,7 @@ func _ready() -> void:
 	_setup_spell_cursor_overlay()
 	_rebuild_spells_panel()
 	_setup_target_scope_selectors()
+	_item_effects = COMBAT_ITEM_EFFECTS_SCRIPT.new(self)
 	_setup_consumable_buttons()
 
 	RunData.health_changed.connect(_update_player_health_label)
@@ -473,189 +476,6 @@ func _update_button_states() -> void:
 				else:
 					spell_button.modulate = Color.WHITE
 
-func _get_spell_energy_cost(spell: SpellData) -> int:
-	if spell == null:
-		return 0
-	var reduction := _get_item_cooldown_reduction() + _get_temp_cooldown_reduction()
-	return maxi(0, spell.energy - reduction)
-
-func _can_afford_spell(spell: SpellData) -> bool:
-	return RunData.current_energy >= _get_spell_energy_cost(spell)
-
-func _spend_spell_energy(spell: SpellData) -> bool:
-	var spell_cost := _get_spell_energy_cost(spell)
-	if spell_cost <= 0:
-		return true
-	if RunData.current_energy < spell_cost:
-		return false
-	RunData.current_energy -= spell_cost
-	_update_button_states()
-	return true
-
-func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> void:
-	if current_state != CombatState.PLAYER_TURN:
-		return
-	if not _attack_selected:
-		return
-	if source_enemy == null or not is_instance_valid(source_enemy) or not source_enemy.is_alive:
-		return
-	if limb.is_destroyed:
-		return
-
-	var resolved_scope := _resolve_target_scope(selected_spell)
-	var target_enemies: Array[CombatEntity] = []
-	if resolved_scope == TargetScope.ALL_ENEMIES:
-		target_enemies = _get_alive_enemies()
-	else:
-		target_enemies.append(source_enemy)
-
-	if target_enemies.is_empty():
-		return
-
-	var active_spell := selected_spell
-	if active_spell != null and not _spend_spell_energy(active_spell):
-		return
-	if _roll_player_hit_on_limb(limb):
-		var spell_damage := 0
-		var spell_type := SpellData.SpellType.ATTACK
-		var attack_damage_type := SpellData.DamageType.PHYSICAL
-		var can_deal_damage := true
-		var attack_count := 1
-		if active_spell != null:
-			spell_damage = active_spell.roll_damage()
-			spell_type = active_spell.spell_type
-			attack_damage_type = active_spell.damage_type
-			can_deal_damage = active_spell.has_damage()
-			attack_count = active_spell.get_attack_count()
-
-		if can_deal_damage and (spell_type == SpellData.SpellType.ATTACK or spell_type == SpellData.SpellType.DEBUFF):
-			var player_modifiers := _get_player_outgoing_modifiers()
-			var outgoing_multiplier := float(player_modifiers.get("mult", 1.0))
-			var outgoing_flat := int(player_modifiers.get("flat", 0))
-			for _attack_iteration in range(attack_count):
-				if active_spell != null:
-					spell_damage = active_spell.roll_damage()
-				var base_damage = RunData.get_stat("damage") + spell_damage + outgoing_flat
-				for target_enemy in target_enemies:
-					if target_enemy == null or not is_instance_valid(target_enemy) or not target_enemy.is_alive:
-						continue
-					var target_limbs := _get_target_limbs(target_enemy, limb, selected_spell)
-					for target_limb in target_limbs:
-						if target_limb.is_destroyed:
-							continue
-						var item_damage_bonus := _get_item_damage_bonus(target_limb)
-						var raw_damage = base_damage + item_damage_bonus
-						var incoming_multiplier := _get_enemy_incoming_multiplier(target_enemy, target_limb)
-						var final_damage := int(round(float(raw_damage) * outgoing_multiplier * incoming_multiplier))
-						var enemy_defense := _get_enemy_total_defense_for_damage_type(target_enemy, target_limb, attack_damage_type)
-						final_damage = _apply_defense_to_damage(final_damage, enemy_defense)
-						final_damage = max(0, final_damage)
-						if final_damage > 0:
-							target_enemy.take_damage(target_limb, final_damage)
-							_apply_item_status_on_hit(target_enemy, target_limb)
-							_apply_pending_consumable_status(target_enemy, target_limb)
-				if _attack_iteration < attack_count - 1 and multi_hit_delay_seconds > 0.0:
-					await get_tree().create_timer(multi_hit_delay_seconds).timeout
-
-		if active_spell != null and active_spell.spell_type == SpellData.SpellType.DEBUFF:
-			for target_enemy in target_enemies:
-				if target_enemy == null or not is_instance_valid(target_enemy) or not target_enemy.is_alive:
-					continue
-				_append_enemy_effect(target_enemy, active_spell, limb)
-
-		if active_spell != null:
-			_play_attack_feedback(active_spell, get_node_or_null(ui_player), source_enemy)
-	else:
-		var miss_position := limb.global_position if limb != null and is_instance_valid(limb) else get_viewport().get_visible_rect().size * 0.5
-		_spawn_floating_damage_number(0, miss_position, false, false, "MISS")
-	_attack_selected = false
-	selected_spell = null
-	_clear_spell_cursor_overlay()
-	_update_enemy_spell_targeting_preview()
-	source_enemy.clear_current_highlight()
-	_end_player_turn()
-
-func _get_adjusted_hit_chance_percent(limb: CombatLimb) -> float:
-	if limb == null or not is_instance_valid(limb):
-		return 0.0
-	var item_precision_bonus := _get_item_precision_bonus(limb)
-	var temp_precision_bonus := _get_temp_precision_bonus()
-	return clampf(limb.hit_chance_percent + player_hit_chance_bonus_percent + item_precision_bonus + temp_precision_bonus, 0.0, 100.0)
-
-func _roll_player_hit_on_limb(limb: CombatLimb) -> bool:
-	return randf() * 100.0 < _get_adjusted_hit_chance_percent(limb)
-
-func _on_enemy_died(_entity: CombatEntity) -> void:
-	if _entity != null and is_instance_valid(_entity):
-		_exp_gained_this_combat += _entity.exp_reward
-		_enemy_effects.erase(_entity.get_instance_id())
-		_enemy_limb_effects.erase(_entity.get_instance_id())
-		_refresh_enemy_buffs_ui()
-		if _has_item_named("The Hollow Heart"):
-			var heal_amount := int(_get_item_value_by_name("The Hollow Heart", 15.0))
-			_apply_player_heal(heal_amount)
-
-	if _has_alive_enemies():
-		_refresh_turns_order_ui()
-		return
-
-	_on_combat_victory()
-
-func _on_enemy_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int) -> void:
-	if damage <= 0:
-		return
-
-	var hit_position := Vector2.ZERO
-	if limb != null and is_instance_valid(limb):
-		hit_position = limb.global_position
-	elif entity != null and is_instance_valid(entity):
-		var fallback_limb := _get_first_alive_enemy_limb(entity)
-		if fallback_limb != null:
-			hit_position = fallback_limb.global_position
-		else:
-			hit_position = get_viewport().get_visible_rect().size * 0.5
-	else:
-		hit_position = get_viewport().get_visible_rect().size * 0.5
-
-	_play_enemy_impact_pulse(limb, entity)
-	_spawn_floating_damage_number(damage, hit_position, false)
-	if limb != null and is_instance_valid(limb) and limb.is_destroyed:
-		_apply_item_status_on_break(entity, limb)
-
-func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
-	var impact_node: Node2D = null
-	if limb != null and is_instance_valid(limb):
-		impact_node = limb
-	elif entity != null and is_instance_valid(entity):
-		impact_node = _get_first_alive_enemy_limb(entity)
-
-	if impact_node == null:
-		return
-
-	if impact_node.has_meta("impact_tween"):
-		var existing_tween = impact_node.get_meta("impact_tween")
-		if existing_tween is Tween:
-			(existing_tween as Tween).kill()
-		impact_node.remove_meta("impact_tween")
-
-	var base_scale := impact_node.scale
-	var base_position := impact_node.position
-	var knock_offset := Vector2(randf_range(-5.0, 5.0), randf_range(-3.0, 1.5))
-
-	var tween := create_tween()
-	impact_node.set_meta("impact_tween", tween)
-	tween.set_parallel(true)
-	tween.tween_property(impact_node, "scale", base_scale * 1.1, 0.06).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.tween_property(impact_node, "position", base_position + knock_offset, 0.06).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.set_parallel(false)
-	tween.tween_property(impact_node, "scale", base_scale, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	tween.set_parallel(true)
-	tween.tween_property(impact_node, "position", base_position, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	tween.finished.connect(func():
-		if is_instance_valid(impact_node):
-			impact_node.remove_meta("impact_tween")
-	)
-
 func _setup_target_scope_selectors() -> void:
 	if attack_scope_option != null:
 		attack_scope_option.clear()
@@ -728,354 +548,219 @@ func _on_consumable_pressed(slot_index: int) -> void:
 		return
 	if slot_index < 0 or slot_index >= RunData.consumables.size():
 		return
-	if _has_item_named("The Hollow Heart"):
+	if _item_effects.has_item_named("The Hollow Heart"):
 		print("Cannot use consumables while The Hollow Heart is active.")
 		return
 	var item := RunData.consumables[slot_index] as ItemData
 	if item == null:
 		return
-	_apply_consumable_item(item)
+	_item_effects.apply_consumable_item(item)
 	RunData.consumables[slot_index] = null
 	_refresh_consumable_buttons()
 	_update_button_states()
 
-func _apply_consumable_item(item: ItemData) -> void:
-	if item == null:
-		return
-	match item.item_name:
-		"Dark Balsam":
-			_apply_player_heal(int(round(item.buff_value)))
-		"Iron-Suture Kit":
-			_apply_player_heal(int(round(item.buff_value)))
-			_clear_player_stun()
-		"Smelling Salts":
-			_add_player_item_effect("item:smelling_salts", item.item_name, item.texture, 3, {
-				"precision_delta": 10.0,
-			})
-		"Adrenaline Spike":
-			_add_player_item_effect("item:adrenaline_spike", item.item_name, item.texture, 2, {
-				"energy_regen_delta": 2.0,
-				"expire_damage": 10,
-			})
-		"Essence of the Void":
-			_add_player_item_effect("item:essence_void", item.item_name, item.texture, 1, {
-				"invulnerable": true,
-			})
-		"Viper's Tongue":
-			_pending_consumable_status = {
-				"status": "Poison",
-				"stacks": maxi(1, int(round(item.buff_value))),
-				"duration": 3,
-				"icon": item.texture,
-				"name": item.item_name,
-			}
-		_:
-			if item.buff_type.to_lower() == "hp_max":
-				_apply_player_heal(int(round(item.buff_value)))
-			elif item.buff_type.to_lower() == "precision":
-				_add_player_item_effect("item:%s" % item.item_name, item.item_name, item.texture, 3, {
-					"precision_delta": item.buff_value,
-				})
-			elif item.buff_type.to_lower() == "speed":
-				_add_player_item_effect("item:%s" % item.item_name, item.item_name, item.texture, 2, {
-					"energy_regen_delta": 1.0,
-				})
+func _get_spell_energy_cost(spell: SpellData) -> int:
+	if spell == null:
+		return 0
+	var reduction: int = _item_effects.get_item_cooldown_reduction() + _item_effects.get_temp_cooldown_reduction()
+	return maxi(0, spell.energy - reduction)
 
-func _add_player_item_effect(effect_id: String, label: String, icon: Texture2D, duration_rounds: int, fields: Dictionary) -> void:
-	var expires_round = current_round + max(1, duration_rounds) - 1
-	for index in range(_player_effects.size()):
-		var existing := _player_effects[index] as Dictionary
-		if String(existing.get("effect_id", "")) != effect_id:
-			continue
-		existing["expires_round"] = max(expires_round, int(existing.get("expires_round", current_round)))
-		for key in fields.keys():
-			existing[key] = fields[key]
-		_player_effects[index] = existing
-		_refresh_player_buffs_ui()
-		return
+func _can_afford_spell(spell: SpellData) -> bool:
+	return RunData.current_energy >= _get_spell_energy_cost(spell)
 
-	var new_effect := {
-		"expires_round": expires_round,
-		"effect_id": effect_id,
-		"spell_id": effect_id,
-		"spell_name": label,
-		"spell_type": int(SpellData.SpellType.BUFF),
-		"icon": icon,
-	}
-	for key in fields.keys():
-		new_effect[key] = fields[key]
-	_player_effects.append(new_effect)
-	_refresh_player_buffs_ui()
-
-func _clear_player_stun() -> void:
-	var cleaned: Array[Dictionary] = []
-	for raw_effect in _player_effects:
-		var effect := raw_effect as Dictionary
-		if effect.is_empty():
-			continue
-		if bool(effect.get("stun_turns", false)):
-			continue
-		cleaned.append(effect)
-	_player_effects = cleaned
-	_refresh_player_buffs_ui()
-
-func _has_item_named(name: String) -> bool:
-	for item in RunData.items:
-		if item != null and item.item_name == name:
-			return true
-	return false
-
-func _get_item_value_by_name(name: String, fallback: float) -> float:
-	for item in RunData.items:
-		if item != null and item.item_name == name:
-			return item.buff_value
-	return fallback
-
-func _get_item_damage_bonus(target_limb: CombatLimb) -> int:
-	var total := 0
-	for item in RunData.items:
-		if item == null:
-			continue
-		if item.buff_type.to_lower() != "damage":
-			continue
-		if not _item_applies_to_enemy_limb(item, target_limb):
-			continue
-		total += int(round(item.buff_value))
-	return total
-
-func _get_item_precision_bonus(target_limb: CombatLimb) -> float:
-	var total := 0.0
-	for item in RunData.items:
-		if item == null:
-			continue
-		if item.buff_type.to_lower() != "precision":
-			continue
-		if not _item_applies_to_enemy_limb(item, target_limb):
-			continue
-		total += item.buff_value
-	return total
-
-func _get_item_defense_bonus() -> float:
-	var total := 0.0
-	for item in RunData.items:
-		if item == null:
-			continue
-		if item.buff_type.to_lower() != "defense":
-			continue
-		if item.status_to_apply.to_lower() != "none":
-			continue
-		if item.item_name == "Thorned Bracer":
-			continue
-		total += item.buff_value
-	return total
-
-func _get_item_energy_regen_bonus() -> int:
-	var total := 0
-	for item in RunData.items:
-		if item == null:
-			continue
-		if item.buff_type.to_lower() != "speed":
-			continue
-		total += int(round(item.buff_value))
-	return total
-
-func _get_item_cooldown_reduction() -> int:
-	var total := 0
-	for item in RunData.items:
-		if item == null:
-			continue
-		if item.buff_type.to_lower() != "cooldown":
-			continue
-		total += int(round(-item.buff_value))
-	return total
-
-func _get_temp_precision_bonus() -> float:
-	_cleanup_expired_effects()
-	var total := 0.0
-	for effect in _player_effects:
-		total += float(effect.get("precision_delta", 0.0))
-	return total
-
-func _get_temp_energy_regen_bonus() -> int:
-	_cleanup_expired_effects()
-	var total := 0
-	for effect in _player_effects:
-		total += int(round(float(effect.get("energy_regen_delta", 0.0))))
-	return total
-
-func _get_temp_cooldown_reduction() -> int:
-	_cleanup_expired_effects()
-	var total := 0
-	for effect in _player_effects:
-		total += int(round(float(effect.get("cooldown_delta", 0.0))))
-	return total
-
-func _item_applies_to_enemy_limb(item: ItemData, target_limb: CombatLimb) -> bool:
-	if item == null:
-		return false
-	if target_limb == null or not is_instance_valid(target_limb):
-		return false
-	var target_key := _normalize_target_key(item.target_limb)
-	if target_key == "self":
-		return false
-	if target_key == "none" or target_key == "all" or target_key == "alllimbs" or target_key == "targetedlimb":
+func _spend_spell_energy(spell: SpellData) -> bool:
+	var spell_cost := _get_spell_energy_cost(spell)
+	if spell_cost <= 0:
 		return true
-	var limb_label := _get_limb_label(target_limb)
-	return limb_label != "" and limb_label == target_key
+	if RunData.current_energy < spell_cost:
+		return false
+	RunData.current_energy -= spell_cost
+	_update_button_states()
+	return true
 
-func _normalize_target_key(raw: String) -> String:
-	return raw.to_lower().replace(" ", "").replace("_", "")
-
-func _get_limb_label(limb: CombatLimb) -> String:
-	var label := limb.limb_name.strip_edges()
-	if label == "":
-		label = limb.name
-	label = label.to_lower()
-	if label.find("head") >= 0:
-		return "head"
-	if label.find("arm") >= 0:
-		return "arm"
-	if label.find("leg") >= 0:
-		return "leg"
-	if label.find("torso") >= 0 or label.find("body") >= 0:
-		return "torso"
-	return ""
-
-func _apply_item_status_on_hit(target_enemy: CombatEntity, target_limb: CombatLimb) -> void:
-	for item in RunData.items:
-		if item == null:
-			continue
-		if item.status_to_apply.to_lower() == "none":
-			continue
-		if item.item_name == "Withered Achilles Heel":
-			continue
-		if not _item_applies_to_enemy_limb(item, target_limb):
-			continue
-		var stacks := maxi(1, int(round(item.buff_value)))
-		if item.item_name == "Executioner's Hood" and item.status_to_apply.to_lower() == "bleed":
-			stacks = 2
-		_apply_status_effect(target_enemy, target_limb, item.status_to_apply, stacks, 3, item.texture, item.item_name)
-
-func _apply_item_status_on_break(target_enemy: CombatEntity, target_limb: CombatLimb) -> void:
-	for item in RunData.items:
-		if item == null:
-			continue
-		if item.item_name != "Withered Achilles Heel":
-			continue
-		if not _item_applies_to_enemy_limb(item, target_limb):
-			continue
-		_apply_status_effect(target_enemy, target_limb, "Vulnerable", 3, 3, item.texture, item.item_name)
-
-func _apply_pending_consumable_status(target_enemy: CombatEntity, target_limb: CombatLimb) -> void:
-	if _pending_consumable_status.is_empty():
+func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> void:
+	if current_state != CombatState.PLAYER_TURN:
 		return
-	_apply_status_effect(
-		target_enemy,
-		target_limb,
-		String(_pending_consumable_status.get("status", "")),
-		int(_pending_consumable_status.get("stacks", 1)),
-		int(_pending_consumable_status.get("duration", 3)),
-		_pending_consumable_status.get("icon", null),
-		String(_pending_consumable_status.get("name", "Consumable"))
-	)
-	_pending_consumable_status.clear()
-
-func _apply_status_effect(target_enemy: CombatEntity, target_limb: CombatLimb, status: String, stacks: int, duration_rounds: int, icon: Texture2D, source_name: String) -> void:
-	if target_enemy == null or not is_instance_valid(target_enemy):
-		return
-	if status.strip_edges() == "":
-		return
-	var status_key := status.to_lower()
-	var effect_id := "item:%s:%s" % [source_name, status_key]
-	var effect_data := {
-		"expires_round": current_round + max(1, duration_rounds) - 1,
-		"spell_id": effect_id,
-		"spell_name": "%s (%s)" % [source_name, status],
-		"spell_type": int(SpellData.SpellType.DEBUFF),
-		"icon": icon,
-		"damage_type": int(SpellData.DamageType.PHYSICAL),
-		"target_scope": int(TargetScope.LIMB),
-		"outgoing_mult_delta": 0.0,
-		"incoming_mult_delta": 0.0,
-		"damage_over_time": 0,
-		"stun_turns": false,
-		"physical_defense_delta": 0.0,
-		"magic_defense_delta": 0.0,
-	}
-
-	match status_key:
-		"bleed", "poison", "decay", "burn":
-			effect_data["damage_over_time"] = maxi(1, stacks)
-		"vulnerable":
-			effect_data["incoming_mult_delta"] = 0.1 * float(maxi(1, stacks))
-		"invulnerable":
-			return
-
-	_append_enemy_item_effect(target_enemy, target_limb, effect_data)
-
-func _append_enemy_item_effect(target_enemy: CombatEntity, target_limb: CombatLimb, effect_data: Dictionary) -> void:
-	if target_enemy == null or not is_instance_valid(target_enemy):
-		return
-	var enemy_id := target_enemy.get_instance_id()
-	var target_scope := int(effect_data.get("target_scope", int(TargetScope.LIMB))) as TargetScope
-	if target_scope != TargetScope.LIMB or target_limb == null or not is_instance_valid(target_limb):
-		var enemy_effects: Array = _enemy_effects.get(enemy_id, [])
-		for index in range(enemy_effects.size()):
-			var existing := enemy_effects[index] as Dictionary
-			if String(existing.get("spell_id", "")) != String(effect_data.get("spell_id", "")):
-				continue
-			existing["expires_round"] = max(int(existing.get("expires_round", current_round)), int(effect_data.get("expires_round", current_round)))
-			enemy_effects[index] = existing
-			_enemy_effects[enemy_id] = enemy_effects
-			_refresh_enemy_buffs_ui()
-			return
-		enemy_effects.append(effect_data)
-		_enemy_effects[enemy_id] = enemy_effects
-		_refresh_enemy_buffs_ui()
-		return
-
-	var limb_id := target_limb.get_instance_id()
-	var limb_effects_by_enemy := _enemy_limb_effects.get(enemy_id, {}) as Dictionary
-	var limb_effects: Array = limb_effects_by_enemy.get(limb_id, [])
-	for index in range(limb_effects.size()):
-		var existing := limb_effects[index] as Dictionary
-		if String(existing.get("spell_id", "")) != String(effect_data.get("spell_id", "")):
-			continue
-		existing["expires_round"] = max(int(existing.get("expires_round", current_round)), int(effect_data.get("expires_round", current_round)))
-		limb_effects[index] = existing
-		limb_effects_by_enemy[limb_id] = limb_effects
-		_enemy_limb_effects[enemy_id] = limb_effects_by_enemy
-		_refresh_enemy_buffs_ui()
-		return
-	limb_effects.append(effect_data)
-	limb_effects_by_enemy[limb_id] = limb_effects
-	_enemy_limb_effects[enemy_id] = limb_effects_by_enemy
-	_refresh_enemy_buffs_ui()
-
-func _player_has_invulnerable() -> bool:
-	_cleanup_expired_effects()
-	for effect in _player_effects:
-		if bool(effect.get("invulnerable", false)):
-			return true
-	return false
-
-func _apply_player_reflect_damage(amount: int, source_enemy: CombatEntity, source_limb: CombatLimb) -> void:
-	if amount <= 0:
+	if not _attack_selected:
 		return
 	if source_enemy == null or not is_instance_valid(source_enemy) or not source_enemy.is_alive:
 		return
-	var reflect_damage := 0
-	if _has_item_named("The Shroud of Malice"):
-		reflect_damage += int(round(float(amount) * 0.5))
-	if _has_item_named("Thorned Bracer") and source_limb != null and is_instance_valid(source_limb):
-		if _get_limb_label(source_limb) == "arm":
-			reflect_damage += 8
-	if reflect_damage <= 0:
+	if limb.is_destroyed:
 		return
-	var target_limb := _get_first_alive_enemy_limb(source_enemy)
-	if target_limb == null:
+	if debug_round_stats:
+		var limb_label: String = _item_effects.get_limb_label(limb)
+		var hit_chance := _get_adjusted_hit_chance_percent(limb)
+		var item_damage_bonus: int = _item_effects.get_item_damage_bonus(limb)
+		var item_precision_bonus: float = _item_effects.get_item_precision_bonus(limb)
+		var status_effects: Array[String] = _item_effects.get_item_statuses_for_limb(limb)
+		var limb_name := "" if limb_label == "" else limb_label
+		var lines: Array[String] = []
+		lines.append("Hit chance vs %s: %.1f%%" % [limb_name, hit_chance])
+		if item_damage_bonus != 0:
+			lines.append("Item Damage Bonus: %+d" % item_damage_bonus)
+		if not is_zero_approx(item_precision_bonus):
+			lines.append("Item Precision Bonus: %+0.1f" % item_precision_bonus)
+		if not status_effects.is_empty():
+			lines.append("Item Statuses: %s" % ", ".join(status_effects))
+		if lines.size() > 1:
+			print("\n".join(lines))
+		else:
+			print(lines[0])
+
+	var resolved_scope := _resolve_target_scope(selected_spell)
+	var target_enemies: Array[CombatEntity] = []
+	if resolved_scope == TargetScope.ALL_ENEMIES:
+		target_enemies = _get_alive_enemies()
+	else:
+		target_enemies.append(source_enemy)
+
+	if target_enemies.is_empty():
 		return
-	source_enemy.take_damage(target_limb, reflect_damage)
+
+	var active_spell := selected_spell
+	if active_spell != null and not _spend_spell_energy(active_spell):
+		return
+	if _roll_player_hit_on_limb(limb):
+		var spell_damage := 0
+		var spell_type := SpellData.SpellType.ATTACK
+		var attack_damage_type := SpellData.DamageType.PHYSICAL
+		var can_deal_damage := true
+		var attack_count := 1
+		if active_spell != null:
+			spell_damage = active_spell.roll_damage()
+			spell_type = active_spell.spell_type
+			attack_damage_type = active_spell.damage_type
+			can_deal_damage = active_spell.has_damage()
+			attack_count = active_spell.get_attack_count()
+
+		if can_deal_damage and (spell_type == SpellData.SpellType.ATTACK or spell_type == SpellData.SpellType.DEBUFF):
+			var player_modifiers := _get_player_outgoing_modifiers()
+			var outgoing_multiplier := float(player_modifiers.get("mult", 1.0))
+			var outgoing_flat := int(player_modifiers.get("flat", 0))
+			for _attack_iteration in range(attack_count):
+				if active_spell != null:
+					spell_damage = active_spell.roll_damage()
+				var base_damage = RunData.get_stat("damage") + spell_damage + outgoing_flat
+				for target_enemy in target_enemies:
+					if target_enemy == null or not is_instance_valid(target_enemy) or not target_enemy.is_alive:
+						continue
+					var target_limbs := _get_target_limbs(target_enemy, limb, selected_spell)
+					for target_limb in target_limbs:
+						if target_limb.is_destroyed:
+							continue
+						var item_damage_bonus: int = _item_effects.get_item_damage_bonus(target_limb)
+						var raw_damage = base_damage + item_damage_bonus
+						var incoming_multiplier := _get_enemy_incoming_multiplier(target_enemy, target_limb)
+						var final_damage := int(round(float(raw_damage) * outgoing_multiplier * incoming_multiplier))
+						var enemy_defense := _get_enemy_total_defense_for_damage_type(target_enemy, target_limb, attack_damage_type)
+						final_damage = _apply_defense_to_damage(final_damage, enemy_defense)
+						final_damage = max(0, final_damage)
+						if final_damage > 0:
+							target_enemy.take_damage(target_limb, final_damage)
+							_item_effects.apply_item_status_on_hit(target_enemy, target_limb)
+							_item_effects.apply_pending_consumable_status(target_enemy, target_limb)
+				if _attack_iteration < attack_count - 1 and multi_hit_delay_seconds > 0.0:
+					await get_tree().create_timer(multi_hit_delay_seconds).timeout
+
+		if active_spell != null and active_spell.spell_type == SpellData.SpellType.DEBUFF:
+			for target_enemy in target_enemies:
+				if target_enemy == null or not is_instance_valid(target_enemy) or not target_enemy.is_alive:
+					continue
+				_append_enemy_effect(target_enemy, active_spell, limb)
+
+		if active_spell != null:
+			_play_attack_feedback(active_spell, get_node_or_null(ui_player), source_enemy)
+	else:
+		var miss_position := limb.global_position if limb != null and is_instance_valid(limb) else get_viewport().get_visible_rect().size * 0.5
+		_spawn_floating_damage_number(0, miss_position, false, false, "MISS")
+	_attack_selected = false
+	selected_spell = null
+	_clear_spell_cursor_overlay()
+	_update_enemy_spell_targeting_preview()
+	source_enemy.clear_current_highlight()
+	_end_player_turn()
+
+func _get_adjusted_hit_chance_percent(limb: CombatLimb) -> float:
+	if limb == null or not is_instance_valid(limb):
+		return 0.0
+	var item_precision_bonus: float = _item_effects.get_item_precision_bonus(limb)
+	var temp_precision_bonus: float = _item_effects.get_temp_precision_bonus()
+	return clampf(limb.hit_chance_percent + player_hit_chance_bonus_percent + item_precision_bonus + temp_precision_bonus, 0.0, 100.0)
+
+func _roll_player_hit_on_limb(limb: CombatLimb) -> bool:
+	return randf() * 100.0 < _get_adjusted_hit_chance_percent(limb)
+
+func _on_enemy_died(_entity: CombatEntity) -> void:
+	if _entity != null and is_instance_valid(_entity):
+		_exp_gained_this_combat += _entity.exp_reward
+		_enemy_effects.erase(_entity.get_instance_id())
+		_enemy_limb_effects.erase(_entity.get_instance_id())
+		_refresh_enemy_buffs_ui()
+		if _item_effects.has_item_named("The Hollow Heart"):
+			var heal_amount := int(_item_effects.get_item_value_by_name("The Hollow Heart", 15.0))
+			_apply_player_heal(heal_amount)
+
+	if _has_alive_enemies():
+		_refresh_turns_order_ui()
+		return
+
+	_on_combat_victory()
+
+func _on_enemy_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int) -> void:
+	if damage <= 0:
+		return
+
+	var hit_position := Vector2.ZERO
+	if limb != null and is_instance_valid(limb):
+		hit_position = limb.global_position
+	elif entity != null and is_instance_valid(entity):
+		var fallback_limb := _get_first_alive_enemy_limb(entity)
+		if fallback_limb != null:
+			hit_position = fallback_limb.global_position
+		else:
+			hit_position = get_viewport().get_visible_rect().size * 0.5
+	else:
+		hit_position = get_viewport().get_visible_rect().size * 0.5
+
+	_play_enemy_impact_pulse(limb, entity)
+	_spawn_floating_damage_number(damage, hit_position, false)
+	if limb != null and is_instance_valid(limb) and limb.is_destroyed:
+		_item_effects.apply_item_status_on_break(entity, limb)
+
+func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
+	var impact_node: Node2D = null
+	if limb != null and is_instance_valid(limb):
+		impact_node = limb
+	elif entity != null and is_instance_valid(entity):
+		impact_node = _get_first_alive_enemy_limb(entity)
+
+	if impact_node == null:
+		return
+
+	if impact_node.has_meta("impact_tween"):
+		var existing_tween = impact_node.get_meta("impact_tween")
+		if existing_tween is Tween:
+			(existing_tween as Tween).kill()
+		impact_node.remove_meta("impact_tween")
+
+	var base_scale := impact_node.scale
+	var base_position := impact_node.position
+	var knock_offset := Vector2(randf_range(-5.0, 5.0), randf_range(-3.0, 1.5))
+
+	var tween := create_tween()
+	impact_node.set_meta("impact_tween", tween)
+	tween.set_parallel(true)
+	tween.tween_property(impact_node, "scale", base_scale * 1.1, 0.06).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(impact_node, "position", base_position + knock_offset, 0.06).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.set_parallel(false)
+	tween.tween_property(impact_node, "scale", base_scale, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.set_parallel(true)
+	tween.tween_property(impact_node, "position", base_position, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.finished.connect(func():
+		if is_instance_valid(impact_node):
+			impact_node.remove_meta("impact_tween")
+	)
+
 
 func _apply_raw_player_damage(amount: int) -> void:
 	if amount <= 0 or current_state == CombatState.COMBAT_OVER:
@@ -1589,7 +1274,7 @@ func _apply_enemy_damage_over_time(target_enemy: CombatEntity) -> void:
 
 	var limb_effects_by_enemy := _enemy_limb_effects.get(enemy_id, {}) as Dictionary
 	for limb_id in limb_effects_by_enemy.keys():
-		var target_limb := instance_from_id(int(limb_id)) as CombatLimb
+		var target_limb: CombatLimb = instance_from_id(int(limb_id)) as CombatLimb
 		if target_limb == null or not is_instance_valid(target_limb) or target_limb.is_destroyed:
 			continue
 
@@ -1711,10 +1396,10 @@ func _apply_player_damage(amount: int, damage_type: SpellData.DamageType = Spell
 		return
 	if amount <= 0:
 		return
-	if _player_has_invulnerable():
-		var player_hit_position = _get_vfx_anchor_position(null)
-		if player_hit_position is Vector2:
-			_spawn_floating_damage_number(0, player_hit_position as Vector2, true, false, "IMMUNE")
+	if _item_effects.player_has_invulnerable():
+		var immune_hit_position = _get_vfx_anchor_position(null)
+		if immune_hit_position is Vector2:
+			_spawn_floating_damage_number(0, immune_hit_position as Vector2, true, false, "IMMUNE")
 		return
 	var mitigated_amount := _apply_player_defense(amount, damage_type)
 	if mitigated_amount <= 0:
@@ -1728,7 +1413,7 @@ func _apply_player_damage(amount: int, damage_type: SpellData.DamageType = Spell
 		current_state = CombatState.COMBAT_OVER
 		_restart_run_on_player_death()
 	else:
-		_apply_player_reflect_damage(mitigated_amount, source_enemy, source_limb)
+		_item_effects.apply_player_reflect_damage(mitigated_amount, source_enemy, source_limb)
 
 func _restart_run_on_player_death() -> void:
 	if _is_exiting_combat:
@@ -1798,14 +1483,14 @@ func _get_player_defense_for_damage_type(damage_type: SpellData.DamageType) -> f
 	match damage_type:
 		SpellData.DamageType.MAGIC:
 			total_defense = float(RunData.get_stat("magic_defense"))
-			total_defense += _get_item_defense_bonus()
+			total_defense += _item_effects.get_item_defense_bonus()
 			for effect in _player_effects:
 				var expires_round := int(effect.get("expires_round", current_round))
 				if current_round <= expires_round:
 					total_defense += float(effect.get("magic_defense_delta", 0.0))
 		_:
 			total_defense = float(RunData.get_stat("physical_defense"))
-			total_defense += _get_item_defense_bonus()
+			total_defense += _item_effects.get_item_defense_bonus()
 			for effect in _player_effects:
 				var expires_round := int(effect.get("expires_round", current_round))
 				if current_round <= expires_round:
@@ -1989,8 +1674,8 @@ func _begin_player_turn() -> void:
 		_end_player_turn()
 		return
 	var regen_amount: int = maxi(0, int(round(float(RunData.get_stat("energy_regen")))))
-	regen_amount += _get_item_energy_regen_bonus()
-	regen_amount += _get_temp_energy_regen_bonus()
+	regen_amount += _item_effects.get_item_energy_regen_bonus()
+	regen_amount += _item_effects.get_temp_energy_regen_bonus()
 	_regenerate_player_energy(regen_amount)
 	_attack_selected = false
 	selected_spell = null
@@ -2008,18 +1693,108 @@ func _begin_player_turn() -> void:
 
 func _debug_print_round_stats() -> void:
 	var stats_to_log := ["damage", "precision", "physical_defense", "magic_defense", "speed", "energy_regen", "luck"]
+	var global_item_bonus := {
+		"damage": 0.0,
+		"precision": 0.0,
+		"physical_defense": 0.0,
+		"magic_defense": 0.0,
+		"speed": 0.0,
+		"energy_regen": 0.0,
+		"luck": 0.0,
+	}
+	var limb_effects: Dictionary = {}
+
+	for item in RunData.items:
+		if item == null:
+			continue
+		var target_key : String = _item_effects.normalize_target_key(item.target_limb)
+		var is_global := target_key == "" or target_key == "none" or target_key == "all" or target_key == "alllimbs" or target_key == "self"
+		if not is_global:
+			var limb_label := target_key
+			match target_key:
+				"head":
+					limb_label = "Head"
+				"arm":
+					limb_label = "Arm"
+				"leg":
+					limb_label = "Leg"
+				"torso":
+					limb_label = "Torso"
+				"targetedlimb":
+					limb_label = "Targeted Limb"
+				_:
+					limb_label = target_key
+			if not limb_effects.has(limb_label):
+				limb_effects[limb_label] = []
+			var limb_entries: Array = limb_effects[limb_label]
+			if item.status_to_apply.to_lower() != "none":
+				limb_entries.append("Status %s (%s)" % [item.status_to_apply, item.item_name])
+			elif item.buff_type.strip_edges() != "":
+				limb_entries.append("%s %+0.1f (%s)" % [item.buff_type, item.buff_value, item.item_name])
+			limb_effects[limb_label] = limb_entries
+			continue
+
+		var buff_type := item.buff_type.to_lower()
+		if buff_type == "damage":
+			global_item_bonus["damage"] += item.buff_value
+		elif buff_type == "precision":
+			global_item_bonus["precision"] += item.buff_value
+		elif buff_type == "defense":
+			if item.status_to_apply.to_lower() == "none" and item.item_name != "Thorned Bracer":
+				global_item_bonus["physical_defense"] += item.buff_value
+				global_item_bonus["magic_defense"] += item.buff_value
+		elif buff_type == "speed":
+			global_item_bonus["speed"] += item.buff_value
+		elif buff_type == "luck":
+			global_item_bonus["luck"] += item.buff_value
+
 	print("=== Round %d ===" % current_round)
+	print("Global stats (base + global items):")
 	for stat_key in stats_to_log:
 		var base_value := float(PlayerStats.stats.get(stat_key, 0.0))
-		var total_value := float(RunData.get_stat(stat_key))
-		var delta := total_value - base_value
-		print("%s: %.2f (base %.2f, items %+0.2f)" % [stat_key, total_value, base_value, delta])
-	if RunData.items.size() > 0:
-		print("Items:")
-		for item in RunData.items:
-			if item == null:
-				continue
-			print("- %s (%s %+0.2f)" % [item.item_name, item.buff_type, item.buff_value])
+		var item_bonus := float(global_item_bonus.get(stat_key, 0.0))
+		var total_value := base_value + item_bonus
+		print("%s: %.2f (base %.2f, items %+0.2f)" % [stat_key, total_value, base_value, item_bonus])
+
+	# List temporary player effects 
+	var temp_entries: Array[String] = []
+	for raw_effect in _player_effects:
+		var effect := raw_effect as Dictionary
+		if effect.is_empty():
+			continue
+		var expires_round := int(effect.get("expires_round", current_round))
+		var turns_remaining := int(max(1, expires_round - current_round + 1))
+		var details: Array[String] = []
+		var precision_delta := float(effect.get("precision_delta", 0.0))
+		if not is_zero_approx(precision_delta):
+			details.append("Precision %+0.1f" % precision_delta)
+		var energy_regen_delta := float(effect.get("energy_regen_delta", 0.0))
+		if not is_zero_approx(energy_regen_delta):
+			details.append("EnergyRegen %+0.1f" % energy_regen_delta)
+		var cooldown_delta := float(effect.get("cooldown_delta", 0.0))
+		if not is_zero_approx(cooldown_delta):
+			details.append("Cooldown %+0.1f" % cooldown_delta)
+		var expire_damage := int(effect.get("expire_damage", 0))
+		if expire_damage != 0:
+			details.append("ExpireDmg %d" % expire_damage)
+		if bool(effect.get("invulnerable", false)):
+			details.append("Invulnerable")
+		if details.is_empty():
+			continue
+		var effect_name := String(effect.get("spell_name", "Effect"))
+		temp_entries.append("%s (%d turns): %s" % [effect_name, turns_remaining, ", ".join(details)])
+
+	if temp_entries.size() > 0:
+		print("Temporary effects:")
+		for entry in temp_entries:
+			print("- %s" % entry)
+
+	if not limb_effects.is_empty():
+		print("Limb-specific item effects:")
+		for limb_label in limb_effects.keys():
+			print("- %s" % limb_label)
+			for entry in limb_effects[limb_label]:
+				print("  * %s" % entry)
 
 func _is_player_stunned() -> bool:
 	for effect in _player_effects:
