@@ -6,13 +6,13 @@ signal selected(room: Room)
 const ICONS := {
 	Room.Type.COMBAT: preload("res://assets/map/icons/map_icon_combat.png"),
 	Room.Type.SHOP: preload("res://assets/map/icons/map_icon_shop.png"),
-	Room.Type.PUZZLE: preload("res://assets/map/icons/map_icon_puzzle.png")
+	Room.Type.PUZZLE: preload("res://assets/map/icons/map_icon_puzzle.png"),
+	Room.Type.BOSS: preload("res://assets/map/icons/map_icon_combat.png")
 }
 
 @onready var sprite : Sprite2D = $Visuals/Sprite2D
 @onready var animation_player : AnimationPlayer = $AnimationPlayer
 @onready var cross: Sprite2D = $Visuals/Cross
-@export_enum("COMBAT", "PUZZLE", "SHOP") var map_node_type: String = "COMBAT"
 
 var available := false : set = set_available
 var room : Room : set = set_room
@@ -45,7 +45,7 @@ func set_room(new_data: Room):
 	room = new_data
 	position = room.position
 	cross.rotation_degrees = randi_range(-20, 20)
-	sprite.texture = ICONS[room.type][0]
+	sprite.texture = ICONS[room.type]
 	
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:

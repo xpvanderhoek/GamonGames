@@ -1,3 +1,10 @@
 [gd_scene format=3 uid="uid://dmaweynltpiv0"]
 
+[ext_resource type="Texture2D" uid="uid://dykbwla77txe2" path="res://assets/map/map_line_dash_white.png" id="1_hx6oq"]
+
 [node name="MapLine" type="Line2D" unique_id=89209752]
+texture_filter = 1
+texture_repeat = 2
+width = 5.0
+texture = ExtResource("1_hx6oq")
+texture_mode = 1

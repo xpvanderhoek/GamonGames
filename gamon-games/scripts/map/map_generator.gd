@@ -1,12 +1,12 @@
 class_name MapGenerator
 extends Node
 
-const X_DIST := 30
-const Y_DIST := 25
+const X_DIST := 100
+const Y_DIST := 100
 const PLACEMENT_RANDOMNESS := 5
 const FLOORS := 15
-const MAP_WIDTH := 7
-const PATHS := 6
+const MAP_WIDTH := 5
+const PATHS := 4
 const MIN_PATH_STARTS := 2
 const COMBAT_ROOM_WEIGHT := 10.0
 const SHOP_ROOM_WEIGHT := 2.5
@@ -29,9 +29,10 @@ func generate_map() -> Array[Array]:
 		for i in FLOORS - 1:
 			current_j = _setup_connection(i, current_j)
 	
-	_setup_boos_room()
+	_setup_boss_room()
 	_setup_random_room_weights()
 	_setup_room_types()
+	
 	
 	var i := 0
 	for floor in map_data:
@@ -42,7 +43,7 @@ func generate_map() -> Array[Array]:
 		print(used_rooms)
 		i += 1
 	
-	return []
+	return map_data
 
 func _generate_initial_grid() -> Array[Array]:
 	var result: Array[Array] = []
@@ -60,7 +61,7 @@ func _generate_initial_grid() -> Array[Array]:
 			
 			# Boss room has a non-random Y
 			if i == FLOORS - 1:
-				current_room.position.y = (i + 1) * Y_DIST
+				current_room.position.y = i * -Y_DIST
 			
 			adjacent_rooms.append(current_room)
 		
@@ -121,7 +122,7 @@ func _would_cross_existing_path(i : int, j : int, room : Room):
 	
 	return false
 
-func _setup_boos_room():
+func _setup_boss_room():
 	var middle := floori(MAP_WIDTH * 0.5)
 	var boss_room := map_data[FLOORS - 1][middle] as Room
 	

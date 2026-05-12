@@ -70,6 +70,7 @@ _data = {
 }
 
 [node name="MapNode" type="Area2D" unique_id=153545739]
+scale = Vector2(0.6, 0.6)
 script = ExtResource("1_0xswi")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=2064525006]
