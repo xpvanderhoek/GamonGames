@@ -22,6 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_t3wql")
 
 [node name="GamonLogo" type="TextureRect" parent="." unique_id=1356555682]
@@ -37,5 +38,6 @@ offset_right = 154.5
 offset_bottom = 135.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("1_0h647")
 expand_mode = 1

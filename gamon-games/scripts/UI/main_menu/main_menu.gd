@@ -1,7 +1,7 @@
 extends Control
 
 const MAP_SCENE := "res://scenes/map.tscn"
-const OPTIONS_MENU := preload("res://scenes/UI/main_menu/options_menu.tscn")
+const OPTIONS_MENU := preload("res://scenes/UI/main_menu/options/options_menu.tscn")
 
 func _on_play_button_pressed() -> void:
 	TransitionManager.change_scene(MAP_SCENE)

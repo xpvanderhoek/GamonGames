@@ -17,5 +17,11 @@ func _skip_intro():
 		TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn")
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton or InputEventKey:
+	if event is InputEventKey:
 		_skip_intro()
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				_skip_intro()
