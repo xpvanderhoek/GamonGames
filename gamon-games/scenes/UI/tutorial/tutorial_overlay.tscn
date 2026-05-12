@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dcepokqishiur" path="res://scripts/UI/tutorial/tutorial_overlay.gd" id="1_ooshf"]
 [ext_resource type="Texture2D" uid="uid://gw64ydpfhgj0" path="res://assets/ui/tutorial/combat_limb_targeting.png" id="1_p7s34"]
+[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_ld6dx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_07g78"]
 bg_color = Color(0.09277264, 0.14177725, 0.12733826, 1)
@@ -23,13 +24,14 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -115.0
-offset_top = 20.0
-offset_right = 115.0
-offset_bottom = 70.0
+offset_left = -127.0
+offset_top = 16.0
+offset_right = 127.0
+offset_bottom = 73.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.84984905, 0.7404566, 0.33635396, 1)
-theme_override_font_sizes/font_size = 36
+theme_override_fonts/font = ExtResource("2_ld6dx")
+theme_override_font_sizes/font_size = 46
 text = "Lorem Ipsum"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -44,6 +46,7 @@ offset_top = 73.0
 offset_right = 47.5
 offset_bottom = 96.0
 grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_ld6dx")
 text = "(Page 1 of n)"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -78,6 +81,7 @@ offset_left = 617.0
 offset_top = 170.0
 offset_right = 1039.0
 offset_bottom = 488.0
+theme_override_fonts/normal_font = ExtResource("2_ld6dx")
 theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
 text = "Defeat [b]enemies[/b] by attacking body parts!
@@ -96,6 +100,7 @@ offset_right = 93.0
 offset_bottom = 30.0
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_ld6dx")
 theme_override_font_sizes/font_size = 18
 text = "◀ Back"
 
@@ -112,6 +117,7 @@ offset_right = -20.0
 offset_bottom = 30.0
 grow_horizontal = 0
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_ld6dx")
 theme_override_font_sizes/font_size = 18
 text = "Next ▶"
 
@@ -128,6 +134,7 @@ offset_right = 65.0
 offset_bottom = -74.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_ld6dx")
 theme_override_font_sizes/font_size = 22
 text = "I'm Ready!!!"
 
