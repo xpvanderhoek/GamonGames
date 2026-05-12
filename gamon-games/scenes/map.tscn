@@ -21,14 +21,14 @@ offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.080783345, 0.080783345, 0.080783345, 1)
 
-[node name="Visuals" type="Node2D" parent="." unique_id=431108064]
-
-[node name="Sprite2D" type="Sprite2D" parent="Visuals" unique_id=15387831]
-position = Vector2(-188, 419.00003)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=15387831]
+position = Vector2(239, 861)
 rotation = -1.5707964
 scale = Vector2(0.5835767, 0.35887107)
 texture = ExtResource("1_gldc4")
 centered = false
+
+[node name="Visuals" type="Node2D" parent="." unique_id=431108064]
 
 [node name="Lines" type="Node2D" parent="Visuals" unique_id=58528557]
 unique_name_in_owner = true
