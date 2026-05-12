@@ -11,12 +11,10 @@ func apply_consumable_item(item: ItemData) -> void:
 		return
 	match item.item_name:
 		"Dark Balsam":
-			manager._apply_player_heal(int(round(item.buff_value)))
+			_apply_healing_consumable(item)
 		"Iron-Suture Kit":
-			manager._apply_player_heal(int(round(item.buff_value)))
-			clear_player_stun()
+			_apply_healing_consumable(item)
 		"Smelling Salts":
-			clear_player_stun()
 			add_player_item_effect("item:smelling_salts", item.item_name, item.texture, 3, {
 				"precision_delta": 10.0,
 			})
@@ -40,7 +38,7 @@ func apply_consumable_item(item: ItemData) -> void:
 		_:
 			var buff_type := item.buff_type.to_lower()
 			if buff_type == "hp_max":
-				manager._apply_player_heal(int(round(item.buff_value)))
+				_apply_healing_consumable(item)
 			elif buff_type == "precision":
 				add_player_item_effect("item:%s" % item.item_name, item.item_name, item.texture, 3, {
 					"precision_delta": item.buff_value,
@@ -49,6 +47,11 @@ func apply_consumable_item(item: ItemData) -> void:
 				add_player_item_effect("item:%s" % item.item_name, item.item_name, item.texture, 2, {
 					"energy_regen_delta": 1.0,
 				})
+
+func _apply_healing_consumable(item: ItemData) -> void:
+	if item == null or manager == null:
+		return
+	manager._apply_player_heal(int(round(item.buff_value)))
 
 func add_player_item_effect(effect_id: String, label: String, icon: Texture2D, duration_rounds: int, fields: Dictionary) -> void:
 	if manager == null:
@@ -87,6 +90,8 @@ func has_item_named(name: String) -> bool:
 func get_item_value_by_name(name: String, fallback: float) -> float:
 	for item in RunData.items:
 		if item != null and item.item_name == name:
+			if name == "The Hollow Heart":
+				return fallback
 			return item.buff_value
 	return fallback
 
@@ -211,9 +216,9 @@ func get_limb_label(limb: CombatLimb) -> String:
 	label = label.to_lower()
 	if label.find("head") >= 0:
 		return "head"
-	if label.find("arm") >= 0:
+	if label.find("arm") >= 0 or label.find("hand") >= 0:
 		return "arm"
-	if label.find("leg") >= 0:
+	if label.find("leg") >= 0 or label.find("foot") >= 0:
 		return "leg"
 	if label.find("torso") >= 0 or label.find("body") >= 0:
 		return "torso"
@@ -359,17 +364,3 @@ func apply_player_reflect_damage(amount: int, source_enemy: CombatEntity, source
 	if target_limb == null:
 		return
 	source_enemy.take_damage(target_limb, reflect_damage)
-
-func clear_player_stun() -> void:
-	if manager == null:
-		return
-	var cleaned: Array[Dictionary] = []
-	for raw_effect in manager._player_effects:
-		var effect := raw_effect as Dictionary
-		if effect.is_empty():
-			continue
-		if bool(effect.get("stun_turns", false)):
-			continue
-		cleaned.append(effect)
-	manager._player_effects = cleaned
-	manager._refresh_player_buffs_ui()

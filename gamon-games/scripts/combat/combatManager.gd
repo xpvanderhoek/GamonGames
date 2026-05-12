@@ -76,6 +76,7 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 @onready var attack_scope_option: OptionButton = get_node_or_null("TargetingPanel/AttackScopeOption") as OptionButton
 @onready var debuff_scope_option: OptionButton = get_node_or_null("TargetingPanel/DebuffScopeOption") as OptionButton
 @onready var consumables_grid: GridContainer = get_node_or_null("Panel/GridContainer") as GridContainer
+@onready var items_container: HBoxContainer = get_node_or_null("ItemPanel/Container") as HBoxContainer
 
 func _ready() -> void:
 	if _queued_encounter_scenes.size() > 0:
@@ -99,6 +100,8 @@ func _ready() -> void:
 
 	RunData.health_changed.connect(_update_player_health_label)
 	RunData.energy_changed.connect(_update_player_energy_label)
+	RunData.item_added.connect(_on_item_added)
+	_populate_existing_items()
 	_begin_player_turn()
 	
 	if PlayerStats.knows_combat:
@@ -655,6 +658,16 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 						var enemy_defense := _get_enemy_total_defense_for_damage_type(target_enemy, target_limb, attack_damage_type)
 						final_damage = _apply_defense_to_damage(final_damage, enemy_defense)
 						final_damage = max(0, final_damage)
+						if debug_round_stats:
+							var limb_label: String = _item_effects.get_limb_label(target_limb)
+							var limb_name := "" if limb_label == "" else limb_label.capitalize()
+							var spell_name := "Attack" if active_spell == null else active_spell.spell_name
+							var pre_defense_damage := int(round(float(raw_damage) * outgoing_multiplier * incoming_multiplier))
+							print("\nDamage Calculation for %s -> %s (%s):" % [spell_name, target_enemy.name, limb_name])
+							print("  Base: %d (player: %d, spell: %d, bonus: %+d)" % [base_damage, RunData.get_stat("damage"), spell_damage, outgoing_flat])
+							print("  Raw: %d (base: %d, item bonus: %+d)" % [raw_damage, base_damage, item_damage_bonus])
+							print("  Pre-Defense: %d (raw: %d, outgoing mult: %.2f, incoming mult: %.2f)" % [pre_defense_damage, raw_damage, outgoing_multiplier, incoming_multiplier])
+							print("  After Defense: %d (defense: %.1f%%)" % [final_damage, enemy_defense])
 						if final_damage > 0:
 							target_enemy.take_damage(target_limb, final_damage)
 							_item_effects.apply_item_status_on_hit(target_enemy, target_limb)
@@ -819,7 +832,12 @@ func _perform_enemy_turn() -> void:
 		for _attack_iteration in range(attack_count):
 			if current_state == CombatState.COMBAT_OVER:
 				return
-			var damage: int = int(round(float(attack.roll_damage()) * outgoing_multiplier))
+			var base_damage := attack.roll_damage()
+			var damage: int = int(round(float(base_damage) * outgoing_multiplier))
+			if debug_round_stats and _attack_iteration == 0:
+				print("\nEnemy Attack from %s:" % attacking_enemy.name)
+				print("  Base: %d (rolled damage, outgoing mult: %.2f)" % [base_damage, outgoing_multiplier])
+				print("  Final Pre-Defense: %d (defense will reduce this)" % damage)
 			_apply_player_damage(damage, attack.damage_type, attacking_enemy, attack_limb)
 			if current_state == CombatState.COMBAT_OVER:
 				return
@@ -1756,7 +1774,7 @@ func _debug_print_round_stats() -> void:
 		var total_value := base_value + item_bonus
 		print("%s: %.2f (base %.2f, items %+0.2f)" % [stat_key, total_value, base_value, item_bonus])
 
-	# List temporary player effects 
+	# temporary player effects 
 	var temp_entries: Array[String] = []
 	for raw_effect in _player_effects:
 		var effect := raw_effect as Dictionary
@@ -1990,3 +2008,32 @@ func _format_turn_name(entity: CombatEntity) -> String:
 		return "Enemy"
 
 	return raw_name.capitalize()
+
+func _on_item_added(item: ItemData) -> void:
+	if items_container == null or item == null:
+		return
+	
+	var item_icon := TextureRect.new()
+	item_icon.texture = item.texture
+	item_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	item_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	item_icon.custom_minimum_size = Vector2(48.0, 48.0)
+	item_icon.mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	var tooltip_lines: Array[String] = []
+	if item.item_name.strip_edges() != "":
+		tooltip_lines.append(item.item_name)
+	if item.effect.strip_edges() != "":
+		tooltip_lines.append(item.effect)
+	item_icon.tooltip_text = "\n".join(tooltip_lines)
+	
+	items_container.add_child(item_icon)
+
+func _populate_existing_items() -> void:
+	if items_container == null:
+		return
+	
+	for item in RunData.items:
+		if item != null:
+			_on_item_added(item)
+

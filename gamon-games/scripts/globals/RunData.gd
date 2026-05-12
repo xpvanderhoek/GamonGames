@@ -73,6 +73,7 @@ signal exp_changed(new_amount)
 signal level_changed(new_amount)
 signal marrow_shards_changed(new_amount)
 signal energy_changed(new_amount)
+signal item_added(item: ItemData)
 
 func new_run():
 	random_seed = randi()
@@ -125,6 +126,7 @@ func add_item(item: Resource) -> bool:
 		max_health += int(item_data.buff_value)
 
 	items.append(item_data)
+	item_added.emit(item_data)
 	return true
 
 func get_stat(buff_type: String):
@@ -141,8 +143,11 @@ func get_stat(buff_type: String):
 		return 0
 
 	var total = float(PlayerStats.stats[stat_key])
+	var buff_key := buff_type.to_lower()
+	if buff_key in ["damage", "precision", "defense", "speed", "cooldown"]:
+		return total
 	for item in items:
-		if item.buff_type.to_lower() == buff_type.to_lower():
+		if item.buff_type.to_lower() == buff_key:
 			total += item.buff_value
 	return total
 
