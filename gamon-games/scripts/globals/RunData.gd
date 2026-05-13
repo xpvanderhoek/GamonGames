@@ -3,7 +3,7 @@ extends Node
 const BASIC_ATTACK = preload("res://resources/combat_spells/basic_attack.tres")
 const BLOCK = preload("res://resources/combat_spells/block.tres")
 
-var language = "NL"
+var language = "EN"
 const RUN_DURATION := 600.0
 var random_seed : int = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()

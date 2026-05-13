@@ -54,7 +54,7 @@ func set_available(new_value: bool):
 func set_room(new_data: Room):
 	room = new_data
 	position = room.position
-	cross.rotation_degrees = randi_range(0, 180)
+	cross.rotation_degrees = RunData.rng.randi_range(0, 180)
 	sprite.texture = ICONS[room.type][0]
 	$Visuals.scale = ICONS[room.type][1]
 

@@ -75,12 +75,12 @@ func _get_random_starting_points() -> Array[int]:
 	var min_path_starts := clampi(MIN_PATH_STARTS, 0, MAP_WIDTH)
 
 	for i in min_path_starts:
-		var random_index := randi_range(0, options.size()-1)
+		var random_index := RunData.rng.randi_range(0, options.size()-1)
 		var starting_point: int = options.pop_at(random_index)
 		y_coordinates.append(starting_point)
 	
 	for i in range(min_path_starts, PATHS):
-		var starting_point: int = randi_range(0, MAP_WIDTH - 1)
+		var starting_point: int = RunData.rng.randi_range(0, MAP_WIDTH - 1)
 		y_coordinates.append(starting_point)
 	
 	return y_coordinates
@@ -90,7 +90,7 @@ func _setup_connection(i : int, j : int) -> int:
 	var current_room := map_data[i][j] as Room
 	
 	while not next_room or _would_cross_existing_path(i, j, next_room):
-		var random_j := clampi(randi_range(j - 1, j + 1), 0, MAP_WIDTH - 1)
+		var random_j := clampi(RunData.rng.randi_range(j - 1, j + 1), 0, MAP_WIDTH - 1)
 		next_room = map_data[i + 1][random_j]
 	
 	current_room.next_rooms.append(next_room)
