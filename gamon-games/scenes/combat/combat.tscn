@@ -40,6 +40,10 @@ After each round, 2 of your [color=#d1ae3d]Energy[/color] points get replenished
 image = ExtResource("10_mrrmw")
 metadata/_custom_type_script = "uid://emcsn5t5bncn"
 
+[sub_resource type="Resource" id="Resource_4a6i5"]
+script = ExtResource("7_4a6i5")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
+
 [node name="Combat" type="CanvasLayer" unique_id=294642076]
 script = ExtResource("7_mgr")
 turns_order_path = NodePath("TurnsOrderUI/Panel")
@@ -233,5 +237,4 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="TutorialOverlay" parent="." unique_id=282468504 instance=ExtResource("6_jgg25")]
-visible = false
-pages = Array[ExtResource("7_4a6i5")]([SubResource("Resource_h2sm1"), SubResource("Resource_si0bq"), SubResource("Resource_j3cqa")])
+pages = Array[ExtResource("7_4a6i5")]([SubResource("Resource_h2sm1"), SubResource("Resource_si0bq"), SubResource("Resource_j3cqa"), SubResource("Resource_4a6i5")])
