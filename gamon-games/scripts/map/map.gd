@@ -8,7 +8,7 @@ var enemy_scenes := [
 ]
 
 const SCROLL_SPEED := 15
-const MAP_NODE = preload("res://scenes/map_node.tscn")
+const MAP_ROOM = preload("res://scenes/map/map_room.tscn")
 const MAP_LINE = preload("res://scenes/map/map_line.tscn")
 
 const COMBAT_SCENE := "res://scenes/combat/combat.tscn"
@@ -81,14 +81,14 @@ func create_map():
 	visuals.position.y = get_viewport_rect().size.y / 2
 
 func unlock_floor(which_floor : int = floors_climbed):
-	for map_node : MapNode in rooms.get_children():
-		if map_node.room.row == which_floor:
-			map_node.available = true
+	for map_room : MapRoom in rooms.get_children():
+		if map_room.room.row == which_floor:
+			map_room.available = true
 
 func unlock_next_rooms():
-	for map_node : MapNode in rooms.get_children():
-		if last_room.next_rooms.has(map_node.room):
-			map_node.available = true
+	for map_room : MapRoom in rooms.get_children():
+		if last_room.next_rooms.has(map_room.room):
+			map_room.available = true
 
 func show_map():
 	show()
@@ -99,7 +99,7 @@ func hide_map():
 	camera_2d.enabled = false
 
 func _spawn_room(room : Room):
-	var new_map_room := MAP_NODE.instantiate() as MapNode
+	var new_map_room := MAP_ROOM.instantiate() as MapRoom
 	rooms.add_child(new_map_room)
 	new_map_room.room = room
 	new_map_room.selected.connect(_on_map_room_selected)
@@ -126,7 +126,7 @@ func _save_map_state() -> void:
 	RunData.last_map_room = last_room
 
 func _on_map_room_selected(room : Room):
-	for map_room : MapNode in rooms.get_children():
+	for map_room : MapRoom in rooms.get_children():
 		if map_room.room.row == room.row:
 			map_room.available = false
 

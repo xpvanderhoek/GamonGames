@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://ctc0o0gqj1d72"]
 
-[ext_resource type="Script" uid="uid://clp812257p2tl" path="res://scripts/map/map_rework.gd" id="1_0cso3"]
-[ext_resource type="Texture2D" uid="uid://bxfbim0paqpa7" path="res://assets/map/map_foreground.png" id="1_gldc4"]
-[ext_resource type="Texture2D" uid="uid://c3vbvw0npfbyi" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="5_2klcf"]
-[ext_resource type="Script" uid="uid://bwr8prrp5yj2m" path="res://scripts/map/map_generator.gd" id="6_2lpho"]
+[ext_resource type="Script" uid="uid://clp812257p2tl" path="res://scripts/map/map.gd" id="1_ph54e"]
+[ext_resource type="Texture2D" uid="uid://bxfbim0paqpa7" path="res://assets/map/map_foreground.png" id="2_fcby6"]
+[ext_resource type="Script" uid="uid://bwr8prrp5yj2m" path="res://scripts/map/map_generator.gd" id="3_jcaow"]
+[ext_resource type="Texture2D" uid="uid://c3vbvw0npfbyi" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="4_04w0f"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0cso3"]
 font_size = 67
 font_color = Color(0.57715225, 0.47292823, 0.33508357, 1)
 
 [node name="Map" type="Node2D" unique_id=1667129948]
-script = ExtResource("1_0cso3")
+script = ExtResource("1_ph54e")
 
 [node name="Background" type="Parallax2D" parent="." unique_id=1078799763]
 repeat_size = Vector2(40, 40)
@@ -25,7 +25,7 @@ color = Color(0.080783345, 0.080783345, 0.080783345, 1)
 position = Vector2(187.00005, 751)
 rotation = -1.5707964
 scale = Vector2(0.5835767, 0.35887107)
-texture = ExtResource("1_gldc4")
+texture = ExtResource("2_fcby6")
 centered = false
 
 [node name="Visuals" type="Node2D" parent="." unique_id=431108064]
@@ -41,36 +41,18 @@ position = Vector2(1, -2)
 offset = Vector2(576, 324)
 
 [node name="MapGenerator" type="Node" parent="." unique_id=1813481557]
-script = ExtResource("6_2lpho")
+script = ExtResource("3_jcaow")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=937252768]
-layer = -1
-visible = false
-
-[node name="MapForeground" type="TextureRect" parent="CanvasLayer" unique_id=1846604738]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -555.0
-offset_top = 484.0
-offset_right = 1163.9072
-offset_bottom = 1574.2971
-grow_horizontal = 2
-grow_vertical = 2
-rotation = -1.5707964
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("1_gldc4")
-expand_mode = 1
+layer = 0
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=1271540208]
-offset_left = 734.0
-offset_top = 40.0
-offset_right = 1036.9813
-offset_bottom = 183.0
-texture = ExtResource("5_2klcf")
+offset_left = 958.0
+offset_top = 16.0
+offset_right = 1260.9813
+offset_bottom = 159.0
+scale = Vector2(0.57914907, 0.57914907)
+texture = ExtResource("4_04w0f")
 expand_mode = 1
 
 [node name="CoinLabel" type="Label" parent="CanvasLayer/TextureRect" unique_id=428784600]

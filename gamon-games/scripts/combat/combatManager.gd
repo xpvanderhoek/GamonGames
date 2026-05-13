@@ -8,7 +8,7 @@ const COMBAT_SUMMARY_SCENE := preload("res://scenes/combat/ui/combat_summary.tsc
 
 @onready var tutorial_overlay: CanvasLayer = $TutorialOverlay
 
-const MAX_ENEMY_COUNT = 1
+const MAX_ENEMY_COUNT = 3
 
 var enemy_pool : Array[PackedScene] = [
 	preload("res://scenes/combat/enemies/ttt.tscn")

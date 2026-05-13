@@ -1,4 +1,4 @@
-class_name MapNode
+class_name MapRoom
 extends Area2D
 
 signal selected(room: Room)

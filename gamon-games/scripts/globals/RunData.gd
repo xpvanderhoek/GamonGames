@@ -57,8 +57,6 @@ var current_energy: int = 10:
 		current_energy = clampi(value, 0, max_energy)
 		energy_changed.emit(current_energy)
 
-var current_map_node: MapNodeData = null
-var map_nodes_data: Array[MapNodeData] = []
 var current_encounter: Array[PackedScene] = []
 var map_data: Array = []
 var floors_climbed: int = 0
@@ -81,8 +79,6 @@ func new_run():
 	random_seed = randi()
 	rng.seed = random_seed
 	coins = 100
-	map_nodes_data.clear()
-	current_map_node = null
 	current_encounter.clear()
 	map_data.clear()
 	floors_climbed = 0
