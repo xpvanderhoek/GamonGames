@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Curefinder"
-run/main_scene="uid://ctc0o0gqj1d72"
+run/main_scene="uid://bede4rgyc4b4w"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="uid://cwp4d5bjoxefw"
 
