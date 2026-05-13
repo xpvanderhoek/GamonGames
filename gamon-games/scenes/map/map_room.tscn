@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://dt2v2gfpb8qbv"]
 
-[ext_resource type="Script" uid="uid://kber2r1esl2u" path="res://scripts/map/map_room.gd" id="1_r631w"]
-[ext_resource type="Shader" uid="uid://bcs7uxh53bduo" path="res://shaders/outline.gdshader" id="2_khsnn"]
-[ext_resource type="Shader" uid="uid://cma6s6o5ncte0" path="res://shaders/circle_reveal.gdshader" id="3_71bvp"]
-[ext_resource type="Texture2D" uid="uid://dhe50pc134reh" path="res://assets/map/icons/circlewit.png" id="4_xjypl"]
+[ext_resource type="Script" uid="uid://kber2r1esl2u" path="res://scripts/map/map_room.gd" id="1_w2n1o"]
+[ext_resource type="Shader" uid="uid://bcs7uxh53bduo" path="res://shaders/outline.gdshader" id="2_w2iac"]
+[ext_resource type="Shader" uid="uid://cma6s6o5ncte0" path="res://shaders/circle_reveal.gdshader" id="3_jaf1v"]
+[ext_resource type="Texture2D" uid="uid://dhe50pc134reh" path="res://assets/map/icons/circlewit.png" id="4_g1tsg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_impo1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xswi"]
-shader = ExtResource("2_khsnn")
+shader = ExtResource("2_w2iac")
 shader_parameter/outline_color = Color(0.863, 0.788, 0.655, 1)
 shader_parameter/outline_width = 50.0
 shader_parameter/outline_enabled = true
@@ -17,7 +17,7 @@ shader_parameter/outline_enabled = true
 load_path = "res://.godot/imported/map_icon_combat.png-781ae3b1bbb74d4f5b91d5f8b6b560d8.ctex"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pni6o"]
-shader = ExtResource("3_71bvp")
+shader = ExtResource("3_jaf1v")
 shader_parameter/progress = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0xswi"]
@@ -176,7 +176,7 @@ _data = {
 
 [node name="MapNode" type="Area2D" unique_id=153545739]
 scale = Vector2(0.6, 0.6)
-script = ExtResource("1_r631w")
+script = ExtResource("1_w2n1o")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=2064525006]
 material = SubResource("ShaderMaterial_impo1")
@@ -191,7 +191,7 @@ texture = SubResource("CompressedTexture2D_whnn0")
 modulate = Color(0.101960786, 0.14509805, 0.18431373, 1)
 material = SubResource("ShaderMaterial_pni6o")
 scale = Vector2(0.2414963, 0.33064988)
-texture = ExtResource("4_xjypl")
+texture = ExtResource("4_g1tsg")
 offset = Vector2(0.29, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=531194898]

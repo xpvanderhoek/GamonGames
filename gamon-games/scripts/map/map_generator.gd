@@ -33,15 +33,15 @@ func generate_map() -> Array[Array]:
 	_setup_random_room_weights()
 	_setup_room_types()
 	
-	
-	var i := 0
-	for floor in map_data:
-		print("floor is %s" % i)
-		var used_rooms = floor.filter(
-			func(room : Room): return room.next_rooms.size() > 0
-		)
-		print(used_rooms)
-		i += 1
+	# These prints are for debugging the generation. If needed, uncomment.
+	#var i := 0
+	#for floor in map_data:
+		#print("floor is %s" % i)
+		#var used_rooms = floor.filter(
+			#func(room : Room): return room.next_rooms.size() > 0
+		#)
+		#print(used_rooms)
+		#i += 1
 	
 	return map_data
 
