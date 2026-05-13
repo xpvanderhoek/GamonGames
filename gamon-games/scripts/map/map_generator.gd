@@ -1,21 +1,21 @@
 class_name MapGenerator
 extends Node
 
-const X_DIST := 100
+const X_DIST := 125
 const Y_DIST := 100
-const PLACEMENT_RANDOMNESS := 5
+const PLACEMENT_RANDOMNESS := 30
 const FLOORS := 15
-const MAP_WIDTH := 5
+const MAP_WIDTH := 3
 const PATHS := 4
 const MIN_PATH_STARTS := 2
 const COMBAT_ROOM_WEIGHT := 10.0
-const SHOP_ROOM_WEIGHT := 2.5
-const PUZZLE_ROOM_WEIGHT := 4.0
+const SHOP_ROOM_WEIGHT := 3
+const PUZZLE_ROOM_WEIGHT := 3
 
 var random_room_type_weights = {
 	Room.Type.COMBAT: 0.0,
-	Room.Type.SHOP: 0.0,
-	Room.Type.PUZZLE: 0.0
+	Room.Type.PUZZLE: 0.0,
+	Room.Type.SHOP: 0.0
 }
 var random_room_total_weight := 0
 var map_data : Array[Array]
@@ -191,7 +191,7 @@ func _room_has_parent_of_type(room : Room, type : Room.Type) -> bool:
 			parents.append(parent_candidate)
 	
 	# right parent
-	if room.column > MAP_WIDTH - 1 and room.row > 0:
+	if room.column < MAP_WIDTH - 1 and room.row > 0:
 		var parent_candidate := map_data[room.row - 1][room.column + 1] as Room
 		if parent_candidate.next_rooms.has(room):
 			parents.append(parent_candidate)

@@ -22,7 +22,7 @@ offset_bottom = 40.0
 color = Color(0.080783345, 0.080783345, 0.080783345, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=15387831]
-position = Vector2(239, 861)
+position = Vector2(187.00003, 728)
 rotation = -1.5707964
 scale = Vector2(0.5835767, 0.35887107)
 texture = ExtResource("1_gldc4")

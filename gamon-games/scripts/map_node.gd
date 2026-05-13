@@ -7,7 +7,7 @@ const ICONS := {
 	Room.Type.COMBAT: preload("res://assets/map/icons/map_icon_combat.png"),
 	Room.Type.SHOP: preload("res://assets/map/icons/map_icon_shop.png"),
 	Room.Type.PUZZLE: preload("res://assets/map/icons/map_icon_puzzle.png"),
-	Room.Type.BOSS: preload("res://assets/map/icons/map_icon_combat.png")
+	Room.Type.BOSS: preload("res://assets/map/icons/map_icon_boss.png")
 }
 
 @onready var sprite : Sprite2D = $Visuals/Sprite2D

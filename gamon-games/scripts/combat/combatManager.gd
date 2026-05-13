@@ -8,6 +8,12 @@ const COMBAT_SUMMARY_SCENE := preload("res://scenes/combat/ui/combat_summary.tsc
 
 @onready var tutorial_overlay: CanvasLayer = $TutorialOverlay
 
+const MAX_ENEMY_COUNT = 3
+
+var enemy_pool : Array[PackedScene] = [
+	preload("res://scenes/combat/enemies/ttt.tscn")
+]
+
 enum CombatState { 
 	PLAYER_TURN,
 	ENEMY_TURN,
@@ -72,6 +78,9 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 @onready var debuff_scope_option: OptionButton = get_node_or_null("TargetingPanel/DebuffScopeOption") as OptionButton
 
 func _ready() -> void:
+	if _queued_encounter_scenes.size() <= 0:
+		_get_random_encounters()
+	
 	if _queued_encounter_scenes.size() > 0:
 		_spawn_encounter_enemies(_queued_encounter_scenes)
 	elif RunData.current_encounter.size() > 0:
@@ -98,6 +107,13 @@ func _ready() -> void:
 	else:
 		tutorial_overlay.visible = true
 		
+
+func _get_random_encounters() -> void:
+	var enemy_count : int = RunData.rng.randi_range(1, MAX_ENEMY_COUNT)
+	
+	for i in range (enemy_count):
+		var random_enemy_idx : int = RunData.rng.randi_range(0, enemy_pool.size() - 1)
+		_queued_encounter_scenes.append(enemy_pool[random_enemy_idx])
 
 func _input(event): #Temporary
 	if event.is_action_pressed("ui_cancel"):
