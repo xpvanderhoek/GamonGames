@@ -195,7 +195,7 @@ func _on_button_pressed(idx):
 	can_click = true
 	
 func _on_continue_pressed() -> void:
-	TransitionManager.change_scene("res://scenes/map.tscn")
+	TransitionManager.change_scene("res://scenes/map/map.tscn")
 	queue_free()
 	
 func animate_labels(label_a: Label, label_b: Label):

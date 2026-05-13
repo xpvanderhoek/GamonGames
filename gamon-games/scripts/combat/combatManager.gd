@@ -140,7 +140,7 @@ func _exit_combat():
 		return
 	_is_exiting_combat = true
 	# Temporary
-	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+	TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 
 func _on_combat_victory() -> void:
 	if current_state == CombatState.COMBAT_OVER:

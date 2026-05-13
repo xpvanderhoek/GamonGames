@@ -42,21 +42,7 @@ metadata/_custom_type_script = "uid://emcsn5t5bncn"
 
 [node name="Combat" type="CanvasLayer" unique_id=294642076]
 script = ExtResource("7_mgr")
-player_base_damage = null
-enemy_entity_path = null
-enemy_container_path = null
-ui_player = null
 turns_order_path = NodePath("TurnsOrderUI/Panel")
-turns_order_row_height = null
-turns_order_min_visible_rows = null
-player_max_health = null
-player_hit_chance_bonus_percent = null
-attack_lunge_distance = null
-multi_hit_delay_seconds = null
-enemy_attack_telegraph_seconds = null
-enemy_attack_telegraph_scale = null
-attack_target_scope = null
-debuff_target_scope = null
 
 [node name="Background" type="TextureRect" parent="." unique_id=390549936]
 anchors_preset = 15
