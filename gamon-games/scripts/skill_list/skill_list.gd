@@ -24,3 +24,7 @@ func _load_skill_lines(skills) -> void:
 			line.setup_skill(skill)
 	else:
 		print("Skills array is empty")
+
+
+func _on_quit_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/UI/main_menu/main_menu.tscn")

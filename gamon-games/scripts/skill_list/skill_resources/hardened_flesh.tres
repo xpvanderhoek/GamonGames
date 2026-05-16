@@ -12,4 +12,4 @@ max_level = 10
 texture = ExtResource("2_ni2ke")
 tooltip_text = "Increases base HP by +5% per level"
 affected_stat = "health"
-stat_bonus_per_level = 5.0
+stat_bonus_per_level = 5

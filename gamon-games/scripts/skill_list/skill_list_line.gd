@@ -21,7 +21,7 @@ func setup_skill(skill_data: SkillData):
 	if current_skill.stat_bonus_per_level == 0 and current_skill.max_level == 1:
 		buff_amount.text = "Locked"
 	else:
-		buff_amount.text = str(skill_data.current_level * skill_data.stat_bonus_per_level) + "%"
+		buff_amount.text = "Lvl %d" % [skill_data.current_level]
 	marrow_shards_amount_label.text = str(skill_data.get_level_cost())
 
 
@@ -42,9 +42,9 @@ func _on_buy_button_pressed() -> void:
 		PlayerStats.update_stat(current_skill.affected_stat, current_skill.stat_bonus_per_level, current_skill.current_level)
 	
 	if current_skill.stat_bonus_per_level == 0 and current_skill.max_level == 1:
-		buff_amount.text = "Unlocked"
+		buff_amount.text = "Bought"
 	else:
-		buff_amount.text = str(current_skill.stat_bonus_per_level * current_skill.current_level) + "%"
+		buff_amount.text = "Lvl %d" % [current_skill.current_level]
 	
 	marrow_shards_amount_label.text = str(current_skill.get_level_cost())
 	

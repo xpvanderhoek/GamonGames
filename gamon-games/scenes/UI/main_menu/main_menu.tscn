@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://3nu0u7wcyf0y" path="res://scripts/UI/main_menu/main_menu.gd" id="1_0vw6h"]
 [ext_resource type="Texture2D" uid="uid://cws830736mswa" path="res://assets/Placeholders/backgrounds/combatbg.png" id="1_epuki"]
-[ext_resource type="Texture2D" uid="uid://cdcd15f5ck10o" path="res://assets/main_menu/curefinder_logo.png" id="2_0vw6h"]
-[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="3_oelhe"]
-[ext_resource type="Texture2D" uid="uid://ddqn8y7d4kjgr" path="res://assets/main_menu/GG_white_text.png" id="4_7pp57"]
+[ext_resource type="Texture2D" uid="uid://s1mnelyju1rp" path="res://assets/main_menu/curefinder_logo.png" id="2_0vw6h"]
+[ext_resource type="FontFile" uid="uid://dr8r1buo47v6k" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="3_oelhe"]
+[ext_resource type="Texture2D" uid="uid://cgqlqg2y2hdwe" path="res://assets/main_menu/GG_white_text.png" id="4_7pp57"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e2p27"]
 texture = ExtResource("1_epuki")
@@ -94,6 +94,20 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_tfcbk")
 text = "Options"
 alignment = 0
 
+[node name="UpgradesButton" type="Button" parent="VBoxContainer" unique_id=909894551]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_fonts/font = ExtResource("3_oelhe")
+theme_override_font_sizes/font_size = 46
+theme_override_styles/normal = SubResource("StyleBoxFlat_5jstl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_tfcbk")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tfcbk")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_tfcbk")
+text = "Upgrades"
+alignment = 0
+
 [node name="QuitButton" type="Button" parent="." unique_id=1985840865]
 layout_mode = 0
 offset_left = 73.0
@@ -124,4 +138,5 @@ expand_mode = 1
 
 [connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/UpgradesButton" to="." method="_on_upgrades_button_pressed"]
 [connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]

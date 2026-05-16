@@ -11,4 +11,5 @@ max_cost = 1200
 max_level = 10
 texture = ExtResource("2_emnc5")
 tooltip_text = "Increases item quality in the shop by +5% per level"
+affected_stat = "luck"
 stat_bonus_per_level = 5
