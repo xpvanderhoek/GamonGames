@@ -1307,6 +1307,7 @@ func _restart_run_on_player_death() -> void:
 		return
 	_is_exiting_combat = true
 	RunData.end_run()
+	SaveLoad.save_data()
 	TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)
 
 func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false, custom_text: String = "") -> void:
