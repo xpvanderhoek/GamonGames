@@ -2,22 +2,46 @@
 
 [ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="1_v6dsq"]
 
-[node name="ProfileCard" type="ColorRect" unique_id=1654299955]
+[node name="ProfileCard" type="TextureButton" unique_id=1666387061]
 offset_right = 234.0
-offset_bottom = 345.0
-color = Color(0.15487596, 0.154876, 0.15487596, 1)
+offset_bottom = 158.0
 
-[node name="ProfileName" type="Label" parent="." unique_id=1412865786]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1451620130]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.19973177, 0.19973174, 0.19973174, 1)
+
+[node name="SlotNr" type="Label" parent="." unique_id=1412865786]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 22.0
+offset_top = -20.0
+offset_right = 62.0
+offset_bottom = 20.0
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_v6dsq")
+theme_override_font_sizes/font_size = 40
 text = "1"
 
 [node name="ProfileName2" type="Label" parent="." unique_id=1528730642]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 71.0
-offset_right = 106.0
-offset_bottom = 94.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.5
+offset_top = -25.0
+offset_right = 49.5
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_v6dsq")
+theme_override_font_sizes/font_size = 50
 text = "Syhn"

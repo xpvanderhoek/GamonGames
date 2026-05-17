@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://1v82phhnfrpa"]
 
+[ext_resource type="PackedScene" uid="uid://dbphlnig8gdy5" path="res://scenes/UI/main_menu/profiles/profile_card.tscn" id="1_puo0q"]
+
 [node name="ProfilesMenu" type="Control" unique_id=292099015]
 layout_mode = 3
 anchors_preset = 15
@@ -7,3 +9,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="ProfileCard" parent="." unique_id=1666387061 instance=ExtResource("1_puo0q")]
+layout_mode = 0
+offset_left = 434.0
+offset_top = 78.0
+offset_right = 809.0
+offset_bottom = 205.0
