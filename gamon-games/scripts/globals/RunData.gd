@@ -3,13 +3,16 @@ extends Node
 const BASIC_ATTACK = preload("res://resources/combat_spells/basic_attack.tres")
 const BLOCK = preload("res://resources/combat_spells/block.tres")
 
-var language = "NL"
+var language = "EN"
 const RUN_DURATION := 600.0
+
 var random_seed : int = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
+
 var spells : Array[SpellData] = []
 
 var run_active : bool = false
+
 var time_remaining : float = RUN_DURATION:
 	set (value):
 		time_remaining = value
@@ -20,7 +23,7 @@ var max_health : int = 100:
 		max_health = value
 		health_changed.emit()
 
-var marrow_shards : int = 10000:# Placeholder testing amount, adjust as needed
+var marrow_shards : int = 10000:
 	set(value):
 		marrow_shards = value
 		marrow_shards_changed.emit()
@@ -35,7 +38,7 @@ var current_level : int = 1:
 		current_level = value
 		level_changed.emit(value)
 
-var coins : int = 100: # Placeholder starting amount, adjust as needed
+var coins : int = 100:
 	set(value):
 		coins = value
 		coins_changed.emit(value)
@@ -63,7 +66,6 @@ var current_encounter: Array[PackedScene] = []
 var items : Array[ItemData] = [] 
 var consumables : Array = [null, null, null, null, null, null, null, null, null]
 
-# Values are placeholders for now, needs testing
 var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000]
 
 signal coins_changed(new_amount)
@@ -75,21 +77,32 @@ signal marrow_shards_changed(new_amount)
 signal energy_changed(new_amount)
 signal item_added(item: ItemData)
 
+func calculate_score() -> int:
+	return current_level * 100 + current_exp + coins * 2 + items.size() * 25
+
 func new_run():
 	random_seed = randi()
 	rng.seed = random_seed
+
 	coins = 100
 	map_nodes_data.clear()
 	current_map_node = null
+
 	items.clear()
 	consumables = [null, null, null, null, null, null, null, null, null]
+
 	max_health = PlayerStats.stats["health"]
 	current_health = max_health
+
 	spells.clear()
 	reset_energy()
+
 	current_exp = 0
+	current_level = 1
+
 	run_active = true
 	time_remaining = RUN_DURATION
+
 	add_spell(BASIC_ATTACK)
 	add_spell(BLOCK)
 
@@ -99,6 +112,25 @@ func reset_energy() -> void:
 
 func end_run():
 	run_active = false
+
+	var ign = ProfileManager.active_ign
+	if ign == "":
+		print("No IGN set")
+		return
+
+	var score = calculate_score()
+
+	var profile = ProfileManager.get_profile(ign)
+
+	profile["best_level"] = max(profile["best_level"], current_level)
+	profile["best_exp"] = max(profile["best_exp"], current_exp)
+	profile["best_coins"] = max(profile["best_coins"], coins)
+	profile["best_score"] = max(profile["best_score"], score)
+	profile["most_items"] = max(profile["most_items"], items.size())
+
+	ProfileManager.save_to_file()
+
+	print("Saved profile:", ign)
 
 func update_timer(delta):
 	if run_active:
@@ -119,7 +151,6 @@ func add_item(item: Resource) -> bool:
 			print("Consumable slots are full.")
 			return true
 		consumables[slot_index] = item_data
-		print("Picked up consumable '%s' in slot %d" % [item_data.item_name, slot_index + 1])
 		return true 
 
 	if item_data.buff_type.to_lower() == "hp_max":
@@ -131,6 +162,7 @@ func add_item(item: Resource) -> bool:
 
 func get_stat(buff_type: String):
 	var stat_key := buff_type.to_lower()
+
 	if stat_key == "hp_max":
 		stat_key = "health"
 	elif stat_key == "defense":
@@ -139,16 +171,14 @@ func get_stat(buff_type: String):
 		stat_key = "cooldown"
 
 	if not PlayerStats.stats.has(stat_key):
-		print("Unknown stat '%s'" % buff_type)
 		return 0
 
 	var total = float(PlayerStats.stats[stat_key])
-	var buff_key := buff_type.to_lower()
-	if buff_key in ["damage", "precision", "defense", "speed", "cooldown"]:
-		return total
+
 	for item in items:
-		if item.buff_type.to_lower() == buff_key:
+		if item.buff_type.to_lower() == buff_type.to_lower():
 			total += item.buff_value
+
 	return total
 
 func _is_consumable_item(item: ItemData) -> bool:
@@ -167,44 +197,17 @@ func add_exp(amount: int) -> void:
 
 func level_up() -> void:
 	current_level += 1
-	# Add any level up effects here
-
-func get_exp_requirement(level: int) -> int:
-	if level < 0 or level >= EXP_PER_LEVEL.size():
-		return -1
-	return EXP_PER_LEVEL[level]
-
-func get_level_progress() -> float:
-	var current_requirement = EXP_PER_LEVEL[current_level]
-	var next_requirement = EXP_PER_LEVEL[current_level + 1] if current_level + 1 < EXP_PER_LEVEL.size() else EXP_PER_LEVEL[current_level]
-	var progress = float(current_exp - current_requirement) / float(next_requirement - current_requirement)
-	return clamp(progress, 0.0, 1.0)
 
 func add_spell(spell: SpellData) -> bool:
-	if not (spell is SpellData):
-		return false
-
 	for existing_spell in spells:
 		if existing_spell.spell_id == spell.spell_id and not existing_spell.spell_id.is_empty():
 			return false
 	spells.append(spell.duplicate())
 	return true
-
-func get_spell_by_id(spell_id: String) -> SpellData:
-	for spell in spells:
-		if spell.spell_id == spell_id and not spell.spell_id.is_empty():
-			return spell
-	return null
-
-func upgrade_spell(spell_id: String) -> void:
-	var existing = get_spell_by_id(spell_id)
-	if existing:
-		existing.level += 1
-		if existing.min_damage >= 0:
-			existing.min_damage = int(round(existing.min_damage * 1.2))
-		if existing.max_damage >= 0:
-			existing.max_damage = int(round(existing.max_damage * 1.2))
-		if existing.min_damage >= 0 and existing.max_damage >= 0 and existing.max_damage < existing.min_damage:
-			existing.max_damage = existing.min_damage
-		if existing.heal_amount > 0:
-			existing.heal_amount = int(round(existing.heal_amount * 1.2))
+	
+func _process(delta):
+	if Input.is_action_just_pressed("ui_accept"):
+		current_level += 1
+		coins += 100
+		current_exp += 50
+		end_run()	
