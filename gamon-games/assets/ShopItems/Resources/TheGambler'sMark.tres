@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "The Gambler's Mark"
-effect = "Reroll entire shop 2x per run. All shops grant +30 Luck"
+effect = "Gain +30 Luck during this run"
 lore = "Those marked by the wheel spin destiny itself in their favor."
 category = "Tier III"
 texture = ExtResource("2_luejd")
