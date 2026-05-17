@@ -1,7 +1,7 @@
 extends Node
 
 var profile_name : String = "Knight"
-var slot : int
+var slot : int = 0
 
 var knows_combat : bool = false
 var knows_avarus : bool = false

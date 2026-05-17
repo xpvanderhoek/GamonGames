@@ -92,18 +92,12 @@ func _ready() -> void:
 	RunData.health_changed.connect(_update_player_health_label)
 	RunData.energy_changed.connect(_update_player_energy_label)
 	_begin_player_turn()
+
 	
-	print(PlayerStats.knows_combat)
-	
-	#if PlayerStats.knows_combat:
-		#print("i know about combat so tutorial_overlay is not visible")
-		#tutorial_overlay.visible = false
-	#else:
-		#tutorial_overlay.visible = true
-		#print("i dont know about combat so tutorial_overlay is visible")
-	
-	tutorial_overlay.visible = true
-		
+	if PlayerStats.knows_combat:
+		tutorial_overlay.visible = false
+	else:
+		tutorial_overlay.visible = true
 
 func _input(event): #Temporary
 	if event.is_action_pressed("ui_cancel"):

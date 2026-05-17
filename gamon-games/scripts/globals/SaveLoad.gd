@@ -1,11 +1,13 @@
 extends Node
 
-const SAVE_DIR = "user://saves/"
+const SAVE_DIR = "user://"
+const META_PATH = "user://meta.json"
 
 func _save_path(slot : int):
 	return SAVE_DIR + "save_%d.tres" % slot
 
 func save_data(stats : PlayerStats):
+	print("clicked")
 	var data = SaveData.new()
 	data.slot = stats.slot
 	data.profile_name = stats.profile_name
@@ -15,10 +17,11 @@ func save_data(stats : PlayerStats):
 	data.upgrade_levels = stats.upgrade_levels.duplicate()
 	data.marrow_shards = stats.marrow_shards
 	ResourceSaver.save(data, _save_path(stats.slot))
+	print()
 
 func load_data(slot : int):
-	#save_data(PlayerStats.self)
 	if not FileAccess.file_exists(_save_path(slot)):
+		print("Yo this shit dont exist")
 		return
 	var data = ResourceLoader.load(_save_path(slot), "", ResourceLoader.CACHE_MODE_IGNORE)
 	if not data is SaveData:
@@ -33,7 +36,22 @@ func load_data(slot : int):
 	PlayerStats.marrow_shards = data.marrow_shards
 	
 	print(PlayerStats.knows_avarus)
-	print(PlayerStats.knows_tutorial)
+	print(PlayerStats.knows_combat)
+
+func save_meta() -> void:
+	var file = FileAccess.open(META_PATH, FileAccess.WRITE)
+	file.store_string(JSON.stringify({"last_slot": PlayerStats.slot}))
+	file.close()
+
+func load_on_start() -> void:
+	if not FileAccess.file_exists(META_PATH):
+		return
+	var file = FileAccess.open(META_PATH, FileAccess.READ)
+	var data = JSON.parse_string(file.get_as_text())
+	file.close()
+	if data:
+		load_data(data["last_slot"])
+
 
 #const SAVE_DIR = "user://saves/"
 #const META_PATH = "user://meta.json"
