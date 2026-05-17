@@ -1323,7 +1323,7 @@ func _restart_run_on_player_death() -> void:
 		return
 	_is_exiting_combat = true
 	RunData.end_run()
-	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+	TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 
 func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false, custom_text: String = "") -> void:
 	var is_custom_text := not custom_text.is_empty()
