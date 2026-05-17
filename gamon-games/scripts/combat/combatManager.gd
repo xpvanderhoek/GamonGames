@@ -93,10 +93,16 @@ func _ready() -> void:
 	RunData.energy_changed.connect(_update_player_energy_label)
 	_begin_player_turn()
 	
-	if PlayerStats.knows_combat:
-		tutorial_overlay.visible = false
-	else:
-		tutorial_overlay.visible = true
+	print(PlayerStats.knows_combat)
+	
+	#if PlayerStats.knows_combat:
+		#print("i know about combat so tutorial_overlay is not visible")
+		#tutorial_overlay.visible = false
+	#else:
+		#tutorial_overlay.visible = true
+		#print("i dont know about combat so tutorial_overlay is visible")
+	
+	tutorial_overlay.visible = true
 		
 
 func _input(event): #Temporary
@@ -1307,7 +1313,7 @@ func _restart_run_on_player_death() -> void:
 		return
 	_is_exiting_combat = true
 	RunData.end_run()
-	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+	TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)
 
 func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false, custom_text: String = "") -> void:
 	var is_custom_text := not custom_text.is_empty()

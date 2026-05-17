@@ -12,3 +12,9 @@ func _on_options_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
+
+func _on_save_pressed() -> void:
+	SaveLoad.save_data(PlayerStats)
+
+func _on_load_pressed() -> void:
+	SaveLoad.load_data(PlayerStats.slot)

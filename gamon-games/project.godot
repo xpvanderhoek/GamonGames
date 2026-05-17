@@ -26,6 +26,7 @@ DialogueManager="*uid://cdsxgwq8b0vwp"
 NavigationManager="*uid://dnruitng07ior"
 PuzzleData="*uid://dre243a5elcje"
 PuzzleTexts="*uid://cw0prrlqfph4m"
+SaveLoad="*uid://ke4840xrkklm"
 
 [display]
 
