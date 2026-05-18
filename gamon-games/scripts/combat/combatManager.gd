@@ -9,6 +9,12 @@ const COMBAT_ITEM_EFFECTS_SCRIPT := preload("res://scripts/combat/combat_item_ef
 
 @onready var tutorial_overlay: CanvasLayer = $TutorialOverlay
 
+const MAX_ENEMY_COUNT = 3
+
+var enemy_pool : Array[PackedScene] = [
+	preload("res://scenes/combat/enemies/ttt.tscn")
+]
+
 enum CombatState { 
 	PLAYER_TURN,
 	ENEMY_TURN,
@@ -79,6 +85,9 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 @onready var items_container: HBoxContainer = get_node_or_null("ItemPanel/Container") as HBoxContainer
 
 func _ready() -> void:
+	if _queued_encounter_scenes.size() <= 0:
+		_get_random_encounters()
+	
 	if _queued_encounter_scenes.size() > 0:
 		_spawn_encounter_enemies(_queued_encounter_scenes)
 	elif RunData.current_encounter.size() > 0:
@@ -110,6 +119,13 @@ func _ready() -> void:
 		tutorial_overlay.visible = true
 		
 
+func _get_random_encounters() -> void:
+	var enemy_count : int = RunData.rng.randi_range(1, MAX_ENEMY_COUNT)
+	
+	for i in range (enemy_count):
+		var random_enemy_idx : int = RunData.rng.randi_range(0, enemy_pool.size() - 1)
+		_queued_encounter_scenes.append(enemy_pool[random_enemy_idx])
+
 func _input(event): #Temporary
 	if event.is_action_pressed("ui_cancel"):
 		if _attack_selected:
@@ -135,7 +151,7 @@ func _exit_combat():
 		return
 	_is_exiting_combat = true
 	# Temporary
-	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+	TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 
 func _on_combat_victory() -> void:
 	if current_state == CombatState.COMBAT_OVER:
@@ -1438,7 +1454,7 @@ func _restart_run_on_player_death() -> void:
 		return
 	_is_exiting_combat = true
 	RunData.end_run()
-	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+	TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 
 func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false, custom_text: String = "") -> void:
 	var is_custom_text := not custom_text.is_empty()
@@ -2036,4 +2052,3 @@ func _populate_existing_items() -> void:
 	for item in RunData.items:
 		if item != null:
 			_on_item_added(item)
-

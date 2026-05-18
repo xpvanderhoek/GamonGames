@@ -3,7 +3,7 @@ extends Node
 const BASIC_ATTACK = preload("res://resources/combat_spells/basic_attack.tres")
 const BLOCK = preload("res://resources/combat_spells/block.tres")
 
-var language = "NL"
+var language = "EN"
 const RUN_DURATION := 600.0
 var random_seed : int = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
@@ -57,9 +57,10 @@ var current_energy: int = 10:
 		current_energy = clampi(value, 0, max_energy)
 		energy_changed.emit(current_energy)
 
-var current_map_node: MapNodeData = null
-var map_nodes_data: Array[MapNodeData] = []
 var current_encounter: Array[PackedScene] = []
+var map_data: Array = []
+var floors_climbed: int = 0
+var last_map_room: Room = null
 var items : Array[ItemData] = [] 
 var consumables : Array = [null, null, null, null, null, null, null, null, null]
 
@@ -79,8 +80,10 @@ func new_run():
 	random_seed = randi()
 	rng.seed = random_seed
 	coins = 100
-	map_nodes_data.clear()
-	current_map_node = null
+	current_encounter.clear()
+	map_data.clear()
+	floors_climbed = 0
+	last_map_room = null
 	items.clear()
 	consumables = [null, null, null, null, null, null, null, null, null]
 	max_health = PlayerStats.stats["health"]

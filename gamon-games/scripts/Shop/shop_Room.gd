@@ -105,7 +105,7 @@ func _exit_shop() -> void:
 		await _shop_dialogue_ui.bark_finished
 
 	DialogueManager.cancel_dialogue()
-	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+	TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 
 func _show_random_bark(key: String, duration_sec: float = 4.0) -> bool:
 	if _shop_dialogue_ui == null or not _shop_dialogue_ui.has_method("show_bark"):
