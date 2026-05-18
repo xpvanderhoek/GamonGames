@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "Essence of the Void"
-effect = "Invulnerable for 1 turn. Skip turn"
+effect = "Invulnerable for 1 turn"
 lore = "A momentary lapse in existence."
 category = "Tier II"
 texture = ExtResource("2_d224v")

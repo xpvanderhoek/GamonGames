@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "Executioner's Hood"
-effect = "Crits on Head apply 2 stacks of Bleed"
+effect = "Hits on the Head apply 2 stacks of Bleed"
 lore = "The last thing they see is the dark."
 category = "Tier III"
 texture = ExtResource("2_umaf5")
