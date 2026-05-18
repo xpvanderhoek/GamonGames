@@ -2052,4 +2052,3 @@ func _populate_existing_items() -> void:
 	for item in RunData.items:
 		if item != null:
 			_on_item_added(item)
-
