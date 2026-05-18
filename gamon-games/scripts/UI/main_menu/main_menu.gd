@@ -3,6 +3,7 @@ extends Control
 const MAP_SCENE := "res://scenes/map.tscn"
 const OPTIONS_MENU := preload("res://scenes/UI/main_menu/options/options_menu.tscn")
 const PROFILES_MENU := preload("res://scenes/UI/main_menu/profiles/profiles_menu.tscn")
+const LEADERBOARD_MENU := preload("res://scenes/UI/main_menu/leaderboard/leaderboard_menu.tscn")
 
 @onready var profile_button: Button = $ProfileButton
 
@@ -41,3 +42,7 @@ func _on_profile_button_pressed() -> void:
 
 func _on_profile_changed():
 	profile_button.text = "Profile: " + PlayerStats.profile_name
+	
+func _on_leaderboard_button_pressed() -> void:
+	var lb = LEADERBOARD_MENU.instantiate()
+	add_child(lb)	
