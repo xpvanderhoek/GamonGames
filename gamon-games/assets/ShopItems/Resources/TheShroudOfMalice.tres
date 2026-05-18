@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "The Shroud of Malice"
-effect = "Reflect 50% damage taken as Shadow"
+effect = "Reflect 50% damage taken"
 lore = "Hatred is the best armor."
 category = "Tier III"
 texture = ExtResource("2_aphkt")
