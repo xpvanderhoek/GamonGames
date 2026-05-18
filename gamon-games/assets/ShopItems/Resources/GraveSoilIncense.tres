@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "Grave-Soil Incense"
-effect = "Start with +20 Defense. -10 Precision"
+effect = "Start with +20 Defense"
 lore = "The scent of the earth clouds the vision."
 category = "Tier II"
 texture = ExtResource("2_xf2hj")

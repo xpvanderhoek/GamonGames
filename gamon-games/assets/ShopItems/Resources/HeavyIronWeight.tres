@@ -6,10 +6,11 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "Heavy Iron Weight"
-effect = "+25 Damage to Arms. -10 Speed"
+effect = "+25 Damage to Arms"
 lore = "Strength is heavy. Weakness is heavier."
 category = "Tier II"
 texture = ExtResource("2_qcvgj")
 cost = 65
 target_limb = "Arm"
+buff_type = "Damage"
 buff_value = 25.0
