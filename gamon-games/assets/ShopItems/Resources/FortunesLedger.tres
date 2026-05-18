@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "Fortune's Ledger"
-effect = "Next 2 shop visits offer items with +20 Luck weight"
+effect = "Gain +20 Luck during this run"
 lore = "Written in the margins of fate are the names of those destined for greatness."
 category = "Tier II"
 texture = ExtResource("2_42y8k")

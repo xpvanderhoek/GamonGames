@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "Vial of Stagnant Time"
-effect = "First Skill Cooldown -1. Prevents Haste"
+effect = "Skills cost 1 less energy"
 lore = "The liquid inside never ripples."
 texture = ExtResource("2_pa2dk")
 cost = 40

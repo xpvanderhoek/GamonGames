@@ -3,7 +3,7 @@ extends Node
 const BASIC_ATTACK = preload("res://resources/combat_spells/basic_attack.tres")
 const BLOCK = preload("res://resources/combat_spells/block.tres")
 
-var language = "NL"
+var language = "EN"
 const RUN_DURATION := 600.0
 var random_seed : int = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
@@ -57,11 +57,12 @@ var current_energy: int = 10:
 		current_energy = clampi(value, 0, max_energy)
 		energy_changed.emit(current_energy)
 
-var current_map_node: MapNodeData = null
-var map_nodes_data: Array[MapNodeData] = []
 var current_encounter: Array[PackedScene] = []
+var map_data: Array = []
+var floors_climbed: int = 0
+var last_map_room: Room = null
 var items : Array[ItemData] = [] 
-var consumables : Array = [null, null, null, null, null]
+var consumables : Array = [null, null, null, null, null, null, null, null, null]
 
 # Values are placeholders for now, needs testing
 var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000]
@@ -73,15 +74,18 @@ signal exp_changed(new_amount)
 signal level_changed(new_amount)
 signal marrow_shards_changed(new_amount)
 signal energy_changed(new_amount)
+signal item_added(item: ItemData)
 
 func new_run():
 	random_seed = randi()
 	rng.seed = random_seed
 	coins = 100
-	map_nodes_data.clear()
-	current_map_node = null
+	current_encounter.clear()
+	map_data.clear()
+	floors_climbed = 0
+	last_map_room = null
 	items.clear()
-	consumables = [null, null, null, null, null]
+	consumables = [null, null, null, null, null, null, null, null, null]
 	max_health = PlayerStats.stats["health"]
 	current_health = max_health
 	spells.clear()
@@ -125,15 +129,28 @@ func add_item(item: Resource) -> bool:
 		max_health += int(item_data.buff_value)
 
 	items.append(item_data)
+	item_added.emit(item_data)
 	return true
 
-func get_stat(buff_type : String):
-	var total = PlayerStats.stats[buff_type]
-	if total == null:
-		print ("Speed is giving null")
-		return
+func get_stat(buff_type: String):
+	var stat_key := buff_type.to_lower()
+	if stat_key == "hp_max":
+		stat_key = "health"
+	elif stat_key == "defense":
+		stat_key = "defence"
+	elif stat_key == "cooldown":
+		stat_key = "cooldown"
+
+	if not PlayerStats.stats.has(stat_key):
+		print("Unknown stat '%s'" % buff_type)
+		return 0
+
+	var total = float(PlayerStats.stats[stat_key])
+	var buff_key := buff_type.to_lower()
+	if buff_key in ["damage", "precision", "defense", "speed", "cooldown"]:
+		return total
 	for item in items:
-		if item.buff_type.to_lower() == buff_type.to_lower():
+		if item.buff_type.to_lower() == buff_key:
 			total += item.buff_value
 	return total
 
@@ -186,7 +203,6 @@ func upgrade_spell(spell_id: String) -> void:
 	var existing = get_spell_by_id(spell_id)
 	if existing:
 		existing.level += 1
-		existing.damage = int(round(existing.damage * 1.2))
 		if existing.min_damage >= 0:
 			existing.min_damage = int(round(existing.min_damage * 1.2))
 		if existing.max_damage >= 0:
