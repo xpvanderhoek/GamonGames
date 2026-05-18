@@ -1,14 +1,14 @@
 [gd_resource type="Resource" script_class="ConsumableItemData" format=3 uid="uid://cpb5515p27bge"]
 
 [ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://scripts/Items/ConsumableItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bm8samt0h2uc2" path="res://assets/ShopItems/Textures/Caustic Resin.png" id="2_x2jgf"]
+[ext_resource type="Texture2D" uid="uid://bo1pfir3ck7mj" path="res://assets/ShopItems/Textures/Iron-Suture Kit.png" id="2_72lvm"]
 
 [resource]
 script = ExtResource("1_script")
 item_name = "Iron-Suture Kit"
 effect = "Heals 20 HP"
 lore = "Painful needles for a second chance."
-texture = ExtResource("2_x2jgf")
+texture = ExtResource("2_72lvm")
 cost = 30
 target_limb = "Self"
 buff_type = "HP_Max"
