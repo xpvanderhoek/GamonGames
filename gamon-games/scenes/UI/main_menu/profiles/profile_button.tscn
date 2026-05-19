@@ -2,37 +2,47 @@
 
 [ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="1_s65ah"]
 [ext_resource type="Script" uid="uid://byi5jth05rdo8" path="res://scripts/UI/main_menu/profiles/profile_button.gd" id="2_2krox"]
+[ext_resource type="Texture2D" uid="uid://bna6oqnmf2i01" path="res://assets/ui/buttons/button.png" id="2_bqjq5"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v7pgt"]
-bg_color = Color(0.0018410675, 0.0018410685, 0.0018410663, 1)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5vcrg"]
+texture = ExtResource("2_bqjq5")
+texture_margin_left = 40.0
+texture_margin_top = 40.0
+texture_margin_right = 40.0
+texture_margin_bottom = 40.0
+modulate_color = Color(0.68, 0.68, 0.68, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vcrg"]
-bg_color = Color(0.07082722, 0.07082721, 0.07082722, 1)
-expand_margin_left = 4.0
-expand_margin_top = 4.0
-expand_margin_right = 4.0
-expand_margin_bottom = 4.0
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_bqjq5"]
+load_path = "res://.godot/imported/button.png-14381fa83a1ad42c2650dfa9450cd7f7.ctex"
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bqjq5"]
-bg_color = Color(0.09239701, 0.09239709, 0.09239703, 1)
-expand_margin_left = 4.0
-expand_margin_top = 4.0
-expand_margin_right = 4.0
-expand_margin_bottom = 4.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sj41b"]
+texture = SubResource("CompressedTexture2D_bqjq5")
+texture_margin_left = 40.0
+texture_margin_top = 40.0
+texture_margin_right = 40.0
+texture_margin_bottom = 40.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4oepk"]
+texture = SubResource("CompressedTexture2D_bqjq5")
+texture_margin_left = 40.0
+texture_margin_top = 40.0
+texture_margin_right = 40.0
+texture_margin_bottom = 40.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2krox"]
 content_margin_left = 10.0
 bg_color = Color(0, 0, 0, 1)
 
 [node name="ProfileButton" type="Button" unique_id=1901559414]
-offset_right = 378.0
+offset_right = 339.0
 offset_bottom = 108.0
 size_flags_vertical = 3
+theme_override_constants/outline_size = 9
 theme_override_fonts/font = ExtResource("1_s65ah")
-theme_override_font_sizes/font_size = 50
-theme_override_styles/normal = SubResource("StyleBoxFlat_v7pgt")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5vcrg")
-theme_override_styles/hover = SubResource("StyleBoxFlat_bqjq5")
+theme_override_font_sizes/font_size = 33
+theme_override_styles/normal = SubResource("StyleBoxTexture_5vcrg")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_sj41b")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4oepk")
 text = "X. If you see this, 
 this is a bug..."
 script = ExtResource("2_2krox")
