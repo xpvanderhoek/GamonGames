@@ -10,6 +10,12 @@ signal stats_changed(stat_name: String, new_value: float)
 signal upgrade_completed(stat_name: String, level: int)
 
 var marrow_shards : int = 0
+var best_level: int = 0
+var total_runs: int = 0
+var total_coins_earned: int = 0
+var best_items_collected: int = 0
+var best_spells_in_deck: int = 0
+var best_marrow_shards_run: int = 0
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh
