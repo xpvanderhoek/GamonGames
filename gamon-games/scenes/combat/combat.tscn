@@ -87,6 +87,22 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 
+[node name="ItemPanel" type="PanelContainer" parent="." unique_id=1291748740]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -480.0
+offset_right = 480.0
+offset_bottom = 49.0
+grow_horizontal = 2
+
+[node name="Container" type="HBoxContainer" parent="ItemPanel" unique_id=1396793176]
+custom_minimum_size = Vector2(73.42, 47.915)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+alignment = 1
+
 [node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=672937389]
 anchors_preset = 7
 anchor_left = 0.5

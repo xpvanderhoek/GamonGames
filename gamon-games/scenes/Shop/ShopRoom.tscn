@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" uid="uid://mweq4ng0gdhd" path="res://scripts/Shop/shop_Room.gd" id="1_2g6x2"]
 [ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
-[ext_resource type="Texture2D" uid="uid://cuqfib4hrrgh" path="res://assets/ShopItems/ShopEnvironment/onlybackground.png" id="3_2g6x2"]
-[ext_resource type="Texture2D" uid="uid://dwq2jocxomnv0" path="res://assets/ShopItems/ShopEnvironment/Goblin.png" id="3_cougk"]
+[ext_resource type="Texture2D" uid="uid://cto5a1jw7jagq" path="res://assets/ShopItems/ShopEnvironment/onlybackground.png" id="3_2g6x2"]
+[ext_resource type="Texture2D" uid="uid://hepllyexysve" path="res://assets/ShopItems/ShopEnvironment/Goblin.png" id="3_cougk"]
 [ext_resource type="Script" uid="uid://b7cli1nhudpxr" path="res://scripts/Items/ItemData.gd" id="3_lwfny"]
-[ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="3_xqf5f"]
-[ext_resource type="Texture2D" uid="uid://cc8kljam087th" path="res://assets/ShopItems/ShopEnvironment/LeaveSign.png" id="4_6tcdb"]
-[ext_resource type="Texture2D" uid="uid://buattucnivv8t" path="res://assets/ShopItems/ShopEnvironment/Cabinet.png" id="4_cougk"]
-[ext_resource type="Script" path="res://scripts/Shop/ExitHoverButton.gd" id="7_exit_hover"]
-[ext_resource type="Texture2D" uid="uid://c60gbhy7lsm1i" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="9_t6u03"]
+[ext_resource type="Texture2D" uid="uid://dhh5dly20xx58" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="3_xqf5f"]
+[ext_resource type="Texture2D" uid="uid://cgyquhn0mjm8f" path="res://assets/ShopItems/ShopEnvironment/LeaveSign.png" id="4_6tcdb"]
+[ext_resource type="Texture2D" uid="uid://b7orjsue2d5tn" path="res://assets/ShopItems/ShopEnvironment/Cabinet.png" id="4_cougk"]
+[ext_resource type="Script" uid="uid://c6342sotxx3hs" path="res://scripts/Shop/ExitHoverButton.gd" id="7_exit_hover"]
+[ext_resource type="Texture2D" uid="uid://c3vbvw0npfbyi" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="9_t6u03"]
 [ext_resource type="Resource" uid="uid://cnq0fppu52k2x" path="res://assets/ShopItems/Resources/SightlessBandage.tres" id="10_shop_item"]
 [ext_resource type="Resource" uid="uid://u2sf8v5dcfjq" path="res://assets/ShopItems/Resources/AdrenalineSpike.tres" id="11_shop_item"]
 [ext_resource type="Resource" uid="uid://biusmai7yi28" path="res://assets/ShopItems/Resources/CausticResin.tres" id="12_shop_item"]
@@ -201,6 +201,15 @@ position = Vector2(557.5801, 436.383)
 
 [node name="Item3" type="Marker2D" parent="Parallax2D2" unique_id=41246958]
 position = Vector2(758.135, 436.383)
+
+[node name="Item4" type="Marker2D" parent="Parallax2D2" unique_id=179422476]
+position = Vector2(355.71002, 555.153)
+
+[node name="Item5" type="Marker2D" parent="Parallax2D2" unique_id=70442929]
+position = Vector2(557.5801, 555.153)
+
+[node name="Item6" type="Marker2D" parent="Parallax2D2" unique_id=1488438199]
+position = Vector2(758.135, 555.153)
 
 [node name="ExitButton" type="Node2D" parent="Parallax2D2" unique_id=1795726782]
 position = Vector2(0, 42.675)

@@ -15,7 +15,7 @@ const SHOP_DIALOGUE_IDLE_KEY := "Avarus_idle"
 const SHOP_DIALOGUE_EXIT_KEY := "Avarus_shop_exit"
 const SHOP_DIALOGUE_NO_COINS_KEY := "Avarus_no_coins"
 
-@onready var spawn_positions = [$Parallax2D2/Item1, $Parallax2D2/Item2, $Parallax2D2/Item3]
+@onready var spawn_positions = [$Parallax2D2/Item1, $Parallax2D2/Item2, $Parallax2D2/Item3, $Parallax2D2/Item4, $Parallax2D2/Item5, $Parallax2D2/Item6]
 @onready var parallax_layers = [$Parallax2D, $Parallax2D2]
 @onready var exit_button = [$Parallax2D2/ExitButton/Button]
 @onready var item_tooltip_panel: Panel = $CanvasLayer/ItemTooltipPanel
@@ -105,7 +105,7 @@ func _exit_shop() -> void:
 		await _shop_dialogue_ui.bark_finished
 
 	DialogueManager.cancel_dialogue()
-	TransitionManager.change_scene("res://scenes/map.tscn", TransitionManager.TransitionType.FADE)
+	TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 
 func _show_random_bark(key: String, duration_sec: float = 4.0) -> bool:
 	if _shop_dialogue_ui == null or not _shop_dialogue_ui.has_method("show_bark"):
@@ -243,4 +243,4 @@ func _get_weight_for_item(item: ItemData, luck_value: float) -> float:
 			return 1.0
 
 func _get_total_luck() -> float:
-	return PlayerStats.stats.luck
+	return float(RunData.get_stat("luck"))

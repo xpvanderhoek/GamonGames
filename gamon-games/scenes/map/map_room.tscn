@@ -1,0 +1,206 @@
+[gd_scene format=3 uid="uid://dt2v2gfpb8qbv"]
+
+[ext_resource type="Script" uid="uid://kber2r1esl2u" path="res://scripts/map/map_room.gd" id="1_w2n1o"]
+[ext_resource type="Shader" uid="uid://bcs7uxh53bduo" path="res://shaders/outline.gdshader" id="2_w2iac"]
+[ext_resource type="Shader" uid="uid://cma6s6o5ncte0" path="res://shaders/circle_reveal.gdshader" id="3_jaf1v"]
+[ext_resource type="Texture2D" uid="uid://dhe50pc134reh" path="res://assets/map/icons/circlewit.png" id="4_g1tsg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_impo1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0xswi"]
+shader = ExtResource("2_w2iac")
+shader_parameter/outline_color = Color(0.863, 0.788, 0.655, 1)
+shader_parameter/outline_width = 50.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_whnn0"]
+load_path = "res://.godot/imported/map_icon_combat.png-781ae3b1bbb74d4f5b91d5f8b6b560d8.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pni6o"]
+shader = ExtResource("3_jaf1v")
+shader_parameter/progress = 0.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0xswi"]
+
+[sub_resource type="Animation" id="Animation_impo1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Visuals:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.42557132, 0.42557135, 0.42557132, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visuals/Sprite2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.08270591, 0.08270591)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visuals/Sprite2D:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.42745098, 0.42745098, 0.42745098, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Visuals/Cross:material:shader_parameter/progress")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_pni6o"]
+resource_name = "highlight"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("Visuals:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.25, 1.25)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Visuals:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.39215687, 0.3882353, 0.38039216, 1), Color(0.101960786, 0.14509805, 0.18431373, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visuals/Sprite2D:scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.49926278, 0.6333333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.08270591, 0.08270591), Vector2(0.103, 0.103), Vector2(0.103, 0.103)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visuals/Sprite2D:modulate")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.50022477, 0.6333333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0.39215687, 0.3882353, 0.38039216, 1), Color(0.101960786, 0.14509805, 0.18431373, 1), Color(0.101960786, 0.14509805, 0.18431373, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_q22nf"]
+resource_name = "select"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals/Cross:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.43333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.73333335),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_on_map_node_selected"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q22nf"]
+_data = {
+&"RESET": SubResource("Animation_impo1"),
+&"highlight": SubResource("Animation_pni6o"),
+&"select": SubResource("Animation_q22nf")
+}
+
+[node name="MapNode" type="Area2D" unique_id=153545739]
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_w2n1o")
+
+[node name="Visuals" type="Node2D" parent="." unique_id=2064525006]
+material = SubResource("ShaderMaterial_impo1")
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals" unique_id=1818948237]
+modulate = Color(0.42745098, 0.42745098, 0.42745098, 1)
+material = SubResource("ShaderMaterial_0xswi")
+scale = Vector2(0.08270591, 0.08270591)
+texture = SubResource("CompressedTexture2D_whnn0")
+
+[node name="Cross" type="Sprite2D" parent="Visuals" unique_id=1694783299]
+modulate = Color(0.101960786, 0.14509805, 0.18431373, 1)
+material = SubResource("ShaderMaterial_pni6o")
+scale = Vector2(0.2414963, 0.33064988)
+texture = ExtResource("4_g1tsg")
+offset = Vector2(0.29, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=531194898]
+scale = Vector2(4.148117, 4.148117)
+shape = SubResource("CircleShape2D_0xswi")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1288184886]
+libraries/ = SubResource("AnimationLibrary_q22nf")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
