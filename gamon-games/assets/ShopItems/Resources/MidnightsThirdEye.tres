@@ -6,10 +6,10 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "Midnight's Third Eye"
-effect = "See Enemy Intent. -40 Max HP"
+effect = "Max HP +40"
 lore = "Knowledge is a burden the flesh cannot carry."
 category = "Tier III"
 texture = ExtResource("2_36f76")
 cost = 90
 buff_type = "HP_Max"
-buff_value = -40.0
+buff_value = 40.0
