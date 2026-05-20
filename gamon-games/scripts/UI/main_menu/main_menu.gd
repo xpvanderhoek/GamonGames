@@ -2,6 +2,7 @@ extends Control
 
 const MAP_SCENE := "res://scenes/map/map.tscn"
 const OPTIONS_MENU := preload("res://scenes/UI/main_menu/options/options_menu.tscn")
+const SKILL_LIST_SCENE := "res://scenes/skill_list/skill_list.tscn"
 
 func _on_play_button_pressed() -> void:
 	TransitionManager.change_scene(MAP_SCENE)
@@ -13,6 +14,5 @@ func _on_options_button_pressed() -> void:
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
 
-
 func _on_upgrades_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/skill_list/skill_list.tscn")
+	TransitionManager.change_scene(SKILL_LIST_SCENE)
