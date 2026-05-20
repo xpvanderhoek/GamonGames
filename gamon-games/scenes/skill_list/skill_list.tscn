@@ -93,9 +93,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -231.5
+offset_left = -220.25
 offset_top = -211.0
-offset_right = 231.5
+offset_right = 220.25
 offset_bottom = 211.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -131,8 +131,8 @@ custom_minimum_size = Vector2(5, 0)
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer/HBoxContainer" unique_id=925547683]
-custom_minimum_size = Vector2(445, 363)
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="SkillVboxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/ScrollContainer" unique_id=1706093462]
 layout_mode = 2
@@ -146,11 +146,6 @@ layout_mode = 2
 [node name="MarginContainer2" type="MarginContainer" parent="Panel/VBoxContainer" unique_id=1785811231]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel" unique_id=1916690870]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="QuitButton" type="Button" parent="." unique_id=1023925444]
 layout_mode = 0

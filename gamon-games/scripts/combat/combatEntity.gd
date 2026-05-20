@@ -288,3 +288,4 @@ func die() -> void:
 	entity_died.emit(self)
 	RunData.add_exp(exp_reward)
 	RunData.coins += 15
+	RunData.marrow_shards += 50
