@@ -6,6 +6,8 @@ extends Node2D
 @export var mouse_parallax_strength := Vector2(18.0, 10.0)
 @export_range(1.0, 30.0, 0.1) var mouse_parallax_smoothing := 8.0
 
+const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
+
 const TIER_1_BASE_WEIGHT := 70.0
 const TIER_2_BASE_WEIGHT := 20.0
 const TIER_3_BASE_WEIGHT := 10.0
@@ -21,6 +23,7 @@ const SHOP_DIALOGUE_NO_COINS_KEY := "Avarus_no_coins"
 @onready var item_tooltip_panel: Panel = $CanvasLayer/ItemTooltipPanel
 @onready var item_tooltip_label: Label = $CanvasLayer/ItemTooltipPanel/TooltipLabel
 @onready var coins: Label = $Parallax2D2/Sprite2D/CoinLabel
+@onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 var _parallax_offset := Vector2.ZERO
 var _shop_chatter_timer: Timer
@@ -89,8 +92,8 @@ func _process(delta: float):
 		layer.scroll_offset = _parallax_offset * layer.scroll_scale
 
 func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		_exit_shop()
+	if event.is_action_pressed("escape"):
+		canvas_layer.add_child(PAUSE_MENU.instantiate())
 
 func _exit_shop() -> void:
 	if _is_exiting:

@@ -1,12 +1,13 @@
 extends Control
 
 const MAP_SCENE := "res://scenes/map/map.tscn"
-const OPTIONS_MENU := preload("res://scenes/UI/main_menu/options/options_menu.tscn")
+const SETTINGS_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
 const PROFILES_MENU := preload("res://scenes/UI/main_menu/profiles/profiles_menu.tscn")
 
 @onready var profile_button: Button = $ProfileButton
 
 func _ready() -> void:
+	print(get_tree().paused)
 	SaveLoad.profile_changed.connect(_on_profile_changed)
 	
 	if !SaveLoad.do_any_saves_exist():
@@ -20,9 +21,9 @@ func _ready() -> void:
 func _on_play_button_pressed() -> void:
 	TransitionManager.change_scene(MAP_SCENE)
 
-func _on_options_button_pressed() -> void:
-	var options = OPTIONS_MENU.instantiate()
-	add_child(options)
+func _on_settings_button_pressed() -> void:
+	var settings = SETTINGS_MENU.instantiate()
+	add_child(settings)
 
 func _on_quit_button_pressed() -> void:
 	SaveLoad.save_data()

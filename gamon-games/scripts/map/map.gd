@@ -7,6 +7,8 @@ var enemy_scenes := [
 	"res://scenes/combat/enemies/ttt.tscn"
 ]
 
+const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
+
 const SCROLL_SPEED := 15
 const MAP_ROOM = preload("res://scenes/map/map_room.tscn")
 const MAP_LINE = preload("res://scenes/map/map_line.tscn")
@@ -24,6 +26,7 @@ const PUZZLE_SCENES := [
 @onready var rooms: Node2D = %Rooms
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var map_generator: MapGenerator = $MapGenerator
+@onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 var map_data : Array[Array]
 var floors_climbed : int
@@ -49,6 +52,9 @@ func _ready() -> void:
 			unlock_floor(0)
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("escape"):
+		canvas_layer.add_child(PAUSE_MENU.instantiate())
+	
 	if event.is_action_pressed("scroll_up"):
 		camera_2d.position.y -= SCROLL_SPEED
 	elif event.is_action_pressed("scroll_down"):

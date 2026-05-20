@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cktchydaubf41"]
 
-[ext_resource type="Script" uid="uid://ckyg87iikfs5c" path="res://scripts/UI/main_menu/options/display_menu.gd" id="1_v6rv7"]
+[ext_resource type="Script" uid="uid://ckyg87iikfs5c" path="res://scripts/UI/main_menu/settings/display_menu.gd" id="1_v6rv7"]
 [ext_resource type="FontFile" uid="uid://by4n0atvi5g7v" path="res://assets/fonts/CaesarDressing-Regular.ttf" id="1_x0gtq"]
 [ext_resource type="Texture2D" uid="uid://bna6oqnmf2i01" path="res://assets/ui/buttons/button.png" id="2_gld2i"]
 [ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_v6rv7"]
