@@ -11,5 +11,5 @@ max_cost = 1000
 max_level = 10
 texture = ExtResource("2_yqjv5")
 tooltip_text = "Increases physical defense by +5% per level "
-affected_stat = "physical_defence"
+affected_stat = "physical_defense"
 stat_bonus_per_level = 5
