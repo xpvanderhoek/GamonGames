@@ -1,6 +1,6 @@
 extends Control
 
-@onready var marrow_shards_label: Label = $TextureRect/MarrowShardsLabel
+@onready var marrow_shards_label: Label = $Control/TextureRect/MarrowShardsLabel
 @onready var skill_vbox_container: VBoxContainer = $Panel/VBoxContainer/HBoxContainer/ScrollContainer/SkillVboxContainer
 @export var skills: Array[SkillData]
 

@@ -11,11 +11,22 @@
 [ext_resource type="Resource" uid="uid://k1vhjfkad0qa" path="res://scripts/skill_list/skill_resources/steady_hand.tres" id="10_or8jn"]
 [ext_resource type="Resource" uid="uid://7tr4mnrpca1c" path="res://scripts/skill_list/skill_resources/magic_defense.tres" id="11_am412"]
 [ext_resource type="Resource" uid="uid://80wse1xg4dkb" path="res://scripts/skill_list/skill_resources/stone_guard.tres" id="11_gli5f"]
-[ext_resource type="Texture2D" uid="uid://bv6s0ri0bjqic" path="res://scenes/skill_list/Marrow_shards_currency.png" id="12_3tci0"]
+[ext_resource type="Texture2D" uid="uid://biocik8m4qn4q" path="res://scenes/skill_list/Marrow_shards_currency.png" id="12_3tci0"]
 [ext_resource type="FontFile" uid="uid://dr8r1buo47v6k" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="12_loq5n"]
+[ext_resource type="Texture2D" uid="uid://behh6gmxwv2vq" path="res://assets/main_menu/main_menu_background.png" id="12_r8qnw"]
+[ext_resource type="Texture2D" uid="uid://bdl6ds02ccw48" path="res://assets/skill_list_background.png" id="13_20qiw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3tci0"]
+content_margin_left = 9.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20qiw"]
+content_margin_left = 9.0
+bg_color = Color(0.05, 0.05, 0.05, 0.8509804)
+expand_margin_right = 40.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_20qiw"]
-font_size = 25
+font_size = 23
 font_color = Color(0.5764706, 0.4745098, 0.33333334, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lvfat"]
@@ -30,15 +41,6 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3tci0"]
-content_margin_left = 9.0
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20qiw"]
-content_margin_left = 9.0
-bg_color = Color(0.05, 0.05, 0.05, 0.8509804)
-expand_margin_right = 40.0
-
 [node name="skill_list" type="Control" unique_id=1497030253]
 layout_mode = 3
 anchors_preset = 15
@@ -49,27 +51,58 @@ grow_vertical = 2
 script = ExtResource("1_lvfat")
 skills = Array[ExtResource("2_loq5n")]([ExtResource("3_3tci0"), ExtResource("4_20qiw"), ExtResource("5_r8qnw"), ExtResource("6_qn87k"), ExtResource("8_ed1i2"), ExtResource("9_usirg"), ExtResource("10_or8jn"), ExtResource("11_gli5f"), ExtResource("11_am412")])
 
-[node name="Background" type="ColorRect" parent="." unique_id=1327498651]
-z_index = -5
-custom_minimum_size = Vector2(720, 520)
+[node name="Background" type="TextureRect" parent="." unique_id=1022203630]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("12_r8qnw")
+expand_mode = 1
+
+[node name="Control" type="Control" parent="." unique_id=2076484213]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.011000001
+anchor_top = 0.020000001
+anchor_right = 0.95600003
+anchor_bottom = 0.94000006
+offset_left = 0.32799911
+offset_top = 0.03999901
+offset_right = -0.31201172
+offset_bottom = -0.12005615
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.085408114, 0.07120069, 0.15267435, 1)
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=717815024]
+[node name="QuitButton" type="Button" parent="Control" unique_id=1023925444]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -47.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_fonts/font = ExtResource("12_loq5n")
+theme_override_font_sizes/font_size = 46
+theme_override_styles/normal = SubResource("StyleBoxFlat_3tci0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_20qiw")
+theme_override_styles/hover = SubResource("StyleBoxFlat_20qiw")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_20qiw")
+text = "Back"
+alignment = 0
+
+[node name="TextureRect" type="TextureRect" parent="Control" unique_id=717815024]
 layout_mode = 0
-offset_left = 13.0
-offset_top = 13.0
-offset_right = 180.40822
-offset_bottom = 99.0
+offset_right = 167.40822
+offset_bottom = 86.0
+tooltip_text = "Gain marrowshards by defeating enemies"
 texture = ExtResource("12_3tci0")
 expand_mode = 1
 
-[node name="MarrowShardsLabel" type="Label" parent="TextureRect" unique_id=1742998272]
+[node name="MarrowShardsLabel" type="Label" parent="Control/TextureRect" unique_id=1742998272]
 custom_minimum_size = Vector2(80, 30)
 layout_mode = 1
 anchors_preset = 8
@@ -83,8 +116,9 @@ offset_right = 22.29589
 offset_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 2
+text = "10000"
 label_settings = SubResource("LabelSettings_20qiw")
-autowrap_mode = 3
+autowrap_mode = 2
 
 [node name="Panel" type="Panel" parent="." unique_id=1672882145]
 layout_mode = 1
@@ -93,13 +127,23 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -220.25
+offset_left = -220.8125
 offset_top = -211.0
-offset_right = 220.25
+offset_right = 220.8125
 offset_bottom = 211.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lvfat")
+
+[node name="TextureRect" type="TextureRect" parent="Panel" unique_id=2033693280]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("13_20qiw")
+expand_mode = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=1173757160]
 layout_mode = 1
@@ -110,24 +154,21 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/VBoxContainer" unique_id=1558890568]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="SkillListTitle" type="Label" parent="Panel/VBoxContainer" unique_id=1874865007]
+[node name="Title" type="Label" parent="Panel/VBoxContainer" unique_id=1874865007]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Skill List"
 horizontal_alignment = 1
-
-[node name="ColorRect" type="ColorRect" parent="Panel/VBoxContainer" unique_id=2130581249]
-custom_minimum_size = Vector2(0, 3)
-layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=1237664655]
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="MarginContainer2" type="MarginContainer" parent="Panel/VBoxContainer/HBoxContainer" unique_id=1149613809]
-custom_minimum_size = Vector2(5, 0)
+custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer/HBoxContainer" unique_id=925547683]
@@ -140,29 +181,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/VBoxContainer/HBoxContainer" unique_id=396191193]
-custom_minimum_size = Vector2(5, 0)
+custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="Panel/VBoxContainer" unique_id=1785811231]
-custom_minimum_size = Vector2(0, 5)
+custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 
-[node name="QuitButton" type="Button" parent="." unique_id=1023925444]
-layout_mode = 0
-offset_left = 955.0
-offset_top = 553.0
-offset_right = 1065.0
-offset_bottom = 600.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
-theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
-theme_override_fonts/font = ExtResource("12_loq5n")
-theme_override_font_sizes/font_size = 46
-theme_override_styles/normal = SubResource("StyleBoxFlat_3tci0")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_20qiw")
-theme_override_styles/hover = SubResource("StyleBoxFlat_20qiw")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_20qiw")
-text = "Back"
-alignment = 0
-
-[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="Control/QuitButton" to="." method="_on_quit_button_pressed"]
