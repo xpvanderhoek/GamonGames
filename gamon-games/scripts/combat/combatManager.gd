@@ -112,12 +112,12 @@ func _ready() -> void:
 	RunData.item_added.connect(_on_item_added)
 	_populate_existing_items()
 	_begin_player_turn()
+
 	
 	if PlayerStats.knows_combat:
 		tutorial_overlay.visible = false
 	else:
 		tutorial_overlay.visible = true
-		
 
 func _get_random_encounters() -> void:
 	var enemy_count : int = RunData.rng.randi_range(1, MAX_ENEMY_COUNT)
@@ -1454,7 +1454,8 @@ func _restart_run_on_player_death() -> void:
 		return
 	_is_exiting_combat = true
 	RunData.end_run()
-	TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
+	SaveLoad.save_data()
+	TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)
 
 func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false, custom_text: String = "") -> void:
 	var is_custom_text := not custom_text.is_empty()
