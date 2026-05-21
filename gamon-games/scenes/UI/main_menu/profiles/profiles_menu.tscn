@@ -1,0 +1,113 @@
+[gd_scene format=3 uid="uid://1v82phhnfrpa"]
+
+[ext_resource type="Script" uid="uid://cxnta2umaeyej" path="res://scripts/UI/main_menu/profiles/profiles_menu.gd" id="1_cqbp2"]
+[ext_resource type="PackedScene" uid="uid://dli5qqqpyx7tc" path="res://scenes/UI/main_menu/profiles/profile_button.tscn" id="1_puo0q"]
+[ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_jqirq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqirq"]
+bg_color = Color(0.0018410675, 0.0018410685, 0.0018410663, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_44y6w"]
+bg_color = Color(0.07082722, 0.07082721, 0.07082722, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f8a74"]
+bg_color = Color(0.09239701, 0.09239709, 0.09239703, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[node name="ProfilesMenu" type="Control" unique_id=292099015]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cqbp2")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2008492384]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.35200003)
+
+[node name="TitleLabel" type="Label" parent="." unique_id=2070890905]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.5
+offset_top = -274.0
+offset_right = 80.5
+offset_bottom = -221.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_jqirq")
+theme_override_font_sizes/font_size = 33
+text = "Profiles"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=733708760]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -217.5
+offset_top = -215.0
+offset_right = 217.5
+offset_bottom = 197.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 44
+
+[node name="Slot1" parent="VBoxContainer" unique_id=1901559414 instance=ExtResource("1_puo0q")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_nr = 1
+
+[node name="Slot2" parent="VBoxContainer" unique_id=1866549305 instance=ExtResource("1_puo0q")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_nr = 2
+
+[node name="Slot3" parent="VBoxContainer" unique_id=59175031 instance=ExtResource("1_puo0q")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_nr = 3
+
+[node name="Back" type="Button" parent="." unique_id=1199721519]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -44.46295
+offset_top = -77.0
+offset_right = 44.46295
+offset_bottom = -29.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_jqirq")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_jqirq")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_44y6w")
+theme_override_styles/hover = SubResource("StyleBoxFlat_f8a74")
+text = "Back"
+
+[connection signal="profile_selected" from="VBoxContainer/Slot1" to="." method="_on_profile_selected"]
+[connection signal="profile_selected" from="VBoxContainer/Slot2" to="." method="_on_profile_selected"]
+[connection signal="profile_selected" from="VBoxContainer/Slot3" to="." method="_on_profile_selected"]
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

@@ -1,12 +1,15 @@
 extends Node
 
+var profile_name : String = "None"
+var slot : int = 0
+
 var knows_combat : bool = false
 var knows_avarus : bool = false
-var knows_ghost : bool = true
-
 
 signal stats_changed(stat_name: String, new_value: float)
 signal upgrade_completed(stat_name: String, level: int)
+
+var marrow_shards : int = 0
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh
@@ -22,7 +25,7 @@ var stats = {
 
 var base_stats = {
 	"health": 100.0,
-	"damage": 1000.0,
+	"damage": 0.0,
 	"precision": 100.0,
 	"gold_gain": 1.0,
 	"debuff_resistance": 10.0,
