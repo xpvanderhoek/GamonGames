@@ -1,23 +1,32 @@
 [gd_scene format=3 uid="uid://btbcl61bm4oex"]
 
 [ext_resource type="Script" uid="uid://3nu0u7wcyf0y" path="res://scripts/UI/main_menu/main_menu.gd" id="1_0vw6h"]
-[ext_resource type="Texture2D" uid="uid://b31ymbl4e7ykd" path="res://assets/Placeholders/backgrounds/combatbg.png" id="1_epuki"]
-[ext_resource type="Texture2D" uid="uid://sulqkmdxh2iu" path="res://assets/main_menu/curefinder_logo.png" id="2_0vw6h"]
+[ext_resource type="Texture2D" uid="uid://behh6gmxwv2vq" path="res://assets/main_menu/main_menu_background.png" id="2_0vw6h"]
+[ext_resource type="Texture2D" uid="uid://dw83tuber51wb" path="res://assets/main_menu/main_menu_logo.png" id="3_7pp57"]
 [ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="3_oelhe"]
 [ext_resource type="Texture2D" uid="uid://daik1qh6y0yps" path="res://assets/main_menu/GG_white_text.png" id="4_7pp57"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e2p27"]
-texture = ExtResource("1_epuki")
-modulate_color = Color(0.11304883, 0.11304883, 0.11304883, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0vw6h"]
+content_margin_left = 9.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="Gradient" id="Gradient_oelhe"]
+offsets = PackedFloat32Array(0.54477614, 1)
+colors = PackedColorArray(0.94, 0.79947, 0.29140002, 0.5176471, 0.827222, 0.7490225, 0.28707156, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7pp57"]
+gradient = SubResource("Gradient_oelhe")
+width = 522
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srge5"]
+texture = SubResource("GradientTexture1D_7pp57")
+texture_margin_left = 9.0
+texture_margin_top = 2.0
+texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jstl"]
 content_margin_left = 9.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tfcbk"]
-content_margin_left = 9.0
-bg_color = Color(0.05, 0.05, 0.05, 0.8509804)
-expand_margin_right = 40.0
 
 [node name="MainMenu" type="Control" unique_id=392365960]
 layout_mode = 3
@@ -28,14 +37,33 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0vw6h")
 
-[node name="Background" type="Panel" parent="." unique_id=1440593230]
+[node name="Background" type="TextureRect" parent="." unique_id=1572645134]
+modulate = Color(0.5330367, 0.5330367, 0.5330367, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_e2p27")
+texture = ExtResource("2_0vw6h")
+expand_mode = 1
+
+[node name="LogoShadow" type="TextureRect" parent="." unique_id=107718322]
+modulate = Color(0, 0, 0, 0.51100004)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -272.0
+offset_top = -213.0
+offset_right = 274.24292
+offset_bottom = -85.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_7pp57")
+expand_mode = 1
 
 [node name="Logo" type="TextureRect" parent="." unique_id=239601149]
 layout_mode = 1
@@ -44,71 +72,74 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -500.0
-offset_top = -261.0
-offset_right = 73.0
-offset_bottom = -121.0
+offset_left = -273.12143
+offset_top = -219.0
+offset_right = 273.12146
+offset_bottom = -91.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_0vw6h")
-expand_mode = 3
-stretch_mode = 5
+texture = ExtResource("3_7pp57")
+expand_mode = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=86384079]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 73.0
-offset_top = -370.0
-offset_right = 236.0
-offset_bottom = -154.0
+offset_left = 105.0
+offset_top = -351.0
+offset_right = 268.0
+offset_bottom = -135.0
 grow_vertical = 0
-theme_override_constants/separation = 25
+theme_override_constants/separation = 10
 
 [node name="PlayButton" type="Button" parent="VBoxContainer" unique_id=493939473]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
-theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.78700006)
+theme_override_constants/outline_size = 13
 theme_override_fonts/font = ExtResource("3_oelhe")
-theme_override_font_sizes/font_size = 46
-theme_override_styles/normal = SubResource("StyleBoxFlat_5jstl")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_tfcbk")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tfcbk")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_tfcbk")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_0vw6h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_srge5")
+theme_override_styles/hover = SubResource("StyleBoxTexture_srge5")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_srge5")
+theme_override_styles/focus = SubResource("StyleBoxTexture_srge5")
 text = "Play"
 alignment = 0
 
 [node name="OptionsButton" type="Button" parent="VBoxContainer" unique_id=1356998852]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
-theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.7882353)
+theme_override_constants/outline_size = 13
 theme_override_fonts/font = ExtResource("3_oelhe")
-theme_override_font_sizes/font_size = 46
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_5jstl")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_tfcbk")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tfcbk")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_tfcbk")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_srge5")
+theme_override_styles/hover = SubResource("StyleBoxTexture_srge5")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_srge5")
 text = "Options"
 alignment = 0
 
-[node name="QuitButton" type="Button" parent="." unique_id=1985840865]
-layout_mode = 0
-offset_left = 73.0
-offset_top = 547.0
-offset_right = 236.0
-offset_bottom = 594.0
+[node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=1985840865]
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
-theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.7882353)
+theme_override_constants/outline_size = 13
 theme_override_fonts/font = ExtResource("3_oelhe")
-theme_override_font_sizes/font_size = 46
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_5jstl")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_tfcbk")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tfcbk")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_tfcbk")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_srge5")
+theme_override_styles/hover = SubResource("StyleBoxTexture_srge5")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_srge5")
+theme_override_styles/focus = SubResource("StyleBoxTexture_srge5")
 text = "Quit"
 alignment = 0
 
@@ -122,6 +153,17 @@ offset_bottom = 636.0
 texture = ExtResource("4_7pp57")
 expand_mode = 1
 
+[node name="ProfileButton" type="Button" parent="." unique_id=1916176306]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 9.0
+offset_right = 126.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("3_oelhe")
+theme_override_font_sizes/font_size = 18
+text = "Profile: Name"
+
 [connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="ProfileButton" to="." method="_on_profile_button_pressed"]

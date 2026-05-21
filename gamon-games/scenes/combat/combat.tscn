@@ -41,6 +41,7 @@ image = ExtResource("10_mrrmw")
 metadata/_custom_type_script = "uid://emcsn5t5bncn"
 
 [node name="Combat" type="CanvasLayer" unique_id=294642076]
+layer = -1
 script = ExtResource("7_mgr")
 turns_order_path = NodePath("TurnsOrderUI/Panel")
 
