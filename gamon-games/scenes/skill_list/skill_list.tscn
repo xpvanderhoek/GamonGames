@@ -162,8 +162,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_3tci0")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_20qiw")
 theme_override_styles/hover = SubResource("StyleBoxFlat_20qiw")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_20qiw")
-text = "Back
-k"
+text = "Back"
 alignment = 0
 
 [connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
