@@ -568,6 +568,7 @@ func _refresh_consumable_buttons() -> void:
 			button.set_item(item, idx)
 
 func _on_consumable_pressed(slot_index: int) -> void:
+	SoundManager.play_potion()
 	if current_state != CombatState.PLAYER_TURN:
 		return
 	if slot_index < 0 or slot_index >= RunData.consumables.size():

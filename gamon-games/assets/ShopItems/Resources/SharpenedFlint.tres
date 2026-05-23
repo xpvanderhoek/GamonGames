@@ -11,5 +11,3 @@ lore = "A primitive edge for a primitive world."
 texture = ExtResource("2_0v1p2")
 cost = 40
 target_limb = "All Limbs"
-buff_type = "Damage"
-buff_value = 10.0

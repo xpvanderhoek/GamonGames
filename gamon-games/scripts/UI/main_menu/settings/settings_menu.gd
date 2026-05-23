@@ -76,9 +76,13 @@ func _sync_graphics():
 		v_sync_button.button_pressed = false
 
 func _on_back_pressed() -> void:
+	SoundManager.play_click()
 	await _fade_out()
 	get_tree().paused = false
 	queue_free()
+
+func _on_back_hover() -> void:
+	SoundManager.play_hover()
 
 func _fade_out() -> void:
 	var tween = create_tween()

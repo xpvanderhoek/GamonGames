@@ -2,22 +2,28 @@
 
 [ext_resource type="Script" uid="uid://i2wcj5m86qmd" path="res://SoundManager.gd" id="1_rs7eg"]
 [ext_resource type="AudioStream" uid="uid://du7hy0chliwwy" path="res://sfx/click.wav" id="2_yai5u"]
-[ext_resource type="AudioStream" uid="uid://smb5wjbkjij3" path="res://sfx/hover.wav" id="3_rs7eg"]
+[ext_resource type="AudioStream" uid="uid://ngjxagnotfrn" path="res://sfx/hover.wav" id="3_rs7eg"]
 [ext_resource type="AudioStream" uid="uid://p4yymhgqni0a" path="res://sfx/potion.wav" id="4_kysrt"]
+[ext_resource type="AudioStream" uid="uid://cgi6xp7aiyxj0" path="res://sfx/pencil_circle.wav" id="5_yai5u"]
 
 [node name="SoundManager" type="Node" unique_id=440982374]
 script = ExtResource("1_rs7eg")
 
 [node name="SFXClick" type="AudioStreamPlayer" parent="." unique_id=896917035]
 stream = ExtResource("2_yai5u")
-volume_db = -3.0
+volume_db = -6.0
 bus = &"SFX"
 
 [node name="SFXHover" type="AudioStreamPlayer" parent="." unique_id=1527227676]
 stream = ExtResource("3_rs7eg")
-volume_db = 1.0
+volume_db = -4.0
 bus = &"SFX"
 
 [node name="SFXPotion" type="AudioStreamPlayer" parent="." unique_id=375759976]
 stream = ExtResource("4_kysrt")
+volume_db = -15.0
 bus = &"SFX"
+
+[node name="SFXPencil" type="AudioStreamPlayer" parent="." unique_id=791986334]
+stream = ExtResource("5_yai5u")
+volume_db = -20.0

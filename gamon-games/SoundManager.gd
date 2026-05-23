@@ -8,3 +8,6 @@ func play_hover():
 
 func play_potion():
 	$SFXPotion.play()
+
+func play_pencil():
+	$SFXPencil.play()
