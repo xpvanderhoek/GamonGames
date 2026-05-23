@@ -5,6 +5,7 @@ const SETTINGS_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu
 const PROFILES_MENU := preload("res://scenes/UI/main_menu/profiles/profiles_menu.tscn")
 
 @onready var profile_button: Button = $ProfileButton
+@onready var sfx_hover: AudioStreamPlayer2D = $SFXHover
 
 func _ready() -> void:
 	print(get_tree().paused)
@@ -42,3 +43,9 @@ func _on_profile_button_pressed() -> void:
 
 func _on_profile_changed():
 	profile_button.text = "Profile: " + PlayerStats.profile_name
+
+func _on_button_hover():
+	SoundManager.play_hover()
+
+func _on_button_click():
+	SoundManager.play_click()

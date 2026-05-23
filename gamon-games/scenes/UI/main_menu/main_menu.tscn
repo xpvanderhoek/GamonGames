@@ -168,7 +168,13 @@ theme_override_fonts/font = ExtResource("3_oelhe")
 theme_override_font_sizes/font_size = 18
 text = "Profile: Name"
 
+[connection signal="mouse_entered" from="VBoxContainer/PlayButton" to="." method="_on_button_hover"]
 [connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_button_click"]
+[connection signal="mouse_entered" from="VBoxContainer/SettingsButton" to="." method="_on_button_hover"]
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_button_click"]
+[connection signal="mouse_entered" from="VBoxContainer/QuitButton" to="." method="_on_button_hover"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_button_click"]
 [connection signal="pressed" from="ProfileButton" to="." method="_on_profile_button_pressed"]

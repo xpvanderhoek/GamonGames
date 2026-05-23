@@ -103,25 +103,17 @@ func _on_window_item_selected(index: int):
 		Settings.data.window_mode = DisplayServer.WINDOW_MODE_WINDOWED
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		if OS.has_feature("macos"): # fix for mac being buggy with res changes
-			_center_window()
+			get_window().move_to_center()
 			var pos := DisplayServer.window_get_position()
 			DisplayServer.window_set_position(pos + Vector2i(0, 1))
 	Settings.save_settings()
-
-func _center_window():
-	var screen_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
-	var window_size = DisplayServer.window_get_size()
-	
-	var new_position = (screen_size / 2) - (window_size / 2)
-	
-	DisplayServer.window_set_position(new_position)
 
 func _on_resolution_item_selected(index: int) -> void:
 	var resolutions := _get_resolutions()
 	var res: Vector2i = resolutions.values()[index]
 	last_resolution = res
 	DisplayServer.window_set_size(res)
-	_center_window()
+	get_window().move_to_center()
 	Settings.data.resolution = res
 	Settings.save_settings()
 
