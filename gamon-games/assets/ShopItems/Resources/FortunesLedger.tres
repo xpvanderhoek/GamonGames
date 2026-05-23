@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://bq1r327vwoddv"]
+[gd_resource type="Resource" format=3 uid="uid://bq1r327vwoddv"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://3aiko5d0vmjl" path="res://assets/ShopItems/Textures/Fortune's Ledger.png" id="2_42y8k"]
+[ext_resource type="Texture2D" uid="uid://b0x64w700q4oj" path="res://assets/ShopItems/Textures/Fortune's Ledger.png" id="2_42y8k"]
 
 [resource]
 script = ExtResource("1_script")
