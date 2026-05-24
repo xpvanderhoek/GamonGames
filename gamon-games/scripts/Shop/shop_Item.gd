@@ -36,6 +36,10 @@ func _on_item_data_assigned():
 		sprite.texture = item_data.texture
 		price_label.text = str(item_data.cost)
 		
+		if item_data.shader:
+			sprite.material = ShaderMaterial.new()
+			sprite.material.shader = item_data.shader
+		
 		# Auto-scale sprite to fit shop slot
 		var max_size = 64.0
 		if sprite.texture:

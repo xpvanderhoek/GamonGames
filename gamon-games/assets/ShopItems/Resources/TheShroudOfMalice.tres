@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://b6m0cpy5602bc" path="res://assets/ShopItems/Textures/The Shroud of Malice.png" id="2_aphkt"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_rro48"]
 
 [resource]
 script = ExtResource("1_script")
@@ -10,6 +11,7 @@ effect = "Reflect 50% damage taken as Shadow"
 lore = "Hatred is the best armor."
 category = "Tier III"
 texture = ExtResource("2_aphkt")
+shader = ExtResource("2_rro48")
 cost = 95
 buff_type = "Defense"
 buff_value = 0.0

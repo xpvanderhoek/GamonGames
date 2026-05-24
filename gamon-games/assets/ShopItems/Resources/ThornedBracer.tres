@@ -1,6 +1,7 @@
 [gd_resource type="Resource" format=3 uid="uid://bwg7v7na0dhhc"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_d0v8l"]
 [ext_resource type="Texture2D" uid="uid://cklwqh51o3l3o" path="res://assets/ShopItems/Textures/Thorned bracer.png" id="2_irsi3"]
 
 [resource]
@@ -9,6 +10,7 @@ item_name = "Thorned Bracer"
 effect = "Reflect 8 Damage when you are hit"
 lore = "Protection is just a sharper way to hurt."
 texture = ExtResource("2_irsi3")
+shader = ExtResource("2_d0v8l")
 cost = 40
 buff_type = "Defense"
 buff_value = 8.0

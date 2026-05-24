@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://b0x64w700q4oj" path="res://assets/ShopItems/Textures/Fortune's Ledger.png" id="2_42y8k"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_68wxo"]
 
 [resource]
 script = ExtResource("1_script")
@@ -10,6 +11,7 @@ effect = "Gain +20 Luck during this run"
 lore = "Written in the margins of fate are the names of those destined for greatness."
 category = "Tier II"
 texture = ExtResource("2_42y8k")
+shader = ExtResource("2_68wxo")
 cost = 60
 buff_type = "Luck"
 buff_value = 20.0

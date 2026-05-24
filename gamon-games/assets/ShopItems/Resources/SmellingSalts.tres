@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="ConsumableItemData" format=3 uid="uid://cnt3hamtgmdix"]
 
 [ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://scripts/Items/ConsumableItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bw1j5fi7a53ov" path="res://assets/ShopItems/Textures/Smelling Salts.png" id="2_xuaxt"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_nb06t"]
+[ext_resource type="Texture2D" uid="uid://bu5bw5tn04ky7" path="res://assets/ShopItems/Textures/Smelling Salts.png" id="2_xuaxt"]
 
 [resource]
 script = ExtResource("1_script")
@@ -10,6 +11,7 @@ effect = "Adds +10 Precision for 3 turns"
 lore = "A sharp sting to wake the dying mind."
 category = "Tier II"
 texture = ExtResource("2_xuaxt")
+shader = ExtResource("2_nb06t")
 cost = 40
 target_limb = "Head"
 buff_type = "Precision"

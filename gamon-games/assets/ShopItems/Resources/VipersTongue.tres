@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="ConsumableItemData" format=3 uid="uid://drj8ypf4y6jep"]
 
 [ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://scripts/Items/ConsumableItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bcef0uwwqf21u" path="res://assets/ShopItems/Textures/Viper's tongue.png" id="2_nrfib"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_0ua2c"]
+[ext_resource type="Texture2D" uid="uid://hpiwxo4hy1v0" path="res://assets/ShopItems/Textures/Viper's tongue.png" id="2_nrfib"]
 
 [resource]
 script = ExtResource("1_script")
@@ -10,6 +11,7 @@ effect = "Next attack applies 5 stacks of Poison"
 lore = "A word whispered in venom."
 category = "Tier II"
 texture = ExtResource("2_nrfib")
+shader = ExtResource("2_0ua2c")
 cost = 35
 target_limb = "Targeted Limb"
 buff_type = "Defense"

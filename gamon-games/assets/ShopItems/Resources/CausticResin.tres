@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://bm8samt0h2uc2" path="res://assets/ShopItems/Textures/Caustic Resin.png" id="2_6wfwe"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_htb43"]
 
 [resource]
 script = ExtResource("1_script")
@@ -10,6 +11,7 @@ effect = "Adds 1 stack of Decay to hits on the Torso"
 lore = "It eats through steel and soul alike."
 category = "Tier II"
 texture = ExtResource("2_6wfwe")
+shader = ExtResource("2_htb43")
 cost = 60
 target_limb = "Torso"
 buff_type = "Defense"

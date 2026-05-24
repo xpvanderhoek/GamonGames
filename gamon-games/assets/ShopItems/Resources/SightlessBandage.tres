@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dj2ksk2m12su8" path="res://assets/ShopItems/Textures/Sightless Bandage.png" id="2_3guxu"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_sl6sk"]
 
 [resource]
 script = ExtResource("1_script")
@@ -9,6 +10,7 @@ item_name = "Sightless Bandage"
 effect = "+20 Precision when targeting the Head"
 lore = "The eyes only see what they want to believe."
 texture = ExtResource("2_3guxu")
+shader = ExtResource("2_sl6sk")
 cost = 35
 target_limb = "Head"
 buff_type = "Precision"

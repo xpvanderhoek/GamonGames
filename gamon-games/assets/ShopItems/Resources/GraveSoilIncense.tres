@@ -1,6 +1,7 @@
 [gd_resource type="Resource" format=3 uid="uid://dl1ghcmvkidxt"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_ahyqt"]
 [ext_resource type="Texture2D" uid="uid://eqe1583xvxam" path="res://assets/ShopItems/Textures/Grave-soil Incense.png" id="2_xf2hj"]
 
 [resource]
@@ -10,6 +11,7 @@ effect = "Start with +20 Defense"
 lore = "The scent of the earth clouds the vision."
 category = "Tier II"
 texture = ExtResource("2_xf2hj")
+shader = ExtResource("2_ahyqt")
 cost = 60
 buff_type = "Defense"
 buff_value = 20.0

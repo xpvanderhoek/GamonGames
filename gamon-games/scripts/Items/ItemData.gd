@@ -7,6 +7,7 @@ class_name ItemData
 @export_multiline var lore: String = ""
 @export_enum("Tier I", "Tier II", "Tier III") var category: String = "Tier I"
 @export var texture: Texture2D
+@export var shader: Shader
 
 @export_group("Economy")
 @export var cost: int = 50

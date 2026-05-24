@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://cfmietd2qdu02" path="res://assets/ShopItems/Textures/Splintered Shackle.png" id="2_5yq5r"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_d8jgv"]
 
 [resource]
 script = ExtResource("1_script")
@@ -9,7 +10,7 @@ item_name = "Splintered Shackle"
 effect = "+15 Physical Damage to Legs"
 lore = "Freedom is a weight someone else must carry."
 texture = ExtResource("2_5yq5r")
+shader = ExtResource("2_d8jgv")
 cost = 35
 target_limb = "Leg"
-buff_type = "Damage"
 buff_value = 15.0

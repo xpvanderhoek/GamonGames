@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="ConsumableItemData" format=3 uid="uid://u2sf8v5dcfjq"]
 
 [ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://scripts/Items/ConsumableItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bt7ei2y7iprx6" path="res://assets/ShopItems/Textures/Adrenaline Spike.png" id="2_fmm0x"]
+[ext_resource type="Texture2D" uid="uid://dforagfmhbwwt" path="res://assets/ShopItems/Textures/Adrenaline Spike.png" id="2_fmm0x"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_ykjs0"]
 
 [resource]
 script = ExtResource("1_script")
@@ -10,6 +11,7 @@ effect = "Grants Haste for 2 turns; -10 HP after effect ends"
 lore = "Borrowing strength from a future that may not come."
 category = "Tier III"
 texture = ExtResource("2_fmm0x")
+shader = ExtResource("2_ykjs0")
 cost = 55
 target_limb = "Self"
 buff_type = "Speed"

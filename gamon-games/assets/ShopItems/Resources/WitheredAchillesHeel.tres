@@ -1,6 +1,7 @@
 [gd_resource type="Resource" format=3 uid="uid://bsjm8nf1coqo3"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://u20vcvwe2lsp" path="res://assets/ShopItems/Shaders/Exampleshader.gdshader" id="2_putcn"]
 [ext_resource type="Texture2D" uid="uid://mmj81j5reg6" path="res://assets/ShopItems/Textures/Withered achilles Heel.png" id="2_r0311"]
 
 [resource]
@@ -10,6 +11,7 @@ effect = "Breaking a Leg applies 3x Vulnerable"
 lore = "A single crack can bring down a giant."
 category = "Tier III"
 texture = ExtResource("2_r0311")
+shader = ExtResource("2_putcn")
 cost = 90
 target_limb = "Leg"
 buff_type = "Defense"
