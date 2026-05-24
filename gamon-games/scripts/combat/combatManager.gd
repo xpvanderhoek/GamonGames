@@ -12,7 +12,8 @@ const COMBAT_ITEM_EFFECTS_SCRIPT := preload("res://scripts/combat/combat_item_ef
 const MAX_ENEMY_COUNT = 3
 
 var enemy_pool : Array[PackedScene] = [
-	preload("res://scenes/combat/enemies/ttt.tscn")
+	# preload("res://scenes/combat/enemies/ttt.tscn"),
+	preload("res://scenes/combat/enemies/skeleton_full.tscn"),
 ]
 
 enum CombatState { 
@@ -1597,8 +1598,6 @@ func _flash_player_hit() -> void:
 	tween.tween_property(player_canvas, "modulate", Color(1, 1, 1, 1), 0.22)
 
 func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> void:
-	await _play_attack_lunge(source_entity, target_entity)
-
 	var vfx_lifetime_timer: SceneTreeTimer = null
 
 	if attack.sfx != null:
@@ -1608,6 +1607,8 @@ func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target
 		add_child(player)
 		player.finished.connect(player.queue_free)
 		player.play()
+
+	await _play_attack_lunge(source_entity, target_entity)
 
 	if attack.vfx_scene != null:
 		var vfx := attack.vfx_scene.instantiate()

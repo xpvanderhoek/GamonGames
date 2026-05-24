@@ -1,6 +1,9 @@
 class_name CombatEntity
 extends Node
 
+@export_category("VFX-SFX")
+@export var hit_sfx: AudioStream
+
 @export var turn_order_icon: Texture2D
 @export_range(0.0, 100.0, 0.1) var physical_defense: float = 0.0
 @export_range(0.0, 100.0, 0.1) var magic_defense: float = 0.0
@@ -256,6 +259,15 @@ func take_damage(limb: CombatLimb, amount: int) -> void:
 	if not is_alive:
 		return
 	limb.take_damage(amount)
+
+	# Play hit SFX if provided
+	if hit_sfx != null:
+		var _player := AudioStreamPlayer.new()
+		_player.stream = hit_sfx
+		_player.autoplay = false
+		add_child(_player)
+		_player.finished.connect(_player.queue_free)
+		_player.play()
 	entity_took_damage.emit(self, limb, amount)
 
 func take_damage_all(target_limbs: Array[CombatLimb], amount: int) -> void:

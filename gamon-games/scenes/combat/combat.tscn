@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b1r88pxgxdvwr"]
 
-[ext_resource type="Texture2D" uid="uid://b31ymbl4e7ykd" path="res://assets/Placeholders/backgrounds/combatbg.png" id="2_ltalu"]
-[ext_resource type="Texture2D" uid="uid://1ntv4j640typ" path="res://assets/player.png" id="3_ltalu"]
+[ext_resource type="Texture2D" uid="uid://cws830736mswa" path="res://assets/Placeholders/backgrounds/combatbg.png" id="2_ltalu"]
+[ext_resource type="Texture2D" uid="uid://dm7rgnxirsjjh" path="res://assets/player.png" id="3_ltalu"]
 [ext_resource type="PackedScene" uid="uid://cw35es2dvr2it" path="res://scenes/UI/health_bar.tscn" id="4_4voa6"]
 [ext_resource type="PackedScene" uid="uid://bnspxqohk3rfu" path="res://scenes/combat/ui/ItemButton.tscn" id="5_4voa6"]
 [ext_resource type="PackedScene" uid="uid://c80vkx6l0g4kf" path="res://scenes/UI/tutorial/tutorial_overlay.tscn" id="6_jgg25"]
@@ -234,4 +234,5 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="TutorialOverlay" parent="." unique_id=282468504 instance=ExtResource("6_jgg25")]
+visible = false
 pages = Array[ExtResource("7_4a6i5")]([SubResource("Resource_h2sm1"), SubResource("Resource_si0bq"), SubResource("Resource_j3cqa")])
