@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://bsjm8nf1coqo3"]
+[gd_resource type="Resource" format=3 uid="uid://bsjm8nf1coqo3"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bpta72qms6lo6" path="res://assets/ShopItems/Textures/Withered achilles Heel.png" id="2_r0311"]
+[ext_resource type="Texture2D" uid="uid://mmj81j5reg6" path="res://assets/ShopItems/Textures/Withered achilles Heel.png" id="2_r0311"]
 
 [resource]
 script = ExtResource("1_script")

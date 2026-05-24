@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ConsumableItemData" format=3 uid="uid://cvbrcjmgkx27h"]
 
-[ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://scripts/Items/ConsumableItemData.gd" id="1_u2oak"]
-[ext_resource type="Texture2D" uid="uid://dhag3h6q377h5" path="res://assets/ShopItems/Textures/Caustic Resin.png" id="2_jvy50"]
+[ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://scripts/Items/ConsumableItemData.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bushq0t7k7kxk" path="res://assets/ShopItems/Textures/Essence of the void.png" id="2_d224v"]
 
 [resource]
 script = ExtResource("1_u2oak")
@@ -9,7 +9,7 @@ item_name = "Essence of the Void"
 effect = "Invulnerable for 1 turn"
 lore = "A momentary lapse in existence."
 category = "Tier II"
-texture = ExtResource("2_jvy50")
+texture = ExtResource("2_d224v")
 cost = 45
 target_limb = "Self"
 buff_type = "Defense"

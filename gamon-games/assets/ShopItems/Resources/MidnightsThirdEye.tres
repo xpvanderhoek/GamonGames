@@ -1,7 +1,7 @@
 [gd_resource type="Resource" format=3 uid="uid://b8lb8n6oew5tn"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bev2jli15tjbx" path="res://assets/ShopItems/Textures/Midnight's third Eye.png" id="2_36f76"]
+[ext_resource type="Texture2D" uid="uid://bkoldhyhj2ob7" path="res://assets/ShopItems/Textures/Midnight's third Eye.png" id="2_36f76"]
 
 [resource]
 script = ExtResource("1_script")
