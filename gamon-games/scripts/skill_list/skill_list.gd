@@ -29,4 +29,5 @@ func _load_skill_lines(skills) -> void:
 
 
 func _on_quit_button_pressed() -> void:
+	SaveLoad.save_data()
 	TransitionManager.change_scene(MAIN_MENU_SCENE)

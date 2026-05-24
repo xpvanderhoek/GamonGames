@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://biusmai7yi28"]
+[gd_resource type="Resource" format=3 uid="uid://biusmai7yi28"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dhag3h6q377h5" path="res://assets/ShopItems/Textures/Caustic Resin.png" id="2_6wfwe"]

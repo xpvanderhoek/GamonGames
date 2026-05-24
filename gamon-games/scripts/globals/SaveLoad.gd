@@ -10,6 +10,7 @@ func _save_path(slot : int):
 
 func save_data():
 	var data = SaveData.new()
+	PlayerStats.marrow_shards = RunData.marrow_shards
 	data.slot = PlayerStats.slot
 	data.profile_name = PlayerStats.profile_name
 	data.knows_combat = PlayerStats.knows_combat
@@ -34,6 +35,7 @@ func load_data(slot : int):
 	PlayerStats.stats.merge(data.stats, true)
 	PlayerStats.upgrade_levels.merge(data.upgrade_levels, true)
 	PlayerStats.marrow_shards = data.marrow_shards
+	RunData.marrow_shards = PlayerStats.marrow_shards
 	save_meta()
 
 func save_meta() -> void:
@@ -64,6 +66,7 @@ func create_profile(slot : int, name : String = "Knight") -> void:
 	PlayerStats.knows_avarus = false
 	PlayerStats.knows_combat = false
 	PlayerStats.marrow_shards = 0
+	RunData.marrow_shards = PlayerStats.marrow_shards
 	save_data()
 	save_meta()
 	profile_changed.emit()

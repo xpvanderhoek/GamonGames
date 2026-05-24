@@ -44,6 +44,7 @@ var upgrade_levels = {
 	"luck": 0,
 	"physical_defense": 0,
 	"magic_defense": 0,
+	"starting_kit": 0,
 }
 
 var upgrade_costs = {

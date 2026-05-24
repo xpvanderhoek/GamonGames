@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ciesguttq503f" path="res://scripts/skill_list/skill_list_line.gd" id="1_clv0c"]
 [ext_resource type="Texture2D" uid="uid://bhw5v8m453e43" path="res://assets/skilltreepng.webp" id="1_dli63"]
-[ext_resource type="Texture2D" uid="uid://bklpbkrobarfb" path="res://scenes/skill_list/Marrow_shards_sprite.png" id="3_1xpfq"]
+[ext_resource type="Texture2D" uid="uid://2e5s8715qjip" path="res://scenes/skill_list/Marrow_shards_sprite.png" id="3_1xpfq"]
 
 [node name="SkillListLine" type="HBoxContainer" unique_id=1472616399]
 custom_minimum_size = Vector2(32, 32)

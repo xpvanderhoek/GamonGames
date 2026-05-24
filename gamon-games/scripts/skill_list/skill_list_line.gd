@@ -18,8 +18,13 @@ func setup_skill(skill_data: SkillData):
 	skill_texture.texture = skill_data.texture
 	buy_button.tooltip_text = skill_data.tooltip_text
 	
+	if current_skill.affected_stat != "" and current_skill.affected_stat in PlayerStats.upgrade_levels:
+		current_skill.current_level = int(PlayerStats.upgrade_levels[current_skill.affected_stat])
+	elif _is_starting_kit():
+		current_skill.current_level = int(PlayerStats.upgrade_levels.get("starting_kit", 0))
+	
 	if current_skill.stat_bonus_per_level == 0 and current_skill.max_level == 1:
-		buff_amount.text = "Locked"
+		buff_amount.text = "Bought" if current_skill.current_level > 0 else "Locked"
 	else:
 		buff_amount.text = "Lvl %d" % [skill_data.current_level]
 	marrow_shards_amount_label.text = str(skill_data.get_level_cost())
@@ -37,6 +42,12 @@ func _on_buy_button_pressed() -> void:
 	
 	RunData.marrow_shards -= cost
 	current_skill.current_level += 1
+	if current_skill.affected_stat != "":
+		PlayerStats.upgrade_levels[current_skill.affected_stat] = current_skill.current_level
+		SaveLoad.save_data()
+	elif _is_starting_kit():
+		PlayerStats.upgrade_levels["starting_kit"] = current_skill.current_level
+		SaveLoad.save_data()
 	
 	if current_skill.affected_stat != "" and current_skill.stat_bonus_per_level > 0:
 		PlayerStats.update_stat(current_skill.affected_stat, current_skill.stat_bonus_per_level, current_skill.current_level)
@@ -49,3 +60,6 @@ func _on_buy_button_pressed() -> void:
 	marrow_shards_amount_label.text = str(current_skill.get_level_cost())
 	
 	print(current_skill.skill_name + " leveled up to " + str(current_skill.current_level))
+
+func _is_starting_kit() -> bool:
+	return current_skill != null and current_skill.skill_name == "Starting Kit"
