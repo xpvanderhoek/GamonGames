@@ -33,6 +33,7 @@ offset_bottom = 350.0
 script = ExtResource("1_16f70")
 hit_sfx = ExtResource("2_crdjk")
 turn_order_icon = ExtResource("2_lt0ji")
+modulate = Color(0.8, 0.8, 0.77, 1)
 
 [node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
 layout_mode = 1
