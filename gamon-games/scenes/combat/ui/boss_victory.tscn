@@ -1,34 +1,34 @@
 [gd_scene format=3 uid="uid://bu8uc1r5w8r5c"]
 
-[ext_resource type="Script" path="res://scripts/combat/ui/boss_victory.gd" id="1_8r5c5"]
+[ext_resource type="Script" uid="uid://dtenwrg6dtgwb" path="res://scripts/combat/ui/boss_victory.gd" id="1_8r5c5"]
 [ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_8r5c5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8r5c5"]
-bg_color = Color(0.1, 0.1, 0.1, 0.85)
+bg_color = Color(0.11366532, 0.11366526, 0.113665275, 0.8509804)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.94, 0.79947, 0.29140002, 0.8)
+border_color = Color(0.6783844, 0.66178036, 0.667279, 1)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
-bg_color = Color(0.94, 0.79947, 0.29140002, 0.6)
+bg_color = Color(0, 0, 0, 0.6)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.94, 0.79947, 0.29140002, 1)
+border_color = Color(0.4247499, 0.41682604, 0.3690274, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
-bg_color = Color(0.94, 0.79947, 0.29140002, 0.85)
+bg_color = Color(0, 0, 0, 0.69803923)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -61,15 +61,6 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.3)
 
-[node name="ParticleEffects" type="Control" parent="." unique_id=468126361]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=468126362]
 custom_minimum_size = Vector2(600, 400)
 layout_mode = 1
@@ -84,17 +75,20 @@ offset_right = 300.0
 offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(300, 200)
 theme_override_styles/panel = SubResource("StyleBoxFlat_8r5c5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=803802533]
+layout_direction = 1
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 20
+alignment = 1
 
 [node name="Title" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1159640958]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.94, 0.79947, 0.29140002, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 0.72156864)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("2_8r5c5")
@@ -106,7 +100,7 @@ vertical_alignment = 1
 [node name="Message" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1159640959]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_color = Color(0.72464263, 0.7246426, 0.7246426, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("2_8r5c5")
@@ -115,19 +109,14 @@ text = "Thank you for playtesting our game!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" unique_id=1881383273]
-layout_mode = 2
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_bottom = 10
-
-[node name="ContinueButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer" unique_id=751938235]
+[node name="ContinueButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=2139144107]
 custom_minimum_size = Vector2(229.78, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.7891721, 0.7891721, 0.78917205, 1)
+theme_override_colors/font_focus_color = Color(0.85750073, 0.85750073, 0.85750073, 1)
+theme_override_colors/font_hover_color = Color(0.45581734, 0.45581734, 0.45581734, 1)
 theme_override_fonts/font = ExtResource("2_8r5c5")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")

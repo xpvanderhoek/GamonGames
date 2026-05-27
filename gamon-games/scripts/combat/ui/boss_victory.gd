@@ -7,10 +7,9 @@ var continue_button: Button = null
 var _tween: Tween = null
 
 func _ready() -> void:
-	# Find all the nodes we need - using correct paths from the scene
 	title = get_node_or_null("PanelContainer/VBoxContainer/Title")
 	message = get_node_or_null("PanelContainer/VBoxContainer/Message")
-	continue_button = get_node_or_null("PanelContainer/VBoxContainer/MarginContainer/ContinueButton")
+	continue_button = get_node_or_null("PanelContainer/VBoxContainer/ContinueButton")
 	bg_panel = get_node_or_null("PanelContainer")
 	
 	if not continue_button:
@@ -34,13 +33,6 @@ func _ready() -> void:
 	
 	_play_victory_sequence()
 
-func _input(event: InputEvent) -> void:
-	# Allow Enter or Space to activate the button
-	if event.is_action_pressed("ui_accept"):
-		if continue_button and not continue_button.disabled:
-			TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)
-			get_tree().root.set_input_as_handled()
-
 func _play_victory_sequence() -> void:
 	if _tween:
 		_tween.kill()
@@ -48,23 +40,18 @@ func _play_victory_sequence() -> void:
 	_tween = create_tween()
 	_tween.set_trans(Tween.TRANS_SINE)
 	_tween.set_ease(Tween.EASE_OUT)
-	
-	# Fade in background panel
 	_tween.tween_property(bg_panel, "modulate:a", 1.0, 0.8)
 	
-	# Wait a bit, then animate title
 	_tween.tween_callback(func():
 		_animate_title()
 	)
-	_tween.tween_interval(0.6)  # Wait for title animation
+	_tween.tween_interval(0.6)  
 	
-	# Then animate message
 	_tween.tween_callback(func():
 		_animate_message()
 	)
-	_tween.tween_interval(0.8)  # Wait for message animation
+	_tween.tween_interval(0.8)  
 	
-	# Finally show button
 	_tween.tween_callback(func():
 		_show_continue_button()
 	)
@@ -109,12 +96,10 @@ func _show_continue_button() -> void:
 	button_tween.tween_callback(func():
 		if continue_button:
 			continue_button.disabled = false
-			continue_button.grab_focus()
-			# Simple, smooth scale pulse
 			var pulse_tween = create_tween()
 			pulse_tween.set_loops()
 			pulse_tween.set_trans(Tween.TRANS_SINE)
 			pulse_tween.set_ease(Tween.EASE_IN_OUT)
-			pulse_tween.tween_property(continue_button, "scale", Vector2(1.04, 1.04), 1.2)
-			pulse_tween.tween_property(continue_button, "scale", Vector2(1.0, 1.0), 1.2)
+			pulse_tween.tween_property(continue_button, "modulate:a", 0.7, 1.2)
+			pulse_tween.tween_property(continue_button, "modulate:a", 1.0, 1.2)
 	)
