@@ -5,6 +5,9 @@ extends Node
 @export var hit_sfx: AudioStream
 
 @export var turn_order_icon: Texture2D
+@export_category("Spawn")
+@export var spawn_min_fights: int = 0
+@export var spawn_max_fights: int = 999
 @export_range(0.0, 100.0, 0.1) var physical_defense: float = 0.0
 @export_range(0.0, 100.0, 0.1) var magic_defense: float = 0.0
 
@@ -30,6 +33,7 @@ signal entity_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int)
 signal highlighted_limb_clicked(limb: CombatLimb)
 
 var exp_reward: int = 100
+var combat_scaling_multiplier: float = 1.0
 
 func get_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
 	match damage_type:

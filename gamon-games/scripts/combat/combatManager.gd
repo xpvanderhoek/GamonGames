@@ -12,7 +12,9 @@ const COMBAT_ITEM_EFFECTS_SCRIPT := preload("res://scripts/combat/combat_item_ef
 const MAX_ENEMY_COUNT = 3
 
 var enemy_pool : Array[PackedScene] = [
-	# preload("res://scenes/combat/enemies/ttt.tscn"),
+	preload("res://scenes/combat/enemies/skeleton_weak.tscn"),
+	preload("res://scenes/combat/enemies/skeleton_weak2.tscn"),
+	preload("res://scenes/combat/enemies/skeleton_weak3.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_full.tscn"),
 ]
 
@@ -121,11 +123,59 @@ func _ready() -> void:
 		tutorial_overlay.visible = true
 
 func _get_random_encounters() -> void:
-	var enemy_count : int = RunData.rng.randi_range(1, MAX_ENEMY_COUNT)
+	var range := _get_enemy_count_range_for_progress()
+	var enemy_count : int = RunData.rng.randi_range(int(range[0]), int(range[1]))
+
+	for i in range(enemy_count):
+		var chosen_scene := _pick_enemy_by_spawn_ranges(RunData.combats_fought)
+		_queued_encounter_scenes.append(chosen_scene)
+
+func _get_enemy_count_range_for_progress() -> Array:
+	var k := int(RunData.combats_fought / 3)
+	var min_count := clampi(1 + int(maxi(0, k - 1)), 1, MAX_ENEMY_COUNT)
+	var max_count := clampi(1 + k, 1, MAX_ENEMY_COUNT)
+	return [min_count, max_count]
+
+func _scene_allows_spawn(scene: PackedScene, combats_fought: int) -> bool:
+	if scene == null:
+		return false
+	var inst := scene.instantiate()
+	if inst == null:
+		return true
+	var allowed := true
+	if inst is CombatEntity:
+		var entity := inst as CombatEntity
+		var minv := int(entity.spawn_min_fights)
+		var maxv := int(entity.spawn_max_fights)
+		allowed = combats_fought >= minv and combats_fought <= maxv
+	if is_instance_valid(inst):
+		inst.queue_free()
+	return allowed
+
+func _pick_enemy_by_spawn_ranges(combats_fought: int) -> PackedScene:
+	var allowed: Array[PackedScene] = []
+	for scene in enemy_pool:
+		if _scene_allows_spawn(scene, combats_fought):
+			allowed.append(scene)
+
+	if allowed.is_empty():
+		allowed = enemy_pool.duplicate()
+
+	var idx := RunData.rng.randi_range(0, allowed.size() - 1)
+	return allowed[idx]
+
+func _apply_enemy_scaling(enemy: Node) -> void:
+	if not (enemy is CombatEntity):
+		return
 	
-	for i in range (enemy_count):
-		var random_enemy_idx : int = RunData.rng.randi_range(0, enemy_pool.size() - 1)
-		_queued_encounter_scenes.append(enemy_pool[random_enemy_idx])
+	var combat_entity := enemy as CombatEntity
+	var scaling_multiplier := 1.0 + (RunData.combats_fought * 0.1)
+	combat_entity.combat_scaling_multiplier = scaling_multiplier
+	
+	for limb in combat_entity.limbs:
+		if limb is CombatLimb:
+			limb.max_health = int(round(float(limb.max_health) * scaling_multiplier))
+			limb.current_health = limb.max_health
 
 func _input(event): #Temporary
 	if event.is_action_pressed("ui_cancel"):
@@ -162,6 +212,7 @@ func _on_combat_victory() -> void:
 	_update_button_states()
 	_refresh_turns_order_ui()
 	await get_tree().create_timer(1.2).timeout
+	RunData.combats_fought += 1
 	_show_victory_summary()
 
 func _show_victory_summary() -> void:
@@ -204,6 +255,7 @@ func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> voi
 			continue
 		var enemy_instance := enemy_scene.instantiate()
 		enemy_container.add_child(enemy_instance)
+		_apply_enemy_scaling(enemy_instance)
 
 func _refresh_enemy_entities() -> void:
 	enemy_entities.clear()
@@ -1269,6 +1321,8 @@ func _get_enemy_outgoing_multiplier(source_enemy: CombatEntity) -> float:
 	for raw_effect in enemy_effects:
 		var effect := raw_effect as Dictionary
 		total_multiplier += float(effect.get("outgoing_mult_delta", 0.0))
+
+	total_multiplier *= source_enemy.combat_scaling_multiplier
 
 	return max(0.0, total_multiplier)
 
