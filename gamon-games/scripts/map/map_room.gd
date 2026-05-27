@@ -90,3 +90,6 @@ func _on_mouse_exited() -> void:
 		return
 	
 	sprite.material.set_shader_parameter("outline_color", Color(0.863, 0.788, 0.655))
+
+func _play_select_sound() -> void:
+	SoundManager.play_pencil()

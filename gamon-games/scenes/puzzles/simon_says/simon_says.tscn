@@ -8,8 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://dmgbeqca82wpy" path="res://assets/Placeholders/Puzzle/mouse-left-button.svg" id="6_0oafj"]
 [ext_resource type="Texture2D" uid="uid://d0jqnmjb5mpe5" path="res://assets/Placeholders/Puzzle/arrow.png" id="7_s13xn"]
 [ext_resource type="PackedScene" uid="uid://bnlu4c13jyfkc" path="res://scenes/UI/skipbutton/Skipbutton.tscn" id="8_8w86a"]
-[ext_resource type="Texture2D" uid="uid://bjeq4g53b8ymj" path="res://assets/Placeholders/Puzzle/Simon_says_button.png" id="8_iikmj"]
 [ext_resource type="Texture2D" uid="uid://bxffbjpqptt4l" path="res://assets/Placeholders/Puzzle/Heart.png" id="8_iikmj"]
+[ext_resource type="AudioStream" uid="uid://b6qndig5uw80n" path="res://assets/Sounds/puzzle/FailSound.mp3" id="10_d0fpf"]
+[ext_resource type="AudioStream" uid="uid://tlxlgdl02n7y" path="res://assets/Sounds/puzzle/correctSound.mp3" id="11_2rhfv"]
+[ext_resource type="AudioStream" uid="uid://b7br0fma3a1k2" path="res://assets/Sounds/puzzle/coinIncrease.mp3" id="12_c4gcl"]
+[ext_resource type="AudioStream" uid="uid://bwh3vdinpb6w4" path="res://assets/Sounds/puzzle/liveDisappear.mp3" id="13_c4gcl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
 font_color = Color(0.3529412, 0.3529412, 0.3529412, 1)
@@ -285,6 +288,20 @@ offset_top = 591.0
 offset_right = 56.0
 offset_bottom = 628.0
 text = "?"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1248612319]
+stream = ExtResource("10_d0fpf")
+volume_db = -3.467
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="." unique_id=1771376824]
+stream = ExtResource("11_2rhfv")
+volume_db = -10.622
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="." unique_id=921745762]
+stream = ExtResource("12_c4gcl")
+
+[node name="AudioStreamPlayer4" type="AudioStreamPlayer" parent="." unique_id=1540497803]
+stream = ExtResource("13_c4gcl")
 
 [connection signal="pressed" from="Button" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_explanation_pressed"]

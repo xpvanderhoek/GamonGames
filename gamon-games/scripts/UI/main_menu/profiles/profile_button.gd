@@ -16,12 +16,17 @@ func _ready() -> void:
 		text = str(slot_nr) + ". Empty"
 		has_profile = false
 
+func _on_hovered():
+	SoundManager.play_hover()
+
 func _on_pressed() -> void:
 	if has_profile:
 		SaveLoad.switch_profile(slot_nr)
 		profile_selected.emit()
 	else:
 		_create_profile()
+	
+	SoundManager.play_click()
 
 func _create_profile() -> void:
 	enter_name.visible = true
