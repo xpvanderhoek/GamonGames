@@ -11,5 +11,4 @@ lore = "Freedom is a weight someone else must carry."
 texture = ExtResource("2_5yq5r")
 cost = 35
 target_limb = "Leg"
-buff_type = "Damage"
 buff_value = 15.0

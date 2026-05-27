@@ -233,5 +233,7 @@ layout_mode = 2
 [node name="ItemButton9" parent="Panel/GridContainer" unique_id=572885561 instance=ExtResource("5_4voa6")]
 layout_mode = 2
 
-[node name="TutorialOverlay" parent="." unique_id=282468504 instance=ExtResource("6_jgg25")]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1290529617]
+
+[node name="TutorialOverlay" parent="CanvasLayer" unique_id=282468504 instance=ExtResource("6_jgg25")]
 pages = Array[ExtResource("7_4a6i5")]([SubResource("Resource_h2sm1"), SubResource("Resource_si0bq"), SubResource("Resource_j3cqa")])

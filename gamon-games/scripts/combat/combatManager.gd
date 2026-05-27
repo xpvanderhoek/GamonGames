@@ -1,13 +1,15 @@
 class_name CombatManager
 extends CanvasLayer
 
+const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
 const TURN_ORDER_ENTRY_SCENE := preload("res://scenes/combat/ui/TurnOrderEntry.tscn")
 const SPELL_BUTTON_SCENE := preload("res://scenes/combat/ui/SpellButton.tscn")
 const BUFF_ICON_SCENE := preload("res://scenes/combat/ui/BuffIcon.tscn")
 const COMBAT_SUMMARY_SCENE := preload("res://scenes/combat/ui/combat_summary.tscn")
 const COMBAT_ITEM_EFFECTS_SCRIPT := preload("res://scripts/combat/combat_item_effects.gd")
 
-@onready var tutorial_overlay: CanvasLayer = $TutorialOverlay
+@onready var tutorial_overlay: CanvasLayer = $CanvasLayer/TutorialOverlay
+@onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 const MAX_ENEMY_COUNT = 3
 
@@ -127,6 +129,9 @@ func _get_random_encounters() -> void:
 		_queued_encounter_scenes.append(enemy_pool[random_enemy_idx])
 
 func _input(event): #Temporary
+	if event.is_action_pressed("escape"):
+		canvas_layer.add_child(PAUSE_MENU.instantiate())
+	
 	if event.is_action_pressed("ui_cancel"):
 		if _attack_selected:
 			_cancel_selected_spell()
@@ -563,6 +568,7 @@ func _refresh_consumable_buttons() -> void:
 			button.set_item(item, idx)
 
 func _on_consumable_pressed(slot_index: int) -> void:
+	SoundManager.play_potion()
 	if current_state != CombatState.PLAYER_TURN:
 		return
 	if slot_index < 0 or slot_index >= RunData.consumables.size():
