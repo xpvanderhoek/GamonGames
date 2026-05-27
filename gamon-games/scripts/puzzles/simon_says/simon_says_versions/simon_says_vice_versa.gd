@@ -4,8 +4,6 @@ func get_puzzle_data() -> String:
 	return "simon_says_reverse"
 
 func _ready():
-	$Bone.visible = true
-	$Vice_versa_hint.visible = true
 	super._ready()
 
 func checkCorrect(clicked_button: int, click_position: int):
@@ -22,7 +20,7 @@ func checkCorrect(clicked_button: int, click_position: int):
 		await get_tree().create_timer(0.4).timeout
 		can_click = false
 		
-		next_round()
+		checkDone(sequence.size())
 		return
 		
 func calculate_coins():

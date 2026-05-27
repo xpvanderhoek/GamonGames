@@ -13,8 +13,7 @@ var scripts = {
 
 func start_random_game():
 	var game := SimonSaysGameScene.instantiate()
-	var rand_idx = RunData.rng.randi_range(0, scripts.size() - 1)
-	var rand_key = scripts.keys()[rand_idx]
+	var rand_key = scripts.keys()[PuzzleData.current_puzzle]
 	
 	game.set_script(scripts[rand_key])
 	get_tree().change_scene_to_node(game)
