@@ -5,7 +5,7 @@ var play = PuzzleTexts.CLOSEEXPLANATION[RunData.language]
 func knows(puzzle_id: String) -> bool:
 	return PuzzleData.knows_puzzles.get(puzzle_id, false)
 	
-func setup_button_lock(puzzle_id: String, delay: float = 8.0) -> void:
+func setup_button_lock(puzzle_id: String, delay: float = 3.0) -> void:
 	if PuzzleData.knows_puzzles["slide"]:
 		return
 	
