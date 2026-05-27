@@ -4,6 +4,7 @@ extends Sprite2D
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
 @export var is_vital: bool = false
+@export var can_be_targeted: bool = true
 @export_range(0.0, 100.0, 0.1) var physical_defense: float = 0.0
 @export_range(0.0, 100.0, 0.1) var magic_defense: float = 0.0
 @export_range(0.0, 100.0, 0.1) var hit_chance_percent: float = 100.0
@@ -97,6 +98,7 @@ func _setup_click_area() -> void:
 	var area := Area2D.new()
 	area.name = "ClickArea"
 	area.input_pickable = true
+	area.scale = Vector2(-1.0 if flip_h else 1.0, -1.0 if flip_v else 1.0)
 	add_child(area)
 
 	# Generate collision polygons from the texture's opaque pixels
@@ -119,15 +121,27 @@ func _setup_click_area() -> void:
 	else:
 		print("Error: No polygons generated for limb ", limb_name, ". Check Texture")
 
-	area.input_event.connect(_on_area_input_event)
 	area.mouse_entered.connect(func(): mouse_entered_limb.emit())
 	area.mouse_exited.connect(func(): mouse_exited_limb.emit())
+	if can_be_targeted:
+		area.input_event.connect(_on_area_input_event)
+
+func _get_primary_click_target() -> CombatLimb:
+	var parent_limb := get_parent() as CombatLimb
+	if parent_limb != null and is_instance_valid(parent_limb) and not parent_limb.is_destroyed:
+		return parent_limb
+
+	if is_destroyed:
+		return null
+	return self
 
 func _on_area_input_event(viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if is_destroyed:
 		return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		limb_clicked.emit(self)
+		var target_limb := _get_primary_click_target()
+		if target_limb != null:
+			limb_clicked.emit(target_limb)
 		# Consume the event so limbs behind this one (e.g. torso behind an arm) don't also get clicked
 		viewport.set_input_as_handled()
 
@@ -245,6 +259,11 @@ func destroy_limb() -> void:
 		click_area.input_pickable = false
 		click_area.monitoring = false
 		click_area.monitorable = false
+
+	for child in get_children():
+		var child_limb := child as CombatLimb
+		if child_limb != null and is_instance_valid(child_limb) and not child_limb.is_destroyed:
+			child_limb.destroy_limb()
 
 	limb_destroyed.emit(self)
 	_play_destroy_animation()
