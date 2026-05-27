@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bjeq4g53b8ymj" path="res://assets/Placeholders/Puzzle/Simon_says_button.png" id="1_0bpx2"]
 [ext_resource type="Script" uid="uid://cicxkue5c6f0p" path="res://scripts/puzzles/simon_says/simon_button.gd" id="1_nvylr"]
+[ext_resource type="AudioStream" uid="uid://b1mnb2oylbx5n" path="res://assets/Sounds/puzzle/buttonPress.mp3" id="3_tfo8q"]
 
 [node name="SimonButton" type="TextureButton" unique_id=380593538]
 offset_right = 338.0
@@ -10,3 +11,7 @@ scale = Vector2(0.45, 0.45)
 texture_normal = ExtResource("1_0bpx2")
 ignore_texture_size = true
 script = ExtResource("1_nvylr")
+
+[node name="AudioStreamPlayer4" type="AudioStreamPlayer" parent="." unique_id=1422966368]
+stream = ExtResource("3_tfo8q")
+volume_db = -7.511
