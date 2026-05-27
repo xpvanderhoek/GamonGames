@@ -27,7 +27,8 @@ const PUZZLE_SCENES := [
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var map_generator: MapGenerator = $MapGenerator
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
-@onready var coin_label: Label = $CanvasLayer/TextureRect/CoinLabel
+@onready var coin_label: Label = $CanvasLayer/Coins/CoinLabel
+@onready var health_label: Label = $CanvasLayer/Health/Label
 
 var map_data : Array[Array]
 var floors_climbed : int
@@ -40,12 +41,14 @@ func _ready() -> void:
 	if not RunData.run_active or RunData.map_data.is_empty():
 		RunData.new_run()
 		coin_label.text = str(RunData.coins)
+		health_label.text = str(RunData.current_health)
 		generate_new_map()
 		_save_map_state()
 		unlock_floor(0)
 	else:
 		map_data = RunData.map_data
 		coin_label.text = str(RunData.coins)
+		health_label.text = str(RunData.current_health)
 		floors_climbed = RunData.floors_climbed
 		last_room = RunData.last_map_room
 		create_map()

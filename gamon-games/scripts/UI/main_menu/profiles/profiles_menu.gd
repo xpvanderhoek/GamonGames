@@ -25,10 +25,14 @@ func _on_profile_selected():
 	queue_free()
 
 func _on_back_pressed() -> void:
+	SoundManager.play_click()
 	await _fade_out()
 	queue_free()
-	
+
 func _fade_out() -> void:
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.1)
 	await tween.finished
+
+func _on_back_mouse_hovered() -> void:
+	SoundManager.play_hover()

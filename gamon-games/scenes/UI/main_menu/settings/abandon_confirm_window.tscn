@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://tamvao23ewoj"]
 
 [ext_resource type="Script" uid="uid://1lovbncfp1x8" path="res://scripts/UI/main_menu/settings/abandon_confirm_window.gd" id="1_47dsv"]
-[ext_resource type="Texture2D" uid="uid://bna6oqnmf2i01" path="res://assets/ui/buttons/button.png" id="1_747nr"]
+[ext_resource type="Texture2D" uid="uid://66sxmwpnj2f7" path="res://assets/ui/buttons/button.png" id="1_747nr"]
 [ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_47dsv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iw8y0"]
@@ -137,5 +137,7 @@ text = "No
 "
 autowrap_trim_flags = 0
 
+[connection signal="mouse_entered" from="Window/Yes" to="." method="_on_button_hover"]
 [connection signal="pressed" from="Window/Yes" to="." method="_on_yes_pressed"]
+[connection signal="mouse_entered" from="Window/No" to="." method="_on_button_hover"]
 [connection signal="pressed" from="Window/No" to="." method="_on_no_pressed"]

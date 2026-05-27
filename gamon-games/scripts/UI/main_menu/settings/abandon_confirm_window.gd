@@ -17,10 +17,15 @@ func _ready() -> void:
 
 func _on_yes_pressed() -> void:
 	RunData.end_run()
+	SoundManager.play_click()
 	TransitionManager.change_scene(MAIN_MENU)
 
 func _on_no_pressed() -> void:
+	SoundManager.play_click()
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.1)
 	await tween.finished
 	queue_free()
+
+func _on_button_hover():
+	SoundManager.play_hover()

@@ -49,17 +49,17 @@ texture = ExtResource("2_0vw6h")
 expand_mode = 1
 
 [node name="LogoShadow" type="TextureRect" parent="." unique_id=107718322]
-modulate = Color(0, 0, 0, 0.51100004)
+modulate = Color(0, 0, 0, 0.39607844)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -272.0
-offset_top = -213.0
-offset_right = 274.24292
-offset_bottom = -85.0
+offset_left = -273.121
+offset_top = -199.0
+offset_right = 273.12195
+offset_bottom = -71.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_7pp57")
@@ -72,10 +72,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -273.12143
-offset_top = -219.0
-offset_right = 273.12146
-offset_bottom = -91.0
+offset_left = -273.121
+offset_top = -205.0
+offset_right = 273.12195
+offset_bottom = -77.000824
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_7pp57")
@@ -177,4 +177,6 @@ text = "Profile: Name"
 [connection signal="mouse_entered" from="VBoxContainer/QuitButton" to="." method="_on_button_hover"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_button_click"]
+[connection signal="mouse_entered" from="ProfileButton" to="." method="_on_button_hover"]
 [connection signal="pressed" from="ProfileButton" to="." method="_on_profile_button_pressed"]
+[connection signal="pressed" from="ProfileButton" to="." method="_on_button_click"]

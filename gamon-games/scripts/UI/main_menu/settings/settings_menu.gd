@@ -50,13 +50,13 @@ func _sync_graphics():
 	var current_win_mode = DisplayServer.window_get_mode()
 	match current_win_mode:
 		DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
-			window_mode.select(1)
+			window_mode.select(0)
 			res_options.disabled = true
 		DisplayServer.WINDOW_MODE_FULLSCREEN:
 			window_mode.select(2)
 			res_options.disabled = true
 		DisplayServer.WINDOW_MODE_WINDOWED:
-			window_mode.select(3)
+			window_mode.select(1)
 			res_options.disabled = false
 	
 	# Resolution
@@ -131,7 +131,11 @@ func _on_v_sync_button_pressed() -> void:
 	Settings.save_settings()
 
 func _on_abandon_pressed() -> void:
+	SoundManager.play_click()
 	add_sibling(ABANDON_SCREEN.instantiate())
+
+func _on_abandon_hover():
+	SoundManager.play_hover()
 
 func _on_volume_slider_done_sliding(slider: VolumeSlider, value_changed: bool) -> void:
 	if !value_changed:

@@ -46,7 +46,7 @@ script = ExtResource("3_jcaow")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=937252768]
 layer = 0
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=1271540208]
+[node name="Coins" type="TextureRect" parent="CanvasLayer" unique_id=1271540208]
 offset_left = 958.0
 offset_top = 16.0
 offset_right = 1260.9813
@@ -55,7 +55,7 @@ scale = Vector2(0.57914907, 0.57914907)
 texture = ExtResource("4_04w0f")
 expand_mode = 1
 
-[node name="CoinLabel" type="Label" parent="CanvasLayer/TextureRect" unique_id=428784600]
+[node name="CoinLabel" type="Label" parent="CanvasLayer/Coins" unique_id=428784600]
 layout_mode = 0
 offset_left = 44.0
 offset_top = 23.0
@@ -64,3 +64,37 @@ offset_bottom = 115.0
 text = "0"
 label_settings = SubResource("LabelSettings_0cso3")
 horizontal_alignment = 2
+
+[node name="Health" type="TextureRect" parent="CanvasLayer" unique_id=1511055501]
+offset_left = 22.0
+offset_top = 16.0
+offset_right = 324.98132
+offset_bottom = 159.0
+scale = Vector2(0.57914907, 0.57914907)
+texture = ExtResource("4_04w0f")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Health" unique_id=789149836]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 23.0
+offset_right = 209.0
+offset_bottom = 115.0
+text = "0"
+label_settings = SubResource("LabelSettings_0cso3")
+horizontal_alignment = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Health" unique_id=1082995949]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -88.874115
+offset_top = -30.059898
+offset_right = -31.893951
+offset_bottom = 26.920258
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0.8980392, 0.8352941, 0.77254903, 1)

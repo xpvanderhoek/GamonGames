@@ -18,6 +18,8 @@ func _ready() -> void:
 	else:
 		SaveLoad.load_on_start()
 	profile_button.text = "Profile: " + PlayerStats.profile_name
+	
+	print(DisplayServer.window_get_mode())
 
 func _on_play_button_pressed() -> void:
 	TransitionManager.change_scene(MAP_SCENE)

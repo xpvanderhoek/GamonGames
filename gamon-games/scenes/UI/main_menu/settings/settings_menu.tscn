@@ -92,6 +92,13 @@ theme_override_font_sizes/font_size = 26
 text = "Graphics"
 horizontal_alignment = 1
 
+[node name="Label2" type="Label" parent="Window/Contents/GraphicsContainer" unique_id=1014642830]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 11
+text = "*Game restart is recommended*"
+horizontal_alignment = 1
+
 [node name="Resolution" type="HBoxContainer" parent="Window/Contents/GraphicsContainer" unique_id=1119792551]
 layout_mode = 2
 
@@ -266,6 +273,7 @@ autowrap_trim_flags = 0
 [connection signal="done_sliding" from="Window/Contents/SoundContainer/Master/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
 [connection signal="done_sliding" from="Window/Contents/SoundContainer/SFX/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
 [connection signal="done_sliding" from="Window/Contents/SoundContainer/Music/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
+[connection signal="mouse_entered" from="Window/Contents/Abandon" to="." method="_on_abandon_hover"]
 [connection signal="pressed" from="Window/Contents/Abandon" to="." method="_on_abandon_pressed"]
 [connection signal="mouse_entered" from="Window/Contents/Back" to="." method="_on_back_hover"]
 [connection signal="pressed" from="Window/Contents/Back" to="." method="_on_back_pressed"]
