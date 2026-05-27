@@ -8,11 +8,26 @@
 [ext_resource type="Texture2D" uid="uid://dnrjcf6l5mmh4" path="res://assets/enemies/skeleton/arm.png" id="6_3ve5h"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="8_sdnsx"]
 [ext_resource type="AudioStream" uid="uid://ck0bb4bm58hoe" path="res://assets/enemies/skeleton/weapon1.wav" id="9_8mlvi"]
-[ext_resource type="Texture2D" uid="uid://cm4og8dey6cju" path="res://assets/enemies/skeleton/leg.png" id="10_4n1hl"]
+
+[sub_resource type="Resource" id="Resource_xej5o"]
+script = ExtResource("8_sdnsx")
+min_damage = 2
+max_damage = 5
+weight = 75.0
+metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_ltakh"]
 script = ExtResource("8_sdnsx")
+min_damage = 2
+max_damage = 5
+weight = 75.0
 sfx = ExtResource("9_8mlvi")
+metadata/_custom_type_script = "uid://cds04x2mi4kl6"
+
+[sub_resource type="Resource" id="Resource_r5pin"]
+script = ExtResource("8_sdnsx")
+min_damage = 1
+max_damage = 3
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [node name="ttt" type="Control" unique_id=1680014499]
@@ -25,7 +40,7 @@ offset_bottom = 350.0
 script = ExtResource("1_3wpbg")
 hit_sfx = ExtResource("2_2m3e0")
 turn_order_icon = ExtResource("3_8fxwp")
-spawn_max_fights = 3
+spawn_max_fights = 5
 
 [node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
 layout_mode = 1
@@ -56,6 +71,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_3ve5h")
 script = ExtResource("5_7fdr4")
 max_health = 25
+attacks = Array[ExtResource("8_sdnsx")]([SubResource("Resource_xej5o")])
 
 [node name="Right Arm" type="Sprite2D" parent="." unique_id=1758730569]
 position = Vector2(67.5, 141.75)
@@ -66,14 +82,6 @@ script = ExtResource("5_7fdr4")
 max_health = 25
 attacks = Array[ExtResource("8_sdnsx")]([SubResource("Resource_ltakh")])
 
-[node name="Right Leg" type="Sprite2D" parent="." unique_id=214963418]
-position = Vector2(156.5, 247.75)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("10_4n1hl")
-flip_h = true
-script = ExtResource("5_7fdr4")
-max_health = 25
-
 [node name="Head" type="Sprite2D" parent="." unique_id=1466662351]
 position = Vector2(121.5, 45.75)
 scale = Vector2(0.5, 0.5)
@@ -82,3 +90,4 @@ script = ExtResource("5_7fdr4")
 max_health = 30
 is_vital = true
 hit_chance_percent = 50.0
+attacks = Array[ExtResource("8_sdnsx")]([SubResource("Resource_r5pin")])

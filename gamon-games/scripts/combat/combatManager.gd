@@ -17,6 +17,7 @@ var enemy_pool : Array[PackedScene] = [
 	preload("res://scenes/combat/enemies/skeleton_weak.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_weak2.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_weak3.tscn"),
+	preload("res://scenes/combat/enemies/skeleton_weak4.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_full.tscn"),
 ]
 
@@ -667,7 +668,7 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		return
 	if debug_round_stats:
 		var limb_label: String = _item_effects.get_limb_label(limb)
-		var hit_chance := _get_adjusted_hit_chance_percent(limb)
+		var hit_chance := _get_adjusted_hit_chance_percent(limb, source_enemy)
 		var item_damage_bonus: int = _item_effects.get_item_damage_bonus(limb)
 		var item_precision_bonus: float = _item_effects.get_item_precision_bonus(limb)
 		var status_effects: Array[String] = _item_effects.get_item_statuses_for_limb(limb)
@@ -698,7 +699,7 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 	var active_spell := selected_spell
 	if active_spell != null and not _spend_spell_energy(active_spell):
 		return
-	if _roll_player_hit_on_limb(limb):
+	if _roll_player_hit_on_limb(limb, source_enemy):
 		var spell_damage := 0
 		var spell_type := SpellData.SpellType.ATTACK
 		var attack_damage_type := SpellData.DamageType.PHYSICAL
@@ -768,15 +769,25 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 	source_enemy.clear_current_highlight()
 	_end_player_turn()
 
-func _get_adjusted_hit_chance_percent(limb: CombatLimb) -> float:
+func _only_vital_limbs_remain(source_enemy: CombatEntity) -> bool:
+	if source_enemy == null or not is_instance_valid(source_enemy):
+		return false
+	for limb in source_enemy.limbs:
+		if limb != null and is_instance_valid(limb) and not limb.is_destroyed and not limb.is_vital:
+			return false
+	return true
+
+func _get_adjusted_hit_chance_percent(limb: CombatLimb, source_enemy: CombatEntity = null) -> float:
 	if limb == null or not is_instance_valid(limb):
 		return 0.0
+	if source_enemy != null and _only_vital_limbs_remain(source_enemy):
+		return 100.0
 	var item_precision_bonus: float = _item_effects.get_item_precision_bonus(limb)
 	var temp_precision_bonus: float = _item_effects.get_temp_precision_bonus()
 	return clampf(limb.hit_chance_percent + player_hit_chance_bonus_percent + item_precision_bonus + temp_precision_bonus, 0.0, 100.0)
 
-func _roll_player_hit_on_limb(limb: CombatLimb) -> bool:
-	return randf() * 100.0 < _get_adjusted_hit_chance_percent(limb)
+func _roll_player_hit_on_limb(limb: CombatLimb, source_enemy: CombatEntity = null) -> bool:
+	return randf() * 100.0 < _get_adjusted_hit_chance_percent(limb, source_enemy)
 
 func _on_enemy_died(_entity: CombatEntity) -> void:
 	if _entity != null and is_instance_valid(_entity):
