@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://bs4tcrv4d0qpt"]
+[gd_resource type="Resource" format=3 uid="uid://bs4tcrv4d0qpt"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://d0bhknl6ubbp2" path="res://assets/ShopItems/Textures/Vial of stagnent Time.png" id="2_pa2dk"]
+[ext_resource type="Texture2D" uid="uid://gkg6d8v53tek" path="res://assets/ShopItems/Textures/Vial of stagnent Time.png" id="2_pa2dk"]
 
 [resource]
 script = ExtResource("1_script")
 item_name = "Vial of Stagnant Time"
-effect = "First Skill Cooldown -1. Prevents Haste"
+effect = "Skills cost 1 less energy"
 lore = "The liquid inside never ripples."
 texture = ExtResource("2_pa2dk")
 cost = 40

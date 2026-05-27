@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ConsumableItemData" format=3 uid="uid://c5by45pbtpaii"]
 
 [ext_resource type="Script" uid="uid://dgqq6xftokity" path="res://scripts/Items/ConsumableItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://dhag3h6q377h5" path="res://assets/ShopItems/Textures/Caustic Resin.png" id="2_t36a6"]
+[ext_resource type="Texture2D" uid="uid://bui50a1b3a5ju" path="res://assets/ShopItems/Textures/Dark Balsam.png" id="2_rn6tf"]
 
 [resource]
 script = ExtResource("1_script")
@@ -9,7 +9,7 @@ item_name = "Dark Balsam"
 effect = "Restores 35 HP instantly"
 lore = "A bitter sludge that closes wounds with scar tissue."
 category = "Tier II"
-texture = ExtResource("2_t36a6")
+texture = ExtResource("2_rn6tf")
 cost = 35
 target_limb = "Self"
 buff_type = "HP_Max"

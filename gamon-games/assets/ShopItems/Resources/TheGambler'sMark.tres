@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://bpekethbrw0yh"]
+[gd_resource type="Resource" format=3 uid="uid://bpekethbrw0yh"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://0swdp2gvgl35" path="res://assets/ShopItems/Textures/The Gambler's Mark.png" id="2_luejd"]
+[ext_resource type="Texture2D" uid="uid://chy5lrwf40gjl" path="res://assets/ShopItems/Textures/The Gambler's Mark.png" id="2_luejd"]
 
 [resource]
 script = ExtResource("1_script")
 item_name = "The Gambler's Mark"
-effect = "Reroll entire shop 2x per run. All shops grant +30 Luck"
+effect = "Gain +30 Luck during this run"
 lore = "Those marked by the wheel spin destiny itself in their favor."
 category = "Tier III"
 texture = ExtResource("2_luejd")

@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://dli5qqqpyx7tc"]
+
+[ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="1_s65ah"]
+[ext_resource type="Script" uid="uid://byi5jth05rdo8" path="res://scripts/UI/main_menu/profiles/profile_button.gd" id="2_2krox"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v7pgt"]
+bg_color = Color(0.0018410675, 0.0018410685, 0.0018410663, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vcrg"]
+bg_color = Color(0.07082722, 0.07082721, 0.07082722, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bqjq5"]
+bg_color = Color(0.09239701, 0.09239709, 0.09239703, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2krox"]
+content_margin_left = 10.0
+bg_color = Color(0, 0, 0, 1)
+
+[node name="ProfileButton" type="Button" unique_id=1901559414]
+offset_right = 378.0
+offset_bottom = 108.0
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("1_s65ah")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxFlat_v7pgt")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5vcrg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_bqjq5")
+text = "X. If you see this, 
+this is a bug..."
+script = ExtResource("2_2krox")
+
+[node name="EnterName" type="LineEdit" parent="." unique_id=1499043125]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_s65ah")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxFlat_2krox")
+placeholder_text = "Enter Name"
+max_length = 10
+
+[node name="Button" type="Button" parent="." unique_id=961778164]
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 19.0
+offset_top = -37.0
+offset_right = 93.5
+offset_bottom = 37.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Delete"
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

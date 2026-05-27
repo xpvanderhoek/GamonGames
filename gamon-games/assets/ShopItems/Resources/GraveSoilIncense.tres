@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="BuffItemData" format=3 uid="uid://dl1ghcmvkidxt"]
+[gd_resource type="Resource" format=3 uid="uid://dl1ghcmvkidxt"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://fbbwhgqh8cjf" path="res://assets/ShopItems/Textures/Grave-soil Incense.png" id="2_xf2hj"]
+[ext_resource type="Texture2D" uid="uid://eqe1583xvxam" path="res://assets/ShopItems/Textures/Grave-soil Incense.png" id="2_xf2hj"]
 
 [resource]
 script = ExtResource("1_script")
 item_name = "Grave-Soil Incense"
-effect = "Start with +20 Defense. -10 Precision"
+effect = "Start with +20 Defense"
 lore = "The scent of the earth clouds the vision."
 category = "Tier II"
 texture = ExtResource("2_xf2hj")
