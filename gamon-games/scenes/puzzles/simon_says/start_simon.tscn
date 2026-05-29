@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cgje0uromxbcc"]
 
 [ext_resource type="Script" uid="uid://ciewqv5jp8aoa" path="res://scripts/puzzles/simon_says/start_simon.gd" id="1_l8d34"]
-[ext_resource type="Texture2D" uid="uid://drya62031yagg" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_l8d34"]
+[ext_resource type="Texture2D" uid="uid://ct1p63vjpq1wt" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_l8d34"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_xebwk"]
 font_size = 51

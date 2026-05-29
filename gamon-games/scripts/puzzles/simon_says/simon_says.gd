@@ -7,6 +7,8 @@ class_name SimonSays
 @onready var coinLabel: Label = $CoinLabel
 @onready var totalCoins: Label = $TotalCoinsLabel
 @onready var lives: TextureRect = $Lives
+@onready var finishRound: int = 7
+const COMBAT_SCENE := "res://scenes/combat/combat.tscn"
 
 var coin_amount: int = 0
 var sequence: Array[int] = []
@@ -93,9 +95,19 @@ func checkCorrect(clicked_button: int, click_position: int):
 		changeColor(Color(0.267, 0.667, 0.268, 1.0))
 		await get_tree().create_timer(0.4).timeout
 		can_click = false
-		next_round()
+		checkDone(sequence.size())
 		return
 
+func checkDone(currentRound: int):
+	if currentRound >= finishRound:
+		animate_labels(coinLabel, totalCoins)
+		switchDisabled(true)
+		await get_tree().create_timer(0.7).timeout
+		TransitionManager.change_scene("res://scenes/map/map.tscn")
+		await get_tree().create_timer(0.4).timeout
+		queue_free()
+	else:
+		next_round()
 
 func changeColor(color: Color):
 	for b in buttons:
@@ -133,7 +145,6 @@ func fail():
 
 		await tween.finished
 		await get_tree().create_timer(0.4).timeout
-		
 		lives.visible = false
 		player_input.clear()
 		show_sequence()
@@ -207,7 +218,8 @@ func _on_button_pressed(idx):
 	can_click = true
 	
 func _on_continue_pressed() -> void:
-	TransitionManager.change_scene("res://scenes/map/map.tscn")
+	TransitionManager.change_scene(COMBAT_SCENE)
+	await get_tree().create_timer(0.4).timeout
 	queue_free()
 	
 func animate_labels(label_a: Label, label_b: Label):

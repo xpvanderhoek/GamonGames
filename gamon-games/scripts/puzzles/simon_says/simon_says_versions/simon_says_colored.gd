@@ -95,7 +95,7 @@ func checkCorrect(clicked_button: int, click_position: int):
 		await get_tree().create_timer(0.4).timeout
 		can_click = false
 		
-		next_round()
+		checkDone(colorlist.size())
 		return
 
 func calculate_coins():

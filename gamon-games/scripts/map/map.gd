@@ -156,6 +156,6 @@ func _go_to_room(room : Room) -> void:
 		Room.Type.SHOP:
 			TransitionManager.change_scene(SHOP_SCENE, TransitionManager.TransitionType.FADE)
 		Room.Type.PUZZLE:
-			TransitionManager.change_scene(PUZZLE_SCENES[RunData.rng.randi() % PUZZLE_SCENES.size()])
+			TransitionManager.change_scene("res://scenes/puzzles/Chest_room.tscn")
 		Room.Type.BOSS:
 			TransitionManager.change_scene(COMBAT_SCENE)
