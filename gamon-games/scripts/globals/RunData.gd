@@ -60,6 +60,7 @@ var current_energy: int = 10:
 var current_encounter: Array[PackedScene] = []
 var map_data: Array = []
 var floors_climbed: int = 0
+var combats_fought: int = 0
 var last_map_room: Room = null
 var items : Array[ItemData] = [] 
 var consumables : Array = [null, null, null, null, null, null, null, null, null]
@@ -95,6 +96,7 @@ func new_run():
 	time_remaining = RUN_DURATION
 	add_spell(BASIC_ATTACK)
 	add_spell(BLOCK)
+	combats_fought = 0
 
 func reset_energy() -> void:
 	max_energy = 10

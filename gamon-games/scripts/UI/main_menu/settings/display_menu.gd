@@ -11,3 +11,6 @@ func _on_window_item_selected(index: int) -> void:
 		
 	elif current_display == "Windowed":
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+func _on_back_pressed() -> void:
+	queue_free()
