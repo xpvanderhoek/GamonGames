@@ -16,4 +16,5 @@ func _process(delta: float) -> void:
 
 
 func _on_pressed() -> void:
+	disabled = true
 	TransitionManager.change_scene(PUZZLE_SCENES[RunData.rng.randi() % PUZZLE_SCENES.size()])

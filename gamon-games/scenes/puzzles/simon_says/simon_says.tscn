@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dip87pnxytcc5"]
 
 [ext_resource type="Script" uid="uid://c5xnmi2opdjbb" path="res://scripts/puzzles/simon_says/simon_says.gd" id="1_s13xn"]
-[ext_resource type="Texture2D" uid="uid://ct1p63vjpq1wt" path="res://assets/Placeholders/Puzzle/stone table.png" id="2_bwhsd"]
+[ext_resource type="Texture2D" uid="uid://cn1rjadgwh0ig" path="res://assets/enemies/chest/locked_chest.png" id="2_c4gcl"]
 [ext_resource type="PackedScene" uid="uid://cww7k3ngmylu3" path="res://scenes/puzzles/simon_says/simon_button.tscn" id="3_bogql"]
 [ext_resource type="Texture2D" uid="uid://cmeg7ial3apwb" path="res://assets/Placeholders/Puzzle/tombstone.png" id="4_bwhsd"]
 [ext_resource type="Texture2D" uid="uid://ddi3eeisnaj0c" path="res://assets/Placeholders/Puzzle/bone.png" id="5_bogql"]
@@ -12,7 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://b6qndig5uw80n" path="res://assets/Sounds/puzzle/FailSound.mp3" id="10_d0fpf"]
 [ext_resource type="AudioStream" uid="uid://tlxlgdl02n7y" path="res://assets/Sounds/puzzle/correctSound.mp3" id="11_2rhfv"]
 [ext_resource type="AudioStream" uid="uid://b7br0fma3a1k2" path="res://assets/Sounds/puzzle/coinIncrease.mp3" id="12_c4gcl"]
-[ext_resource type="AudioStream" uid="uid://bwh3vdinpb6w4" path="res://assets/Sounds/puzzle/liveDisappear.mp3" id="13_c4gcl"]
+[ext_resource type="AudioStream" uid="uid://bgicp1tl7aarw" path="res://assets/Sounds/puzzle/liveDisappear.mp3" id="13_c4gcl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
 font_color = Color(0.3529412, 0.3529412, 0.3529412, 1)
@@ -43,13 +43,20 @@ script = ExtResource("1_s13xn")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=642298664]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = -1.6630001
+anchor_top = -3.6390002
+anchor_right = 2.6030002
+anchor_bottom = 3.091
+offset_left = -0.22387695
+offset_top = 0.072021484
+offset_right = 0.34375
+offset_bottom = 0.031982422
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_bwhsd")
+texture = ExtResource("2_c4gcl")
 expand_mode = 2
+stretch_mode = 4
 
 [node name="topleft" parent="." unique_id=470095919 instance=ExtResource("3_bogql")]
 layout_mode = 0
