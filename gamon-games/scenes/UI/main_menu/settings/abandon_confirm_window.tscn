@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://tamvao23ewoj"]
+
+[ext_resource type="Script" uid="uid://1lovbncfp1x8" path="res://scripts/UI/main_menu/settings/abandon_confirm_window.gd" id="1_47dsv"]
+[ext_resource type="Texture2D" uid="uid://66sxmwpnj2f7" path="res://assets/ui/buttons/button.png" id="1_747nr"]
+[ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_47dsv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iw8y0"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="AbandonConfirmWindow" type="Control" unique_id=1249649915]
+process_mode = 3
+z_index = 1000
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_47dsv")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1832715035]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.2901961)
+
+[node name="Window" type="NinePatchRect" parent="." unique_id=1043583233]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -162.0
+offset_top = -114.375
+offset_right = 162.0
+offset_bottom = 114.375
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_747nr")
+patch_margin_left = 40
+patch_margin_top = 45
+patch_margin_right = 41
+patch_margin_bottom = 43
+
+[node name="Title" type="Label" parent="Window" unique_id=805626089]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -65.0
+offset_top = 27.0
+offset_right = 65.0
+offset_bottom = 52.0
+grow_horizontal = 2
+theme_override_constants/outline_size = 9
+theme_override_fonts/font = ExtResource("2_47dsv")
+theme_override_font_sizes/font_size = 34
+text = "Are you sure?"
+horizontal_alignment = 1
+
+[node name="Info" type="Label" parent="Window" unique_id=990102168]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -23.5
+offset_right = 65.0
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("2_47dsv")
+theme_override_font_sizes/font_size = 15
+text = "All run progress will be lost.
+"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Yes" type="Button" parent="Window" unique_id=647811752]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -61.75
+offset_right = -24.0
+offset_bottom = -36.75
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(0.174, 0.58, 0.23489994, 1)
+theme_override_colors/font_pressed_color = Color(0.153, 0.51, 0.20654996, 1)
+theme_override_colors/font_hover_color = Color(0.17254902, 0.5803922, 0.23529412, 1)
+theme_override_fonts/font = ExtResource("2_47dsv")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_iw8y0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_iw8y0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iw8y0")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_iw8y0")
+text = "Yes
+"
+autowrap_trim_flags = 0
+
+[node name="No" type="Button" parent="Window" unique_id=303402592]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -61.75
+offset_right = 72.0
+offset_bottom = -36.75
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_pressed_color = Color(0.80395424, 0.6112818, 0.10585306, 1)
+theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_fonts/font = ExtResource("2_47dsv")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_iw8y0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_iw8y0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iw8y0")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_iw8y0")
+text = "No
+"
+autowrap_trim_flags = 0
+
+[connection signal="mouse_entered" from="Window/Yes" to="." method="_on_button_hover"]
+[connection signal="pressed" from="Window/Yes" to="." method="_on_yes_pressed"]
+[connection signal="mouse_entered" from="Window/No" to="." method="_on_button_hover"]
+[connection signal="pressed" from="Window/No" to="." method="_on_no_pressed"]

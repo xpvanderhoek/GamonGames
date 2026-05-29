@@ -2,6 +2,9 @@ extends Control
 
 signal continue_pressed
 
+const XPBAR_TICK_SFX := preload("res://assets/Sounds/xpbar.wav")
+const LEVELUP_SFX := preload("res://assets/Sounds/levelup.wav")
+
 @onready var exp_recieved: Label = $PanelContainer/VBoxContainer/ExpRecieved
 @onready var current_level: Label = $PanelContainer/VBoxContainer/LevelContainer/CurrentLevel
 @onready var next_level: Label = $PanelContainer/VBoxContainer/LevelContainer/NextLevel
@@ -15,7 +18,10 @@ signal continue_pressed
 const SPELL_DIR := "res://resources/combat_spells/"
 
 var _target_exp: int = 0
+var _animation_start_exp: int = 0
+var _animation_end_exp: int = 0
 var _current_displayed_exp: int = 0
+var _last_tick_exp: int = 0
 var _exp_text_label: Label = null
 var _did_level_up: bool = false
 var _all_spells: Array[SpellData] = []
@@ -41,11 +47,14 @@ func setup(exp_gained: int) -> void:
 		exp_recieved.text = "EXP Received: " + str(exp_gained)
 		
 	_target_exp = RunData.current_exp
-	var starting_exp = max(0, _target_exp - exp_gained)
+	var starting_exp: int = max(0, _target_exp - exp_gained)
 	_current_displayed_exp = starting_exp
+	_animation_start_exp = starting_exp
+	_animation_end_exp = _target_exp
+	_last_tick_exp = starting_exp
 	
-	var start_lvl = _get_level_from_exp(starting_exp)
-	var end_lvl = _get_level_from_exp(_target_exp)
+	var start_lvl: int = _get_level_from_exp(starting_exp)
+	var end_lvl: int = _get_level_from_exp(_target_exp)
 	_did_level_up = end_lvl > start_lvl
 	
 	_update_ui_for_exp(_current_displayed_exp)
@@ -73,8 +82,10 @@ func _get_level_from_exp(exp_amount: int) -> int:
 		lvl += 1
 	return lvl
 
-func _update_ui_for_exp(exp_amount: int) -> void:
-	var lvl = _get_level_from_exp(exp_amount)
+func _update_ui_for_exp(exp_amount: float) -> void:
+	var exp_value := int(floor(exp_amount))
+	var lvl: int = _get_level_from_exp(exp_value)
+	_play_expbar_ticks(exp_value)
 	
 	if current_level:
 		current_level.text = "Lvl " + str(lvl)
@@ -86,8 +97,8 @@ func _update_ui_for_exp(exp_amount: int) -> void:
 			next_level.text = "Lvl " + str(lvl + 1)
 			
 	if progress_bar:
-		var current_req = RunData.EXP_PER_LEVEL[lvl] if lvl < RunData.EXP_PER_LEVEL.size() else RunData.EXP_PER_LEVEL[-1]
-		var next_req = RunData.EXP_PER_LEVEL[lvl + 1] if lvl + 1 < RunData.EXP_PER_LEVEL.size() else current_req
+		var current_req: int = RunData.EXP_PER_LEVEL[lvl] if lvl < RunData.EXP_PER_LEVEL.size() else RunData.EXP_PER_LEVEL[-1]
+		var next_req: int = RunData.EXP_PER_LEVEL[lvl + 1] if lvl + 1 < RunData.EXP_PER_LEVEL.size() else current_req
 		
 		if next_req == current_req:
 			progress_bar.max_value = 1.0
@@ -96,19 +107,42 @@ func _update_ui_for_exp(exp_amount: int) -> void:
 				_exp_text_label.text = "MAX LEVEL"
 		else:
 			progress_bar.max_value = next_req - current_req
-			progress_bar.value = exp_amount - current_req
+			progress_bar.value = exp_value - current_req
 			if _exp_text_label:
-				_exp_text_label.text = str(exp_amount - current_req) + " / " + str(next_req - current_req)
+				_exp_text_label.text = str(exp_value - current_req) + " / " + str(next_req - current_req)
+
+func _play_expbar_ticks(exp_value: int) -> void:
+	if XPBAR_TICK_SFX == null:
+		return
+
+	var target_exp := clampi(exp_value, _animation_start_exp, _animation_end_exp)
+	if target_exp <= _last_tick_exp:
+		return
+
+	var exp_span = max(1, _animation_end_exp - _animation_start_exp)
+	while _last_tick_exp < target_exp:
+		_last_tick_exp += 1
+		if _last_tick_exp <= _animation_start_exp:
+			continue
+
+		var progress := float(_last_tick_exp - _animation_start_exp) / float(exp_span)
+		var tick_player := AudioStreamPlayer.new()
+		tick_player.stream = XPBAR_TICK_SFX
+		tick_player.autoplay = false
+		tick_player.pitch_scale = lerpf(0.88, 1.22, clampf(progress, 0.0, 1.0))
+		add_child(tick_player)
+		tick_player.finished.connect(tick_player.queue_free)
+		tick_player.play()
 
 func _animate_exp_bar(from_exp: int, to_exp: int) -> void:
-	var tween = create_tween()
-	var start_lvl = _get_level_from_exp(from_exp)
-	var end_lvl = _get_level_from_exp(to_exp)
+	var tween: Tween = create_tween()
+	var start_lvl: int = _get_level_from_exp(from_exp)
+	var end_lvl: int = _get_level_from_exp(to_exp)
 	
-	var current_anim_exp = from_exp
+	var current_anim_exp: int = from_exp
 	
 	for lvl in range(start_lvl, end_lvl):
-		var level_up_exp = RunData.EXP_PER_LEVEL[lvl + 1]
+		var level_up_exp: int = RunData.EXP_PER_LEVEL[lvl + 1]
 		tween.tween_method(_update_ui_for_exp, current_anim_exp, level_up_exp, 1.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		tween.tween_callback(func():
 			pass
@@ -122,10 +156,22 @@ func _animate_exp_bar(from_exp: int, to_exp: int) -> void:
 
 func _on_animation_finished() -> void:
 	if _did_level_up:
+		_play_levelup_sfx()
 		_show_spell_options()
 	else:
 		if continue_button:
 			continue_button.disabled = false
+
+func _play_levelup_sfx() -> void:
+	if LEVELUP_SFX == null:
+		return
+
+	var levelup_player: AudioStreamPlayer = AudioStreamPlayer.new()
+	levelup_player.stream = LEVELUP_SFX
+	levelup_player.autoplay = false
+	add_child(levelup_player)
+	levelup_player.finished.connect(levelup_player.queue_free)
+	levelup_player.play()
 
 func _show_spell_options() -> void:
 	var combat_manager := get_parent() as CombatManager
@@ -143,8 +189,8 @@ func _show_spell_options() -> void:
 		return
 	
 	for spell in options:
-		var button = Button.new()
-		var existing = RunData.get_spell_by_id(spell.spell_id)
+		var button: Button = Button.new()
+		var existing: SpellData = RunData.get_spell_by_id(spell.spell_id)
 		
 		if existing:
 			button.text = spell.spell_name + " - Upgrade to Lvl " + str(existing.level + 1)

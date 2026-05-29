@@ -1,7 +1,13 @@
 class_name CombatEntity
 extends Node
 
+@export_category("VFX-SFX")
+@export var hit_sfx: AudioStream
+
 @export var turn_order_icon: Texture2D
+@export_category("Spawn")
+@export var spawn_min_fights: int = 0
+@export var spawn_max_fights: int = 999
 @export_range(0.0, 100.0, 0.1) var physical_defense: float = 0.0
 @export_range(0.0, 100.0, 0.1) var magic_defense: float = 0.0
 
@@ -27,6 +33,7 @@ signal entity_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int)
 signal highlighted_limb_clicked(limb: CombatLimb)
 
 var exp_reward: int = 100
+var combat_scaling_multiplier: float = 1.0
 
 func get_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
 	match damage_type:
@@ -48,17 +55,29 @@ func _find_limbs_recursive(node: Node) -> void:
 			child.limb_destroyed.connect(_on_limb_destroyed)
 			child.mouse_entered_limb.connect(_on_limb_mouse_entered.bind(child))
 			child.mouse_exited_limb.connect(_on_limb_mouse_exited.bind(child))
+		_find_limbs_recursive(child)
 
 func _on_limb_mouse_entered(limb: CombatLimb) -> void:
-	if limb.is_destroyed:
+	var hovered_limb := _resolve_hover_target(limb)
+	if hovered_limb == null or hovered_limb.is_destroyed:
 		return
-	if not limb in _hovered_limbs:
-		_hovered_limbs.append(limb)
+	if not hovered_limb in _hovered_limbs:
+		_hovered_limbs.append(hovered_limb)
 	_refresh_highlight()
 
 func _on_limb_mouse_exited(limb: CombatLimb) -> void:
-	_hovered_limbs.erase(limb)
+	var hovered_limb := _resolve_hover_target(limb)
+	if hovered_limb != null:
+		_hovered_limbs.erase(hovered_limb)
 	_refresh_highlight()
+
+func _resolve_hover_target(limb: CombatLimb) -> CombatLimb:
+	if limb == null or not is_instance_valid(limb):
+		return null
+	var parent_limb := limb.get_parent() as CombatLimb
+	if parent_limb != null and is_instance_valid(parent_limb) and not parent_limb.is_destroyed:
+		return parent_limb
+	return limb
 
 func _refresh_highlight() -> void:
 	if not single_highlight_enabled:
@@ -142,7 +161,7 @@ func _refresh_spell_targeting_visuals() -> void:
 		if _spell_targeting_whole_enemy:
 			limb.set_spell_targeting_preview(false, false, null)
 		else:
-			limb.set_spell_targeting_preview(_spell_targeting_enabled, limb == _highlighted_limb, _spell_targeting_icon)
+			limb.set_spell_targeting_preview(_spell_targeting_enabled and limb.can_be_targeted, limb == _highlighted_limb, _spell_targeting_icon)
 
 func _ensure_spell_targeting_center_visuals() -> void:
 	if _spell_targeting_center_frame == null:
@@ -255,8 +274,57 @@ func get_aoe_limbs(world_pos: Vector2, radius: float) -> Array[CombatLimb]:
 func take_damage(limb: CombatLimb, amount: int) -> void:
 	if not is_alive:
 		return
-	limb.take_damage(amount)
-	entity_took_damage.emit(self, limb, amount)
+	if limb == null or not is_instance_valid(limb) or amount <= 0:
+		return
+
+	var remaining_damage := amount
+	for target_limb in _get_damage_resolution_chain(limb):
+		if remaining_damage <= 0:
+			break
+		if target_limb == null or not is_instance_valid(target_limb) or target_limb.is_destroyed:
+			continue
+
+		var health_before := target_limb.current_health
+		target_limb.take_damage(remaining_damage)
+		var damage_dealt := health_before - target_limb.current_health
+		if damage_dealt <= 0:
+			continue
+
+		remaining_damage = maxi(0, remaining_damage - damage_dealt)
+
+		if hit_sfx != null:
+			var _player := AudioStreamPlayer.new()
+			_player.stream = hit_sfx
+			_player.autoplay = false
+			add_child(_player)
+			_player.finished.connect(_player.queue_free)
+			_player.play()
+
+		entity_took_damage.emit(self, target_limb, damage_dealt)
+
+
+func _get_damage_resolution_chain(limb: CombatLimb) -> Array[CombatLimb]:
+	if limb == null or not is_instance_valid(limb) or limb.is_destroyed:
+		return []
+
+	var child_limb := _get_first_alive_child_limb(limb)
+	if child_limb == null:
+		return [limb]
+
+	var chain := _get_damage_resolution_chain(child_limb)
+	chain.append(limb)
+	return chain
+
+func _get_first_alive_child_limb(limb: CombatLimb) -> CombatLimb:
+	if limb == null or not is_instance_valid(limb):
+		return null
+
+	for child in limb.get_children():
+		var child_limb := child as CombatLimb
+		if child_limb != null and is_instance_valid(child_limb) and not child_limb.is_destroyed:
+			return child_limb
+
+	return null
 
 func take_damage_all(target_limbs: Array[CombatLimb], amount: int) -> void:
 	for limb in target_limbs:
