@@ -131,6 +131,8 @@ func _get_random_consumable() -> ConsumableItemData:
 
 func end_run():
 	run_active = false
+	PlayerStats.marrow_shards = marrow_shards
+	SaveLoad.save_data()
 
 func update_timer(delta):
 	if run_active:
