@@ -21,8 +21,6 @@ func _ready() -> void:
 	_on_health_changed()
 	
 	_apply_skill_tree_bonuses()
-	
-	upgrade_screen.upgrade_selected.connect(_on_upgrade_selected)
 
 func _on_level_changed(new_level: int) -> void:
 	level_label.text = "Current level: " + str(new_level)
@@ -84,27 +82,13 @@ func exit_combat(enemy_killed: bool = false) -> void:
 func _on_player_leveled_up():
 	if combat_node != null:
 		return
-	call_deferred("_show_upgrade_screen")
 		
 func _show_upgrade_screen():
 	get_tree().paused = true
 	upgrade_screen.show_random_options()
 	
-func _on_upgrade_selected(stat: String):
-	PlayerStats.upgrade_stat(stat)
-	
-	if stat == "health":
-		RunData.max_health = int(PlayerStats.stats["health"])
-		if RunData.current_health > RunData.max_health:
-			RunData.current_health = RunData.max_health
-	
-	upgrade_screen.hide()
-	get_tree().paused = false
 	
 func _input(event):
-	if event.is_action_pressed("ui_page_up"):
-		_on_player_leveled_up()
-		
 	if event.is_action_pressed("ui_page_down"): 
 		RunData.add_exp(1000) 
 		 

@@ -12,7 +12,7 @@ func _ready() -> void:
 		_icon = TextureRect.new()
 		_icon.name = "Icon"
 		_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 		_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		_icon.anchors_preset = Control.PRESET_FULL_RECT
 		_icon.size_flags_horizontal = Control.SIZE_EXPAND_FILL

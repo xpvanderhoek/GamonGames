@@ -11,3 +11,9 @@ func play_potion():
 
 func play_pencil():
 	$SFXPencil.play()
+
+func play_purchase():
+	$SFXPurchase.play()
+
+func play_failsound():
+	$SFXFailSound.play()

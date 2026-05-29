@@ -2,6 +2,8 @@ extends Node
 
 const BASIC_ATTACK = preload("res://resources/combat_spells/basic_attack.tres")
 const BLOCK = preload("res://resources/combat_spells/block.tres")
+const STARTING_KIT_KEY := "starting_kit"
+const STARTING_KIT_CONSUMABLES_DIR := "res://assets/ShopItems/Resources/Consumables"
 
 var language = "EN"
 const RUN_DURATION := 600.0
@@ -96,14 +98,41 @@ func new_run():
 	time_remaining = RUN_DURATION
 	add_spell(BASIC_ATTACK)
 	add_spell(BLOCK)
+	_add_starting_kit_consumable()
 	combats_fought = 0
 
 func reset_energy() -> void:
 	max_energy = 10
 	current_energy = max_energy
 
+func _add_starting_kit_consumable() -> void:
+	if int(PlayerStats.upgrade_levels.get(STARTING_KIT_KEY, 0)) <= 0:
+		return
+	var item := _get_random_consumable()
+	if item != null:
+		add_item(item)
+
+func _get_random_consumable() -> ConsumableItemData:
+	var dir := DirAccess.open(STARTING_KIT_CONSUMABLES_DIR)
+	if dir == null:
+		return null
+	var candidates: Array[ConsumableItemData] = []
+	for file_name in dir.get_files():
+		if not file_name.ends_with(".tres"):
+			continue
+		var path := STARTING_KIT_CONSUMABLES_DIR + "/" + file_name
+		var resource := load(path)
+		if resource is ConsumableItemData:
+			candidates.append(resource)
+	if candidates.is_empty():
+		return null
+	return candidates[rng.randi_range(0, candidates.size() - 1)]
+
+
 func end_run():
 	run_active = false
+	PlayerStats.marrow_shards = marrow_shards
+	SaveLoad.save_data()
 
 func update_timer(delta):
 	if run_active:

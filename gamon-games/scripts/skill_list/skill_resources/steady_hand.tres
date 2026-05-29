@@ -12,4 +12,4 @@ max_level = 10
 texture = ExtResource("2_p7r3x")
 tooltip_text = "Increases base precision by +2% per level"
 affected_stat = "precision"
-stat_bonus_per_level = 2.0
+stat_bonus_per_level = 2
