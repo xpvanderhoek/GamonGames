@@ -7,6 +7,7 @@ const SPELL_BUTTON_SCENE := preload("res://scenes/combat/ui/SpellButton.tscn")
 const BUFF_ICON_SCENE := preload("res://scenes/combat/ui/BuffIcon.tscn")
 const COMBAT_SUMMARY_SCENE := preload("res://scenes/combat/ui/combat_summary.tscn")
 const BOSS_VICTORY_SCENE := preload("res://scenes/combat/ui/boss_victory.tscn")
+const DEFEAT_SCREEN_SCENE := preload("res://scenes/combat/ui/defeat_screen.tscn")
 const COMBAT_ITEM_EFFECTS_SCRIPT := preload("res://scripts/combat/combat_item_effects.gd")
 
 @onready var tutorial_overlay: CanvasLayer = $CanvasLayer/TutorialOverlay
@@ -1542,9 +1543,17 @@ func _restart_run_on_player_death() -> void:
 	if _is_exiting_combat:
 		return
 	_is_exiting_combat = true
-	RunData.end_run()
-	SaveLoad.save_data()
-	TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)
+	_show_defeat_screen()
+
+func _show_defeat_screen() -> void:
+	if DEFEAT_SCREEN_SCENE == null:
+		RunData.end_run()
+		SaveLoad.save_data()
+		TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)
+		return
+	
+	var defeat_screen = DEFEAT_SCREEN_SCENE.instantiate()
+	add_child(defeat_screen)
 
 func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false, custom_text: String = "") -> void:
 	var is_custom_text := not custom_text.is_empty()
