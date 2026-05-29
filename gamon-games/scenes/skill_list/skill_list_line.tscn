@@ -16,6 +16,7 @@ grow_vertical = 2
 script = ExtResource("1_clv0c")
 
 [node name="SkillTexture" type="TextureRect" parent="." unique_id=460371362]
+visible = false
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = ExtResource("1_dli63")
@@ -27,7 +28,7 @@ layout_mode = 2
 text = "Shadow Presence"
 
 [node name="BuffAmount" type="Label" parent="." unique_id=1624231842]
-custom_minimum_size = Vector2(73, 0)
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 
 [node name="BuyButton" type="Button" parent="." unique_id=1047536355]

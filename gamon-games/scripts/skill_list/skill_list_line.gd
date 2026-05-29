@@ -1,8 +1,9 @@
 extends HBoxContainer
 class_name SkillListLine
 
-signal tooltip_requested(text: String)
+signal tooltip_requested(text: String, max_level: int)
 signal tooltip_cleared
+signal upgrade_failed
 
 @onready var skill_texture: TextureRect = $SkillTexture
 @onready var skill_name: Label = $SkillName
@@ -34,7 +35,9 @@ func setup_skill(skill_data: SkillData):
 	elif _is_starting_kit():
 		current_skill.current_level = int(PlayerStats.upgrade_levels.get("starting_kit", 0))
 	
-	if current_skill.stat_bonus_per_level == 0 and current_skill.max_level == 1:
+	if current_skill.current_level >= current_skill.max_level:
+		buff_amount.text = "MAX"
+	elif current_skill.stat_bonus_per_level == 0 and current_skill.max_level == 1:
 		buff_amount.text = "Bought" if current_skill.current_level > 0 else "Locked"
 	else:
 		buff_amount.text = "Lvl %d" % [skill_data.current_level]
@@ -44,11 +47,14 @@ func setup_skill(skill_data: SkillData):
 func _on_buy_button_pressed() -> void:
 	if current_skill.current_level == current_skill.max_level:
 		print("Already max level")
+		upgrade_failed.emit()
 		return
 	
 	var cost = current_skill.get_level_cost()
 	if RunData.marrow_shards < cost:
+		SoundManager.play_failsound()
 		print("Not enough marrow shards")
+		upgrade_failed.emit()
 		return
 	
 	SoundManager.play_purchase()
@@ -64,7 +70,9 @@ func _on_buy_button_pressed() -> void:
 	if current_skill.affected_stat != "" and current_skill.stat_bonus_per_level > 0:
 		PlayerStats.update_stat(current_skill.affected_stat, current_skill.stat_bonus_per_level, current_skill.current_level)
 	
-	if current_skill.stat_bonus_per_level == 0 and current_skill.max_level == 1:
+	if current_skill.current_level >= current_skill.max_level:
+		buff_amount.text = "MAX"
+	elif current_skill.stat_bonus_per_level == 0 and current_skill.max_level == 1:
 		buff_amount.text = "Bought"
 	else:
 		buff_amount.text = "Lvl %d" % [current_skill.current_level]
@@ -80,7 +88,7 @@ func _on_buy_button_mouse_entered() -> void:
 	if text == "":
 		tooltip_cleared.emit()
 		return
-	tooltip_requested.emit(text)
+	tooltip_requested.emit(text, current_skill.max_level)
 
 func _on_buy_button_mouse_exited() -> void:
 	tooltip_cleared.emit()

@@ -36,4 +36,5 @@ bus = &"SFX"
 
 [node name="SFXFailSound" type="AudioStreamPlayer" parent="." unique_id=644354972]
 stream = ExtResource("7_kysrt")
+volume_db = -16.0
 bus = &"SFX"
