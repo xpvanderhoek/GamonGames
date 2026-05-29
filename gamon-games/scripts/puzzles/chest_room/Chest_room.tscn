@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://5u5j03j30vtm"]
+
+[ext_resource type="Texture2D" uid="uid://cxly65sw53pgn" path="res://assets/main_menu/main_menu_background.png" id="1_weo3e"]
+[ext_resource type="Texture2D" uid="uid://cn1rjadgwh0ig" path="res://assets/enemies/chest/locked_chest.png" id="2_uq2yn"]
+[ext_resource type="Script" uid="uid://douj8fp4ctxr6" path="res://scripts/puzzles/chest_room/button_click.gd" id="3_lj5rt"]
+
+[node name="Control" type="Control" unique_id=1259934060]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1419478529]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_weo3e")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1662724204]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=386299882]
+layout_mode = 0
+offset_left = 458.0
+offset_top = 359.0
+offset_right = 657.0
+offset_bottom = 534.0
+texture_normal = ExtResource("2_uq2yn")
+ignore_texture_size = true
+stretch_mode = 4
+script = ExtResource("3_lj5rt")
+
+[connection signal="pressed" from="TextureButton" to="TextureButton" method="_on_pressed"]
