@@ -6,6 +6,7 @@ const TURN_ORDER_ENTRY_SCENE := preload("res://scenes/combat/ui/TurnOrderEntry.t
 const SPELL_BUTTON_SCENE := preload("res://scenes/combat/ui/SpellButton.tscn")
 const BUFF_ICON_SCENE := preload("res://scenes/combat/ui/BuffIcon.tscn")
 const COMBAT_SUMMARY_SCENE := preload("res://scenes/combat/ui/combat_summary.tscn")
+const BOSS_VICTORY_SCENE := preload("res://scenes/combat/ui/boss_victory.tscn")
 const COMBAT_ITEM_EFFECTS_SCRIPT := preload("res://scripts/combat/combat_item_effects.gd")
 
 @onready var tutorial_overlay: CanvasLayer = $CanvasLayer/TutorialOverlay
@@ -181,6 +182,9 @@ func _apply_enemy_scaling(enemy: Node) -> void:
 			limb.current_health = limb.max_health
 
 func _input(event): #Temporary
+	# Don't process input during victory
+	if current_state == CombatState.COMBAT_OVER:
+		return
 	if event.is_action_pressed("escape"):
 		canvas_layer.add_child(PAUSE_MENU.instantiate())
 	
@@ -222,14 +226,27 @@ func _on_combat_victory() -> void:
 	_show_victory_summary()
 
 func _show_victory_summary() -> void:
-	if COMBAT_SUMMARY_SCENE == null:
-		_exit_combat()
-		return
+	# Check if this was a boss fight
+	var is_boss_fight := false
+	if RunData.last_map_room != null and RunData.last_map_room.type == Room.Type.BOSS:
+		is_boss_fight = true
+	
+	if is_boss_fight:
+		if BOSS_VICTORY_SCENE == null:
+			_exit_combat()
+			return
 		
-	var summary = COMBAT_SUMMARY_SCENE.instantiate()
-	summary.continue_pressed.connect(_exit_combat)
-	add_child(summary)
-	summary.setup(_exp_gained_this_combat)
+		var victory_screen = BOSS_VICTORY_SCENE.instantiate()
+		add_child(victory_screen)
+	else:
+		if COMBAT_SUMMARY_SCENE == null:
+			_exit_combat()
+			return
+			
+		var summary = COMBAT_SUMMARY_SCENE.instantiate()
+		summary.continue_pressed.connect(_exit_combat)
+		add_child(summary)
+		summary.setup(_exp_gained_this_combat)
 
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	_queued_encounter_scenes = encounter_enemy_scenes.duplicate()
