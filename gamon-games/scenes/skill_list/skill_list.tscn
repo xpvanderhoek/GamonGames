@@ -15,6 +15,13 @@
 [ext_resource type="FontFile" uid="uid://dr8r1buo47v6k" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="12_loq5n"]
 [ext_resource type="Texture2D" uid="uid://behh6gmxwv2vq" path="res://assets/main_menu/main_menu_background.png" id="12_r8qnw"]
 [ext_resource type="Texture2D" uid="uid://bdl6ds02ccw48" path="res://assets/skill_list_background.png" id="13_20qiw"]
+[ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="13_qn87k"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fh4ca"]
+texture = ExtResource("13_qn87k")
+
+[sub_resource type="Theme" id="Theme_4jjhm"]
+Panel/styles/panel = SubResource("StyleBoxTexture_fh4ca")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3tci0"]
 content_margin_left = 9.0
@@ -31,10 +38,6 @@ font_color = Color(0.5764706, 0.4745098, 0.33333334, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lvfat"]
 bg_color = Color(0, 0, 0, 0.5921569)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
 border_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
@@ -72,6 +75,37 @@ offset_right = 544.0
 offset_bottom = 298.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="ItemTooltipPanel" type="Panel" parent="Control" unique_id=1108486703]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -308.0
+offset_top = -62.000153
+offset_bottom = 62.000153
+grow_horizontal = 0
+grow_vertical = 2
+theme = SubResource("Theme_4jjhm")
+
+[node name="TooltipLabel" type="Label" parent="Control/ItemTooltipPanel" unique_id=295120523]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -143.5
+offset_top = -51.0
+offset_right = 143.5
+offset_bottom = 51.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.23921569, 0.16470589, 0.14117648, 1)
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="QuitButton" type="Button" parent="Control" unique_id=1023925444]
 layout_mode = 1
@@ -190,4 +224,5 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 
+[connection signal="mouse_entered" from="Control/QuitButton" to="." method="_on_quit_button_mouse_entered"]
 [connection signal="pressed" from="Control/QuitButton" to="." method="_on_quit_button_pressed"]

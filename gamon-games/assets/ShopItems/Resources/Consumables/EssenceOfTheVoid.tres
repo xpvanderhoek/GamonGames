@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bshlosd0xhl85" path="res://assets/ShopItems/Textures/Essence of the void.png" id="2_d224v"]
 
 [resource]
-script = ExtResource("1_u2oak")
+script = ExtResource("1_script")
 item_name = "Essence of the Void"
 effect = "Invulnerable for 1 turn"
 lore = "A momentary lapse in existence."

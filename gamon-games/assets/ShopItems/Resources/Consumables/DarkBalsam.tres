@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c1wrcxthuaiqa" path="res://assets/ShopItems/Textures/Dark Balsam.png" id="2_rn6tf"]
 
 [resource]
-script = ExtResource("1_c7iui")
+script = ExtResource("1_script")
 item_name = "Dark Balsam"
 effect = "Restores 35 HP instantly"
 lore = "A bitter sludge that closes wounds with scar tissue."

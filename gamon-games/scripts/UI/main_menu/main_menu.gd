@@ -35,7 +35,9 @@ func _on_quit_button_pressed() -> void:
 	get_tree().quit()
 
 func _on_upgrades_button_pressed() -> void:
+	SoundManager.play_click()
 	TransitionManager.change_scene(SKILL_LIST_SCENE)
+
 func _on_save_pressed() -> void:
 	SaveLoad.save_data()
 
@@ -54,3 +56,6 @@ func _on_button_hover():
 
 func _on_button_click():
 	SoundManager.play_click()
+
+func _on_upgrades_button_mouse_entered() -> void:
+	SoundManager.play_hover()

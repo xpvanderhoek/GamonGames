@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://brby8kl4myox2"]
 
-[ext_resource type="Script" uid="uid://i2wcj5m86qmd" path="res://SoundManager.gd" id="1_rs7eg"]
-[ext_resource type="AudioStream" uid="uid://du7hy0chliwwy" path="res://sfx/click.wav" id="2_yai5u"]
-[ext_resource type="AudioStream" uid="uid://ngjxagnotfrn" path="res://sfx/hover.wav" id="3_rs7eg"]
-[ext_resource type="AudioStream" uid="uid://p4yymhgqni0a" path="res://sfx/potion.wav" id="4_kysrt"]
-[ext_resource type="AudioStream" uid="uid://cgi6xp7aiyxj0" path="res://sfx/pencil_circle.wav" id="5_yai5u"]
+[ext_resource type="Script" uid="uid://i2wcj5m86qmd" path="res://scripts/globals/SoundManager.gd" id="1_rs7eg"]
+[ext_resource type="AudioStream" uid="uid://belk060unps52" path="res://sfx/click.wav" id="2_yai5u"]
+[ext_resource type="AudioStream" uid="uid://d32ecsmj6fj8p" path="res://sfx/hover.wav" id="3_rs7eg"]
+[ext_resource type="AudioStream" uid="uid://t0cdm3ymanuh" path="res://sfx/potion.wav" id="4_kysrt"]
+[ext_resource type="AudioStream" uid="uid://cyqfh42dpdjgp" path="res://sfx/pencil_circle.wav" id="5_yai5u"]
+[ext_resource type="AudioStream" uid="uid://2m2em64vl84w" path="res://sfx/Purchase.wav" id="6_4xaxn"]
+[ext_resource type="AudioStream" uid="uid://cp4ghbhrahrwn" path="res://sfx/FailSound.mp3" id="7_kysrt"]
 
 [node name="SoundManager" type="Node" unique_id=440982374]
 script = ExtResource("1_rs7eg")
@@ -27,3 +29,11 @@ bus = &"SFX"
 [node name="SFXPencil" type="AudioStreamPlayer" parent="." unique_id=791986334]
 stream = ExtResource("5_yai5u")
 volume_db = -20.0
+
+[node name="SFXPurchase" type="AudioStreamPlayer" parent="." unique_id=317878505]
+stream = ExtResource("6_4xaxn")
+bus = &"SFX"
+
+[node name="SFXFailSound" type="AudioStreamPlayer" parent="." unique_id=644354972]
+stream = ExtResource("7_kysrt")
+bus = &"SFX"

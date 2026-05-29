@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dforagfmhbwwt" path="res://assets/ShopItems/Textures/Adrenaline Spike.png" id="2_fmm0x"]
 
 [resource]
-script = ExtResource("1_y08ds")
+script = ExtResource("1_script")
 item_name = "Adrenaline Spike"
 effect = "Grants Haste for 2 turns; -10 HP after effect ends"
 lore = "Borrowing strength from a future that may not come."

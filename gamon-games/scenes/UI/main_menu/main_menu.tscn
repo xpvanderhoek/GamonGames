@@ -185,12 +185,13 @@ theme_override_font_sizes/font_size = 18
 text = "Profile: Name"
 
 [connection signal="mouse_entered" from="VBoxContainer/PlayButton" to="." method="_on_button_hover"]
-[connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/UpgradesButton" to="." method="_on_upgrades_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_button_click"]
+[connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/SettingsButton" to="." method="_on_button_hover"]
-[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_button_click"]
+[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/UpgradesButton" to="." method="_on_upgrades_button_mouse_entered"]
+[connection signal="pressed" from="VBoxContainer/UpgradesButton" to="." method="_on_upgrades_button_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/QuitButton" to="." method="_on_button_hover"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_button_click"]
