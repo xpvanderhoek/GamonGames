@@ -8,7 +8,6 @@
 bg_color = Color(0.09277264, 0.14177725, 0.12733826, 1)
 
 [node name="TutorialOverlay" type="CanvasLayer" unique_id=282468504]
-layer = 0
 script = ExtResource("1_ooshf")
 title = "Combat 101"
 

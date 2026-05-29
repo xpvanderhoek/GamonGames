@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://bghddg0lhyhpi"]
+
+[ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_ipasx"]
+[ext_resource type="AudioStream" uid="uid://bmn4thesxo60y" path="res://assets/enemies/skeleton/hit.wav" id="2_bajkm"]
+[ext_resource type="Texture2D" uid="uid://cvrg5pxbpmxnl" path="res://assets/enemies/skeleton/head.png" id="3_p7lxl"]
+[ext_resource type="Texture2D" uid="uid://dnmywmed8rveo" path="res://assets/enemies/skeleton/torso.png" id="4_gpsex"]
+[ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="5_2xlmp"]
+[ext_resource type="Texture2D" uid="uid://dnrjcf6l5mmh4" path="res://assets/enemies/skeleton/arm.png" id="6_7k10q"]
+[ext_resource type="Texture2D" uid="uid://bojw0f4jf0hh6" path="res://assets/enemies/skeleton/weapon_1.png" id="7_plo2w"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="8_ubkmb"]
+[ext_resource type="AudioStream" uid="uid://ck0bb4bm58hoe" path="res://assets/enemies/skeleton/weapon1.wav" id="9_77ljv"]
+
+[sub_resource type="Resource" id="Resource_ltakh"]
+script = ExtResource("8_ubkmb")
+min_damage = 2
+max_damage = 5
+weight = 75.0
+sfx = ExtResource("9_77ljv")
+metadata/_custom_type_script = "uid://cds04x2mi4kl6"
+
+[sub_resource type="Resource" id="Resource_v7s83"]
+script = ExtResource("8_ubkmb")
+min_damage = 5
+max_damage = 10
+weight = 100.0
+metadata/_custom_type_script = "uid://cds04x2mi4kl6"
+
+[sub_resource type="Resource" id="Resource_r5pin"]
+script = ExtResource("8_ubkmb")
+min_damage = 1
+max_damage = 3
+metadata/_custom_type_script = "uid://cds04x2mi4kl6"
+
+[node name="ttt" type="Control" unique_id=1680014499]
+modulate = Color(0.8, 0.8, 0.77, 1)
+custom_minimum_size = Vector2(250, 350)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 250.0
+offset_bottom = 350.0
+script = ExtResource("1_ipasx")
+hit_sfx = ExtResource("2_bajkm")
+turn_order_icon = ExtResource("3_p7lxl")
+spawn_max_fights = 5
+
+[node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.99700004
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -107.0
+offset_top = -24.950012
+offset_right = 93.0
+offset_bottom = 4.965027
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Torso" type="Sprite2D" parent="." unique_id=582211915]
+position = Vector2(118.5, 201.75)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_gpsex")
+script = ExtResource("5_2xlmp")
+max_health = 75
+is_vital = true
+
+[node name="Right Arm" type="Sprite2D" parent="." unique_id=1758730569]
+position = Vector2(67.5, 141.75)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_7k10q")
+flip_h = true
+script = ExtResource("5_2xlmp")
+max_health = 25
+attacks = Array[ExtResource("8_ubkmb")]([SubResource("Resource_ltakh")])
+
+[node name="Weapon_Right" type="Sprite2D" parent="Right Arm" unique_id=583386158]
+position = Vector2(-56, 160)
+texture = ExtResource("7_plo2w")
+script = ExtResource("5_2xlmp")
+max_health = 15
+can_be_targeted = false
+attacks = Array[ExtResource("8_ubkmb")]([SubResource("Resource_v7s83")])
+
+[node name="Head" type="Sprite2D" parent="." unique_id=1466662351]
+position = Vector2(121.5, 45.75)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_p7lxl")
+script = ExtResource("5_2xlmp")
+max_health = 30
+is_vital = true
+hit_chance_percent = 50.0
+attacks = Array[ExtResource("8_ubkmb")]([SubResource("Resource_r5pin")])

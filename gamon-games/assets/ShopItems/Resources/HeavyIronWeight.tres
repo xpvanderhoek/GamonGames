@@ -12,5 +12,4 @@ category = "Tier II"
 texture = ExtResource("2_qcvgj")
 cost = 65
 target_limb = "Arm"
-buff_type = "Damage"
 buff_value = 25.0
