@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://bu8uc1r5w8r5c"]
+
+[ext_resource type="Script" path="res://scripts/combat/ui/boss_victory.gd" id="1_8r5c5"]
+[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_8r5c5"]
+[ext_resource type="Texture2D" uid="uid://rhhkwexpth8p" path="res://assets/settings/pause_settings.png" id="2_qnqv3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8r5c5"]
+bg_color = Color(0.11366532, 0.11366526, 0.113665275, 0.8509804)
+border_color = Color(0.6783844, 0.66178036, 0.667279, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0, 0, 0, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4247499, 0.41682604, 0.3690274, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0, 0, 0, 0.69803923)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="BossVictory" type="Control" unique_id=1025159310]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8r5c5")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=468126360]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 2.0
+offset_right = 7.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.3)
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=468126362]
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -331.0
+offset_top = -208.0
+offset_right = 327.0
+offset_bottom = 211.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(300, 200)
+theme_override_styles/panel = SubResource("StyleBoxFlat_8r5c5")
+
+[node name="Window" type="TextureRect" parent="PanelContainer" unique_id=952042978]
+layout_mode = 2
+texture = ExtResource("2_qnqv3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=803802533]
+layout_direction = 1
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1159640958]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 0.72156864)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_8r5c5")
+theme_override_font_sizes/font_size = 56
+text = "VICTORY!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Message" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1159640959]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.72464263, 0.7246426, 0.7246426, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_8r5c5")
+theme_override_font_sizes/font_size = 24
+text = "Thank you for playtesting our game!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=2139144107]
+custom_minimum_size = Vector2(229.78, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.7891721, 0.7891721, 0.78917205, 1)
+theme_override_colors/font_focus_color = Color(0.85750073, 0.85750073, 0.85750073, 1)
+theme_override_colors/font_hover_color = Color(0.45581734, 0.45581734, 0.45581734, 1)
+theme_override_fonts/font = ExtResource("2_8r5c5")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
+text = "RETURN TO MENU"
