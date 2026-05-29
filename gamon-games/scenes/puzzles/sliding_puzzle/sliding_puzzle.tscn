@@ -107,6 +107,7 @@ theme_override_font_sizes/font_size = 32
 text = "Continue"
 
 [node name="Skipbutton" parent="." unique_id=15965707 instance=ExtResource("9_3q5v1")]
+visible = false
 layout_mode = 1
 offset_left = -1140.0
 offset_top = 18.0
