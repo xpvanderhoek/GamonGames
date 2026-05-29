@@ -17,7 +17,7 @@ font_color = Color(0.7137255, 0.7137255, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_sc7lg"]
 font_size = 45
-font_color = Color(0.2509804, 0.20784314, 0.1254902, 1)
+font_color = Color(0.7137255, 0.7137255, 0, 1)
 
 [node name="SlidingPuzzle" type="Control" unique_id=1018377517]
 layout_mode = 3

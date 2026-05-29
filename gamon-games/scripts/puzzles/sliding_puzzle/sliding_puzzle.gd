@@ -1,11 +1,11 @@
 extends Control
 
-var GRID_SIZE     := PuzzleData.slide_puzzle_size
+
 const TILE_SIZE     := 100
 const TILE_GAP      := 6
 const SHUFFLE_MOVES := 400000
 const ANIM_TIME     := 0.12
-
+var GRID_SIZE       := PuzzleData.slide_puzzle_size
 @onready var grid_container : GridContainer = $GridContainer
 @onready var status_label   : Label         = $StatusLabel
 @onready var coin_amount	: Label 		= $CoinLabel
@@ -21,6 +21,7 @@ var puzzle_texture: Texture2D
 
 var move_count  : int = 0
 var solved      : bool = false
+var solved_on_time: bool = false
 var animating   : bool = false
 
 var time_elapsed : float = 0.0
@@ -62,6 +63,7 @@ func _decrease_coins() -> void:
 		
 func _process(delta: float) -> void:
 	if coins == 0:
+		solved_on_time = false
 		$Button.visible = true
 		PuzzleData.decrease_grid_size()
 	if timer_running and not solved:
@@ -345,6 +347,8 @@ func _check_win(checkSolved: bool = false) -> bool:
 		if tile_values[i] != i + 1:
 			return false
 
+	if coins > 0:
+		solved_on_time = true
 	timer_running = false
 
 	if !checkSolved:
@@ -359,6 +363,9 @@ func _check_win(checkSolved: bool = false) -> bool:
 	return true
 
 func _on_button_pressed() -> void:
-	TransitionManager.change_scene("res://scenes/map/map.tscn")
+	if solved_on_time == true:
+		TransitionManager.change_scene("res://scenes/map/map.tscn")
+	else: 
+		TransitionManager.change_scene("res://scenes/combat/combat.tscn")
 	await get_tree().create_timer(2.0).timeout
 	queue_free()
