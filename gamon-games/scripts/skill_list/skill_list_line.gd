@@ -47,7 +47,7 @@ func setup_skill(skill_data: SkillData):
 func _on_buy_button_pressed() -> void:
 	if current_skill.current_level == current_skill.max_level:
 		print("Already max level")
-		upgrade_failed.emit()
+		SoundManager.play_failsound()
 		return
 	
 	var cost = current_skill.get_level_cost()
