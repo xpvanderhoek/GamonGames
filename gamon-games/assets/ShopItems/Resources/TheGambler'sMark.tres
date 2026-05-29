@@ -1,7 +1,7 @@
 [gd_resource type="Resource" format=3 uid="uid://bpekethbrw0yh"]
 
 [ext_resource type="Script" uid="uid://diaiuhssm05e5" path="res://scripts/Items/BuffItemData.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://chy5lrwf40gjl" path="res://assets/ShopItems/Textures/The Gambler's Mark.png" id="2_luejd"]
+[ext_resource type="Texture2D" uid="uid://0swdp2gvgl35" path="res://assets/ShopItems/Textures/The Gambler's Mark.png" id="2_luejd"]
 
 [resource]
 script = ExtResource("1_script")

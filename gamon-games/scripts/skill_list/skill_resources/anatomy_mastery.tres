@@ -11,5 +11,5 @@ max_cost = 2500
 max_level = 5
 texture = ExtResource("2_cvcw6")
 tooltip_text = "Increases base damage by 3% per level "
-affected_stat = "limb_damage"
-stat_bonus_per_level = 3.0
+affected_stat = "damage"
+stat_bonus_per_level = 3

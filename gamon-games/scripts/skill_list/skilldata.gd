@@ -9,7 +9,6 @@ var cost: int
 @export var current_level: int = 0
 @export var texture: Texture
 @export var tooltip_text: String
-@export var skill_after: Array [SkillData]
 @export var affected_stat: String = ""  # Which stat is affected (for example: limb_damage)
 @export var stat_bonus_per_level: int = 0  # Bonus amount for each level in percentages
 

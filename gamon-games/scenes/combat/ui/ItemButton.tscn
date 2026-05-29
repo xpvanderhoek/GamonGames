@@ -1,18 +1,20 @@
 [gd_scene format=3 uid="uid://bnspxqohk3rfu"]
 
-[ext_resource type="Script" uid="uid://dn5jpnv1l0jhw" path="res://scripts/combat/ui/ItemButton.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://dblwp8s0bjk28" path="res://scripts/combat/ui/ItemButton.gd" id="1_script"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_laywg"]
 bg_color = Color(0.7254902, 0.7254902, 0.7254902, 0.3882353)
 
 [node name="ItemButton" type="Panel" unique_id=1649103459]
-script = ExtResource("1_script")
 custom_minimum_size = Vector2(32, 32)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1127.0
-offset_bottom = -623.0
+offset_right = -1120.0
+offset_bottom = -616.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_laywg")
+script = ExtResource("1_script")

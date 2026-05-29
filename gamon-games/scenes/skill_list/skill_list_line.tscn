@@ -2,19 +2,21 @@
 
 [ext_resource type="Script" uid="uid://ciesguttq503f" path="res://scripts/skill_list/skill_list_line.gd" id="1_clv0c"]
 [ext_resource type="Texture2D" uid="uid://bhw5v8m453e43" path="res://assets/skilltreepng.webp" id="1_dli63"]
+[ext_resource type="Texture2D" uid="uid://2e5s8715qjip" path="res://scenes/skill_list/Marrow_shards_sprite.png" id="3_1xpfq"]
 
 [node name="SkillListLine" type="HBoxContainer" unique_id=1472616399]
 custom_minimum_size = Vector2(32, 32)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -702.0
+offset_right = -733.0
 offset_bottom = -616.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_clv0c")
 
 [node name="SkillTexture" type="TextureRect" parent="." unique_id=460371362]
+visible = false
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = ExtResource("1_dli63")
@@ -26,7 +28,7 @@ layout_mode = 2
 text = "Shadow Presence"
 
 [node name="BuffAmount" type="Label" parent="." unique_id=1624231842]
-custom_minimum_size = Vector2(73, 0)
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 
 [node name="BuyButton" type="Button" parent="." unique_id=1047536355]
@@ -36,15 +38,15 @@ text = "+
 "
 
 [node name="MarrowShardsAmountLabel" type="Label" parent="." unique_id=1430182695]
-custom_minimum_size = Vector2(70, 0)
+custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
-text = "Amount"
+text = "9999"
 horizontal_alignment = 2
 
 [node name="MarrowShardsTexture" type="TextureRect" parent="." unique_id=337220404]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("1_dli63")
+texture = ExtResource("3_1xpfq")
 expand_mode = 1
 
 [connection signal="pressed" from="BuyButton" to="." method="_on_buy_button_pressed"]
