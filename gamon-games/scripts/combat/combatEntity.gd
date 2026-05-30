@@ -28,6 +28,9 @@ var block_click_emit: bool = false
 var single_highlight_enabled: bool = true
 var whole_enemy_highlight_enabled: bool = false
 
+var _limb_tooltip: PanelContainer = null
+var _limb_tooltip_label: Label = null
+
 signal entity_died(entity: CombatEntity)
 signal entity_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int)
 signal highlighted_limb_clicked(limb: CombatLimb)
@@ -57,6 +60,9 @@ func _find_limbs_recursive(node: Node) -> void:
 			child.mouse_exited_limb.connect(_on_limb_mouse_exited.bind(child))
 		_find_limbs_recursive(child)
 
+func _process(_delta: float) -> void:
+	_update_limb_tooltip_position()
+
 func _on_limb_mouse_entered(limb: CombatLimb) -> void:
 	var hovered_limb := _resolve_hover_target(limb)
 	if hovered_limb == null or hovered_limb.is_destroyed:
@@ -64,12 +70,27 @@ func _on_limb_mouse_entered(limb: CombatLimb) -> void:
 	if not hovered_limb in _hovered_limbs:
 		_hovered_limbs.append(hovered_limb)
 	_refresh_highlight()
+	var top := _top_hovered_limb()
+	if top != null:
+		_show_limb_tooltip(top)
 
 func _on_limb_mouse_exited(limb: CombatLimb) -> void:
 	var hovered_limb := _resolve_hover_target(limb)
 	if hovered_limb != null:
 		_hovered_limbs.erase(hovered_limb)
 	_refresh_highlight()
+	var top := _top_hovered_limb()
+	if top != null:
+		_show_limb_tooltip(top)
+	else:
+		_hide_limb_tooltip()
+		
+func _top_hovered_limb() -> CombatLimb:
+	var top: CombatLimb = null
+	for limb in _hovered_limbs:
+		if top == null or limb.get_index() > top.get_index():
+			top = limb
+	return top				
 
 func _resolve_hover_target(limb: CombatLimb) -> CombatLimb:
 	if limb == null or not is_instance_valid(limb):
@@ -332,6 +353,7 @@ func _on_limb_destroyed(limb: CombatLimb) -> void:
 	if _highlighted_limb == limb:
 		_highlighted_limb = null
 		_refresh_highlight()
+	_hide_limb_tooltip()	
 	if limb.is_vital:
 		die()
 
@@ -348,7 +370,106 @@ func die() -> void:
 	for limb in limbs:
 		if not limb.is_destroyed:
 			limb.destroy_limb()
+	_hide_limb_tooltip()		
 	entity_died.emit(self)
 	RunData.add_exp(exp_reward)
 	RunData.coins += 15
+
+func _ensure_limb_tooltip() -> void:
+	if _limb_tooltip != null:
+		return
+
+	_limb_tooltip = PanelContainer.new()
+	_limb_tooltip.name = "LimbTooltip"
+	_limb_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_limb_tooltip.z_index = 100
+	_limb_tooltip.top_level = true
+	_limb_tooltip.visible = false
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.08, 0.08, 0.08, 0.88)
+	style.border_width_left   = 1
+	style.border_width_right  = 1
+	style.border_width_top    = 1
+	style.border_width_bottom = 1
+	style.border_color = Color(0.55, 0.55, 0.55, 0.9)
+	style.corner_radius_top_left     = 4
+	style.corner_radius_top_right    = 4
+	style.corner_radius_bottom_left  = 4
+	style.corner_radius_bottom_right = 4
+	style.content_margin_left   = 8.0
+	style.content_margin_right  = 8.0
+	style.content_margin_top    = 4.0
+	style.content_margin_bottom = 4.0
+	_limb_tooltip.add_theme_stylebox_override("panel", style)
+
+	_limb_tooltip_label = Label.new()
+	_limb_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_limb_tooltip_label.add_theme_font_size_override("font_size", 13)
+	_limb_tooltip_label.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95, 1.0))
+	_limb_tooltip_label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+	_limb_tooltip_label.add_theme_constant_override("outline_size", 2)
+	_limb_tooltip.add_child(_limb_tooltip_label)
+
+	add_child(_limb_tooltip)
+
+func _show_limb_tooltip(limb: CombatLimb) -> void:
+	_ensure_limb_tooltip()
+	var hp_color := _hp_color_for_limb(limb)
+	var hp_hex   := hp_color.to_html(false)
+	_limb_tooltip_label.text = "%s\n[color=#%s]%d / %d HP[/color]" % [
+		limb.limb_name, hp_hex,
+		limb.current_health, limb.max_health
+	]
+	_limb_tooltip_label.text = "%s\n%d / %d HP" % [
+		limb.limb_name, limb.current_health, limb.max_health
+	]
+	_limb_tooltip_label.add_theme_color_override("font_color", hp_color)
+	_limb_tooltip.visible = true
+	_update_limb_tooltip_position()
+
+func _hide_limb_tooltip() -> void:
+	if _limb_tooltip != null:
+		_limb_tooltip.visible = false
+
+func _update_limb_tooltip_position() -> void:
+	if _limb_tooltip == null or not _limb_tooltip.visible:
+		return
+	var vp_size  := get_viewport().get_visible_rect().size
+	var mouse    := get_viewport().get_mouse_position()
+	var tip_size := _limb_tooltip.size
+
+	var has_spell_cursor := false
+	var manager := _find_combat_manager()
+	if manager != null:
+		var overlay := manager.get_node_or_null("SpellCursorOverlay")
+		if overlay is TextureRect and (overlay as TextureRect).visible:
+			has_spell_cursor = true
+
+	var pos: Vector2
+	if has_spell_cursor:
+		pos = mouse + Vector2(-tip_size.x * 0.5, -tip_size.y - 18.0)
+	else:
+		pos = mouse + Vector2(14.0, -8.0)
+
+	pos.x = clamp(pos.x, 0.0, vp_size.x - tip_size.x)
+	pos.y = clamp(pos.y, 0.0, vp_size.y - tip_size.y)
+	_limb_tooltip.global_position = pos
+
+func _find_combat_manager() -> Node:
+	var node := get_parent()
+	while node != null:
+		if node is CombatManager:
+			return node
+		node = node.get_parent()
+	return null
+	
+func _hp_color_for_limb(limb: CombatLimb) -> Color:
+	var pct := limb.get_health_percent()
+	if pct > 0.6:
+		return Color(0.35, 1.0, 0.45, 1.0)  
+	elif pct > 0.3:
+		return Color(1.0, 0.82, 0.22, 1.0)   
+	else:
+		return Color(1.0, 0.28, 0.28, 1.0)
 	RunData.marrow_shards += 75
