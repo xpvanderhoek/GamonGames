@@ -29,3 +29,13 @@ func play_xpbar_tick(pitch: float = 1.0) -> void:
 
 func play_levelup():
 	$SFXLevelUp.play()
+
+func play_sfx(stream: AudioStream) -> void:
+	if stream == null:
+		return
+	var player := AudioStreamPlayer.new()
+	player.stream = stream
+	player.bus = &"SFX"
+	add_child(player)
+	player.finished.connect(player.queue_free)
+	player.play()

@@ -293,12 +293,7 @@ func take_damage(limb: CombatLimb, amount: int) -> void:
 		remaining_damage = maxi(0, remaining_damage - damage_dealt)
 
 		if hit_sfx != null:
-			var _player := AudioStreamPlayer.new()
-			_player.stream = hit_sfx
-			_player.autoplay = false
-			add_child(_player)
-			_player.finished.connect(_player.queue_free)
-			_player.play()
+			SoundManager.play_sfx(hit_sfx)
 
 		entity_took_damage.emit(self, target_limb, damage_dealt)
 
