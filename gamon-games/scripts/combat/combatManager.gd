@@ -949,14 +949,12 @@ func _perform_enemy_turn() -> void:
 
 		_refresh_turns_order_ui(attacking_enemy)
 
-		# Use the pre-rolled intent shown to the player during their turn
 		var attack_limb: CombatLimb = null
 		var attack: SpellData = null
 		var _intent := _enemy_intents.get(attacking_enemy.get_instance_id(), {}) as Dictionary
 		if not _intent.is_empty():
 			attack_limb = _intent.get("limb") as CombatLimb
 			attack = _intent.get("attack") as SpellData
-			# Re-roll only if the pre-rolled limb was destroyed between turns
 			if attack_limb == null or not is_instance_valid(attack_limb) or attack_limb.is_destroyed:
 				attack_limb = _choose_enemy_attack_limb(attacking_enemy)
 				attack = null
