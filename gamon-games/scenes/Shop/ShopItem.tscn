@@ -64,6 +64,7 @@ position = Vector2(5, 20)
 scale = Vector2(1, 0.3)
 
 [node name="Item" type="Sprite2D" parent="." unique_id=386328136]
+centered = true
 
 [node name="ItemHoverArea" type="Area2D" parent="Item" unique_id=-421339814]
 
