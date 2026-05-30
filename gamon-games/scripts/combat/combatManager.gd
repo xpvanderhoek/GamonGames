@@ -1715,12 +1715,7 @@ func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target
 	var vfx_lifetime_timer: SceneTreeTimer = null
 
 	if attack.sfx != null:
-		var player := AudioStreamPlayer.new()
-		player.stream = attack.sfx
-		player.autoplay = false
-		add_child(player)
-		player.finished.connect(player.queue_free)
-		player.play()
+		SoundManager.play_sfx(attack.sfx)
 
 	await _play_attack_lunge(source_entity, target_entity)
 
