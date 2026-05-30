@@ -78,10 +78,10 @@ var _exp_gained_this_combat: int = 0
 var _consumable_buttons: Array = []
 var _pending_consumable_status: Dictionary = {}
 var _item_effects = null
-var _enemy_intents: Dictionary = {}        # enemy instance_id -> {enemy, limb, attack}
-var _intent_labels: Array[Label] = []      # damage range labels shown during player turn
-var _intent_limb_refs: Array[CombatLimb] = [] # limbs we orange-highlighted for intent
-var _intent_pulsing_tweens: Array[Tween] = [] # tweens driving the orange pulse
+var _enemy_intents: Dictionary = {}
+var _intent_labels: Array[Label] = []
+var _intent_limb_refs: Array[CombatLimb] = []
+var _intent_pulsing_tweens: Array[Tween] = []
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
