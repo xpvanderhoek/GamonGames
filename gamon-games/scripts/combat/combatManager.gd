@@ -860,8 +860,23 @@ func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
 			(existing_tween as Tween).kill()
 		impact_node.remove_meta("impact_tween")
 
-	var base_scale := impact_node.scale
-	var base_position := impact_node.position
+	var base_scale: Vector2
+	if impact_node.has_meta("impact_base_scale"):
+		base_scale = impact_node.get_meta("impact_base_scale")
+	else:
+		base_scale = impact_node.scale
+		impact_node.set_meta("impact_base_scale", base_scale)
+
+	var base_position: Vector2
+	if impact_node.has_meta("impact_base_position"):
+		base_position = impact_node.get_meta("impact_base_position")
+	else:
+		base_position = impact_node.position
+		impact_node.set_meta("impact_base_position", base_position)
+
+	impact_node.scale = base_scale
+	impact_node.position = base_position
+
 	var knock_offset := Vector2(randf_range(-5.0, 5.0), randf_range(-3.0, 1.5))
 
 	var tween := create_tween()
@@ -876,6 +891,8 @@ func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
 	tween.finished.connect(func():
 		if is_instance_valid(impact_node):
 			impact_node.remove_meta("impact_tween")
+			impact_node.remove_meta("impact_base_scale")
+			impact_node.remove_meta("impact_base_position")
 	)
 
 
