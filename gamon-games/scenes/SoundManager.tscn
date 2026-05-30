@@ -7,6 +7,8 @@
 [ext_resource type="AudioStream" uid="uid://cyqfh42dpdjgp" path="res://sfx/pencil_circle.wav" id="5_yai5u"]
 [ext_resource type="AudioStream" uid="uid://2m2em64vl84w" path="res://sfx/Purchase.wav" id="6_4xaxn"]
 [ext_resource type="AudioStream" uid="uid://cp4ghbhrahrwn" path="res://sfx/FailSound.mp3" id="7_kysrt"]
+[ext_resource type="AudioStream" path="res://assets/Sounds/levelup.wav" id="8_lvlup"]
+[ext_resource type="AudioStream" path="res://assets/Sounds/xpbar.wav" id="9_xpbar"]
 
 [node name="SoundManager" type="Node" unique_id=440982374]
 script = ExtResource("1_rs7eg")
@@ -37,4 +39,12 @@ bus = &"SFX"
 [node name="SFXFailSound" type="AudioStreamPlayer" parent="." unique_id=644354972]
 stream = ExtResource("7_kysrt")
 volume_db = -16.0
+bus = &"SFX"
+
+[node name="SFXLevelUp" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_lvlup")
+bus = &"SFX"
+
+[node name="SFXXPBarTick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_xpbar")
 bus = &"SFX"

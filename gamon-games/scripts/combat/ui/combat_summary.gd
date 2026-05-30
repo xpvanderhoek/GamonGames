@@ -2,8 +2,6 @@ extends Control
 
 signal continue_pressed
 
-const XPBAR_TICK_SFX := preload("res://assets/Sounds/xpbar.wav")
-const LEVELUP_SFX := preload("res://assets/Sounds/levelup.wav")
 
 @onready var exp_recieved: Label = $PanelContainer/VBoxContainer/ExpRecieved
 @onready var current_level: Label = $PanelContainer/VBoxContainer/LevelContainer/CurrentLevel
@@ -112,9 +110,6 @@ func _update_ui_for_exp(exp_amount: float) -> void:
 				_exp_text_label.text = str(exp_value - current_req) + " / " + str(next_req - current_req)
 
 func _play_expbar_ticks(exp_value: int) -> void:
-	if XPBAR_TICK_SFX == null:
-		return
-
 	var target_exp := clampi(exp_value, _animation_start_exp, _animation_end_exp)
 	if target_exp <= _last_tick_exp:
 		return
@@ -126,13 +121,7 @@ func _play_expbar_ticks(exp_value: int) -> void:
 			continue
 
 		var progress := float(_last_tick_exp - _animation_start_exp) / float(exp_span)
-		var tick_player := AudioStreamPlayer.new()
-		tick_player.stream = XPBAR_TICK_SFX
-		tick_player.autoplay = false
-		tick_player.pitch_scale = lerpf(0.88, 1.22, clampf(progress, 0.0, 1.0))
-		add_child(tick_player)
-		tick_player.finished.connect(tick_player.queue_free)
-		tick_player.play()
+		SoundManager.play_xpbar_tick(lerpf(0.88, 1.22, clampf(progress, 0.0, 1.0)))
 
 func _animate_exp_bar(from_exp: int, to_exp: int) -> void:
 	var tween: Tween = create_tween()
@@ -163,15 +152,7 @@ func _on_animation_finished() -> void:
 			continue_button.disabled = false
 
 func _play_levelup_sfx() -> void:
-	if LEVELUP_SFX == null:
-		return
-
-	var levelup_player: AudioStreamPlayer = AudioStreamPlayer.new()
-	levelup_player.stream = LEVELUP_SFX
-	levelup_player.autoplay = false
-	add_child(levelup_player)
-	levelup_player.finished.connect(levelup_player.queue_free)
-	levelup_player.play()
+	SoundManager.play_levelup()
 
 func _show_spell_options() -> void:
 	var combat_manager := get_parent() as CombatManager
