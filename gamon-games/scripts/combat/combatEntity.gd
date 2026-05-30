@@ -29,7 +29,9 @@ var single_highlight_enabled: bool = true
 var whole_enemy_highlight_enabled: bool = false
 
 var _limb_tooltip: PanelContainer = null
-var _limb_tooltip_label: Label = null
+var _limb_tooltip_label: RichTextLabel = null
+var _tooltip_limb: CombatLimb = null
+var _was_shift_pressed: bool = false
 
 signal entity_died(entity: CombatEntity)
 signal entity_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int)
@@ -62,6 +64,11 @@ func _find_limbs_recursive(node: Node) -> void:
 
 func _process(_delta: float) -> void:
 	_update_limb_tooltip_position()
+	if _tooltip_limb != null and _limb_tooltip != null and _limb_tooltip.visible:
+		var shift_now := Input.is_key_pressed(KEY_SHIFT)
+		if shift_now != _was_shift_pressed:
+			_was_shift_pressed = shift_now
+			_show_limb_tooltip(_tooltip_limb)
 
 func _on_limb_mouse_entered(limb: CombatLimb) -> void:
 	var hovered_limb := _resolve_hover_target(limb)
@@ -83,6 +90,7 @@ func _on_limb_mouse_exited(limb: CombatLimb) -> void:
 	if top != null:
 		_show_limb_tooltip(top)
 	else:
+		_tooltip_limb = null
 		_hide_limb_tooltip()
 		
 func _top_hovered_limb() -> CombatLimb:
@@ -392,46 +400,95 @@ func _ensure_limb_tooltip() -> void:
 	_limb_tooltip.visible = false
 
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.08, 0.08, 0.08, 0.88)
+	style.bg_color = Color(0.05, 0.05, 0.07, 0.96)
 	style.border_width_left   = 1
 	style.border_width_right  = 1
 	style.border_width_top    = 1
 	style.border_width_bottom = 1
-	style.border_color = Color(0.55, 0.55, 0.55, 0.9)
-	style.corner_radius_top_left     = 4
-	style.corner_radius_top_right    = 4
-	style.corner_radius_bottom_left  = 4
-	style.corner_radius_bottom_right = 4
-	style.content_margin_left   = 8.0
-	style.content_margin_right  = 8.0
-	style.content_margin_top    = 4.0
-	style.content_margin_bottom = 4.0
+	style.border_color = Color(0.35, 0.35, 0.45, 0.6)
+	style.corner_radius_top_left     = 8
+	style.corner_radius_top_right    = 8
+	style.corner_radius_bottom_left  = 8
+	style.corner_radius_bottom_right = 8
+	style.content_margin_left   = 14.0
+	style.content_margin_right  = 14.0
+	style.content_margin_top    = 10.0
+	style.content_margin_bottom = 10.0
+	
 	_limb_tooltip.add_theme_stylebox_override("panel", style)
 
-	_limb_tooltip_label = Label.new()
+	_limb_tooltip_label = RichTextLabel.new()
 	_limb_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_limb_tooltip_label.add_theme_font_size_override("font_size", 13)
-	_limb_tooltip_label.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95, 1.0))
-	_limb_tooltip_label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
-	_limb_tooltip_label.add_theme_constant_override("outline_size", 2)
+	_limb_tooltip_label.fit_content = true
+	_limb_tooltip_label.scroll_active = false
+	_limb_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_limb_tooltip_label.custom_minimum_size = Vector2(0, 0)
+	_limb_tooltip_label.bbcode_enabled = true
+	_limb_tooltip_label.add_theme_font_size_override("normal_font_size", 13)
+	_limb_tooltip_label.add_theme_font_size_override("bold_font_size", 14)
+	_limb_tooltip_label.add_theme_color_override("default_color", Color(0.92, 0.92, 0.95, 1.0))
 	_limb_tooltip.add_child(_limb_tooltip_label)
 
 	add_child(_limb_tooltip)
 
 func _show_limb_tooltip(limb: CombatLimb) -> void:
 	_ensure_limb_tooltip()
+	_tooltip_limb = limb
+	_was_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
+
 	var hp_color := _hp_color_for_limb(limb)
 	var hp_hex   := hp_color.to_html(false)
-	_limb_tooltip_label.text = "%s\n[color=#%s]%d / %d HP[/color]" % [
-		limb.limb_name, hp_hex,
-		limb.current_health, limb.max_health
-	]
-	_limb_tooltip_label.text = "%s\n%d / %d HP" % [
-		limb.limb_name, limb.current_health, limb.max_health
-	]
-	_limb_tooltip_label.add_theme_color_override("font_color", hp_color)
+
+	var hit_chance := limb.hit_chance_percent
+	var manager := _find_combat_manager() as CombatManager
+	if manager != null:
+		hit_chance = manager._get_adjusted_hit_chance_percent(limb, self)
+
+	var hit_color: Color
+	if hit_chance >= 75.0:
+		hit_color = Color(0.35, 1.0, 0.45, 1.0)
+	elif hit_chance >= 45.0:
+		hit_color = Color(1.0, 0.82, 0.22, 1.0)
+	else:
+		hit_color = Color(1.0, 0.38, 0.38, 1.0)
+	var hit_hex := hit_color.to_html(false)
+
+	var t := "[b][font_size=15]%s[/font_size][/b]" % limb.limb_name
+
+	t += "\nHP: [color=#%s]%d / %d[/color]" % [hp_hex, limb.current_health, limb.max_health]
+	if _was_shift_pressed:
+		t += "\n[color=#8a8a9e][font_size=11]  - Health of this limb. Breaks at 0 HP.[/font_size][/color]"
+
+	t += "\nHit Chance: [color=#%s]%.0f%%[/color]" % [hit_hex, hit_chance]
+	if _was_shift_pressed:
+		t += "\n[color=#8a8a9e][font_size=11]  - Your chance to successfully hit this limb.[/font_size][/color]"
+
+	if limb.physical_defense > 0.0:
+		t += "\nPhys Def: [color=#cccccc]%.0f%%[/color]" % limb.physical_defense
+		if _was_shift_pressed:
+			t += "\n[color=#8a8a9e][font_size=11]  - Reduces incoming physical damage.[/font_size][/color]"
+
+	if limb.magic_defense > 0.0:
+		t += "\nMagic Def: [color=#cccccc]%.0f%%[/color]" % limb.magic_defense
+		if _was_shift_pressed:
+			t += "\n[color=#8a8a9e][font_size=11]  - Reduces incoming magic damage.[/font_size][/color]"
+
+	if limb.is_vital:
+		t += "\n[color=#ffaa00][b]VITAL[/b][/color]"
+		if _was_shift_pressed:
+			t += "\n[color=#8a8a9e][font_size=11]  - Destroying this limb kills the enemy instantly.[/font_size][/color]"
+			t += "\n[color=#8a8a9e][font_size=11]  - If only vital limbs remain, all hit chances become 100%.[/font_size][/color]"
+
+
+	if not _was_shift_pressed:
+		t += "\n[color=#5a5a6a][font_size=10][i]Hold Shift for more info[/i][/font_size][/color]"
+
+	_limb_tooltip_label.text = ""
+	_limb_tooltip.reset_size()
+	_limb_tooltip_label.text = t
 	_limb_tooltip.visible = true
 	_update_limb_tooltip_position()
+
 
 func _hide_limb_tooltip() -> void:
 	if _limb_tooltip != null:

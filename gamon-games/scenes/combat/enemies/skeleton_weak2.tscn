@@ -30,7 +30,7 @@ min_damage = 1
 max_damage = 3
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
-[node name="ttt" type="Control" unique_id=1680014499]
+[node name="ttt2" type="Control" unique_id=1680014499]
 modulate = Color(0.8, 0.8, 0.77, 1)
 custom_minimum_size = Vector2(250, 350)
 layout_mode = 3
@@ -62,6 +62,7 @@ position = Vector2(118.5, 201.75)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_21yfr")
 script = ExtResource("5_7fdr4")
+limb_name = "Torso"
 max_health = 75
 is_vital = true
 
@@ -70,6 +71,7 @@ position = Vector2(174, 141.75)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_3ve5h")
 script = ExtResource("5_7fdr4")
+limb_name = "Left Arm"
 max_health = 25
 attacks = Array[ExtResource("8_sdnsx")]([SubResource("Resource_xej5o")])
 
@@ -79,6 +81,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_3ve5h")
 flip_h = true
 script = ExtResource("5_7fdr4")
+limb_name = "Right Arm"
 max_health = 25
 attacks = Array[ExtResource("8_sdnsx")]([SubResource("Resource_ltakh")])
 
@@ -87,6 +90,7 @@ position = Vector2(121.5, 45.75)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_8fxwp")
 script = ExtResource("5_7fdr4")
+limb_name = "Head"
 max_health = 30
 is_vital = true
 hit_chance_percent = 50.0
