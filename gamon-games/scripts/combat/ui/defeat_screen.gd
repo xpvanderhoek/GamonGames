@@ -21,7 +21,8 @@ func _ready() -> void:
 		print("ERROR: menu_button not found!")
 	
 	if retry_button:
-		retry_button.pressed.connect(func(): 
+		retry_button.pressed.connect(func():
+			RunData.new_run()
 			TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 		)
 		retry_button.disabled = true
