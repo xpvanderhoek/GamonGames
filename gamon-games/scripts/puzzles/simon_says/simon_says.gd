@@ -218,6 +218,7 @@ func _on_button_pressed(idx):
 	can_click = true
 	
 func _on_continue_pressed() -> void:
+	RunData.current_encounter = [preload("res://scenes/combat/enemies/mimic.tscn")]
 	TransitionManager.change_scene(COMBAT_SCENE)
 	await get_tree().create_timer(0.4).timeout
 	queue_free()

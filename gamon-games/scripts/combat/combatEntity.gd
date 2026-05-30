@@ -37,8 +37,13 @@ signal entity_died(entity: CombatEntity)
 signal entity_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int)
 signal highlighted_limb_clicked(limb: CombatLimb)
 
+const DEATH_DISSOLVE_SHADER := preload("res://shaders/black_disintegrate.gdshader")
+
 var exp_reward: int = 100
 var combat_scaling_multiplier: float = 1.0
+
+var _death_started: bool = false
+var _death_materials: Array[ShaderMaterial] = []
 
 func get_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
 	match damage_type:
@@ -377,11 +382,62 @@ func die() -> void:
 		_highlighted_limb = null
 	for limb in limbs:
 		if not limb.is_destroyed:
-			limb.destroy_limb()
+			limb.mark_destroyed_silent()
 	_hide_limb_tooltip()		
+	var started_vfx := _start_death_disintegrate()
 	entity_died.emit(self)
 	RunData.add_exp(exp_reward)
 	RunData.coins += 15
+	if not started_vfx and has_method("hide"):
+		call("hide")
+
+func _start_death_disintegrate() -> bool:
+	if _death_started:
+		return true
+	if DEATH_DISSOLVE_SHADER == null:
+		return false
+	_death_started = true
+	_death_materials.clear()
+
+	var sprites := _get_death_sprites()
+	if sprites.is_empty():
+		return false
+
+	for sprite in sprites:
+		var material := ShaderMaterial.new()
+		material.shader = DEATH_DISSOLVE_SHADER
+		material.set_shader_parameter("dissolve", 0.0)
+		material.set_shader_parameter("time", 0.0)
+		sprite.material = material
+		_death_materials.append(material)
+
+	var tween := create_tween()
+	var duration := 0.9
+	tween.set_parallel(true)
+	for material in _death_materials:
+		tween.tween_property(material, "shader_parameter/dissolve", 1.0, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(material, "shader_parameter/time", 0.6, duration)
+	tween.set_parallel(false)
+	tween.tween_interval(0.08)
+	
+	tween.finished.connect(func():
+		if not is_instance_valid(self):
+			return
+		if self is CombatEntity:
+			(self as CombatEntity).visible = false
+	)
+	return true
+
+func _get_death_sprites() -> Array[Sprite2D]:
+	var result: Array[Sprite2D] = []
+	var stack: Array[Node] = [self]
+	while not stack.is_empty():
+		var node = stack.pop_back()
+		if node is Sprite2D:
+			result.append(node)
+		for child in node.get_children():
+			stack.append(child)
+	return result
 
 func _ensure_limb_tooltip() -> void:
 	if _limb_tooltip != null:

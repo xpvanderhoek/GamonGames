@@ -1,6 +1,8 @@
 class_name CombatLimb
 extends Sprite2D
 
+const LIMB_DISSOLVE_SHADER := preload("res://shaders/black_disintegrate.gdshader")
+
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
 @export var is_vital: bool = false
@@ -266,7 +268,28 @@ func destroy_limb() -> void:
 			child_limb.destroy_limb()
 
 	limb_destroyed.emit(self)
-	_play_destroy_animation()
+	if not _start_limb_disintegrate():
+		_play_destroy_animation()
+
+func mark_destroyed_silent() -> void:
+	if is_destroyed:
+		return
+	is_destroyed = true
+	is_highlighted = false
+	is_aoe_highlighted = false
+	_spell_targeting_enabled = false
+	_spell_targeting_hovered = false
+	_spell_targeting_icon = null
+	if _spell_targeting_frame_sprite != null:
+		_spell_targeting_frame_sprite.visible = false
+	if _spell_targeting_icon_sprite != null:
+		_spell_targeting_icon_sprite.visible = false
+
+	var click_area := get_node_or_null("ClickArea") as Area2D
+	if click_area != null:
+		click_area.input_pickable = false
+		click_area.monitoring = false
+		click_area.monitorable = false
 
 func _play_destroy_animation() -> void:
 	if not is_inside_tree():
@@ -296,11 +319,44 @@ func _play_destroy_animation() -> void:
 			_finalize_destroy_visual()
 	)
 
+func _start_limb_disintegrate() -> bool:
+	if LIMB_DISSOLVE_SHADER == null or not is_inside_tree():
+		return false
+
+	if has_meta("destroy_tween"):
+		var existing_tween = get_meta("destroy_tween")
+		if existing_tween is Tween:
+			(existing_tween as Tween).kill()
+		remove_meta("destroy_tween")
+
+	var material := ShaderMaterial.new()
+	material.shader = LIMB_DISSOLVE_SHADER
+	material.set_shader_parameter("dissolve", 0.0)
+	material.set_shader_parameter("time", 0.0)
+	self.material = material
+
+	var tween := create_tween()
+	set_meta("destroy_tween", tween)
+	var duration := 0.45
+	tween.set_parallel(true)
+	tween.tween_property(material, "shader_parameter/dissolve", 1.0, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(material, "shader_parameter/time", 0.6, duration)
+	tween.set_parallel(false)
+	tween.tween_interval(0.03)
+	
+	tween.finished.connect(func():
+		if is_instance_valid(self):
+			remove_meta("destroy_tween")
+			_finalize_destroy_visual()
+	)
+	return true
+
 func _finalize_destroy_visual() -> void:
 	visible = false
 	scale = _initial_scale
 	position = _initial_position
 	modulate = Color.WHITE
+	material = null
 
 func heal(amount: int) -> void:
 	if is_destroyed:

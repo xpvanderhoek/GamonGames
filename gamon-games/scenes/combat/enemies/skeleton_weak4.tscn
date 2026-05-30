@@ -4,6 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://bmn4thesxo60y" path="res://assets/enemies/skeleton/hit.wav" id="2_l8ffk"]
 [ext_resource type="Texture2D" uid="uid://cvrg5pxbpmxnl" path="res://assets/enemies/skeleton/head.png" id="3_ebu2s"]
 [ext_resource type="Texture2D" uid="uid://dnmywmed8rveo" path="res://assets/enemies/skeleton/torso.png" id="4_hi268"]
+[ext_resource type="Texture2D" uid="uid://chnx0dcj13ni1" path="res://assets/enemies/shadow.png" id="4_mb7kg"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="5_pk7tw"]
 [ext_resource type="Texture2D" uid="uid://dnrjcf6l5mmh4" path="res://assets/enemies/skeleton/arm.png" id="6_fjbaj"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="7_m0c5l"]
@@ -43,10 +44,16 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 250.0
 offset_bottom = 350.0
+size_flags_vertical = 8
 script = ExtResource("1_katr6")
 hit_sfx = ExtResource("2_l8ffk")
 turn_order_icon = ExtResource("3_ebu2s")
 spawn_max_fights = 5
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=542750640]
+position = Vector2(118, 330)
+scale = Vector2(0.8173901, 0.8452381)
+texture = ExtResource("4_mb7kg")
 
 [node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
 layout_mode = 1

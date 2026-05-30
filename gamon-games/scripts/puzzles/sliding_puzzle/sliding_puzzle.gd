@@ -366,6 +366,7 @@ func _on_button_pressed() -> void:
 	if solved_on_time == true:
 		TransitionManager.change_scene("res://scenes/map/map.tscn")
 	else: 
+		RunData.current_encounter = [preload("res://scenes/combat/enemies/mimic.tscn")]
 		TransitionManager.change_scene("res://scenes/combat/combat.tscn")
 	await get_tree().create_timer(2.0).timeout
 	queue_free()

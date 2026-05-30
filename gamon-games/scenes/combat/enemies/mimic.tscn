@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://dcmqiaqvbqmg5"]
+
+[ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_crxq2"]
+[ext_resource type="Texture2D" uid="uid://cn1rjadgwh0ig" path="res://assets/enemies/chest/locked_chest.png" id="3_qajp5"]
+[ext_resource type="Texture2D" uid="uid://chnx0dcj13ni1" path="res://assets/enemies/shadow.png" id="3_xt66o"]
+[ext_resource type="Texture2D" uid="uid://bfbplbi6osegm" path="res://assets/enemies/chest/Mimic_torso.png" id="4_pbwj5"]
+[ext_resource type="Texture2D" uid="uid://nvmactfl6d26" path="res://assets/enemies/chest/Mimic_Right_arm.png" id="4_xt66o"]
+[ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="5_6l4ag"]
+[ext_resource type="Texture2D" uid="uid://bgpyhfs0lry7m" path="res://assets/enemies/chest/Mimic_head.png" id="6_xt66o"]
+[ext_resource type="Texture2D" uid="uid://b850r8boe6m17" path="res://assets/enemies/chest/Mimic_leg.png" id="7_crxq2"]
+
+[node name="Mimic" type="Control" unique_id=1680014499]
+modulate = Color(0.8, 0.8, 0.77, 1)
+custom_minimum_size = Vector2(225, 235)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 251.0
+offset_bottom = 249.0
+size_flags_vertical = 8
+script = ExtResource("1_crxq2")
+turn_order_icon = ExtResource("3_qajp5")
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=862253151]
+position = Vector2(115, 202)
+scale = Vector2(0.80238104, 0.8023811)
+texture = ExtResource("3_xt66o")
+
+[node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.96500003
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -101.0
+offset_top = -32.97
+offset_right = 99.0
+offset_bottom = -11.629974
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Right Arm" type="Sprite2D" parent="." unique_id=1121488834]
+position = Vector2(44.275, 113.225006)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("4_xt66o")
+script = ExtResource("5_6l4ag")
+limb_name = "Right Arm"
+max_health = 30
+hit_chance_percent = 50.0
+
+[node name="Left Arm" type="Sprite2D" parent="." unique_id=1418505464]
+position = Vector2(185.275, 113.225006)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("4_xt66o")
+flip_h = true
+script = ExtResource("5_6l4ag")
+limb_name = "Left Arm"
+max_health = 30
+hit_chance_percent = 50.0
+
+[node name="Left Leg" type="Sprite2D" parent="." unique_id=542674377]
+position = Vector2(165.275, 185.22502)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("7_crxq2")
+flip_h = true
+script = ExtResource("5_6l4ag")
+limb_name = "Left Leg"
+max_health = 30
+hit_chance_percent = 50.0
+
+[node name="Right Leg" type="Sprite2D" parent="." unique_id=1667682554]
+position = Vector2(65.275, 185.225)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("7_crxq2")
+script = ExtResource("5_6l4ag")
+limb_name = "Right Leg"
+max_health = 30
+hit_chance_percent = 50.0
+
+[node name="Torso" type="Sprite2D" parent="." unique_id=582211915]
+position = Vector2(112.275, 95.225006)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("4_pbwj5")
+script = ExtResource("5_6l4ag")
+limb_name = "Torso"
+max_health = 75
+is_vital = true
+
+[node name="Head" type="Sprite2D" parent="." unique_id=1466662351]
+position = Vector2(114.525, 118.725006)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("6_xt66o")
+script = ExtResource("5_6l4ag")
+limb_name = "Tongue"
+max_health = 30
+is_vital = true
+hit_chance_percent = 50.0

@@ -20,7 +20,7 @@ var enemy_pool : Array[PackedScene] = [
 	preload("res://scenes/combat/enemies/skeleton_weak2.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_weak3.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_weak4.tscn"),
-	preload("res://scenes/combat/enemies/skeleton_full.tscn"),
+	# preload("res://scenes/combat/enemies/skeleton_full.tscn"),
 ]
 
 enum CombatState { 
@@ -94,12 +94,14 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
 func _ready() -> void:
 	if _queued_encounter_scenes.size() <= 0:
-		_get_random_encounters()
+		if RunData.current_encounter.size() > 0:
+			_queued_encounter_scenes = RunData.current_encounter.duplicate()
+			RunData.current_encounter.clear()
+		else:
+			_get_random_encounters()
 	
 	if _queued_encounter_scenes.size() > 0:
 		_spawn_encounter_enemies(_queued_encounter_scenes)
-	elif RunData.current_encounter.size() > 0:
-		_spawn_encounter_enemies(RunData.current_encounter)
 
 	current_round = 1
 	_refresh_enemy_entities()

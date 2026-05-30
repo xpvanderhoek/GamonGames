@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dnmywmed8rveo" path="res://assets/enemies/skeleton/torso.png" id="3_ml463"]
 [ext_resource type="Texture2D" uid="uid://dnrjcf6l5mmh4" path="res://assets/enemies/skeleton/arm.png" id="4_pe5k4"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="4_v7s83"]
+[ext_resource type="Texture2D" uid="uid://chnx0dcj13ni1" path="res://assets/enemies/shadow.png" id="4_xej5o"]
 [ext_resource type="Texture2D" uid="uid://cm4og8dey6cju" path="res://assets/enemies/skeleton/leg.png" id="5_pe5k4"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="5_xej5o"]
 [ext_resource type="Texture2D" uid="uid://bojw0f4jf0hh6" path="res://assets/enemies/skeleton/weapon_1.png" id="6_5q3o5"]
@@ -67,10 +68,16 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 250.0
 offset_bottom = 350.0
+size_flags_vertical = 8
 script = ExtResource("1_16f70")
 hit_sfx = ExtResource("2_crdjk")
 turn_order_icon = ExtResource("2_lt0ji")
 spawn_min_fights = 5
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=856125639]
+position = Vector2(118, 330)
+scale = Vector2(0.8173901, 0.8452381)
+texture = ExtResource("4_xej5o")
 
 [node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
 layout_mode = 1
