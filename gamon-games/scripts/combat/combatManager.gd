@@ -1075,8 +1075,6 @@ func _telegraph_enemy_attack(source_enemy: CombatEntity, attack_limb: CombatLimb
 			limb.scale = original_scales[idx]
 			limb.set_unhighlighted()
 
-# ── Enemy Attack Intent ──────────────────────────────────────────────────────
-
 func _pre_roll_enemy_intents() -> void:
 	_enemy_intents.clear()
 	for enemy in _get_alive_enemies():
@@ -1106,11 +1104,9 @@ func _show_enemy_intent_visuals() -> void:
 		if attack == null or enemy == null or not is_instance_valid(enemy):
 			continue
 
-		# Orange pulsing highlight on the attacking limb
 		_start_intent_limb_pulse(attack_limb)
 		_intent_limb_refs.append(attack_limb)
 
-		# Damage range label (accounts for outgoing multiplier and hit count)
 		var outgoing_mult := _get_enemy_outgoing_multiplier(enemy)
 		var count := attack.get_attack_count()
 		var min_dmg := int(round(float(attack.get_min_damage()) * outgoing_mult)) * count
@@ -1156,8 +1152,6 @@ func _clear_enemy_intent_visuals() -> void:
 		if label != null and is_instance_valid(label):
 			label.queue_free()
 	_intent_labels.clear()
-
-# ─────────────────────────────────────────────────────────────────────────────
 
 func _reset_combat_effects() -> void:
 	_player_effects.clear()
