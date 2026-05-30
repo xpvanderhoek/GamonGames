@@ -28,7 +28,7 @@ func show_random_options():
 		var current_button = buttons[button_index] 
 		var corresponding_stat = chosen_stats[button_index]
 
-		current_button.text = "%s (Lv %d)" % [corresponding_stat.capitalize(), PlayerStats.get_upgrade_level(corresponding_stat)]
+		current_button.text = "%s" % [corresponding_stat.capitalize()]
 		button_to_stat_map[current_button] = corresponding_stat  
 
 	show()

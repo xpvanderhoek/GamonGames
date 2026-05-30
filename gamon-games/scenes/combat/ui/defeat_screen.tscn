@@ -1,0 +1,146 @@
+[gd_scene format=3 uid="uid://bxc8xxl5ma06d"]
+
+[ext_resource type="Script" path="res://scripts/combat/ui/defeat_screen.gd" id="1_defeat"]
+[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_defeat"]
+[ext_resource type="Texture2D" uid="uid://rhhkwexpth8p" path="res://assets/settings/pause_settings.png" id="2_qnqv3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_defeat"]
+bg_color = Color(0.15, 0.05, 0.05, 0.9)
+border_color = Color(0.8, 0.2, 0.2, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.1, 0.02, 0.02, 0.7)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.1, 0.1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.15, 0.03, 0.03, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.3, 0.3, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="DefeatScreen" type="Control" unique_id=3458945871]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_defeat")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1842357134]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 2.0
+offset_right = 7.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1742357134]
+custom_minimum_size = Vector2(600, 450)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -331.0
+offset_top = -208.0
+offset_right = 327.0
+offset_bottom = 241.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(300, 225)
+theme_override_styles/panel = SubResource("StyleBoxFlat_defeat")
+
+[node name="Window" type="TextureRect" parent="PanelContainer" unique_id=1542357134]
+layout_mode = 2
+texture = ExtResource("2_qnqv3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1342357134]
+layout_direction = 1
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1242357134]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_defeat")
+theme_override_font_sizes/font_size = 56
+text = "DEFEATED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Message" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1142357134]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.8, 0.7, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_defeat")
+theme_override_font_sizes/font_size = 24
+text = "You have fallen in battle..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=1042357134]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+theme_override_constants/separation = 30
+
+[node name="RetryButton" type="Button" parent="PanelContainer/VBoxContainer/ButtonContainer" unique_id=942357134]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.6, 0.6, 1)
+theme_override_colors/font_focus_color = Color(1, 0.8, 0.8, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7, 0.7, 1)
+theme_override_fonts/font = ExtResource("2_defeat")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
+text = "RETRY"
+
+[node name="MenuButton" type="Button" parent="PanelContainer/VBoxContainer/ButtonContainer" unique_id=842357134]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.6, 0.6, 1)
+theme_override_colors/font_focus_color = Color(0.9, 0.8, 0.8, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.7, 0.7, 1)
+theme_override_fonts/font = ExtResource("2_defeat")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
+text = "MENU"

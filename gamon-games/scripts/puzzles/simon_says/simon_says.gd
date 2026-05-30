@@ -7,6 +7,8 @@ class_name SimonSays
 @onready var coinLabel: Label = $CoinLabel
 @onready var totalCoins: Label = $TotalCoinsLabel
 @onready var lives: TextureRect = $Lives
+@onready var finishRound: int = 7
+const COMBAT_SCENE := "res://scenes/combat/combat.tscn"
 
 var coin_amount: int = 0
 var sequence: Array[int] = []
@@ -89,12 +91,23 @@ func checkCorrect(clicked_button: int, click_position: int):
 	
 	if player_input.size() == sequence.size():
 		switchDisabled(true)
+		$AudioStreamPlayer2.play()
 		changeColor(Color(0.267, 0.667, 0.268, 1.0))
 		await get_tree().create_timer(0.4).timeout
 		can_click = false
-		next_round()
+		checkDone(sequence.size())
 		return
 
+func checkDone(currentRound: int):
+	if currentRound >= finishRound:
+		animate_labels(coinLabel, totalCoins)
+		switchDisabled(true)
+		await get_tree().create_timer(0.7).timeout
+		TransitionManager.change_scene("res://scenes/map/map.tscn")
+		await get_tree().create_timer(0.4).timeout
+		queue_free()
+	else:
+		next_round()
 
 func changeColor(color: Color):
 	for b in buttons:
@@ -106,9 +119,15 @@ func switchDisabled(variable: bool):
 	
 	
 func fail():
+	switchDisabled(true)
+	$AudioStreamPlayer.play()
+	changeColor(Color(2, 0.5, 0.5))
+	await get_tree().create_timer(0.1).timeout
+	changeColor(Color(2, 0.9, 0.9))
+	await get_tree().create_timer(0.1).timeout
+	changeColor(Color(2, 0.5, 0.5))
+	await get_tree().create_timer(0.1).timeout
 	if lives.visible == true:
-		changeColor(Color(2, 0.5, 0.5))
-		await get_tree().create_timer(0.4).timeout
 		changeColor(Color(0.9, 0.9, 0.9))
 		await get_tree().create_timer(0.2).timeout
 
@@ -117,15 +136,19 @@ func fail():
 		var center = get_viewport().get_visible_rect().size / 2
 
 		tween.tween_property(lives, "global_position", center, 3).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		tween.tween_property(lives, "modulate:a", 0.0, 1.0)
-		
+
+		tween.tween_callback(func(): 
+			$AudioStreamPlayer4.play()
+		)
+
+		tween.parallel().tween_property(lives, "modulate:a", 0.0, 0.3)
+
 		await tween.finished
-		
 		await get_tree().create_timer(0.4).timeout
-		
 		lives.visible = false
 		player_input.clear()
 		show_sequence()
+		switchDisabled(false)
 		return
 	animate_labels(coinLabel, totalCoins)
 	
@@ -147,7 +170,7 @@ func show_coin_popup(amount: int) -> void:
 	var popup = Label.new()
 	popup.text = "+" + str(amount)
 	popup.modulate = Color(1, 1, 0)
-
+	$AudioStreamPlayer3.play()
 	coinLabel.get_parent().add_child(popup)
 	var rect = coinLabel.get_global_rect()
 	popup.global_position = rect.get_center()
@@ -195,7 +218,8 @@ func _on_button_pressed(idx):
 	can_click = true
 	
 func _on_continue_pressed() -> void:
-	TransitionManager.change_scene("res://scenes/map/map.tscn")
+	TransitionManager.change_scene(COMBAT_SCENE)
+	await get_tree().create_timer(0.4).timeout
 	queue_free()
 	
 func animate_labels(label_a: Label, label_b: Label):

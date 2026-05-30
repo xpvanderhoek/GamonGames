@@ -1,18 +1,26 @@
 class_name CombatManager
 extends CanvasLayer
 
+const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
 const TURN_ORDER_ENTRY_SCENE := preload("res://scenes/combat/ui/TurnOrderEntry.tscn")
 const SPELL_BUTTON_SCENE := preload("res://scenes/combat/ui/SpellButton.tscn")
 const BUFF_ICON_SCENE := preload("res://scenes/combat/ui/BuffIcon.tscn")
 const COMBAT_SUMMARY_SCENE := preload("res://scenes/combat/ui/combat_summary.tscn")
+const BOSS_VICTORY_SCENE := preload("res://scenes/combat/ui/boss_victory.tscn")
+const DEFEAT_SCREEN_SCENE := preload("res://scenes/combat/ui/defeat_screen.tscn")
 const COMBAT_ITEM_EFFECTS_SCRIPT := preload("res://scripts/combat/combat_item_effects.gd")
 
-@onready var tutorial_overlay: CanvasLayer = $TutorialOverlay
+@onready var tutorial_overlay: CanvasLayer = $CanvasLayer/TutorialOverlay
+@onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 const MAX_ENEMY_COUNT = 3
 
 var enemy_pool : Array[PackedScene] = [
-	preload("res://scenes/combat/enemies/ttt.tscn")
+	preload("res://scenes/combat/enemies/skeleton_weak.tscn"),
+	preload("res://scenes/combat/enemies/skeleton_weak2.tscn"),
+	preload("res://scenes/combat/enemies/skeleton_weak3.tscn"),
+	preload("res://scenes/combat/enemies/skeleton_weak4.tscn"),
+	preload("res://scenes/combat/enemies/skeleton_full.tscn"),
 ]
 
 enum CombatState { 
@@ -120,13 +128,67 @@ func _ready() -> void:
 		tutorial_overlay.visible = true
 
 func _get_random_encounters() -> void:
-	var enemy_count : int = RunData.rng.randi_range(1, MAX_ENEMY_COUNT)
+	var range := _get_enemy_count_range_for_progress()
+	var enemy_count : int = RunData.rng.randi_range(int(range[0]), int(range[1]))
+
+	for i in range(enemy_count):
+		var chosen_scene := _pick_enemy_by_spawn_ranges(RunData.combats_fought)
+		_queued_encounter_scenes.append(chosen_scene)
+
+func _get_enemy_count_range_for_progress() -> Array:
+	var k := int(RunData.combats_fought / 3)
+	var min_count := clampi(1 + int(maxi(0, k - 1)), 1, MAX_ENEMY_COUNT)
+	var max_count := clampi(1 + k, 1, MAX_ENEMY_COUNT)
+	return [min_count, max_count]
+
+func _scene_allows_spawn(scene: PackedScene, combats_fought: int) -> bool:
+	if scene == null:
+		return false
+	var inst := scene.instantiate()
+	if inst == null:
+		return true
+	var allowed := true
+	if inst is CombatEntity:
+		var entity := inst as CombatEntity
+		var minv := int(entity.spawn_min_fights)
+		var maxv := int(entity.spawn_max_fights)
+		allowed = combats_fought >= minv and combats_fought <= maxv
+	if is_instance_valid(inst):
+		inst.queue_free()
+	return allowed
+
+func _pick_enemy_by_spawn_ranges(combats_fought: int) -> PackedScene:
+	var allowed: Array[PackedScene] = []
+	for scene in enemy_pool:
+		if _scene_allows_spawn(scene, combats_fought):
+			allowed.append(scene)
+
+	if allowed.is_empty():
+		allowed = enemy_pool.duplicate()
+
+	var idx := RunData.rng.randi_range(0, allowed.size() - 1)
+	return allowed[idx]
+
+func _apply_enemy_scaling(enemy: Node) -> void:
+	if not (enemy is CombatEntity):
+		return
 	
-	for i in range (enemy_count):
-		var random_enemy_idx : int = RunData.rng.randi_range(0, enemy_pool.size() - 1)
-		_queued_encounter_scenes.append(enemy_pool[random_enemy_idx])
+	var combat_entity := enemy as CombatEntity
+	var scaling_multiplier := 1.0 + (RunData.combats_fought * 0.1)
+	combat_entity.combat_scaling_multiplier = scaling_multiplier
+	
+	for limb in combat_entity.limbs:
+		if limb is CombatLimb:
+			limb.max_health = int(round(float(limb.max_health) * scaling_multiplier))
+			limb.current_health = limb.max_health
 
 func _input(event): #Temporary
+	# Don't process input during victory
+	if current_state == CombatState.COMBAT_OVER:
+		return
+	if event.is_action_pressed("escape"):
+		canvas_layer.add_child(PAUSE_MENU.instantiate())
+	
 	if event.is_action_pressed("ui_cancel"):
 		if _attack_selected:
 			_cancel_selected_spell()
@@ -161,17 +223,31 @@ func _on_combat_victory() -> void:
 	_update_button_states()
 	_refresh_turns_order_ui()
 	await get_tree().create_timer(1.2).timeout
+	RunData.combats_fought += 1
 	_show_victory_summary()
 
 func _show_victory_summary() -> void:
-	if COMBAT_SUMMARY_SCENE == null:
-		_exit_combat()
-		return
+	# Check if this was a boss fight
+	var is_boss_fight := false
+	if RunData.last_map_room != null and RunData.last_map_room.type == Room.Type.BOSS:
+		is_boss_fight = true
+	
+	if is_boss_fight:
+		if BOSS_VICTORY_SCENE == null:
+			_exit_combat()
+			return
 		
-	var summary = COMBAT_SUMMARY_SCENE.instantiate()
-	summary.continue_pressed.connect(_exit_combat)
-	add_child(summary)
-	summary.setup(_exp_gained_this_combat)
+		var victory_screen = BOSS_VICTORY_SCENE.instantiate()
+		add_child(victory_screen)
+	else:
+		if COMBAT_SUMMARY_SCENE == null:
+			_exit_combat()
+			return
+			
+		var summary = COMBAT_SUMMARY_SCENE.instantiate()
+		summary.continue_pressed.connect(_exit_combat)
+		add_child(summary)
+		summary.setup(_exp_gained_this_combat)
 
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	_queued_encounter_scenes = encounter_enemy_scenes.duplicate()
@@ -203,6 +279,7 @@ func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> voi
 			continue
 		var enemy_instance := enemy_scene.instantiate()
 		enemy_container.add_child(enemy_instance)
+		_apply_enemy_scaling(enemy_instance)
 
 func _refresh_enemy_entities() -> void:
 	enemy_entities.clear()
@@ -563,6 +640,7 @@ func _refresh_consumable_buttons() -> void:
 			button.set_item(item, idx)
 
 func _on_consumable_pressed(slot_index: int) -> void:
+	SoundManager.play_potion()
 	if current_state != CombatState.PLAYER_TURN:
 		return
 	if slot_index < 0 or slot_index >= RunData.consumables.size():
@@ -608,7 +686,7 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 		return
 	if debug_round_stats:
 		var limb_label: String = _item_effects.get_limb_label(limb)
-		var hit_chance := _get_adjusted_hit_chance_percent(limb)
+		var hit_chance := _get_adjusted_hit_chance_percent(limb, source_enemy)
 		var item_damage_bonus: int = _item_effects.get_item_damage_bonus(limb)
 		var item_precision_bonus: float = _item_effects.get_item_precision_bonus(limb)
 		var status_effects: Array[String] = _item_effects.get_item_statuses_for_limb(limb)
@@ -639,7 +717,7 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 	var active_spell := selected_spell
 	if active_spell != null and not _spend_spell_energy(active_spell):
 		return
-	if _roll_player_hit_on_limb(limb):
+	if _roll_player_hit_on_limb(limb, source_enemy):
 		var spell_damage := 0
 		var spell_type := SpellData.SpellType.ATTACK
 		var attack_damage_type := SpellData.DamageType.PHYSICAL
@@ -709,15 +787,25 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 	source_enemy.clear_current_highlight()
 	_end_player_turn()
 
-func _get_adjusted_hit_chance_percent(limb: CombatLimb) -> float:
+func _only_vital_limbs_remain(source_enemy: CombatEntity) -> bool:
+	if source_enemy == null or not is_instance_valid(source_enemy):
+		return false
+	for limb in source_enemy.limbs:
+		if limb != null and is_instance_valid(limb) and not limb.is_destroyed and not limb.is_vital:
+			return false
+	return true
+
+func _get_adjusted_hit_chance_percent(limb: CombatLimb, source_enemy: CombatEntity = null) -> float:
 	if limb == null or not is_instance_valid(limb):
 		return 0.0
+	if source_enemy != null and _only_vital_limbs_remain(source_enemy):
+		return 100.0
 	var item_precision_bonus: float = _item_effects.get_item_precision_bonus(limb)
 	var temp_precision_bonus: float = _item_effects.get_temp_precision_bonus()
 	return clampf(limb.hit_chance_percent + player_hit_chance_bonus_percent + item_precision_bonus + temp_precision_bonus, 0.0, 100.0)
 
-func _roll_player_hit_on_limb(limb: CombatLimb) -> bool:
-	return randf() * 100.0 < _get_adjusted_hit_chance_percent(limb)
+func _roll_player_hit_on_limb(limb: CombatLimb, source_enemy: CombatEntity = null) -> bool:
+	return randf() * 100.0 < _get_adjusted_hit_chance_percent(limb, source_enemy)
 
 func _on_enemy_died(_entity: CombatEntity) -> void:
 	if _entity != null and is_instance_valid(_entity):
@@ -1269,6 +1357,8 @@ func _get_enemy_outgoing_multiplier(source_enemy: CombatEntity) -> float:
 		var effect := raw_effect as Dictionary
 		total_multiplier += float(effect.get("outgoing_mult_delta", 0.0))
 
+	total_multiplier *= source_enemy.combat_scaling_multiplier
+
 	return max(0.0, total_multiplier)
 
 func _get_enemy_incoming_multiplier(source_enemy: CombatEntity, source_limb: CombatLimb = null) -> float:
@@ -1453,9 +1543,17 @@ func _restart_run_on_player_death() -> void:
 	if _is_exiting_combat:
 		return
 	_is_exiting_combat = true
-	RunData.end_run()
-	SaveLoad.save_data()
-	TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)
+	_show_defeat_screen()
+
+func _show_defeat_screen() -> void:
+	if DEFEAT_SCREEN_SCENE == null:
+		RunData.end_run()
+		SaveLoad.save_data()
+		TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)
+		return
+	
+	var defeat_screen = DEFEAT_SCREEN_SCENE.instantiate()
+	add_child(defeat_screen)
 
 func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_player: bool, is_heal: bool = false, custom_text: String = "") -> void:
 	var is_custom_text := not custom_text.is_empty()
@@ -1597,8 +1695,6 @@ func _flash_player_hit() -> void:
 	tween.tween_property(player_canvas, "modulate", Color(1, 1, 1, 1), 0.22)
 
 func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> void:
-	await _play_attack_lunge(source_entity, target_entity)
-
 	var vfx_lifetime_timer: SceneTreeTimer = null
 
 	if attack.sfx != null:
@@ -1608,6 +1704,8 @@ func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target
 		add_child(player)
 		player.finished.connect(player.queue_free)
 		player.play()
+
+	await _play_attack_lunge(source_entity, target_entity)
 
 	if attack.vfx_scene != null:
 		var vfx := attack.vfx_scene.instantiate()

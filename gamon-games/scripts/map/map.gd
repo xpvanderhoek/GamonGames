@@ -7,6 +7,8 @@ var enemy_scenes := [
 	"res://scenes/combat/enemies/ttt.tscn"
 ]
 
+const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
+
 const SCROLL_SPEED := 15
 const MAP_ROOM = preload("res://scenes/map/map_room.tscn")
 const MAP_LINE = preload("res://scenes/map/map_line.tscn")
@@ -24,6 +26,9 @@ const PUZZLE_SCENES := [
 @onready var rooms: Node2D = %Rooms
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var map_generator: MapGenerator = $MapGenerator
+@onready var canvas_layer: CanvasLayer = $CanvasLayer
+@onready var coin_label: Label = $CanvasLayer/Coins/CoinLabel
+@onready var health_label: Label = $CanvasLayer/Health/Label
 
 var map_data : Array[Array]
 var floors_climbed : int
@@ -35,11 +40,15 @@ func _ready() -> void:
 
 	if not RunData.run_active or RunData.map_data.is_empty():
 		RunData.new_run()
+		coin_label.text = str(RunData.coins)
+		health_label.text = str(RunData.current_health)
 		generate_new_map()
 		_save_map_state()
 		unlock_floor(0)
 	else:
 		map_data = RunData.map_data
+		coin_label.text = str(RunData.coins)
+		health_label.text = str(RunData.current_health)
 		floors_climbed = RunData.floors_climbed
 		last_room = RunData.last_map_room
 		create_map()
@@ -49,6 +58,9 @@ func _ready() -> void:
 			unlock_floor(0)
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("escape"):
+		canvas_layer.add_child(PAUSE_MENU.instantiate())
+	
 	if event.is_action_pressed("scroll_up"):
 		camera_2d.position.y -= SCROLL_SPEED
 	elif event.is_action_pressed("scroll_down"):
@@ -144,6 +156,6 @@ func _go_to_room(room : Room) -> void:
 		Room.Type.SHOP:
 			TransitionManager.change_scene(SHOP_SCENE, TransitionManager.TransitionType.FADE)
 		Room.Type.PUZZLE:
-			TransitionManager.change_scene(PUZZLE_SCENES[RunData.rng.randi() % PUZZLE_SCENES.size()])
+			TransitionManager.change_scene("res://scenes/puzzles/Chest_room.tscn")
 		Room.Type.BOSS:
 			TransitionManager.change_scene(COMBAT_SCENE)

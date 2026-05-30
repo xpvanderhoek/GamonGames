@@ -17,19 +17,22 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("escape"):
 		if SaveLoad.do_any_saves_exist():
-			var tween = create_tween()
-			tween.tween_property(self, "modulate:a", 0.0, 0.1)
-			await tween.finished
+			_fade_out()
 			queue_free()
 
 func _on_profile_selected():
-	var tween = create_tween()
-	tween.tween_property(self, "modulate:a", 0.0, 0.1)
-	await tween.finished
+	await _fade_out()
 	queue_free()
 
 func _on_back_pressed() -> void:
+	SoundManager.play_click()
+	await _fade_out()
+	queue_free()
+
+func _fade_out() -> void:
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.1)
 	await tween.finished
-	queue_free()
+
+func _on_back_mouse_hovered() -> void:
+	SoundManager.play_hover()

@@ -7,4 +7,4 @@ func _ready() -> void:
 	button.text = puzzle_text
 
 func _on_button_pressed() -> void:
-	TransitionManager.change_scene("res://scenes/map.tscn")
+	TransitionManager.change_scene("res://scenes/map/map.tscn")
