@@ -20,7 +20,7 @@ var enemy_pool : Array[PackedScene] = [
 	preload("res://scenes/combat/enemies/skeleton_weak2.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_weak3.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_weak4.tscn"),
-	preload("res://scenes/combat/enemies/skeleton_full.tscn"),
+	# preload("res://scenes/combat/enemies/skeleton_full.tscn"),
 ]
 
 enum CombatState { 
@@ -78,6 +78,10 @@ var _exp_gained_this_combat: int = 0
 var _consumable_buttons: Array = []
 var _pending_consumable_status: Dictionary = {}
 var _item_effects = null
+var _enemy_intents: Dictionary = {}
+var _intent_labels: Array[Label] = []
+var _intent_limb_refs: Array[CombatLimb] = []
+var _intent_pulsing_tweens: Array[Tween] = []
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
@@ -94,12 +98,14 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
 func _ready() -> void:
 	if _queued_encounter_scenes.size() <= 0:
-		_get_random_encounters()
+		if RunData.current_encounter.size() > 0:
+			_queued_encounter_scenes = RunData.current_encounter.duplicate()
+			RunData.current_encounter.clear()
+		else:
+			_get_random_encounters()
 	
 	if _queued_encounter_scenes.size() > 0:
 		_spawn_encounter_enemies(_queued_encounter_scenes)
-	elif RunData.current_encounter.size() > 0:
-		_spawn_encounter_enemies(RunData.current_encounter)
 
 	current_round = 1
 	_refresh_enemy_entities()
@@ -812,7 +818,11 @@ func _on_enemy_died(_entity: CombatEntity) -> void:
 		_exp_gained_this_combat += _entity.exp_reward
 		_enemy_effects.erase(_entity.get_instance_id())
 		_enemy_limb_effects.erase(_entity.get_instance_id())
+		_enemy_intents.erase(_entity.get_instance_id())
 		_refresh_enemy_buffs_ui()
+		if current_state == CombatState.PLAYER_TURN:
+			_clear_enemy_intent_visuals()
+			_show_enemy_intent_visuals()
 		if _item_effects.has_item_named("The Hollow Heart"):
 			var heal_amount := int(_item_effects.get_item_value_by_name("The Hollow Heart", 15.0))
 			_apply_player_heal(heal_amount)
@@ -860,8 +870,23 @@ func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
 			(existing_tween as Tween).kill()
 		impact_node.remove_meta("impact_tween")
 
-	var base_scale := impact_node.scale
-	var base_position := impact_node.position
+	var base_scale: Vector2
+	if impact_node.has_meta("impact_base_scale"):
+		base_scale = impact_node.get_meta("impact_base_scale")
+	else:
+		base_scale = impact_node.scale
+		impact_node.set_meta("impact_base_scale", base_scale)
+
+	var base_position: Vector2
+	if impact_node.has_meta("impact_base_position"):
+		base_position = impact_node.get_meta("impact_base_position")
+	else:
+		base_position = impact_node.position
+		impact_node.set_meta("impact_base_position", base_position)
+
+	impact_node.scale = base_scale
+	impact_node.position = base_position
+
 	var knock_offset := Vector2(randf_range(-5.0, 5.0), randf_range(-3.0, 1.5))
 
 	var tween := create_tween()
@@ -876,6 +901,8 @@ func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
 	tween.finished.connect(func():
 		if is_instance_valid(impact_node):
 			impact_node.remove_meta("impact_tween")
+			impact_node.remove_meta("impact_base_scale")
+			impact_node.remove_meta("impact_base_position")
 	)
 
 
@@ -893,6 +920,7 @@ func _apply_raw_player_damage(amount: int) -> void:
 func _end_player_turn() -> void:
 	if not _has_alive_enemies():
 		return
+	_clear_enemy_intent_visuals()
 	_set_enemy_targeting_enabled(false)
 	current_state = CombatState.ENEMY_TURN
 	_update_button_states()
@@ -921,12 +949,23 @@ func _perform_enemy_turn() -> void:
 
 		_refresh_turns_order_ui(attacking_enemy)
 
-		var attack_limb := _choose_enemy_attack_limb(attacking_enemy)
-		if attack_limb == null:
-			continue
-
-		var attack := attack_limb.choose_attack()
-		if attack == null:
+		var attack_limb: CombatLimb = null
+		var attack: SpellData = null
+		var _intent := _enemy_intents.get(attacking_enemy.get_instance_id(), {}) as Dictionary
+		if not _intent.is_empty():
+			attack_limb = _intent.get("limb") as CombatLimb
+			attack = _intent.get("attack") as SpellData
+			if attack_limb == null or not is_instance_valid(attack_limb) or attack_limb.is_destroyed:
+				attack_limb = _choose_enemy_attack_limb(attacking_enemy)
+				attack = null
+			if attack_limb != null and attack == null:
+				attack = attack_limb.choose_attack()
+		else:
+			attack_limb = _choose_enemy_attack_limb(attacking_enemy)
+			if attack_limb == null:
+				continue
+			attack = attack_limb.choose_attack()
+		if attack_limb == null or attack == null:
 			continue
 
 		await _telegraph_enemy_attack(attacking_enemy, attack_limb, attack)
@@ -1004,10 +1043,10 @@ func _telegraph_enemy_attack(source_enemy: CombatEntity, attack_limb: CombatLimb
 	if highlight_whole_enemy:
 		for limb in source_enemy.limbs:
 			if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
-				limb.set_highlighted()
+				limb.set_highlighted(Color(1.0, 0.2, 0.2, 1.0))
 				highlighted_limbs.append(limb)
 	else:
-		attack_limb.set_highlighted()
+		attack_limb.set_highlighted(Color(1.0, 0.2, 0.2, 1.0))
 		highlighted_limbs.append(attack_limb)
 
 	var original_scales: Array[Vector2] = []
@@ -1033,6 +1072,84 @@ func _telegraph_enemy_attack(source_enemy: CombatEntity, attack_limb: CombatLimb
 		if limb != null and is_instance_valid(limb):
 			limb.scale = original_scales[idx]
 			limb.set_unhighlighted()
+
+func _pre_roll_enemy_intents() -> void:
+	_enemy_intents.clear()
+	for enemy in _get_alive_enemies():
+		if not is_instance_valid(enemy) or _is_enemy_stunned(enemy):
+			continue
+		var attack_limb := _choose_enemy_attack_limb(enemy)
+		if attack_limb == null or not is_instance_valid(attack_limb):
+			continue
+		var attack := attack_limb.choose_attack()
+		if attack == null:
+			continue
+		_enemy_intents[enemy.get_instance_id()] = {
+			"enemy": enemy,
+			"limb": attack_limb,
+			"attack": attack,
+		}
+
+func _show_enemy_intent_visuals() -> void:
+	_clear_enemy_intent_visuals()
+	for enemy_id in _enemy_intents.keys():
+		var intent := _enemy_intents[enemy_id] as Dictionary
+		var enemy := intent.get("enemy") as CombatEntity
+		var attack_limb := intent.get("limb") as CombatLimb
+		var attack := intent.get("attack") as SpellData
+		if attack_limb == null or not is_instance_valid(attack_limb) or attack_limb.is_destroyed:
+			continue
+		if attack == null or enemy == null or not is_instance_valid(enemy):
+			continue
+
+		_start_intent_limb_pulse(attack_limb)
+		_intent_limb_refs.append(attack_limb)
+
+		var outgoing_mult := _get_enemy_outgoing_multiplier(enemy)
+		var count := attack.get_attack_count()
+		var min_dmg := int(round(float(attack.get_min_damage()) * outgoing_mult)) * count
+		var max_dmg := int(round(float(attack.get_max_damage()) * outgoing_mult)) * count
+		var dmg_text: String
+		if min_dmg == max_dmg:
+			dmg_text = str(min_dmg)
+		else:
+			dmg_text = "%d-%d" % [min_dmg, max_dmg]
+
+		var label := Label.new()
+		label.text = dmg_text
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.z_index = 300
+		label.add_theme_font_size_override("font_size", 20)
+		label.add_theme_color_override("font_color", Color(1.0, 0.55, 0.1, 1.0))
+		label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+		label.add_theme_constant_override("outline_size", 8)
+		add_child(label)
+		label.global_position = attack_limb.global_position + Vector2(-16.0, -52.0)
+		_intent_labels.append(label)
+
+func _start_intent_limb_pulse(limb: CombatLimb) -> void:
+	if limb == null or not is_instance_valid(limb) or limb.is_destroyed:
+		return
+	limb.modulate = Color(1.0, 0.55, 0.1, 1.0)
+	var tween := create_tween().set_loops()
+	tween.tween_property(limb, "modulate", Color(1.0, 0.28, 0.0, 1.0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(limb, "modulate", Color(1.0, 0.55, 0.1, 1.0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_intent_pulsing_tweens.append(tween)
+
+func _clear_enemy_intent_visuals() -> void:
+	for tween in _intent_pulsing_tweens:
+		if tween != null and is_instance_valid(tween):
+			tween.kill()
+	_intent_pulsing_tweens.clear()
+	for limb in _intent_limb_refs:
+		if limb != null and is_instance_valid(limb) and not limb.is_destroyed:
+			limb.modulate = Color.WHITE
+	_intent_limb_refs.clear()
+	for label in _intent_labels:
+		if label != null and is_instance_valid(label):
+			label.queue_free()
+	_intent_labels.clear()
 
 func _reset_combat_effects() -> void:
 	_player_effects.clear()
@@ -1818,6 +1935,8 @@ func _begin_player_turn() -> void:
 	for enemy in enemy_entities:
 		if enemy != null and is_instance_valid(enemy):
 			enemy._refresh_highlight()
+	_pre_roll_enemy_intents()
+	call_deferred("_show_enemy_intent_visuals")
 
 func _debug_print_round_stats() -> void:
 	var stats_to_log := ["damage", "precision", "physical_defense", "magic_defense", "speed", "energy_regen", "luck"]

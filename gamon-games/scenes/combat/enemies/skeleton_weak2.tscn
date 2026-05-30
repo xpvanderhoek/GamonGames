@@ -4,6 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://bmn4thesxo60y" path="res://assets/enemies/skeleton/hit.wav" id="2_2m3e0"]
 [ext_resource type="Texture2D" uid="uid://cvrg5pxbpmxnl" path="res://assets/enemies/skeleton/head.png" id="3_8fxwp"]
 [ext_resource type="Texture2D" uid="uid://dnmywmed8rveo" path="res://assets/enemies/skeleton/torso.png" id="4_21yfr"]
+[ext_resource type="Texture2D" uid="uid://chnx0dcj13ni1" path="res://assets/enemies/shadow.png" id="4_36475"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="5_7fdr4"]
 [ext_resource type="Texture2D" uid="uid://dnrjcf6l5mmh4" path="res://assets/enemies/skeleton/arm.png" id="6_3ve5h"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="8_sdnsx"]
@@ -41,6 +42,11 @@ script = ExtResource("1_3wpbg")
 hit_sfx = ExtResource("2_2m3e0")
 turn_order_icon = ExtResource("3_8fxwp")
 spawn_max_fights = 5
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=2045644955]
+position = Vector2(118, 330)
+scale = Vector2(0.8173901, 0.8452381)
+texture = ExtResource("4_36475")
 
 [node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
 layout_mode = 1

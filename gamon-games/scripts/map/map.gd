@@ -3,10 +3,6 @@ extends Node2D
 
 signal room_selected(room: Room)
 
-var enemy_scenes := [
-	"res://scenes/combat/enemies/ttt.tscn"
-]
-
 const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
 
 const SCROLL_SPEED := 15

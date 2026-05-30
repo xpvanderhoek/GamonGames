@@ -54,6 +54,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 250.0
 offset_bottom = 350.0
+size_flags_vertical = 8
 script = ExtResource("1_dvbgm")
 turn_order_icon = ExtResource("4_w3sxh")
 
