@@ -165,7 +165,6 @@ func _clear_current_highlight_visuals() -> void:
 	_group_highlighted_limbs.clear()
 
 func clear_current_highlight() -> void:
-	_hovered_limbs.clear()
 	_clear_current_highlight_visuals()
 	_refresh_spell_targeting_visuals()
 

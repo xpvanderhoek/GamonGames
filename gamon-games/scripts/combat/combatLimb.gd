@@ -2,6 +2,11 @@ class_name CombatLimb
 extends Sprite2D
 
 const LIMB_DISSOLVE_SHADER := preload("res://shaders/black_disintegrate.gdshader")
+const OUTLINE_SHADER := preload("res://shaders/combat_outline.gdshader")
+const OUTLINE_COLOR := Color(1.0, 0.9, 0.2, 1.0)
+const OUTLINE_WIDTH := 3.0
+const OUTLINE_TWEEN_DURATION := 0.14
+const OUTLINE_PADDING := 2
 
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
@@ -23,6 +28,10 @@ var _spell_targeting_frame_sprite: Sprite2D = null
 var _spell_targeting_icon_sprite: Sprite2D = null
 var _initial_scale: Vector2 = Vector2.ONE
 var _initial_position: Vector2 = Vector2.ZERO
+var _outline_sprite: Sprite2D = null
+var _outline_material: ShaderMaterial = null
+var _outline_tween: Tween = null
+var _outline_source_texture: Texture2D = null
 
 # Auto generate collision polygon
 var alpha_threshold: float = 0.2 # Threshold for generating collision polygons from texture alpha
@@ -89,8 +98,93 @@ func _ready() -> void:
 	_initial_scale = scale
 	_initial_position = position
 	current_health = max_health
+	_ensure_outline_sprite()
 	if visible and texture:
 		_setup_click_area()
+
+func _ensure_outline_sprite() -> void:
+	if texture == null:
+		return
+	if _outline_sprite != null and is_instance_valid(_outline_sprite) and _outline_source_texture == texture:
+		return
+
+	var outline_texture := _build_outline_texture(texture)
+	if outline_texture == null:
+		return
+	_outline_source_texture = texture
+
+	var outline_sprite := Sprite2D.new()
+	_outline_sprite = outline_sprite
+	_outline_sprite.name = "OutlineSprite"
+	_outline_sprite.centered = centered
+	_outline_sprite.offset = offset
+	_outline_sprite.flip_h = flip_h
+	_outline_sprite.flip_v = flip_v
+	_outline_sprite.texture = outline_texture
+	_outline_sprite.show_behind_parent = false
+	_outline_sprite.z_as_relative = true
+	_outline_sprite.z_index = 1
+
+	var shader_material := ShaderMaterial.new()
+	shader_material.shader = OUTLINE_SHADER
+	shader_material.set_shader_parameter("outline_width", OUTLINE_WIDTH)
+	shader_material.set_shader_parameter("outline_softness", 0.9)
+	shader_material.set_shader_parameter("outline_enabled", true)
+	shader_material.set_shader_parameter("outline_only", true)
+	var color := OUTLINE_COLOR
+	color.a = 0.0
+	shader_material.set_shader_parameter("outline_color", color)
+	_outline_sprite.material = shader_material
+	_outline_material = shader_material
+
+	_outline_sprite.scale = Vector2.ONE
+	add_child(_outline_sprite)
+
+func _build_outline_texture(source_texture: Texture2D) -> Texture2D:
+	if source_texture == null:
+		return null
+	var source_image := source_texture.get_image()
+	if source_image == null or source_image.is_empty():
+		return source_texture
+	var pad = max(OUTLINE_PADDING, int(ceil(OUTLINE_WIDTH)) + OUTLINE_PADDING)
+	var source_size := source_image.get_size()
+	var padded_size := Vector2i(source_size.x + (pad * 2), source_size.y + (pad * 2))
+	var padded := Image.create(padded_size.x, padded_size.y, false, source_image.get_format())
+	if padded == null:
+		return source_texture
+	padded.fill(Color(0.0, 0.0, 0.0, 0.0))
+	var src_rect := Rect2i(Vector2i.ZERO, source_size)
+	var dst_pos := Vector2i(pad, pad)
+	padded.blit_rect(source_image, src_rect, dst_pos)
+	return ImageTexture.create_from_image(padded)
+
+func _set_outline_alpha(target_alpha: float, custom_color: Color = OUTLINE_COLOR) -> void:
+	_ensure_outline_sprite()
+	if _outline_material == null or _outline_sprite == null:
+		return
+	_outline_sprite.visible = true
+	if _outline_tween != null and is_instance_valid(_outline_tween):
+		_outline_tween.kill()
+	_outline_tween = create_tween()
+	var current_color: Color = _outline_material.get_shader_parameter("outline_color")
+	var target_color := custom_color
+	target_color.a = clampf(target_alpha, 0.0, 1.0)
+	_outline_tween.tween_property(
+		_outline_material,
+		"shader_parameter/outline_color",
+		target_color,
+		OUTLINE_TWEEN_DURATION
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+func _clear_outline() -> void:
+	if _outline_tween != null and is_instance_valid(_outline_tween):
+		_outline_tween.kill()
+	if _outline_material != null and is_instance_valid(_outline_material):
+		var color: Color = _outline_material.get_shader_parameter("outline_color")
+		color.a = 0.0
+		_outline_material.set_shader_parameter("outline_color", color)
+	if _outline_sprite != null and is_instance_valid(_outline_sprite):
+		_outline_sprite.visible = false
 
 func _setup_click_area() -> void:
 	# Auto generate collision polygons from the sprite's texture alpha clicking
@@ -147,30 +241,48 @@ func _on_area_input_event(viewport: Node, event: InputEvent, _shape_idx: int) ->
 		# Consume the event so limbs behind this one (e.g. torso behind an arm) don't also get clicked
 		viewport.set_input_as_handled()
 
-func set_highlighted() -> void:
-	if is_destroyed or is_highlighted:
-		return
-	is_highlighted = true
-	modulate = Color.GREEN
+func set_highlighted(custom_color: Color = OUTLINE_COLOR) -> void:
+	if not is_destroyed and not is_highlighted:
+		is_highlighted = true
+		modulate = Color.WHITE
+		_set_outline_alpha(1.0, custom_color)
+	
+	for child in get_children():
+		var child_limb := child as CombatLimb
+		if child_limb != null and is_instance_valid(child_limb) and not child_limb.is_destroyed:
+			child_limb.set_highlighted(custom_color)
 
 func set_unhighlighted() -> void:
-	if not is_highlighted:
-		return
-	is_highlighted = false
-	modulate = Color(1, 0.5, 0) if is_aoe_highlighted else Color.WHITE
+	if is_highlighted:
+		is_highlighted = false
+		modulate = Color(1, 0.5, 0) if is_aoe_highlighted else Color.WHITE
+		_set_outline_alpha(0.0)
+	
+	for child in get_children():
+		var child_limb := child as CombatLimb
+		if child_limb != null and is_instance_valid(child_limb):
+			child_limb.set_unhighlighted()
 
 func set_aoe_highlighted() -> void:
-	if is_destroyed or is_aoe_highlighted:
-		return
-	is_aoe_highlighted = true
-	if not is_highlighted:
-		modulate = Color(1, 0.5, 0)
+	if not is_destroyed and not is_aoe_highlighted:
+		is_aoe_highlighted = true
+		if not is_highlighted:
+			modulate = Color.WHITE
+	
+	for child in get_children():
+		var child_limb := child as CombatLimb
+		if child_limb != null and is_instance_valid(child_limb) and not child_limb.is_destroyed:
+			child_limb.set_aoe_highlighted()
 
 func set_aoe_unhighlighted() -> void:
-	if not is_aoe_highlighted:
-		return
-	is_aoe_highlighted = false
-	modulate = Color.GREEN if is_highlighted else Color.WHITE
+	if is_aoe_highlighted:
+		is_aoe_highlighted = false
+		modulate = Color.WHITE
+	
+	for child in get_children():
+		var child_limb := child as CombatLimb
+		if child_limb != null and is_instance_valid(child_limb):
+			child_limb.set_aoe_unhighlighted()
 
 func set_spell_targeting_preview(enabled: bool, hovered: bool, spell_icon: Texture2D = null) -> void:
 	_spell_targeting_enabled = enabled and not is_destroyed
@@ -248,6 +360,7 @@ func destroy_limb() -> void:
 	is_destroyed = true
 	is_highlighted = false
 	is_aoe_highlighted = false
+	_clear_outline()
 	_spell_targeting_enabled = false
 	_spell_targeting_hovered = false
 	_spell_targeting_icon = null
@@ -277,6 +390,7 @@ func mark_destroyed_silent() -> void:
 	is_destroyed = true
 	is_highlighted = false
 	is_aoe_highlighted = false
+	_clear_outline()
 	_spell_targeting_enabled = false
 	_spell_targeting_hovered = false
 	_spell_targeting_icon = null
@@ -322,6 +436,7 @@ func _play_destroy_animation() -> void:
 func _start_limb_disintegrate() -> bool:
 	if LIMB_DISSOLVE_SHADER == null or not is_inside_tree():
 		return false
+	_clear_outline()
 
 	if has_meta("destroy_tween"):
 		var existing_tween = get_meta("destroy_tween")
