@@ -22,6 +22,9 @@ func _ready() -> void:
 	
 	if retry_button:
 		retry_button.pressed.connect(func(): 
+			RunData.end_run()
+			RunData.new_run()
+			SaveLoad.save_data()
 			TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 		)
 		retry_button.disabled = true
