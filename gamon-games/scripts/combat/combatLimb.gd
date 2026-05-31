@@ -68,31 +68,14 @@ func choose_attack() -> SpellData:
 	var options := get_attack_options()
 	if options.is_empty():
 		return null
-	if options.size() == 1:
-		return options[0]
-
-	var total_weight := 0.0
+	var best: SpellData = null
+	var best_weight := -1.0
 	for attack in options:
-		total_weight += maxf(0.0, attack.weight)
-
-	if total_weight <= 0.0:
-		return options[randi() % options.size()]
-
-	var roll := randf() * total_weight
-	var cumulative := 0.0
-	for attack in options:
-		var weight := maxf(0.0, attack.weight)
-		if weight <= 0.0:
-			continue
-		cumulative += weight
-		if roll < cumulative:
-			return attack
-
-	for attack in options:
-		if attack.weight > 0.0:
-			return attack
-
-	return options[randi() % options.size()]
+		var w := maxf(0.0, attack.weight)
+		if w > best_weight:
+			best_weight = w
+			best = attack
+	return best
 
 func _ready() -> void:
 	_initial_scale = scale

@@ -14,51 +14,52 @@
 
 [sub_resource type="Resource" id="Resource_xej5o"]
 script = ExtResource("5_xej5o")
-min_damage = 2
-max_damage = 5
+min_damage = 3
+max_damage = 6
 weight = 75.0
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_crdjk"]
 script = ExtResource("5_xej5o")
-min_damage = 5
-max_damage = 10
+min_damage = 6
+max_damage = 12
 weight = 100.0
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_ltakh"]
 script = ExtResource("5_xej5o")
-min_damage = 2
-max_damage = 5
+min_damage = 3
+max_damage = 6
 weight = 75.0
 sfx = ExtResource("8_ltakh")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_v7s83"]
 script = ExtResource("5_xej5o")
-min_damage = 5
-max_damage = 10
+min_damage = 6
+max_damage = 12
 weight = 100.0
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_ea6ht"]
 script = ExtResource("5_xej5o")
-min_damage = 1
+min_damage = 2
 max_damage = 5
 weight = 50.0
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_3cwjf"]
 script = ExtResource("5_xej5o")
-min_damage = 1
+min_damage = 2
 max_damage = 5
 weight = 50.0
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_r5pin"]
 script = ExtResource("5_xej5o")
-min_damage = 1
-max_damage = 3
+min_damage = 2
+max_damage = 4
+weight = 0.0
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [node name="ttt" type="Control" unique_id=1680014499]
@@ -100,7 +101,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_ml463")
 script = ExtResource("4_v7s83")
 limb_name = "Torso"
-max_health = 75
+max_health = 90
 is_vital = true
 
 [node name="Left Arm" type="Sprite2D" parent="." unique_id=1312305909]
@@ -109,7 +110,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_pe5k4")
 script = ExtResource("4_v7s83")
 limb_name = "Left Arm"
-max_health = 25
+max_health = 35
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_xej5o")])
 
 [node name="Weapon_Left" type="Sprite2D" parent="Left Arm" unique_id=1866902051]
@@ -118,7 +119,7 @@ texture = ExtResource("6_5q3o5")
 flip_h = true
 script = ExtResource("4_v7s83")
 limb_name = "Left Weapon"
-max_health = 15
+max_health = 22
 can_be_targeted = false
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_crdjk")])
 
@@ -129,7 +130,7 @@ texture = ExtResource("4_pe5k4")
 flip_h = true
 script = ExtResource("4_v7s83")
 limb_name = "Right Arm"
-max_health = 25
+max_health = 35
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_ltakh")])
 
 [node name="Weapon_Right" type="Sprite2D" parent="Right Arm" unique_id=583386158]
@@ -137,7 +138,7 @@ position = Vector2(-56, 160)
 texture = ExtResource("6_5q3o5")
 script = ExtResource("4_v7s83")
 limb_name = "Right Weapon"
-max_health = 15
+max_health = 22
 can_be_targeted = false
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_v7s83")])
 
@@ -147,7 +148,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("5_pe5k4")
 script = ExtResource("4_v7s83")
 limb_name = "Left Leg"
-max_health = 25
+max_health = 35
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_ea6ht")])
 
 [node name="Right Leg" type="Sprite2D" parent="." unique_id=214963418]
@@ -157,7 +158,7 @@ texture = ExtResource("5_pe5k4")
 flip_h = true
 script = ExtResource("4_v7s83")
 limb_name = "Right Leg"
-max_health = 25
+max_health = 35
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_3cwjf")])
 
 [node name="Head" type="Sprite2D" parent="." unique_id=1466662351]
@@ -166,7 +167,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_lt0ji")
 script = ExtResource("4_v7s83")
 limb_name = "Head"
-max_health = 30
+max_health = 40
 is_vital = true
 hit_chance_percent = 50.0
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_r5pin")])
