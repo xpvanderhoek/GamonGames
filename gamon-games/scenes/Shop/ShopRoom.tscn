@@ -2,14 +2,12 @@
 
 [ext_resource type="Script" uid="uid://mweq4ng0gdhd" path="res://scripts/Shop/shop_Room.gd" id="1_2g6x2"]
 [ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
-[ext_resource type="Texture2D" uid="uid://cuqfib4hrrgh" path="res://assets/ShopItems/ShopEnvironment/onlybackground.png" id="3_2g6x2"]
-[ext_resource type="Texture2D" uid="uid://dwq2jocxomnv0" path="res://assets/ShopItems/ShopEnvironment/Goblin.png" id="3_cougk"]
 [ext_resource type="Script" uid="uid://b7cli1nhudpxr" path="res://scripts/Items/ItemData.gd" id="3_lwfny"]
-[ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="3_xqf5f"]
-[ext_resource type="Texture2D" uid="uid://cc8kljam087th" path="res://assets/ShopItems/ShopEnvironment/LeaveSign.png" id="4_6tcdb"]
-[ext_resource type="Texture2D" uid="uid://buattucnivv8t" path="res://assets/ShopItems/ShopEnvironment/Cabinet.png" id="4_cougk"]
+[ext_resource type="Texture2D" uid="uid://dhh5dly20xx58" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="3_xqf5f"]
+[ext_resource type="Texture2D" uid="uid://cgyquhn0mjm8f" path="res://assets/ShopItems/ShopEnvironment/LeaveSign.png" id="4_6tcdb"]
+[ext_resource type="Texture2D" uid="uid://b7orjsue2d5tn" path="res://assets/ShopItems/ShopEnvironment/Cabinet.png" id="4_cougk"]
 [ext_resource type="Script" uid="uid://c6342sotxx3hs" path="res://scripts/Shop/ExitHoverButton.gd" id="7_exit_hover"]
-[ext_resource type="Texture2D" uid="uid://c60gbhy7lsm1i" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="9_t6u03"]
+[ext_resource type="Texture2D" uid="uid://c3vbvw0npfbyi" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="9_t6u03"]
 [ext_resource type="Resource" uid="uid://cnq0fppu52k2x" path="res://assets/ShopItems/Resources/SightlessBandage.tres" id="10_shop_item"]
 [ext_resource type="Resource" uid="uid://u2sf8v5dcfjq" path="res://assets/ShopItems/Resources/Consumables/AdrenalineSpike.tres" id="11_shop_item"]
 [ext_resource type="Resource" uid="uid://biusmai7yi28" path="res://assets/ShopItems/Resources/CausticResin.tres" id="12_shop_item"]
@@ -28,9 +26,12 @@
 [ext_resource type="Resource" uid="uid://cx3biwxt8rm43" path="res://assets/ShopItems/Resources/SplinteredShackle.tres" id="25_shop_item"]
 [ext_resource type="Resource" uid="uid://bpekethbrw0yh" path="res://assets/ShopItems/Resources/TheGambler'sMark.tres" id="26_shop_item"]
 [ext_resource type="Resource" uid="uid://r0hh32i5n6tg" path="res://assets/ShopItems/Resources/TheHollowHeart.tres" id="27_shop_item"]
+[ext_resource type="Texture2D" uid="uid://x2l03rmajjin" path="res://assets/Placeholders/backgrounds/BackgroundWithTorch.png" id="28_7l5ap"]
 [ext_resource type="Resource" uid="uid://cedm4csvjps4k" path="res://assets/ShopItems/Resources/TheShroudOfMalice.tres" id="28_shop_item"]
 [ext_resource type="Resource" uid="uid://bwg7v7na0dhhc" path="res://assets/ShopItems/Resources/ThornedBracer.tres" id="29_shop_item"]
+[ext_resource type="Texture2D" uid="uid://dx028qa7ticch" path="res://assets/ShopItems/ShopEnvironment/Shaded cart.png" id="29_w1ajr"]
 [ext_resource type="Resource" uid="uid://bs4tcrv4d0qpt" path="res://assets/ShopItems/Resources/VialOfStagnantTime.tres" id="30_shop_item"]
+[ext_resource type="Texture2D" uid="uid://crpf0tpmxvbut" path="res://assets/ShopItems/ShopEnvironment/goblin.png" id="31_7l5ap"]
 [ext_resource type="Resource" uid="uid://drj8ypf4y6jep" path="res://assets/ShopItems/Resources/Consumables/VipersTongue.tres" id="31_shop_item"]
 [ext_resource type="Resource" uid="uid://bsjm8nf1coqo3" path="res://assets/ShopItems/Resources/WitheredAchillesHeel.tres" id="32_shop_item"]
 [ext_resource type="PackedScene" uid="uid://nwlygbpretr2" path="res://scenes/UI/ShopDialogueUI.tscn" id="34_7l5ap"]
@@ -137,10 +138,15 @@ autowrap_mode = 3
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=1523504970]
 scroll_scale = Vector2(0.675, 0.675)
 
-[node name="BackGround" type="Sprite2D" parent="Parallax2D" unique_id=975170063]
-position = Vector2(576.00006, 324.00003)
-scale = Vector2(0.31, 0.31)
-texture = ExtResource("3_2g6x2")
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=156419527]
+position = Vector2(582, 345.99997)
+scale = Vector2(0.6045317, 0.60453176)
+texture = ExtResource("28_7l5ap")
+
+[node name="Cart" type="Sprite2D" parent="Parallax2D" unique_id=975170063]
+position = Vector2(714.00006, 352)
+scale = Vector2(0.93572503, 0.935725)
+texture = ExtResource("29_w1ajr")
 
 [node name="Parallax2D2" type="Parallax2D" parent="." unique_id=1693263178]
 scroll_scale = Vector2(0.345, 0.345)
@@ -158,7 +164,9 @@ modification_stack = SubResource("SkeletonModificationStack2D_cougk")
 
 [node name="Polygon2D" type="Polygon2D" parent="Parallax2D2/Skeleton2D" unique_id=954874239]
 rotation = -0.008200139
-texture = ExtResource("3_cougk")
+texture = ExtResource("31_7l5ap")
+texture_offset = Vector2(1.935, -0.805)
+texture_scale = Vector2(1.655, 1.655)
 skeleton = NodePath("..")
 polygon = PackedVector2Array(51.762238, 213.94562, 43.98712, 240.38103, 20.972748, 265.88342, 16.929688, 287.03174, 12.575623, 324.35236, 7.680908, 344.32278, 4.8005066, 356.07483, 12.886627, 387.48633, 33.10193, 394.32843, 44.920135, 404.59158, 56.427307, 408.94568, 62.6474, 407.07965, 76.95364, 409.5677, 82.24072, 408.01266, 104.63306, 441.60117, 114.585236, 449.68732, 126.09241, 449.68732, 129.20245, 435.07007, 121.11633, 417.9648, 112.71918, 396.50546, 106.18808, 384.6873, 101.52301, 381.88824, 97.47995, 348.92172, 102.14502, 335.2375, 108.36511, 338.96957, 105.56607, 349.23273, 114.89624, 368.20404, 126.09241, 371.9361, 133.55652, 359.18488, 131.69049, 350.78775, 137.28857, 337.10355, 134.17853, 322.1753, 117.38428, 301.649, 98.72397, 284.5437, 91.25986, 282.05566, 96.546936, 274.28055, 100.901, 260.28534, 130.13547, 249.40016, 154.39386, 227.00781, 170.8771, 222.03174, 198.24554, 234.47192, 237.12115, 238.204, 291.547, 228.87384, 300.87714, 241.93605, 308.65228, 264.3284, 417.815, 265.88342, 436.16425, 279.25665, 461.35565, 284.85474, 479.08295, 284.85474, 504.89636, 279.87866, 509.5614, 266.19443, 537.5519, 267.74945, 631.3971, 270.8595, 647.8804, 239.13701, 690.7991, 253.44322, 707.59326, 255.93126, 700.4402, 275.52457, 698.88513, 293.56287, 709.45935, 321.2423, 719.10046, 325.90735, 727.49756, 317.51025, 729.9857, 291.07483, 737.4498, 270.5485, 738.0718, 287.96478, 735.8948, 309.4241, 743.04785, 326.21838, 753.6221, 328.70642, 764.81824, 323.10834, 771.0383, 325.90735, 789.6986, 324.04132, 793.43066, 297.91693, 797.1627, 312.22314, 803.69385, 311.60114, 812.402, 301.33798, 820.48804, 283.9217, 824.2201, 266.19443, 831.06226, 257.4863, 842.8804, 237.27097, 842.8804, 211.14656, 838.21533, 198.08435, 827.01917, 194.3523, 820.48804, 189.37622, 808.3589, 183.15613, 786.5885, 180.35709, 764.19617, 178.49106, 752.067, 175.69202, 725.32056, 165.11784, 709.45935, 162.3188, 689.55505, 161.6968, 672.1388, 151.12262, 656.89954, 140.85947, 627.9761, 132.77333, 606.5167, 133.08434, 588.7894, 141.17047, 584.1244, 134.32835, 606.82776, 84.01549, 608.0718, 70.02028, 605.8947, 64.733185, 564.84204, 97.3887, 554.5789, 111.38393, 549.6028, 59.75711, 527.5215, 32.077682, 490.2009, 13.106384, 446.97122, 5.0202484, 416.18173, 12.484375, 392.23438, 26.790604, 374.50708, 41.40782, 357.4018, 83.39348, 354.60278, 111.38393, 339.05252, 99.25473, 322.25827, 91.79062, 309.19604, 77.795395, 299.5549, 69.39827, 295.20084, 73.752335, 302.66498, 102.986786, 308.26306, 120.71408, 318.83722, 132.22125, 303.59796, 127.24518, 282.13864, 128.4892, 268.14343, 134.70929, 257.56924, 144.03943, 229.88982, 139.37436, 205.32043, 141.55139, 177.74483, 150.7149, 145.08931, 146.67184, 118.031906, 146.67184, 103.41466, 158.17903, 76.55417, 176.63368, 66.09407, 182.74841, 56.76393, 197.36565)
 uv = PackedVector2Array(51.762238, 213.94562, 43.98712, 240.38103, 20.972748, 265.88342, 16.929688, 287.03174, 12.575623, 324.35236, 7.680908, 344.32278, 4.8005066, 356.07483, 12.886627, 387.48633, 33.10193, 394.32843, 44.920135, 404.59158, 56.427307, 408.94568, 62.6474, 407.07965, 76.95364, 409.5677, 82.24072, 408.01266, 104.63306, 441.60117, 114.585236, 449.68732, 126.09241, 449.68732, 129.20245, 435.07007, 121.11633, 417.9648, 112.71918, 396.50546, 106.18808, 384.6873, 101.52301, 381.88824, 97.47995, 348.92172, 102.14502, 335.2375, 108.36511, 338.96957, 105.56607, 349.23273, 114.89624, 368.20404, 126.09241, 371.9361, 133.55652, 359.18488, 131.69049, 350.78775, 137.28857, 337.10355, 134.17853, 322.1753, 117.38428, 301.649, 98.72397, 284.5437, 91.25986, 282.05566, 96.546936, 274.28055, 100.901, 260.28534, 130.13547, 249.40016, 154.39386, 227.00781, 170.8771, 222.03174, 198.24554, 234.47192, 237.12115, 238.204, 291.547, 228.87384, 300.87714, 241.93605, 308.65228, 264.3284, 417.815, 265.88342, 436.16425, 279.25665, 461.35565, 284.85474, 479.08295, 284.85474, 504.89636, 279.87866, 509.5614, 266.19443, 537.5519, 267.74945, 631.3971, 270.8595, 647.8804, 239.13701, 690.7991, 253.44322, 707.59326, 255.93126, 700.4402, 275.52457, 698.88513, 293.56287, 709.45935, 321.2423, 719.10046, 325.90735, 727.49756, 317.51025, 729.9857, 291.07483, 737.4498, 270.5485, 738.0718, 287.96478, 735.8948, 309.4241, 743.04785, 326.21838, 753.6221, 328.70642, 764.81824, 323.10834, 771.0383, 325.90735, 789.6986, 324.04132, 793.43066, 297.91693, 797.1627, 312.22314, 803.69385, 311.60114, 812.402, 301.33798, 820.48804, 283.9217, 824.2201, 266.19443, 831.06226, 257.4863, 842.8804, 237.27097, 842.8804, 211.14656, 838.21533, 198.08435, 827.01917, 194.3523, 820.48804, 189.37622, 808.3589, 183.15613, 786.5885, 180.35709, 764.19617, 178.49106, 752.067, 175.69202, 725.32056, 165.11784, 709.45935, 162.3188, 689.55505, 161.6968, 672.1388, 151.12262, 656.89954, 140.85947, 627.9761, 132.77333, 606.5167, 133.08434, 588.7894, 141.17047, 584.1244, 134.32835, 606.82776, 84.01549, 608.0718, 70.02028, 605.8947, 64.733185, 564.84204, 97.3887, 554.5789, 111.38393, 549.6028, 59.75711, 527.5215, 32.077682, 490.2009, 13.106384, 446.97122, 5.0202484, 416.18173, 12.484375, 392.23438, 26.790604, 374.50708, 41.40782, 357.4018, 83.39348, 354.60278, 111.38393, 339.05252, 99.25473, 322.25827, 91.79062, 309.19604, 77.795395, 299.5549, 69.39827, 295.20084, 73.752335, 302.66498, 102.986786, 308.26306, 120.71408, 318.83722, 132.22125, 303.59796, 127.24518, 282.13864, 128.4892, 268.14343, 134.70929, 257.56924, 144.03943, 229.88982, 139.37436, 205.32043, 141.55139, 177.74483, 150.7149, 145.08931, 146.67184, 118.031906, 146.67184, 103.41466, 158.17903, 76.55417, 176.63368, 66.09407, 182.74841, 56.180496, 198.07574)
