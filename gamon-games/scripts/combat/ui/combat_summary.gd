@@ -181,10 +181,22 @@ func _show_spell_options() -> void:
 		if spell.icon:
 			button.icon = spell.icon
 
-		button.tooltip_text = combat_manager.build_spell_tooltip(spell)
+		button.tooltip_text = ""
 		button.custom_minimum_size = Vector2(0, 30)
 		button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		button.pressed.connect(_on_spell_option_selected.bind(spell))
+
+		# Hook custom tooltip — same styled panel as the combat spell buttons
+		var spell_ref := spell
+		button.mouse_entered.connect(func():
+			if combat_manager != null and is_instance_valid(combat_manager):
+				combat_manager.show_spell_tooltip(spell_ref)
+		)
+		button.mouse_exited.connect(func():
+			if combat_manager != null and is_instance_valid(combat_manager):
+				combat_manager.hide_spell_tooltip()
+		)
+
 		spell_options_container.add_child(button)
 	
 	h_separator.visible = true
@@ -192,6 +204,10 @@ func _show_spell_options() -> void:
 	spell_options_container.visible = true
 
 func _on_spell_option_selected(spell: SpellData) -> void:
+	var combat_manager := get_parent() as CombatManager
+	if combat_manager != null and is_instance_valid(combat_manager):
+		combat_manager.hide_spell_tooltip()
+
 	var existing = RunData.get_spell_by_id(spell.spell_id)
 	
 	if existing:

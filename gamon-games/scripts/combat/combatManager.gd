@@ -20,7 +20,8 @@ var enemy_pool : Array[PackedScene] = [
 	preload("res://scenes/combat/enemies/skeleton_weak2.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_weak3.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_weak4.tscn"),
-	# preload("res://scenes/combat/enemies/skeleton_full.tscn"),
+	preload("res://scenes/combat/enemies/skeleton_full.tscn"),
+	preload("res://scenes/combat/enemies/mimic.tscn"),
 ]
 
 enum CombatState { 
@@ -82,6 +83,11 @@ var _enemy_intents: Dictionary = {}
 var _intent_labels: Array[Label] = []
 var _intent_limb_refs: Array[CombatLimb] = []
 var _intent_pulsing_tweens: Array[Tween] = []
+
+var _spell_tooltip: PanelContainer = null
+var _spell_tooltip_label: RichTextLabel = null
+var _spell_tooltip_spell: SpellData = null
+var _spell_tooltip_was_shift_pressed: bool = false
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
@@ -189,18 +195,24 @@ func _apply_enemy_scaling(enemy: Node) -> void:
 			limb.current_health = limb.max_health
 
 func _input(event): #Temporary
-	# Don't process input during victory
 	if current_state == CombatState.COMBAT_OVER:
 		return
-	if event.is_action_pressed("escape"):
-		canvas_layer.add_child(PAUSE_MENU.instantiate())
-	
-	if event.is_action_pressed("ui_cancel"):
+
+	if event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
+			if _attack_selected:
+				_cancel_selected_spell()
+				get_viewport().set_input_as_handled()
+				return
+
+	if event.is_action_pressed("escape") or event.is_action_pressed("ui_cancel"):
 		if _attack_selected:
 			_cancel_selected_spell()
 			get_viewport().set_input_as_handled()
 			return
-		# _exit_combat()
+		canvas_layer.add_child(PAUSE_MENU.instantiate())
+		get_viewport().set_input_as_handled()
 		return
 
 	if event is InputEventKey:
@@ -213,6 +225,12 @@ func _input(event): #Temporary
 
 func _process(_delta: float) -> void:
 	_update_spell_cursor_overlay_position()
+	_update_spell_tooltip_position()
+	if _spell_tooltip_spell != null and _spell_tooltip != null and _spell_tooltip.visible:
+		var shift_now := Input.is_key_pressed(KEY_SHIFT)
+		if shift_now != _spell_tooltip_was_shift_pressed:
+			_spell_tooltip_was_shift_pressed = shift_now
+			_show_spell_tooltip(_spell_tooltip_spell)
 
 func _exit_combat():
 	if _is_exiting_combat:
@@ -398,7 +416,7 @@ func _configure_spell_button(button: Button, spell: SpellData) -> void:
 	if bind_label != null:
 		bind_label.text = str(slot_index + 1)
 
-	button.tooltip_text = build_spell_tooltip(spell)
+	button.tooltip_text = ""
 	if spell != null and spell.icon != null:
 		button.icon = spell.icon
 	
@@ -408,6 +426,14 @@ func _configure_spell_button(button: Button, spell: SpellData) -> void:
 	var on_pressed := Callable(self, "_on_spell_button_pressed").bind(button)
 	if not button.pressed.is_connected(on_pressed):
 		button.pressed.connect(on_pressed)
+
+	var on_mouse_entered := Callable(self, "_on_spell_button_mouse_entered").bind(button)
+	if not button.mouse_entered.is_connected(on_mouse_entered):
+		button.mouse_entered.connect(on_mouse_entered)
+
+	var on_mouse_exited := Callable(self, "_on_spell_button_mouse_exited").bind(button)
+	if not button.mouse_exited.is_connected(on_mouse_exited):
+		button.mouse_exited.connect(on_mouse_exited)
 
 func _configure_empty_spell_button(button: Button) -> void:
 	var bind_label = button.get_node_or_null("Bind") as Label
@@ -422,6 +448,14 @@ func _configure_empty_spell_button(button: Button) -> void:
 	var on_pressed := Callable(self, "_on_spell_button_pressed").bind(button)
 	if button.pressed.is_connected(on_pressed):
 		button.pressed.disconnect(on_pressed)
+
+	var on_mouse_entered := Callable(self, "_on_spell_button_mouse_entered").bind(button)
+	if button.mouse_entered.is_connected(on_mouse_entered):
+		button.mouse_entered.disconnect(on_mouse_entered)
+
+	var on_mouse_exited := Callable(self, "_on_spell_button_mouse_exited").bind(button)
+	if button.mouse_exited.is_connected(on_mouse_exited):
+		button.mouse_exited.disconnect(on_mouse_exited)
 
 func build_spell_tooltip(spell: SpellData) -> String:
 	if spell == null:
@@ -475,6 +509,182 @@ func build_spell_tooltip(spell: SpellData) -> String:
 			lines.append(effect_line)
 
 	return "\n".join(lines)
+
+func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false) -> String:
+	if spell == null:
+		return ""
+
+	var type_color := _spell_type_color(spell.spell_type)
+	var type_hex := type_color.to_html(false)
+
+	var t := "[b][font_size=15]%s[/font_size][/b]" % spell.spell_name
+	t += "\n[color=#%s]%s[/color]" % [type_hex, _spell_type_to_text(spell.spell_type)]
+	if shift_pressed:
+		t += " [color=#8a8a9e][font_size=11]\u2022 %s[/font_size][/color]" % _target_scope_to_text(spell.target_scope)
+	else:
+		t += "  [color=#8a8a9e][font_size=11]Target: %s[/font_size][/color]" % _target_scope_to_text(spell.target_scope)
+
+	if spell.energy > 0:
+		var can_afford := RunData.current_energy >= _get_spell_energy_cost(spell)
+		var energy_color := "64e06e" if can_afford else "e06464"
+		t += "\nEnergy: [color=#%s]%d[/color]" % [energy_color, _get_spell_energy_cost(spell)]
+		if shift_pressed:
+			t += "\n[color=#8a8a9e][font_size=11]  - Energy cost to use this spell.[/font_size][/color]"
+
+	if spell.accuracy > 0.0:
+		t += "\nAccuracy: [color=#cccccc]%s%%[/color]" % str(snappedf(spell.accuracy, 0.1))
+
+	if spell.has_damage():
+		var min_damage := spell.get_min_damage()
+		var max_damage := spell.get_max_damage()
+		var attacks := spell.get_attack_count()
+		var dmg_type_text := _damage_type_to_text(spell.damage_type)
+		var dmg_color := "b8d4ff" if spell.damage_type == SpellData.DamageType.MAGIC else "ffcca0"
+		if min_damage == max_damage:
+			t += "\nDamage: [color=#%s]%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, dmg_type_text]
+		else:
+			t += "\nDamage: [color=#%s]%d-%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, max_damage, dmg_type_text]
+		if attacks > 1:
+			t += "\nHits: [color=#e0d080]%d[/color]" % attacks
+			if shift_pressed:
+				t += "\n[color=#8a8a9e][font_size=11]  - This spell strikes multiple times.[/font_size][/color]"
+
+	if spell.heal_amount > 0:
+		t += "\nHeal: [color=#64e09e]%d[/color]" % spell.heal_amount
+
+	var effect_lines: Array[String] = []
+	if spell.outgoing_damage_flat_bonus != 0:
+		effect_lines.append("Outgoing Damage: [color=#e0d080]%s[/color]" % _format_signed_int(spell.outgoing_damage_flat_bonus))
+	if not is_zero_approx(spell.outgoing_damage_multiplier_delta):
+		effect_lines.append("Outgoing Damage Mult: [color=#e0d080]%s%%[/color]" % _format_signed_percent(spell.outgoing_damage_multiplier_delta * 100.0))
+	if not is_zero_approx(spell.incoming_damage_multiplier_delta):
+		effect_lines.append("Incoming Damage Mult: [color=#e09080]%s%%[/color]" % _format_signed_percent(spell.incoming_damage_multiplier_delta * 100.0))
+	if not is_zero_approx(spell.player_physical_defense_delta):
+		effect_lines.append("Player Phys Def: [color=#80c8e0]%s%%[/color]" % _format_signed_percent(spell.player_physical_defense_delta))
+	if not is_zero_approx(spell.player_magic_defense_delta):
+		effect_lines.append("Player Magic Def: [color=#b0a0e0]%s%%[/color]" % _format_signed_percent(spell.player_magic_defense_delta))
+	if not is_zero_approx(spell.target_physical_defense_delta):
+		effect_lines.append("Target Phys Def: [color=#cccccc]%s%%[/color]" % _format_signed_percent(spell.target_physical_defense_delta))
+	if not is_zero_approx(spell.target_magic_defense_delta):
+		effect_lines.append("Target Magic Def: [color=#cccccc]%s%%[/color]" % _format_signed_percent(spell.target_magic_defense_delta))
+	if spell.damage_over_time != 0:
+		effect_lines.append("Damage Over Time: [color=#e07060]%s/turn[/color]" % _format_signed_int(spell.damage_over_time))
+	if spell.stun_turns:
+		effect_lines.append("[color=#e0a030]Applies Stun[/color]")
+
+	if not effect_lines.is_empty():
+		var dur_suffix := "turn" if spell.duration_rounds == 1 else "turns"
+		t += "\nDuration: [color=#c8c8c8]%d %s[/color]" % [spell.duration_rounds, dur_suffix]
+		for effect_line in effect_lines:
+			t += "\n  %s" % effect_line
+			if shift_pressed:
+				t += "\n  [color=#8a8a9e][font_size=11]  - Active for %d turn%s.[/font_size][/color]" % [spell.duration_rounds, "" if spell.duration_rounds == 1 else "s"]
+
+	if not shift_pressed:
+		t += "\n[color=#5a5a6a][font_size=10][i]Hold Shift for more info[/i][/font_size][/color]"
+
+	return t
+
+func _spell_type_color(spell_type: SpellData.SpellType) -> Color:
+	match spell_type:
+		SpellData.SpellType.ATTACK:
+			return Color(1.0, 0.48, 0.38, 1.0)
+		SpellData.SpellType.BUFF:
+			return Color(0.38, 0.82, 0.52, 1.0)
+		SpellData.SpellType.DEBUFF:
+			return Color(0.82, 0.52, 1.0, 1.0)
+		SpellData.SpellType.HEAL:
+			return Color(0.38, 0.88, 0.62, 1.0)
+		_:
+			return Color(0.7, 0.7, 0.7, 1.0)
+
+func _on_spell_button_mouse_entered(button: Button) -> void:
+	var spell := _button_spells.get(button, null) as SpellData
+	if spell != null:
+		_show_spell_tooltip(spell)
+
+func _on_spell_button_mouse_exited(_button: Button) -> void:
+	_spell_tooltip_spell = null
+	_hide_spell_tooltip()
+
+func _ensure_spell_tooltip() -> void:
+	if _spell_tooltip != null:
+		return
+
+	_spell_tooltip = PanelContainer.new()
+	_spell_tooltip.name = "SpellTooltip"
+	_spell_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_spell_tooltip.z_index = 200
+	_spell_tooltip.top_level = true
+	_spell_tooltip.visible = false
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.05, 0.05, 0.07, 0.96)
+	style.border_width_left   = 1
+	style.border_width_right  = 1
+	style.border_width_top    = 1
+	style.border_width_bottom = 1
+	style.border_color = Color(0.35, 0.35, 0.45, 0.6)
+	style.corner_radius_top_left     = 8
+	style.corner_radius_top_right    = 8
+	style.corner_radius_bottom_left  = 8
+	style.corner_radius_bottom_right = 8
+	style.content_margin_left   = 14.0
+	style.content_margin_right  = 14.0
+	style.content_margin_top    = 10.0
+	style.content_margin_bottom = 10.0
+
+	_spell_tooltip.add_theme_stylebox_override("panel", style)
+
+	_spell_tooltip_label = RichTextLabel.new()
+	_spell_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_spell_tooltip_label.fit_content = true
+	_spell_tooltip_label.scroll_active = false
+	_spell_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_spell_tooltip_label.custom_minimum_size = Vector2(0, 0)
+	_spell_tooltip_label.bbcode_enabled = true
+	_spell_tooltip_label.add_theme_font_size_override("normal_font_size", 13)
+	_spell_tooltip_label.add_theme_font_size_override("bold_font_size", 14)
+	_spell_tooltip_label.add_theme_color_override("default_color", Color(0.92, 0.92, 0.95, 1.0))
+	_spell_tooltip.add_child(_spell_tooltip_label)
+
+	add_child(_spell_tooltip)
+
+func _show_spell_tooltip(spell: SpellData) -> void:
+	_ensure_spell_tooltip()
+	_spell_tooltip_spell = spell
+	_spell_tooltip_was_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
+
+	var bbcode := build_spell_tooltip_bbcode(spell, _spell_tooltip_was_shift_pressed)
+	_spell_tooltip_label.text = ""
+	_spell_tooltip.reset_size()
+	_spell_tooltip_label.text = bbcode
+	_spell_tooltip.visible = true
+	_update_spell_tooltip_position()
+
+func _hide_spell_tooltip() -> void:
+	if _spell_tooltip != null:
+		_spell_tooltip.visible = false
+
+## Public wrappers — safe to call from external scripts (e.g. combat_summary)
+func show_spell_tooltip(spell: SpellData) -> void:
+	_show_spell_tooltip(spell)
+
+func hide_spell_tooltip() -> void:
+	_hide_spell_tooltip()
+
+func _update_spell_tooltip_position() -> void:
+	if _spell_tooltip == null or not _spell_tooltip.visible:
+		return
+	var vp_size  := get_viewport().get_visible_rect().size
+	var mouse    := get_viewport().get_mouse_position()
+	var tip_size := _spell_tooltip.size
+
+	# Show tooltip above the mouse, slightly offset
+	var pos := mouse + Vector2(-tip_size.x * 0.5, -tip_size.y - 14.0)
+	pos.x = clamp(pos.x, 0.0, vp_size.x - tip_size.x)
+	pos.y = clamp(pos.y, 0.0, vp_size.y - tip_size.y)
+	_spell_tooltip.global_position = pos
 
 func _spell_type_to_text(spell_type: SpellData.SpellType) -> String:
 	match spell_type:
@@ -990,42 +1200,21 @@ func _perform_enemy_turn() -> void:
 	_end_enemy_turn()
 
 func _choose_enemy_attack_limb(source_enemy: CombatEntity) -> CombatLimb:
-	var candidates: Array[CombatLimb] = []
-	var candidate_weights: Array[float] = []
-	var total_weight := 0.0
+	var best_candidate: CombatLimb = null
+	var best_weight := -1.0
 	for limb in source_enemy.limbs:
 		if limb.is_destroyed:
 			continue
 		if _is_enemy_limb_stunned(source_enemy, limb):
 			continue
 		if limb.has_attack_options():
-			candidates.append(limb)
 			var limb_weight := 0.0
 			for attack in limb.get_attack_options():
 				limb_weight += maxf(0.0, attack.weight)
-			candidate_weights.append(limb_weight)
-			total_weight += limb_weight
-	if candidates.is_empty():
-		return null
-
-	if total_weight <= 0.0:
-		return candidates[randi() % candidates.size()]
-
-	var roll := randf() * total_weight
-	var cumulative := 0.0
-	for idx in range(candidates.size()):
-		var weight := candidate_weights[idx]
-		if weight <= 0.0:
-			continue
-		cumulative += weight
-		if roll < cumulative:
-			return candidates[idx]
-
-	for idx in range(candidates.size()):
-		if candidate_weights[idx] > 0.0:
-			return candidates[idx]
-
-	return candidates[randi() % candidates.size()]
+			if limb_weight > best_weight:
+				best_weight = limb_weight
+				best_candidate = limb
+	return best_candidate
 
 func _telegraph_enemy_attack(source_enemy: CombatEntity, attack_limb: CombatLimb, attack: SpellData) -> void:
 	if enemy_attack_telegraph_seconds <= 0.0:
