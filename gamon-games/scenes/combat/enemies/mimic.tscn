@@ -8,6 +8,28 @@
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="5_6l4ag"]
 [ext_resource type="Texture2D" uid="uid://bgpyhfs0lry7m" path="res://assets/enemies/chest/Mimic_head.png" id="6_xt66o"]
 [ext_resource type="Texture2D" uid="uid://b850r8boe6m17" path="res://assets/enemies/chest/Mimic_leg.png" id="7_crxq2"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="8_mimic"]
+
+[sub_resource type="Resource" id="Resource_tongue_lash"]
+script = ExtResource("8_mimic")
+min_damage = 5
+max_damage = 10
+weight = 100.0
+metadata/_custom_type_script = "uid://cds04x2mi4kl6"
+
+[sub_resource type="Resource" id="Resource_arm_slam"]
+script = ExtResource("8_mimic")
+min_damage = 3
+max_damage = 6
+weight = 75.0
+metadata/_custom_type_script = "uid://cds04x2mi4kl6"
+
+[sub_resource type="Resource" id="Resource_leg_stomp"]
+script = ExtResource("8_mimic")
+min_damage = 2
+max_damage = 4
+weight = 50.0
+metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [node name="Mimic" type="Control" unique_id=1680014499]
 modulate = Color(0.8, 0.8, 0.77, 1)
@@ -21,6 +43,7 @@ offset_bottom = 249.0
 size_flags_vertical = 8
 script = ExtResource("1_crxq2")
 turn_order_icon = ExtResource("3_qajp5")
+spawn_min_fights = 3
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=862253151]
 position = Vector2(115, 202)
@@ -48,8 +71,9 @@ scale = Vector2(0.15, 0.15)
 texture = ExtResource("4_xt66o")
 script = ExtResource("5_6l4ag")
 limb_name = "Right Arm"
-max_health = 30
+max_health = 40
 hit_chance_percent = 50.0
+attacks = Array[ExtResource("8_mimic")]([SubResource("Resource_arm_slam")])
 
 [node name="Left Arm" type="Sprite2D" parent="." unique_id=1418505464]
 position = Vector2(185.275, 113.225006)
@@ -58,8 +82,9 @@ texture = ExtResource("4_xt66o")
 flip_h = true
 script = ExtResource("5_6l4ag")
 limb_name = "Left Arm"
-max_health = 30
+max_health = 40
 hit_chance_percent = 50.0
+attacks = Array[ExtResource("8_mimic")]([SubResource("Resource_arm_slam")])
 
 [node name="Left Leg" type="Sprite2D" parent="." unique_id=542674377]
 position = Vector2(165.275, 185.22502)
@@ -68,8 +93,9 @@ texture = ExtResource("7_crxq2")
 flip_h = true
 script = ExtResource("5_6l4ag")
 limb_name = "Left Leg"
-max_health = 30
+max_health = 35
 hit_chance_percent = 50.0
+attacks = Array[ExtResource("8_mimic")]([SubResource("Resource_leg_stomp")])
 
 [node name="Right Leg" type="Sprite2D" parent="." unique_id=1667682554]
 position = Vector2(65.275, 185.225)
@@ -77,8 +103,9 @@ scale = Vector2(0.15, 0.15)
 texture = ExtResource("7_crxq2")
 script = ExtResource("5_6l4ag")
 limb_name = "Right Leg"
-max_health = 30
+max_health = 35
 hit_chance_percent = 50.0
+attacks = Array[ExtResource("8_mimic")]([SubResource("Resource_leg_stomp")])
 
 [node name="Torso" type="Sprite2D" parent="." unique_id=582211915]
 position = Vector2(112.275, 95.225006)
@@ -86,7 +113,7 @@ scale = Vector2(0.15, 0.15)
 texture = ExtResource("4_pbwj5")
 script = ExtResource("5_6l4ag")
 limb_name = "Torso"
-max_health = 75
+max_health = 100
 is_vital = true
 
 [node name="Head" type="Sprite2D" parent="." unique_id=1466662351]
@@ -95,6 +122,7 @@ scale = Vector2(0.15, 0.15)
 texture = ExtResource("6_xt66o")
 script = ExtResource("5_6l4ag")
 limb_name = "Tongue"
-max_health = 30
+max_health = 45
 is_vital = true
 hit_chance_percent = 50.0
+attacks = Array[ExtResource("8_mimic")]([SubResource("Resource_tongue_lash")])
