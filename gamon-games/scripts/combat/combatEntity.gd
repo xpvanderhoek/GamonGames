@@ -40,6 +40,7 @@ signal highlighted_limb_clicked(limb: CombatLimb)
 const DEATH_DISSOLVE_SHADER := preload("res://shaders/black_disintegrate.gdshader")
 
 var exp_reward: int = 100
+@export var marrow_shard_reward: int = 75
 var combat_scaling_multiplier: float = 1.0
 
 var _death_started: bool = false
@@ -387,6 +388,7 @@ func die() -> void:
 	entity_died.emit(self)
 	RunData.add_exp(exp_reward)
 	RunData.coins += 15
+	RunData.marrow_shards += marrow_shard_reward
 	if not started_vfx and has_method("hide"):
 		call("hide")
 
@@ -584,4 +586,3 @@ func _hp_color_for_limb(limb: CombatLimb) -> Color:
 		return Color(1.0, 0.82, 0.22, 1.0)   
 	else:
 		return Color(1.0, 0.28, 0.28, 1.0)
-	RunData.marrow_shards += 75
