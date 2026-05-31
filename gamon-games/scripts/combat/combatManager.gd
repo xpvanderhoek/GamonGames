@@ -457,59 +457,6 @@ func _configure_empty_spell_button(button: Button) -> void:
 	if button.mouse_exited.is_connected(on_mouse_exited):
 		button.mouse_exited.disconnect(on_mouse_exited)
 
-func build_spell_tooltip(spell: SpellData) -> String:
-	if spell == null:
-		return ""
-
-	var lines: Array[String] = []
-	lines.append(spell.spell_name)
-	lines.append("Type: %s" % _spell_type_to_text(spell.spell_type))
-	lines.append("Target: %s" % _target_scope_to_text(spell.target_scope))
-
-	if spell.energy > 0:
-		lines.append("Energy: %d" % spell.energy)
-	if spell.accuracy > 0.0:
-		lines.append("Accuracy: %s%%" % str(snappedf(spell.accuracy, 0.1)))
-	if spell.has_damage():
-		var min_damage := spell.get_min_damage()
-		var max_damage := spell.get_max_damage()
-		var attacks := spell.get_attack_count()
-		if min_damage == max_damage:
-			lines.append("Damage: %d (%s)" % [min_damage, _damage_type_to_text(spell.damage_type)])
-		else:
-			lines.append("Damage: %d-%d (%s)" % [min_damage, max_damage, _damage_type_to_text(spell.damage_type)])
-		if attacks > 1:
-			lines.append("Hits: %d" % attacks)
-	if spell.heal_amount > 0:
-		lines.append("Heal: %d" % spell.heal_amount)
-
-	var effect_lines: Array[String] = []
-	if spell.outgoing_damage_flat_bonus != 0:
-		effect_lines.append("Outgoing Damage: %s" % _format_signed_int(spell.outgoing_damage_flat_bonus))
-	if not is_zero_approx(spell.outgoing_damage_multiplier_delta):
-		effect_lines.append("Outgoing Damage Mult: %s%%" % _format_signed_percent(spell.outgoing_damage_multiplier_delta * 100.0))
-	if not is_zero_approx(spell.incoming_damage_multiplier_delta):
-		effect_lines.append("Incoming Damage Mult: %s%%" % _format_signed_percent(spell.incoming_damage_multiplier_delta * 100.0))
-	if not is_zero_approx(spell.player_physical_defense_delta):
-		effect_lines.append("Player Phys Def: %s%%" % _format_signed_percent(spell.player_physical_defense_delta))
-	if not is_zero_approx(spell.player_magic_defense_delta):
-		effect_lines.append("Player Magic Def: %s%%" % _format_signed_percent(spell.player_magic_defense_delta))
-	if not is_zero_approx(spell.target_physical_defense_delta):
-		effect_lines.append("Target Phys Def: %s%%" % _format_signed_percent(spell.target_physical_defense_delta))
-	if not is_zero_approx(spell.target_magic_defense_delta):
-		effect_lines.append("Target Magic Def: %s%%" % _format_signed_percent(spell.target_magic_defense_delta))
-	if spell.damage_over_time != 0:
-		effect_lines.append("Damage Over Time: %s/turn" % _format_signed_int(spell.damage_over_time))
-	if spell.stun_turns:
-		effect_lines.append("Applies Stun")
-
-	if not effect_lines.is_empty():
-		lines.append("Duration: %d turn%s" % [spell.duration_rounds, "" if spell.duration_rounds == 1 else "s"])
-		for effect_line in effect_lines:
-			lines.append(effect_line)
-
-	return "\n".join(lines)
-
 func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false) -> String:
 	if spell == null:
 		return ""
@@ -519,10 +466,7 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false) -
 
 	var t := "[b][font_size=15]%s[/font_size][/b]" % spell.spell_name
 	t += "\n[color=#%s]%s[/color]" % [type_hex, _spell_type_to_text(spell.spell_type)]
-	if shift_pressed:
-		t += " [color=#8a8a9e][font_size=11]\u2022 %s[/font_size][/color]" % _target_scope_to_text(spell.target_scope)
-	else:
-		t += "  [color=#8a8a9e][font_size=11]Target: %s[/font_size][/color]" % _target_scope_to_text(spell.target_scope)
+	t += "\nTarget: [color=#cccccc]%s[/color]" % _target_scope_to_text(spell.target_scope)
 
 	if spell.energy > 0:
 		var can_afford := RunData.current_energy >= _get_spell_energy_cost(spell)
@@ -531,8 +475,8 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false) -
 		if shift_pressed:
 			t += "\n[color=#8a8a9e][font_size=11]  - Energy cost to use this spell.[/font_size][/color]"
 
-	if spell.accuracy > 0.0:
-		t += "\nAccuracy: [color=#cccccc]%s%%[/color]" % str(snappedf(spell.accuracy, 0.1))
+	# if spell.accuracy > 0.0:
+	# 	t += "\nAccuracy: [color=#cccccc]%s%%[/color]" % str(snappedf(spell.accuracy, 0.1))
 
 	if spell.has_damage():
 		var min_damage := spell.get_min_damage()
@@ -576,9 +520,9 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false) -
 		var dur_suffix := "turn" if spell.duration_rounds == 1 else "turns"
 		t += "\nDuration: [color=#c8c8c8]%d %s[/color]" % [spell.duration_rounds, dur_suffix]
 		for effect_line in effect_lines:
-			t += "\n  %s" % effect_line
+			t += "\n%s" % effect_line
 			if shift_pressed:
-				t += "\n  [color=#8a8a9e][font_size=11]  - Active for %d turn%s.[/font_size][/color]" % [spell.duration_rounds, "" if spell.duration_rounds == 1 else "s"]
+				t += "\n [color=#8a8a9e][font_size=11]  - Active for %d turn%s.[/font_size][/color]" % [spell.duration_rounds, "" if spell.duration_rounds == 1 else "s"]
 
 	if not shift_pressed:
 		t += "\n[color=#5a5a6a][font_size=10][i]Hold Shift for more info[/i][/font_size][/color]"

@@ -505,7 +505,7 @@ func _show_limb_tooltip(limb: CombatLimb) -> void:
 
 	var t := "[b][font_size=15]%s[/font_size][/b]" % limb.limb_name
 
-	t += "\nHP: [color=#%s]%d / %d[/color]" % [hp_hex, limb.current_health, limb.max_health]
+	t += "\nHealth: [color=#%s]%d / %d[/color]" % [hp_hex, limb.current_health, limb.max_health]
 	if _was_shift_pressed:
 		t += "\n[color=#8a8a9e][font_size=11]  - Health of this limb. Breaks at 0 HP.[/font_size][/color]"
 
