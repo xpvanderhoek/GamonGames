@@ -186,7 +186,6 @@ func _show_spell_options() -> void:
 		button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		button.pressed.connect(_on_spell_option_selected.bind(spell))
 
-		# Hook custom tooltip — same styled panel as the combat spell buttons
 		var spell_ref := spell
 		button.mouse_entered.connect(func():
 			if combat_manager != null and is_instance_valid(combat_manager):
