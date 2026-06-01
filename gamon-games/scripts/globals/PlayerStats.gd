@@ -26,6 +26,7 @@ var stats = {
 var base_stats = {
 	"health": 100.0,
 	"damage": 0.0,
+	"energy_regen": 2.0,
 	"precision": 100.0,
 	"gold_gain": 1.0,
 	"debuff_resistance": 10.0,
