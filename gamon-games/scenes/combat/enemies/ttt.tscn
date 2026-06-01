@@ -57,6 +57,7 @@ offset_bottom = 350.0
 size_flags_vertical = 8
 script = ExtResource("1_dvbgm")
 turn_order_icon = ExtResource("4_w3sxh")
+spawn_min_fights = 5
 
 [node name="torso" type="Sprite2D" parent="." unique_id=1081538787]
 position = Vector2(121, 177.00002)
