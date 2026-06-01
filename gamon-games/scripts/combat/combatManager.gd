@@ -22,6 +22,7 @@ var enemy_pool : Array[PackedScene] = [
 	preload("res://scenes/combat/enemies/skeleton_weak4.tscn"),
 	preload("res://scenes/combat/enemies/skeleton_full.tscn"),
 	preload("res://scenes/combat/enemies/mimic.tscn"),
+	preload("res://scenes/combat/enemies/ttt.tscn"),
 ]
 
 enum CombatState { 
