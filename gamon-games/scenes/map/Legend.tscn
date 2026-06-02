@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://blmvj80nl5op8"]
+
+[ext_resource type="Texture2D" uid="uid://tk5bwufxefxi" path="res://assets/map/legends.png" id="1_s1h33"]
+[ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_jx14c"]
+[ext_resource type="Texture2D" uid="uid://16hr84bcpmgg" path="res://assets/map/icons/map_icon_combat.png" id="3_m2r12"]
+[ext_resource type="Texture2D" uid="uid://b43s4gayrtsq" path="res://assets/map/icons/map_icon_puzzle.png" id="4_bws55"]
+[ext_resource type="Texture2D" uid="uid://bft3203ljtd8a" path="res://assets/map/icons/map_icon_boss.png" id="5_yhyiq"]
+[ext_resource type="Texture2D" uid="uid://dempq44n1ahcv" path="res://assets/map/icons/map_icon_shop.png" id="6_2rcfn"]
+
+[node name="TextureRect" type="TextureRect" unique_id=1977336399]
+offset_right = 186.0
+offset_bottom = 296.0
+texture = ExtResource("1_s1h33")
+expand_mode = 1
+flip_h = true
+
+[node name="Legends" type="VBoxContainer" parent="." unique_id=943444304]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -94.75
+offset_right = 52.0
+offset_bottom = 94.75
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Legends" unique_id=624087555]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 23
+text = "Legend"
+horizontal_alignment = 1
+
+[node name="Combat" type="HBoxContainer" parent="Legends" unique_id=768142440]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="TextureRect" type="TextureRect" parent="Legends/Combat" unique_id=1252550110]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("3_m2r12")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Legends/Combat" unique_id=1878897995]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Combat"
+
+[node name="Puzzle" type="HBoxContainer" parent="Legends" unique_id=1863524134]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="TextureRect" type="TextureRect" parent="Legends/Puzzle" unique_id=2045966429]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("4_bws55")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Legends/Puzzle" unique_id=1597438796]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Puzzle"
+horizontal_alignment = 3
+
+[node name="Boss" type="HBoxContainer" parent="Legends" unique_id=1262809156]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="TextureRect" type="TextureRect" parent="Legends/Boss" unique_id=655502447]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_yhyiq")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Legends/Boss" unique_id=59901322]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Boss"
+
+[node name="Shop" type="HBoxContainer" parent="Legends" unique_id=1665225368]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="TextureRect" type="TextureRect" parent="Legends/Shop" unique_id=866842259]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("6_2rcfn")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Legends/Shop" unique_id=1481937333]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Shop"
