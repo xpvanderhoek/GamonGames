@@ -117,6 +117,21 @@ func _exit_shop() -> void:
 	if _shop_chatter_timer != null:
 		_shop_chatter_timer.stop()
 
+	SoundManager.play_click()
+	if exit_button and exit_button[0]:
+		exit_button[0].disabled = true
+
+	var fade_tween = create_tween()
+	var black_overlay = CanvasLayer.new()
+	var color_rect = ColorRect.new()
+	color_rect.color = Color.BLACK
+	color_rect.anchor_right = 1.0
+	color_rect.anchor_bottom = 1.0
+	black_overlay.add_child(color_rect)
+	add_child(black_overlay)
+	color_rect.modulate.a = 0.0
+	fade_tween.tween_property(color_rect, "modulate:a", 0.5, 3)
+
 	var played_exit_bark := _show_random_bark(SHOP_DIALOGUE_EXIT_KEY, 3.0)
 	if played_exit_bark and _shop_dialogue_ui != null:
 		await _shop_dialogue_ui.bark_finished
