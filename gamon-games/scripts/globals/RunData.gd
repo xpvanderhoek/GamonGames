@@ -6,23 +6,18 @@ const STARTING_KIT_KEY := "starting_kit"
 const STARTING_KIT_CONSUMABLES_DIR := "res://assets/ShopItems/Resources/Consumables"
 
 var language = "EN"
-const RUN_DURATION := 600.0
 var random_seed : int = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var spells : Array[SpellData] = []
 
 var run_active : bool = false
-var time_remaining : float = RUN_DURATION:
-	set (value):
-		time_remaining = value
-		time_remaining_changed.emit()
 
 var max_health : int = 100:
 	set (value):
 		max_health = value
 		health_changed.emit()
 
-var marrow_shards : int = 10000:# Placeholder testing amount, adjust as needed
+var marrow_shards : int = 0:# Placeholder testing amount, adjust as needed
 	set(value):
 		marrow_shards = value
 		marrow_shards_changed.emit()
@@ -95,7 +90,6 @@ func new_run():
 	reset_energy()
 	current_exp = 0
 	run_active = true
-	time_remaining = RUN_DURATION
 	add_spell(BASIC_ATTACK)
 	add_spell(BLOCK)
 	_add_starting_kit_consumable()
@@ -133,13 +127,6 @@ func end_run():
 	run_active = false
 	PlayerStats.marrow_shards = marrow_shards
 	SaveLoad.save_data()
-
-func update_timer(delta):
-	if run_active:
-		time_remaining -= delta
-		if time_remaining <= 0:
-			time_remaining = 0
-			end_run()
 
 func add_item(item: Resource) -> bool:
 	if not (item is ItemData):

@@ -7,6 +7,9 @@ var continue_button: Button = null
 var _tween: Tween = null
 
 func _ready() -> void:
+	if RunData.run_active:
+		RunData.end_run()
+	get_tree().paused = true
 	title = get_node_or_null("PanelContainer/VBoxContainer/Title")
 	message = get_node_or_null("PanelContainer/VBoxContainer/Message")
 	continue_button = get_node_or_null("PanelContainer/VBoxContainer/ContinueButton")
@@ -16,6 +19,7 @@ func _ready() -> void:
 		print("ERROR: continue_button not found!")
 	
 	if continue_button:
+		get_tree().paused = false
 		continue_button.pressed.connect(func(): 
 			TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)
 		)

@@ -1,6 +1,7 @@
 extends Control
 @export var title : String = "Profiles"
 
+@onready var title_label: Label = $TitleLabel
 @onready var slot_1: Button = %Slot1
 @onready var slot_2: Button = %Slot2
 @onready var slot_3: Button = %Slot3
@@ -36,3 +37,8 @@ func _fade_out() -> void:
 
 func _on_back_mouse_hovered() -> void:
 	SoundManager.play_hover()
+
+func _on_profile_deleted(slot_nr : int) -> void:
+	if PlayerStats.slot == slot_nr:
+		title_label.text = "Choose a profile:"
+		back.visible = false

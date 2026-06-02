@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://ctc0o0gqj1d72"]
 
 [ext_resource type="Script" uid="uid://clp812257p2tl" path="res://scripts/map/map.gd" id="1_ph54e"]
-[ext_resource type="Texture2D" uid="uid://cc4nst630wuay" path="res://assets/map/map_foreground.png" id="2_fcby6"]
+[ext_resource type="Texture2D" uid="uid://bxfbim0paqpa7" path="res://assets/map/map_foreground.png" id="2_fcby6"]
 [ext_resource type="Script" uid="uid://bwr8prrp5yj2m" path="res://scripts/map/map_generator.gd" id="3_jcaow"]
 [ext_resource type="Texture2D" uid="uid://c3vbvw0npfbyi" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="4_04w0f"]
+[ext_resource type="PackedScene" uid="uid://blmvj80nl5op8" path="res://scenes/map/Legend.tscn" id="5_fcby6"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0cso3"]
 font_size = 67
@@ -98,3 +99,9 @@ offset_bottom = 26.920258
 grow_horizontal = 0
 grow_vertical = 2
 color = Color(0.8980392, 0.8352941, 0.77254903, 1)
+
+[node name="TextureRect" parent="CanvasLayer" unique_id=1977336399 instance=ExtResource("5_fcby6")]
+offset_left = 957.0
+offset_top = 124.0
+offset_right = 1143.0
+offset_bottom = 420.0

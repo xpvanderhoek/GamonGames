@@ -84,3 +84,12 @@ func do_any_saves_exist() -> bool:
 			result = true
 	
 	return result
+
+func delete_save(slot : int) -> void:
+	var save_path = _save_path(slot)
+	if FileAccess.file_exists(save_path):
+		var err = DirAccess.remove_absolute(save_path)
+		if err == OK:
+			print("Slot " + str(slot) + " deleted")
+		else:
+			print("Failed to delete file, error:", err)
