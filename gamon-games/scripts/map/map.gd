@@ -47,6 +47,7 @@ func _ready() -> void:
 		health_label.text = str(RunData.current_health)
 		floors_climbed = RunData.floors_climbed
 		last_room = RunData.last_map_room
+		camera_2d.global_position.y = last_room.position.y
 		create_map()
 		if last_room:
 			unlock_next_rooms()
