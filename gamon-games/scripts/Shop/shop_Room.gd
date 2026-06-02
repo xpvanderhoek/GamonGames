@@ -20,8 +20,6 @@ const SHOP_DIALOGUE_NO_COINS_KEY := "Avarus_no_coins"
 @onready var spawn_positions = [$Parallax2D2/Item1, $Parallax2D2/Item2, $Parallax2D2/Item3, $Parallax2D2/Item4, $Parallax2D2/Item5, $Parallax2D2/Item6]
 @onready var parallax_layers = [$Parallax2D, $Parallax2D2]
 @onready var exit_button = [$Parallax2D2/ExitButton/Button]
-@onready var item_tooltip_panel: Panel = $CanvasLayer/ItemTooltipPanel
-@onready var item_tooltip_label: Label = $CanvasLayer/ItemTooltipPanel/TooltipLabel
 @onready var coins: Label = $Parallax2D2/Sprite2D/CoinLabel
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
@@ -29,6 +27,13 @@ var _parallax_offset := Vector2.ZERO
 var _shop_chatter_timer: Timer
 @onready var _shop_dialogue_ui: CanvasLayer = $Parallax2D2/SpeechBubble
 var _is_exiting := false
+
+# Enhanced tooltip system for items
+var _item_tooltip: PanelContainer = null
+var _item_tooltip_label: RichTextLabel = null
+var _item_tooltip_item: ItemData = null
+var _item_tooltip_shop_item: Node2D = null
+var _item_tooltip_was_shift_pressed: bool = false
 
 const SHOP_CHATTER_MIN_SEC := 10.0
 const SHOP_CHATTER_MAX_SEC := 25.0
@@ -39,12 +44,10 @@ func _ready():
 		if not exit_button[0].pressed.is_connected(on_exit_pressed):
 			exit_button[0].pressed.connect(on_exit_pressed)
 
-	if item_tooltip_panel:
-		item_tooltip_panel.visible = false
-
 	coins.text = str(RunData.coins)
 	spawn_shop_inventory()
 	_setup_shop_dialogue_system()
+	_ensure_item_tooltip()
 
 func _setup_shop_dialogue_system() -> void:
 	if _shop_dialogue_ui != null and not _shop_dialogue_ui.is_node_ready():
@@ -90,6 +93,17 @@ func _process(delta: float):
 	_parallax_offset = _parallax_offset.lerp(offset, mouse_parallax_smoothing * delta)
 	for layer in parallax_layers:
 		layer.scroll_offset = _parallax_offset * layer.scroll_scale
+
+	# Check for shift key changes when tooltip is visible
+	if _item_tooltip_item != null and _item_tooltip != null and _item_tooltip.visible and _item_tooltip_shop_item != null:
+		var shift_now := Input.is_key_pressed(KEY_SHIFT)
+		if shift_now != _item_tooltip_was_shift_pressed:
+			_item_tooltip_was_shift_pressed = shift_now
+			_show_item_tooltip(_item_tooltip_item, _item_tooltip_shop_item)
+	
+	# Update tooltip position if visible
+	if _item_tooltip != null and _item_tooltip.visible:
+		_update_item_tooltip_position()
 
 func _input(event):
 	if event.is_action_pressed("escape"):
@@ -163,24 +177,20 @@ func spawn_shop_inventory():
 		new_item._on_item_data_assigned()
 
 func _on_item_hover_started(item_data: ItemData) -> void:
-	if item_data == null or item_tooltip_panel == null or item_tooltip_label == null:
+	if item_data == null:
 		return
-
-	var lines: Array[String] = []
-	if item_data.item_name.strip_edges() != "":
-		lines.append(item_data.item_name)
-
-	if item_data.effect.strip_edges() != "":
-		lines.append(item_data.effect)
-	elif item_data.lore.strip_edges() != "":
-		lines.append(item_data.lore)
-
-	item_tooltip_label.text = "\n".join(lines)
-	item_tooltip_panel.visible = lines.size() > 0
+	var shop_item_node: Node2D = null
+	for spawn_pos in spawn_positions:
+		for child in spawn_pos.get_children():
+			if child is Node2D and child.has_method("_on_item_data_assigned"):
+				if child.item_data == item_data:
+					shop_item_node = child
+					break
+	_show_item_tooltip(item_data, shop_item_node)
 
 func _on_item_hover_ended() -> void:
-	if item_tooltip_panel:
-		item_tooltip_panel.visible = false
+	_item_tooltip_item = null
+	_hide_item_tooltip()
 
 func _on_item_no_coins_attempted() -> void:
 	_show_random_bark(SHOP_DIALOGUE_NO_COINS_KEY, 4.0)
@@ -247,3 +257,87 @@ func _get_weight_for_item(item: ItemData, luck_value: float) -> float:
 
 func _get_total_luck() -> float:
 	return float(RunData.get_stat("luck"))
+
+func _ensure_item_tooltip() -> void:
+	if _item_tooltip != null:
+		return
+
+	_item_tooltip = PanelContainer.new()
+	_item_tooltip.name = "ItemTooltip"
+	_item_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_item_tooltip.z_index = 200
+	_item_tooltip.top_level = true
+	_item_tooltip.visible = false
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.05, 0.05, 0.07, 0.96)
+	style.border_width_left   = 1
+	style.border_width_right  = 1
+	style.border_width_top    = 1
+	style.border_width_bottom = 1
+	style.border_color = Color(0.35, 0.35, 0.45, 0.6)
+	style.corner_radius_top_left     = 8
+	style.corner_radius_top_right    = 8
+	style.corner_radius_bottom_left  = 8
+	style.corner_radius_bottom_right = 8
+	style.content_margin_left   = 14.0
+	style.content_margin_right  = 14.0
+	style.content_margin_top    = 10.0
+	style.content_margin_bottom = 10.0
+
+	_item_tooltip.add_theme_stylebox_override("panel", style)
+
+	_item_tooltip_label = RichTextLabel.new()
+	_item_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_item_tooltip_label.fit_content = true
+	_item_tooltip_label.scroll_active = false
+	_item_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_item_tooltip_label.custom_minimum_size = Vector2(0, 0)
+	_item_tooltip_label.bbcode_enabled = true
+	_item_tooltip_label.add_theme_font_size_override("normal_font_size", 13)
+	_item_tooltip_label.add_theme_font_size_override("bold_font_size", 14)
+	_item_tooltip_label.add_theme_color_override("default_color", Color(0.92, 0.92, 0.95, 1.0))
+	_item_tooltip.add_child(_item_tooltip_label)
+
+	canvas_layer.add_child(_item_tooltip)
+
+func _show_item_tooltip(item: ItemData, shop_item: Node2D) -> void:
+	_ensure_item_tooltip()
+	_item_tooltip_item = item
+	_item_tooltip_shop_item = shop_item
+	_item_tooltip_was_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
+
+	var bbcode := ""
+	if shop_item != null and shop_item.has_method("build_item_tooltip_bbcode"):
+		bbcode = shop_item.build_item_tooltip_bbcode(item, _item_tooltip_was_shift_pressed)
+	
+
+	_item_tooltip_label.text = ""
+	_item_tooltip.reset_size()
+	_item_tooltip_label.text = bbcode
+	_item_tooltip.visible = true
+	_update_item_tooltip_position()
+
+func _build_fallback_tooltip(item: ItemData, _shift_pressed: bool) -> String:
+	var t := "[b][font_size=15]%s[/font_size][/b]" % item.item_name
+	if item.effect.strip_edges() != "":
+		t += "\n%s" % item.effect
+	elif item.lore.strip_edges() != "":
+		t += "\n%s" % item.lore
+	return t
+
+func _hide_item_tooltip() -> void:
+	if _item_tooltip != null:
+		_item_tooltip.visible = false
+
+func _update_item_tooltip_position() -> void:
+	if _item_tooltip == null or not _item_tooltip.visible:
+		return
+	var vp_size  := get_viewport().get_visible_rect().size
+	var mouse    := get_viewport().get_mouse_position()
+	var tip_size := _item_tooltip.size
+
+	var pos := mouse + Vector2(-tip_size.x * 0.5, -tip_size.y - 14.0)
+	pos.x = clamp(pos.x, 0.0, vp_size.x - tip_size.x)
+	pos.y = clamp(pos.y, 0.0, vp_size.y - tip_size.y)
+	_item_tooltip.global_position = pos
