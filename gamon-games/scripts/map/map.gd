@@ -5,7 +5,7 @@ signal room_selected(room: Room)
 
 const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
 
-const SCROLL_SPEED := 15
+const SCROLL_SPEED := 20
 const MAP_ROOM = preload("res://scenes/map/map_room.tscn")
 const MAP_LINE = preload("res://scenes/map/map_line.tscn")
 
@@ -31,6 +31,9 @@ var floors_climbed : int
 var last_room : Room
 var camera_edge_y : float
 
+var dragging := false
+var drag_speed := 1.0
+
 func _ready() -> void:
 	camera_edge_y = MapGenerator.Y_DIST * (MapGenerator.FLOORS - 1)
 
@@ -55,6 +58,11 @@ func _ready() -> void:
 			unlock_floor(0)
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		dragging = event.pressed
+	elif event is InputEventMouseMotion and dragging:
+		camera_2d.global_position.y -= event.relative.y * drag_speed
+		
 	if event.is_action_pressed("escape"):
 		canvas_layer.add_child(PAUSE_MENU.instantiate())
 	

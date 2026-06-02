@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://c4v6x4ghgyn5j"]
 
 [ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_dvbgm"]
-[ext_resource type="Texture2D" uid="uid://c00yinhi0j7pd" path="res://assets/Placeholders/enemies/torso.png" id="2_q3xq3"]
+[ext_resource type="Texture2D" uid="uid://dbu4oby6vdvem" path="res://assets/Placeholders/enemies/torso.png" id="2_q3xq3"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="3_w2142"]
-[ext_resource type="Texture2D" uid="uid://dsxoo5xbeqhc" path="res://assets/Placeholders/enemies/head.png" id="4_w3sxh"]
-[ext_resource type="Texture2D" uid="uid://j1m2vp1g8ig8" path="res://assets/Placeholders/enemies/left_hand.png" id="5_8f83m"]
+[ext_resource type="Texture2D" uid="uid://b6ac7ajy0np0i" path="res://assets/Placeholders/enemies/head.png" id="4_w3sxh"]
+[ext_resource type="Texture2D" uid="uid://c81e321k3wt7n" path="res://assets/Placeholders/enemies/left_hand.png" id="5_8f83m"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="6_e5vg6"]
-[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="6_piwf1"]
-[ext_resource type="Texture2D" uid="uid://dmvr7hisp4pak" path="res://assets/Placeholders/enemies/right_hand.png" id="7_kbcej"]
+[ext_resource type="Texture2D" uid="uid://cdf0tccyb8gln" path="res://assets/Placeholders/ui/bowie-knife.png" id="6_piwf1"]
+[ext_resource type="Texture2D" uid="uid://d4jcro5jb2y3k" path="res://assets/Placeholders/enemies/right_hand.png" id="7_kbcej"]
 
 [sub_resource type="Resource" id="Resource_nsp1d"]
 script = ExtResource("6_e5vg6")
@@ -57,7 +57,7 @@ offset_bottom = 350.0
 size_flags_vertical = 8
 script = ExtResource("1_dvbgm")
 turn_order_icon = ExtResource("4_w3sxh")
-spawn_min_fights = 5
+spawn_min_fights = 2
 
 [node name="torso" type="Sprite2D" parent="." unique_id=1081538787]
 position = Vector2(121, 177.00002)
