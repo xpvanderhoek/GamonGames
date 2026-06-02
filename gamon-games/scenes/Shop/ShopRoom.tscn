@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://mweq4ng0gdhd" path="res://scripts/Shop/shop_Room.gd" id="1_2g6x2"]
 [ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
 [ext_resource type="Script" uid="uid://b7cli1nhudpxr" path="res://scripts/Items/ItemData.gd" id="3_lwfny"]
-[ext_resource type="Texture2D" uid="uid://dhh5dly20xx58" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="3_xqf5f"]
 [ext_resource type="Texture2D" uid="uid://cgyquhn0mjm8f" path="res://assets/ShopItems/ShopEnvironment/LeaveSign.png" id="4_6tcdb"]
 [ext_resource type="Texture2D" uid="uid://b7orjsue2d5tn" path="res://assets/ShopItems/ShopEnvironment/Cabinet.png" id="4_cougk"]
 [ext_resource type="Script" uid="uid://c6342sotxx3hs" path="res://scripts/Shop/ExitHoverButton.gd" id="7_exit_hover"]
@@ -35,12 +34,6 @@
 [ext_resource type="Resource" uid="uid://drj8ypf4y6jep" path="res://assets/ShopItems/Resources/Consumables/VipersTongue.tres" id="31_shop_item"]
 [ext_resource type="Resource" uid="uid://bsjm8nf1coqo3" path="res://assets/ShopItems/Resources/WitheredAchillesHeel.tres" id="32_shop_item"]
 [ext_resource type="PackedScene" uid="uid://nwlygbpretr2" path="res://scenes/UI/ShopDialogueUI.tscn" id="34_7l5ap"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fh4ca"]
-texture = ExtResource("3_xqf5f")
-
-[sub_resource type="Theme" id="Theme_fh4ca"]
-Panel/styles/panel = SubResource("StyleBoxTexture_fh4ca")
 
 [sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_cougk"]
 
@@ -113,27 +106,6 @@ shop_items = Array[ExtResource("3_lwfny")]([ExtResource("10_shop_item"), ExtReso
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1182942741]
 layer = 2
-
-[node name="ItemTooltipPanel" type="Panel" parent="CanvasLayer" unique_id=1620017001]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 150.21997
-offset_top = 228.15
-offset_right = 516.22046
-offset_bottom = 352.15033
-grow_horizontal = 2
-theme = SubResource("Theme_fh4ca")
-
-[node name="TooltipLabel" type="Label" parent="CanvasLayer/ItemTooltipPanel" unique_id=1620017002]
-layout_mode = 0
-offset_left = 12.0
-offset_top = 10.0
-offset_right = 354.0
-offset_bottom = 112.0
-theme_override_colors/font_color = Color(0.23921569, 0.16470589, 0.14117648, 1)
-vertical_alignment = 1
-autowrap_mode = 3
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=1523504970]
 scroll_scale = Vector2(0.675, 0.675)
