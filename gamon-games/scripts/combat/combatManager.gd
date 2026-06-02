@@ -102,6 +102,7 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 @onready var debuff_scope_option: OptionButton = get_node_or_null("TargetingPanel/DebuffScopeOption") as OptionButton
 @onready var consumables_grid: GridContainer = get_node_or_null("Panel/GridContainer") as GridContainer
 @onready var items_container: HBoxContainer = get_node_or_null("ItemPanel/Container") as HBoxContainer
+@onready var end_turn_button: Button = get_node_or_null("EndTurn") as Button
 
 func _ready() -> void:
 	if _queued_encounter_scenes.size() <= 0:
@@ -132,6 +133,8 @@ func _ready() -> void:
 	RunData.energy_changed.connect(_update_player_energy_label)
 	RunData.item_added.connect(_on_item_added)
 	_populate_existing_items()
+	if end_turn_button != null:
+		end_turn_button.pressed.connect(_on_end_turn_button_pressed)
 	_begin_player_turn()
 
 	
@@ -365,7 +368,7 @@ func _select_spell(spell: SpellData) -> void:
 		_play_attack_feedback(spell, null, null)
 		_attack_selected = false
 		selected_spell = null
-		_end_player_turn()
+		_update_button_states()
 		return
 	if spell != null and spell.spell_type == SpellData.SpellType.HEAL:
 		if not _spend_spell_energy(spell):
@@ -374,7 +377,7 @@ func _select_spell(spell: SpellData) -> void:
 		_play_attack_feedback(spell, null, null)
 		_attack_selected = false
 		selected_spell = null
-		_end_player_turn()
+		_update_button_states()
 		return
 
 	selected_spell = spell
@@ -732,6 +735,10 @@ func _update_button_states() -> void:
 					spell_button.modulate = Color(0.4, 0.4, 0.4, 1.0)
 				else:
 					spell_button.modulate = Color.WHITE
+	if end_turn_button != null:
+		var can_end_turn := current_state == CombatState.PLAYER_TURN and not _attack_selected and _has_alive_enemies()
+		end_turn_button.disabled = not can_end_turn
+		end_turn_button.modulate = Color.WHITE if can_end_turn else Color(0.4, 0.4, 0.4, 1.0)
 
 func _setup_target_scope_selectors() -> void:
 	if attack_scope_option != null:
@@ -946,7 +953,7 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 	_clear_spell_cursor_overlay()
 	_update_enemy_spell_targeting_preview()
 	source_enemy.clear_current_highlight()
-	_end_player_turn()
+	_update_button_states()
 
 func _only_vital_limbs_remain(source_enemy: CombatEntity) -> bool:
 	if source_enemy == null or not is_instance_valid(source_enemy):
@@ -1008,6 +1015,32 @@ func _on_enemy_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int) 
 	_spawn_floating_damage_number(damage, hit_position, false)
 	if limb != null and is_instance_valid(limb) and limb.is_destroyed:
 		_item_effects.apply_item_status_on_break(entity, limb)
+		if current_state == CombatState.PLAYER_TURN:
+			_refresh_intent_after_limb_destroyed(entity, limb)
+
+func _refresh_intent_after_limb_destroyed(entity: CombatEntity, destroyed_limb: CombatLimb) -> void:
+	if entity == null or not is_instance_valid(entity):
+		return
+	var entity_id := entity.get_instance_id()
+	var intent := _enemy_intents.get(entity_id, {}) as Dictionary
+	var intent_limb := intent.get("limb") as CombatLimb
+	if intent_limb == null or not is_instance_valid(intent_limb) or intent_limb == destroyed_limb:
+		var new_attack_limb := _choose_enemy_attack_limb(entity)
+		if new_attack_limb != null:
+			var new_attack := new_attack_limb.choose_attack()
+			if new_attack != null:
+				_enemy_intents[entity_id] = {
+					"enemy": entity,
+					"limb": new_attack_limb,
+					"attack": new_attack,
+				}
+			else:
+				_enemy_intents.erase(entity_id)
+		else:
+			_enemy_intents.erase(entity_id)
+
+	_clear_enemy_intent_visuals()
+	_show_enemy_intent_visuals()
 
 func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
 	var impact_node: Node2D = null
@@ -1071,6 +1104,11 @@ func _apply_raw_player_damage(amount: int) -> void:
 	if RunData.current_health <= 0:
 		current_state = CombatState.COMBAT_OVER
 		_restart_run_on_player_death()
+
+func _on_end_turn_button_pressed() -> void:
+	if current_state != CombatState.PLAYER_TURN or _attack_selected:
+		return
+	_end_player_turn()
 
 func _end_player_turn() -> void:
 	if not _has_alive_enemies():
