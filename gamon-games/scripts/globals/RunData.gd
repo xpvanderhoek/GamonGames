@@ -126,6 +126,7 @@ func _get_random_consumable() -> ConsumableItemData:
 func end_run():
 	run_active = false
 	PlayerStats.marrow_shards = marrow_shards
+	SaveLoad.record_run_stats() 
 	SaveLoad.save_data()
 
 func add_item(item: Resource) -> bool:
