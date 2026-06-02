@@ -43,6 +43,7 @@ func _create_profile() -> void:
 	
 	var name
 	await enter_name.text_submitted
+	SoundManager.play_click()
 	name = enter_name.text
 	text = str(slot_nr) + ". " + name
 	SaveLoad.create_profile(slot_nr, name)
@@ -60,6 +61,7 @@ func _on_delete_pressed() -> void:
 	var delete_text
 	delete_confirm.visible = true
 	await delete_confirm.text_submitted
+	SoundManager.play_click()
 	delete_text = delete_confirm.text
 	if delete_text.to_lower() == "delete":
 		SaveLoad.delete_save(slot_nr)
