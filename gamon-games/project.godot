@@ -39,7 +39,7 @@ SoundManager="*uid://brby8kl4myox2"
 window/size/mode=2
 window/size/resizable=false
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep_height"
+window/stretch/aspect="expand"
 
 [global_group]
 
