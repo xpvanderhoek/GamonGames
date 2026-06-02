@@ -19,8 +19,11 @@ func _ready() -> void:
 		text = str(slot_nr) + ". Empty"
 		has_profile = false
 	
-	if !has_profile:
+	if !has_profile || PlayerStats.slot == slot_nr:
 		delete.hide()
+	
+	if PlayerStats.slot == slot_nr:
+		add_theme_color_override("font_color", Color("fac54bff"))
 
 func _on_hovered():
 	SoundManager.play_hover()
@@ -53,6 +56,7 @@ func _on_delete_pressed() -> void:
 	if !has_profile:
 		return
 	SoundManager.play_click()
+	delete_confirm.clear()
 	var delete_text
 	delete_confirm.visible = true
 	await delete_confirm.text_submitted
@@ -61,6 +65,6 @@ func _on_delete_pressed() -> void:
 		SaveLoad.delete_save(slot_nr)
 		profile_deleted.emit(slot_nr)
 		text = str(slot_nr) + ". Empty"
+		has_profile = false
 		delete.visible = false
 	delete_confirm.visible = false
-	has_profile = false
