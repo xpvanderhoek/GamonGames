@@ -16,7 +16,8 @@ var knows_puzzles := {
 }
 var current_puzzle = -1
 
-
+var puzzle_coins: int = 0
+var chest_open = false
 
 func pick_random_puzzle():
 	var keys = knows_puzzles.keys()
