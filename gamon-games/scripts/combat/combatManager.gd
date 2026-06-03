@@ -254,7 +254,13 @@ func _exit_combat():
 		return
 	_is_exiting_combat = true
 	# Temporary
-	TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
+	if PuzzleData.from_puzzle:
+		print(PuzzleData.puzzle_coins)
+		PuzzleData.chest_open = true
+		PuzzleData.from_puzzle = false
+		TransitionManager.change_scene("res://scenes/puzzles/Chest_room.tscn", TransitionManager.TransitionType.FADE)
+	else:
+		TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 
 func _on_combat_victory() -> void:
 	if current_state == CombatState.COMBAT_OVER:
