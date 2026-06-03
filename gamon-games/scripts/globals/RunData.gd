@@ -42,14 +42,14 @@ var current_health : int = 100:
 		current_health = value
 		health_changed.emit()
 
-var max_energy: int = 10:
+var max_energy: int = 6:
 	set(value):
 		max_energy = maxi(0, value)
 		if current_energy > max_energy:
 			current_energy = max_energy
 		energy_changed.emit(current_energy)
 
-var current_energy: int = 10:
+var current_energy: int = 6:
 	set(value):
 		current_energy = clampi(value, 0, max_energy)
 		energy_changed.emit(current_energy)
@@ -96,7 +96,7 @@ func new_run():
 	combats_fought = 0
 
 func reset_energy() -> void:
-	max_energy = 10
+	max_energy = 6
 	current_energy = max_energy
 
 func _add_starting_kit_consumable() -> void:
