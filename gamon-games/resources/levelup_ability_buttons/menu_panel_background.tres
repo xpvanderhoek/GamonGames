@@ -1,0 +1,6 @@
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://2lpjjaue1y0w"]
+
+[ext_resource type="Texture2D" uid="uid://bdl6ds02ccw48" path="res://assets/skill_list_background.png" id="1_q7arm"]
+
+[resource]
+texture = ExtResource("1_q7arm")
