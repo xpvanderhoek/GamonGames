@@ -7,7 +7,7 @@ class_name SimonSays
 @onready var coinLabel: Label = $CoinLabel
 @onready var totalCoins: Label = $TotalCoinsLabel
 @onready var lives: TextureRect = $Lives
-@onready var finishRound: int = 7
+@onready var finishRound: int = 1
 const COMBAT_SCENE := "res://scenes/combat/combat.tscn"
 
 var coin_amount: int = 0
@@ -42,12 +42,12 @@ func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -
 	
 
 func _ready():
+	PuzzleData.chest_open = false
 	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
 		open_explaination(PuzzleData.knows_puzzles[get_puzzle_data()])
 	var continue_button = PuzzleTexts.CONTINUE[RunData.language]
 	$Button.text = continue_button
 	versionLabel.text = data.title
-	totalCoins.text = str(RunData.coins)
 	switchDisabled(true)
 	changeColor(Color(0.9, 0.9, 0.9))
 	sequence.append(randi() % buttons.size())
@@ -99,11 +99,12 @@ func checkCorrect(clicked_button: int, click_position: int):
 		return
 
 func checkDone(currentRound: int):
+	PuzzleData.puzzle_coins = coin_amount
 	if currentRound >= finishRound:
-		animate_labels(coinLabel, totalCoins)
+		PuzzleData.chest_open = true
 		switchDisabled(true)
 		await get_tree().create_timer(0.7).timeout
-		TransitionManager.change_scene("res://scenes/map/map.tscn")
+		TransitionManager.change_scene("res://scenes/puzzles/Chest_room.tscn")
 		await get_tree().create_timer(0.4).timeout
 		queue_free()
 	else:
@@ -150,7 +151,6 @@ func fail():
 		show_sequence()
 		switchDisabled(false)
 		return
-	animate_labels(coinLabel, totalCoins)
 	
 	switchDisabled(true)
 	changeColor(Color(2, 0.5, 0.5))

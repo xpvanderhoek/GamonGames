@@ -14,6 +14,7 @@ func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -
 	puzzle = true
 
 func _ready():
+	PuzzleData.chest_open = false
 	totalCoins.text = str(RunData.coins)
 	all_colors.append(Color(0.0, 0.0, 0.616, 1.0))
 	all_colors.append(Color(0.514, 0.514, 0.0, 1.0))
