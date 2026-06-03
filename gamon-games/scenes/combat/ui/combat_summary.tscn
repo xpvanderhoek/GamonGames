@@ -18,6 +18,7 @@
 [ext_resource type="Resource" uid="uid://cka2l3deaxxe4" path="res://resources/combat_spells/stone_skin.tres" id="16_6u4mx"]
 [ext_resource type="Resource" uid="uid://5nopcxc4jtfp" path="res://resources/combat_spells/triple_attack.tres" id="17_syuct"]
 [ext_resource type="StyleBox" uid="uid://2lpjjaue1y0w" path="res://resources/levelup_ability_buttons/menu_panel_background.tres" id="18_5qhh8"]
+[ext_resource type="StyleBox" uid="uid://dfvuvxkoo7p12" path="res://resources/levelup_ability_buttons/continue_button_normal.tres" id="19_8xacw"]
 
 [node name="CombatSummary" type="Control" unique_id=1025159308]
 layout_mode = 3
@@ -30,7 +31,7 @@ script = ExtResource("1_0nftf")
 SPELLS = Array[ExtResource("2_umpm6")]([ExtResource("3_p5i7c"), ExtResource("4_12x0l"), ExtResource("5_mjw7h"), ExtResource("6_c73a6"), ExtResource("7_e664x"), ExtResource("8_3fp37"), ExtResource("9_s26j3"), ExtResource("10_lnvcs"), ExtResource("11_l8bn4"), ExtResource("12_wd3v1"), ExtResource("13_tcb1w"), ExtResource("14_s4ajs"), ExtResource("15_yyjfr"), ExtResource("16_6u4mx"), ExtResource("17_syuct")])
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=468126359]
-custom_minimum_size = Vector2(400, 250)
+custom_minimum_size = Vector2(450, 320)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -45,58 +46,67 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("18_5qhh8")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=803802532]
+[node name="PanelMargin" type="MarginContainer" parent="PanelContainer" unique_id=1928894549]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/PanelMargin" unique_id=803802532]
 layout_mode = 2
 alignment = 1
 
-[node name="Title" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1159640957]
+[node name="Title" type="Label" parent="PanelContainer/PanelMargin/VBoxContainer" unique_id=1159640957]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
 text = "Room cleared!"
 
-[node name="ExpRecieved" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1742423957]
+[node name="ExpRecieved" type="Label" parent="PanelContainer/PanelMargin/VBoxContainer" unique_id=1742423957]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "EXP Received: 0"
 
-[node name="LevelContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=61898245]
+[node name="LevelContainer" type="HBoxContainer" parent="PanelContainer/PanelMargin/VBoxContainer" unique_id=61898245]
 layout_mode = 2
 alignment = 1
 
-[node name="CurrentLevel" type="Label" parent="PanelContainer/VBoxContainer/LevelContainer" unique_id=355470675]
+[node name="CurrentLevel" type="Label" parent="PanelContainer/PanelMargin/VBoxContainer/LevelContainer" unique_id=355470675]
 layout_mode = 2
 text = "lvl 1"
 
-[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer/LevelContainer" unique_id=1659218011]
+[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/PanelMargin/VBoxContainer/LevelContainer" unique_id=1659218011]
 custom_minimum_size = Vector2(200, 20)
 layout_mode = 2
 show_percentage = false
 
-[node name="NextLevel" type="Label" parent="PanelContainer/VBoxContainer/LevelContainer" unique_id=1109297444]
+[node name="NextLevel" type="Label" parent="PanelContainer/PanelMargin/VBoxContainer/LevelContainer" unique_id=1109297444]
 layout_mode = 2
 text = "lvl 2"
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=1103316941]
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/PanelMargin/VBoxContainer" unique_id=1103316941]
 visible = false
 layout_mode = 2
 
-[node name="LevelUp" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1151295992]
+[node name="LevelUp" type="Label" parent="PanelContainer/PanelMargin/VBoxContainer" unique_id=1151295992]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Level Up! Choose a spell:"
 
-[node name="SpellOptionsContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=1426779724]
+[node name="SpellOptionsContainer" type="VBoxContainer" parent="PanelContainer/PanelMargin/VBoxContainer" unique_id=1426779724]
 visible = false
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" unique_id=1881383272]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/PanelMargin/VBoxContainer" unique_id=1881383272]
 layout_mode = 2
 theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 15
 
-[node name="ContinueButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer" unique_id=751938234]
+[node name="ContinueButton" type="Button" parent="PanelContainer/PanelMargin/VBoxContainer/MarginContainer" unique_id=751938234]
 custom_minimum_size = Vector2(150, 40)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_styles/normal = ExtResource("19_8xacw")
 text = "Continue"

@@ -1,10 +1,16 @@
 [gd_scene format=3 uid="uid://h8ukyhg1q2o1"]
 
 [ext_resource type="Script" uid="uid://beyte0f2c5med" path="res://scripts/combat/ui/ChooseNewAbilityButton.gd" id="1_xsaps"]
-[ext_resource type="StyleBox" uid="uid://bux2vlu8f7c70" path="res://resources/levelup_ability_buttons/blue_button_normal.tres" id="2_ugpib"]
-[ext_resource type="StyleBox" uid="uid://csqayr5chq2vs" path="res://resources/levelup_ability_buttons/blue_button_selected.tres" id="3_r3uug"]
-[ext_resource type="StyleBox" uid="uid://dsvhvjwrmt033" path="res://resources/levelup_ability_buttons/gold_button_normal.tres" id="4_pyjtm"]
-[ext_resource type="StyleBox" uid="uid://librw810pk0m" path="res://resources/levelup_ability_buttons/gold_button_selected.tres" id="5_102b3"]
+[ext_resource type="StyleBox" uid="uid://bse25iqar7468" path="res://resources/levelup_ability_buttons/normal/spell_physical_normal.tres" id="2_a0oq8"]
+[ext_resource type="StyleBox" uid="uid://bv71xwxy2bq52" path="res://resources/levelup_ability_buttons/normal/spell_magic_normal.tres" id="3_7fyvg"]
+[ext_resource type="StyleBox" uid="uid://c47va67fhcfy6" path="res://resources/levelup_ability_buttons/normal/spell_block_normal.tres" id="4_6gy7l"]
+[ext_resource type="StyleBox" uid="uid://cq7da2rl4yeta" path="res://resources/levelup_ability_buttons/normal/spell_buff_normal.tres" id="5_umrrv"]
+[ext_resource type="StyleBox" uid="uid://dwdl72ev8s11i" path="res://resources/levelup_ability_buttons/normal/spell_debuff_normal.tres" id="6_6pneg"]
+[ext_resource type="StyleBox" uid="uid://bygpekd0ghoqu" path="res://resources/levelup_ability_buttons/selected/spell_physical_selected.tres" id="7_5hxpv"]
+[ext_resource type="StyleBox" uid="uid://bxa30owgkyy0a" path="res://resources/levelup_ability_buttons/selected/spell_magic_selected.tres" id="8_nvyr3"]
+[ext_resource type="StyleBox" uid="uid://c4aeswtupmym7" path="res://resources/levelup_ability_buttons/selected/spell_block_selected.tres" id="9_oucmm"]
+[ext_resource type="StyleBox" uid="uid://bo1q6wk3dcy2n" path="res://resources/levelup_ability_buttons/selected/spell_buff_selected.tres" id="10_lddok"]
+[ext_resource type="StyleBox" uid="uid://tn6q688h077w" path="res://resources/levelup_ability_buttons/selected/spell_debuff_selected.tres" id="11_5u85i"]
 
 [node name="AbilityButton" type="Button" unique_id=283986988]
 custom_minimum_size = Vector2(0, 45)
@@ -12,7 +18,13 @@ offset_right = 8.0
 offset_bottom = 8.0
 size_flags_vertical = 3
 script = ExtResource("1_xsaps")
-blue_normal = ExtResource("2_ugpib")
-blue_selected = ExtResource("3_r3uug")
-gold_normal = ExtResource("4_pyjtm")
-gold_selected = ExtResource("5_102b3")
+physical_normal = ExtResource("2_a0oq8")
+magic_normal = ExtResource("3_7fyvg")
+block_normal = ExtResource("4_6gy7l")
+buff_normal = ExtResource("5_umrrv")
+debuff_normal = ExtResource("6_6pneg")
+physical_selected = ExtResource("7_5hxpv")
+magic_selected = ExtResource("8_nvyr3")
+block_selected = ExtResource("9_oucmm")
+buff_selected = ExtResource("10_lddok")
+debuff_selected = ExtResource("11_5u85i")

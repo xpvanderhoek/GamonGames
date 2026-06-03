@@ -3,14 +3,14 @@ extends Control
 signal continue_pressed
 
 
-@onready var exp_recieved: Label = $PanelContainer/VBoxContainer/ExpRecieved
-@onready var current_level: Label = $PanelContainer/VBoxContainer/LevelContainer/CurrentLevel
-@onready var next_level: Label = $PanelContainer/VBoxContainer/LevelContainer/NextLevel
-@onready var progress_bar: ProgressBar = $PanelContainer/VBoxContainer/LevelContainer/ProgressBar
-@onready var continue_button: Button = $PanelContainer/VBoxContainer/MarginContainer/ContinueButton
-@onready var h_separator: HSeparator = $PanelContainer/VBoxContainer/HSeparator
-@onready var level_up: Label = $PanelContainer/VBoxContainer/LevelUp
-@onready var spell_options_container: VBoxContainer = $PanelContainer/VBoxContainer/SpellOptionsContainer
+@onready var exp_recieved: Label = $PanelContainer/PanelMargin/VBoxContainer/ExpRecieved
+@onready var current_level: Label = $PanelContainer/PanelMargin/VBoxContainer/LevelContainer/CurrentLevel
+@onready var next_level: Label = $PanelContainer/PanelMargin/VBoxContainer/LevelContainer/NextLevel
+@onready var progress_bar: ProgressBar = $PanelContainer/PanelMargin/VBoxContainer/LevelContainer/ProgressBar
+@onready var continue_button: Button = $PanelContainer/PanelMargin/VBoxContainer/MarginContainer/ContinueButton
+@onready var h_separator: HSeparator = $PanelContainer/PanelMargin/VBoxContainer/HSeparator
+@onready var level_up: Label = $PanelContainer/PanelMargin/VBoxContainer/LevelUp
+@onready var spell_options_container: VBoxContainer = $PanelContainer/PanelMargin/VBoxContainer/SpellOptionsContainer
 
 @export var SPELLS: Array[SpellData] = []
 const SPELL_DIR := "res://resources/combat_spells/"
