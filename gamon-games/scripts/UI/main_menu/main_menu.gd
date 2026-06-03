@@ -4,6 +4,7 @@ const MAP_SCENE := "res://scenes/map/map.tscn"
 const SKILL_LIST_SCENE := "res://scenes/skill_list/skill_list.tscn"
 const SETTINGS_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
 const PROFILES_MENU := preload("res://scenes/UI/main_menu/profiles/profiles_menu.tscn")
+const LEADERBOARD_MENU := preload("res://Scenes/UI/main_menu/leaderboard/LeaderboardMenu.tscn")
 
 @onready var profile_button: Button = $ProfileButton
 @onready var sfx_hover: AudioStreamPlayer2D = $SFXHover
@@ -59,3 +60,7 @@ func _on_button_click():
 
 func _on_upgrades_button_mouse_entered() -> void:
 	SoundManager.play_hover()
+
+func _on_leaderboard_button_pressed() -> void:
+	var lb = LEADERBOARD_MENU.instantiate()
+	add_child(lb)	

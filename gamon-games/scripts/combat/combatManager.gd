@@ -89,6 +89,8 @@ var _spell_tooltip: PanelContainer = null
 var _spell_tooltip_label: RichTextLabel = null
 var _spell_tooltip_spell: SpellData = null
 var _spell_tooltip_was_shift_pressed: bool = false
+var _spell_tooltip_show_upgrade_comparison: bool = false
+
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
@@ -102,6 +104,7 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 @onready var debuff_scope_option: OptionButton = get_node_or_null("TargetingPanel/DebuffScopeOption") as OptionButton
 @onready var consumables_grid: GridContainer = get_node_or_null("Panel/GridContainer") as GridContainer
 @onready var items_container: HBoxContainer = get_node_or_null("ItemPanel/Container") as HBoxContainer
+@onready var end_turn_button: Button = get_node_or_null("EndTurn") as Button
 
 func _ready() -> void:
 	if _queued_encounter_scenes.size() <= 0:
@@ -132,6 +135,8 @@ func _ready() -> void:
 	RunData.energy_changed.connect(_update_player_energy_label)
 	RunData.item_added.connect(_on_item_added)
 	_populate_existing_items()
+	if end_turn_button != null:
+		end_turn_button.pressed.connect(_on_end_turn_button_pressed)
 	_begin_player_turn()
 
 	
@@ -231,7 +236,7 @@ func _process(_delta: float) -> void:
 		var shift_now := Input.is_key_pressed(KEY_SHIFT)
 		if shift_now != _spell_tooltip_was_shift_pressed:
 			_spell_tooltip_was_shift_pressed = shift_now
-			_show_spell_tooltip(_spell_tooltip_spell)
+			_show_spell_tooltip(_spell_tooltip_spell, _spell_tooltip_show_upgrade_comparison)
 
 func _exit_combat():
 	if _is_exiting_combat:
@@ -365,7 +370,7 @@ func _select_spell(spell: SpellData) -> void:
 		_play_attack_feedback(spell, null, null)
 		_attack_selected = false
 		selected_spell = null
-		_end_player_turn()
+		_update_button_states()
 		return
 	if spell != null and spell.spell_type == SpellData.SpellType.HEAL:
 		if not _spend_spell_energy(spell):
@@ -374,7 +379,7 @@ func _select_spell(spell: SpellData) -> void:
 		_play_attack_feedback(spell, null, null)
 		_attack_selected = false
 		selected_spell = null
-		_end_player_turn()
+		_update_button_states()
 		return
 
 	selected_spell = spell
@@ -458,14 +463,21 @@ func _configure_empty_spell_button(button: Button) -> void:
 	if button.mouse_exited.is_connected(on_mouse_exited):
 		button.mouse_exited.disconnect(on_mouse_exited)
 
-func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false) -> String:
+func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false, show_upgrade_comparison: bool = false) -> String:
 	if spell == null:
 		return ""
+
+	var existing: SpellData = RunData.get_spell_by_id(spell.spell_id)
+	var is_upgrade := (show_upgrade_comparison and existing != null)
 
 	var type_color := _spell_type_color(spell.spell_type)
 	var type_hex := type_color.to_html(false)
 
-	var t := "[b][font_size=15]%s[/font_size][/b]" % spell.spell_name
+	var spell_display_name := spell.spell_name
+	if is_upgrade:
+		spell_display_name += " (Lvl %d → %d)" % [existing.level, existing.level + 1]
+
+	var t := "[b][font_size=15]%s[/font_size][/b]" % spell_display_name
 	t += "\n[color=#%s]%s[/color]" % [type_hex, _spell_type_to_text(spell.spell_type)]
 	t += "\nTarget: [color=#cccccc]%s[/color]" % _target_scope_to_text(spell.target_scope)
 
@@ -476,26 +488,42 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false) -
 		if shift_pressed:
 			t += "\n[color=#8a8a9e][font_size=11]  - Energy cost to use this spell.[/font_size][/color]"
 
-	# if spell.accuracy > 0.0:
-	# 	t += "\nAccuracy: [color=#cccccc]%s%%[/color]" % str(snappedf(spell.accuracy, 0.1))
-
 	if spell.has_damage():
 		var min_damage := spell.get_min_damage()
 		var max_damage := spell.get_max_damage()
 		var attacks := spell.get_attack_count()
 		var dmg_type_text := _damage_type_to_text(spell.damage_type)
 		var dmg_color := "b8d4ff" if spell.damage_type == SpellData.DamageType.MAGIC else "ffcca0"
-		if min_damage == max_damage:
-			t += "\nDamage: [color=#%s]%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, dmg_type_text]
+		
+		if is_upgrade:
+			var curr_min := existing.get_min_damage()
+			var curr_max := existing.get_max_damage()
+			var next_min := int(round(curr_min * 1.2))
+			var next_max := int(round(curr_max * 1.2))
+			if next_max < next_min:
+				next_max = next_min
+			
+			if curr_min == curr_max:
+				t += "\nDamage: [color=#%s]%d[/color] → [color=#90d080]%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, curr_min, next_min, dmg_type_text]
+			else:
+				t += "\nDamage: [color=#%s]%d-%d[/color] → [color=#90d080]%d-%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, curr_min, curr_max, next_min, next_max, dmg_type_text]
 		else:
-			t += "\nDamage: [color=#%s]%d-%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, max_damage, dmg_type_text]
+			if min_damage == max_damage:
+				t += "\nDamage: [color=#%s]%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, dmg_type_text]
+			else:
+				t += "\nDamage: [color=#%s]%d-%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, max_damage, dmg_type_text]
 		if attacks > 1:
 			t += "\nHits: [color=#e0d080]%d[/color]" % attacks
 			if shift_pressed:
 				t += "\n[color=#8a8a9e][font_size=11]  - This spell strikes multiple times.[/font_size][/color]"
 
-	if spell.heal_amount > 0:
-		t += "\nHeal: [color=#64e09e]%d[/color]" % spell.heal_amount
+	if spell.heal_amount > 0 or (is_upgrade and existing.heal_amount > 0):
+		if is_upgrade:
+			var curr_heal := existing.heal_amount
+			var next_heal := int(round(curr_heal * 1.2))
+			t += "\nHeal: [color=#64e09e]%d[/color] → [color=#90d080]%d[/color]" % [curr_heal, next_heal]
+		else:
+			t += "\nHeal: [color=#64e09e]%d[/color]" % spell.heal_amount
 
 	var effect_lines: Array[String] = []
 	if spell.outgoing_damage_flat_bonus != 0:
@@ -595,12 +623,13 @@ func _ensure_spell_tooltip() -> void:
 
 	add_child(_spell_tooltip)
 
-func _show_spell_tooltip(spell: SpellData) -> void:
+func _show_spell_tooltip(spell: SpellData, show_upgrade_comparison: bool = false) -> void:
 	_ensure_spell_tooltip()
 	_spell_tooltip_spell = spell
 	_spell_tooltip_was_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
+	_spell_tooltip_show_upgrade_comparison = show_upgrade_comparison
 
-	var bbcode := build_spell_tooltip_bbcode(spell, _spell_tooltip_was_shift_pressed)
+	var bbcode := build_spell_tooltip_bbcode(spell, _spell_tooltip_was_shift_pressed, show_upgrade_comparison)
 	_spell_tooltip_label.text = ""
 	_spell_tooltip.reset_size()
 	_spell_tooltip_label.text = bbcode
@@ -612,8 +641,8 @@ func _hide_spell_tooltip() -> void:
 		_spell_tooltip.visible = false
 
 ## Public wrappers — safe to call from external scripts (e.g. combat_summary)
-func show_spell_tooltip(spell: SpellData) -> void:
-	_show_spell_tooltip(spell)
+func show_spell_tooltip(spell: SpellData, show_upgrade_comparison: bool = false) -> void:
+	_show_spell_tooltip(spell, show_upgrade_comparison)
 
 func hide_spell_tooltip() -> void:
 	_hide_spell_tooltip()
@@ -732,6 +761,10 @@ func _update_button_states() -> void:
 					spell_button.modulate = Color(0.4, 0.4, 0.4, 1.0)
 				else:
 					spell_button.modulate = Color.WHITE
+	if end_turn_button != null:
+		var can_end_turn := current_state == CombatState.PLAYER_TURN and not _attack_selected and _has_alive_enemies()
+		end_turn_button.disabled = not can_end_turn
+		end_turn_button.modulate = Color.WHITE if can_end_turn else Color(0.4, 0.4, 0.4, 1.0)
 
 func _setup_target_scope_selectors() -> void:
 	if attack_scope_option != null:
@@ -941,12 +974,13 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 	else:
 		var miss_position := limb.global_position if limb != null and is_instance_valid(limb) else get_viewport().get_visible_rect().size * 0.5
 		_spawn_floating_damage_number(0, miss_position, false, false, "MISS")
+		SoundManager.play_miss()
 	_attack_selected = false
 	selected_spell = null
 	_clear_spell_cursor_overlay()
 	_update_enemy_spell_targeting_preview()
 	source_enemy.clear_current_highlight()
-	_end_player_turn()
+	_update_button_states()
 
 func _only_vital_limbs_remain(source_enemy: CombatEntity) -> bool:
 	if source_enemy == null or not is_instance_valid(source_enemy):
@@ -1008,6 +1042,32 @@ func _on_enemy_took_damage(entity: CombatEntity, limb: CombatLimb, damage: int) 
 	_spawn_floating_damage_number(damage, hit_position, false)
 	if limb != null and is_instance_valid(limb) and limb.is_destroyed:
 		_item_effects.apply_item_status_on_break(entity, limb)
+		if current_state == CombatState.PLAYER_TURN:
+			_refresh_intent_after_limb_destroyed(entity, limb)
+
+func _refresh_intent_after_limb_destroyed(entity: CombatEntity, destroyed_limb: CombatLimb) -> void:
+	if entity == null or not is_instance_valid(entity):
+		return
+	var entity_id := entity.get_instance_id()
+	var intent := _enemy_intents.get(entity_id, {}) as Dictionary
+	var intent_limb := intent.get("limb") as CombatLimb
+	if intent_limb == null or not is_instance_valid(intent_limb) or intent_limb == destroyed_limb:
+		var new_attack_limb := _choose_enemy_attack_limb(entity)
+		if new_attack_limb != null:
+			var new_attack := new_attack_limb.choose_attack()
+			if new_attack != null:
+				_enemy_intents[entity_id] = {
+					"enemy": entity,
+					"limb": new_attack_limb,
+					"attack": new_attack,
+				}
+			else:
+				_enemy_intents.erase(entity_id)
+		else:
+			_enemy_intents.erase(entity_id)
+
+	_clear_enemy_intent_visuals()
+	_show_enemy_intent_visuals()
 
 func _play_enemy_impact_pulse(limb: CombatLimb, entity: CombatEntity) -> void:
 	var impact_node: Node2D = null
@@ -1071,6 +1131,11 @@ func _apply_raw_player_damage(amount: int) -> void:
 	if RunData.current_health <= 0:
 		current_state = CombatState.COMBAT_OVER
 		_restart_run_on_player_death()
+
+func _on_end_turn_button_pressed() -> void:
+	if current_state != CombatState.PLAYER_TURN or _attack_selected:
+		return
+	_end_player_turn()
 
 func _end_player_turn() -> void:
 	if not _has_alive_enemies():

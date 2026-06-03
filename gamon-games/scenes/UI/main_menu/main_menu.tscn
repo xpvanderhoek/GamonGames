@@ -87,7 +87,7 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 105.0
-offset_top = -351.0
+offset_top = -401.0
 offset_right = 268.0
 offset_bottom = -135.0
 grow_vertical = 0
@@ -142,6 +142,22 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_srge5")
 text = "Upgrades"
 alignment = 0
 
+[node name="LeaderboardButton" type="Button" parent="VBoxContainer" unique_id=123456789]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.7882353)
+theme_override_constants/outline_size = 13
+theme_override_fonts/font = ExtResource("3_oelhe")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_5jstl")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_srge5")
+theme_override_styles/hover = SubResource("StyleBoxTexture_srge5")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_srge5")
+text = "Leaderboard"
+alignment = 0
+
 [node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=1985840865]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -192,6 +208,9 @@ text = "Profile: Name"
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/UpgradesButton" to="." method="_on_upgrades_button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/UpgradesButton" to="." method="_on_upgrades_button_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/LeaderboardButton" to="." method="_on_button_hover"]
+[connection signal="pressed" from="VBoxContainer/LeaderboardButton" to="." method="_on_button_click"]
+[connection signal="pressed" from="VBoxContainer/LeaderboardButton" to="." method="_on_leaderboard_button_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/QuitButton" to="." method="_on_button_hover"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_button_click"]

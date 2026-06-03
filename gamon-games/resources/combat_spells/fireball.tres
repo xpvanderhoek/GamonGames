@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dsyihrbuuijs7" path="res://assets/Placeholders/ui/fireball.png" id="1_qck2a"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_i1ylf"]
+[ext_resource type="AudioStream" uid="uid://dwo2d4wm5h3hf" path="res://assets/Sounds/combat/Fireball_1.wav" id="3_i1ylf"]
 
 [resource]
 script = ExtResource("2_i1ylf")
@@ -15,6 +16,7 @@ accuracy = 100.0
 damage_type = 1
 weight = 100.0
 icon = ExtResource("1_qck2a")
+sfx = ExtResource("3_i1ylf")
 vfx_anchor = 1
 vfx_lifetime = 1.0
 duration_rounds = 2

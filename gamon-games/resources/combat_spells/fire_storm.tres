@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://luv4uu1htqa"]
 
-[ext_resource type="Texture2D" uid="uid://cm0mijtntx1lr" path="res://assets/Placeholders/ui/fire-wave.png" id="1_blru5"]
+[ext_resource type="Texture2D" uid="uid://dxfu15pcdxl3t" path="res://assets/Placeholders/ui/fire-wave.png" id="1_blru5"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_1a2om"]
+[ext_resource type="AudioStream" uid="uid://bh7vskfm8ijk7" path="res://assets/Sounds/combat/Fire Storm_1.wav" id="3_1a2om"]
 
 [resource]
 script = ExtResource("2_1a2om")
@@ -15,5 +16,6 @@ accuracy = 100.0
 damage_type = 1
 weight = 100.0
 icon = ExtResource("1_blru5")
+sfx = ExtResource("3_1a2om")
 vfx_anchor = 1
 vfx_lifetime = 1.0

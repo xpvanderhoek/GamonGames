@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://bmysqykthm5qc"]
 
-[ext_resource type="Texture2D" uid="uid://dkm2cnrq3qwh7" path="res://assets/Placeholders/ui/claw-slashes.png" id="1_en65a"]
+[ext_resource type="Texture2D" uid="uid://dehplo3er5u10" path="res://assets/Placeholders/ui/claw-slashes.png" id="1_en65a"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_bxno7"]
+[ext_resource type="AudioStream" uid="uid://c21h2663q0qqq" path="res://assets/Sounds/combat/Cleave_2.wav" id="3_bxno7"]
 
 [resource]
 script = ExtResource("2_bxno7")
@@ -14,5 +15,6 @@ energy = 4
 accuracy = 100.0
 weight = 100.0
 icon = ExtResource("1_en65a")
+sfx = ExtResource("3_bxno7")
 vfx_anchor = 1
 vfx_lifetime = 1.0

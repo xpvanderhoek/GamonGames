@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://cka2l3deaxxe4"]
 
-[ext_resource type="Texture2D" uid="uid://bydbsgc7mwfao" path="res://assets/Placeholders/ui/abdominal-armor.png" id="1_6nhf1"]
+[ext_resource type="Texture2D" uid="uid://chddpcy8ak2n8" path="res://assets/Placeholders/ui/abdominal-armor.png" id="1_6nhf1"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
+[ext_resource type="AudioStream" uid="uid://5v7for1kfhca" path="res://assets/Sounds/combat/Default Buff Sound_2.wav" id="3_vt8sf"]
 
 [resource]
 script = ExtResource("1_spelldata")
@@ -14,6 +15,7 @@ energy = 2
 accuracy = 100.0
 weight = 100.0
 icon = ExtResource("1_6nhf1")
+sfx = ExtResource("3_vt8sf")
 vfx_lifetime = 1.0
 duration_rounds = 3
 player_physical_defense_delta = 50.0

@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://d1ufhvink1jiy"]
 
-[ext_resource type="Texture2D" uid="uid://buygcaexn7mq0" path="res://assets/Placeholders/ui/biceps.png" id="1_a4ljg"]
+[ext_resource type="Texture2D" uid="uid://b1wb7ncedvi6x" path="res://assets/Placeholders/ui/biceps.png" id="1_a4ljg"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
+[ext_resource type="AudioStream" uid="uid://5v7for1kfhca" path="res://assets/Sounds/combat/Default Buff Sound_2.wav" id="3_848sm"]
 
 [resource]
 script = ExtResource("1_spelldata")
@@ -14,6 +15,7 @@ energy = 2
 accuracy = 100.0
 weight = 100.0
 icon = ExtResource("1_a4ljg")
+sfx = ExtResource("3_848sm")
 vfx_lifetime = 1.0
 duration_rounds = 2
 outgoing_damage_flat_bonus = 12

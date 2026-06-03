@@ -24,6 +24,6 @@ func checkCorrect(clicked_button: int, click_position: int):
 		return
 		
 func calculate_coins():
-	coin_amount = coin_amount + 4
-	show_coin_popup(4)
+	coin_amount = coin_amount + 8
+	show_coin_popup(8)
 	print_coins(coin_amount)

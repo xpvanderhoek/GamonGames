@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://bwbnex6gsf7cc"]
 
-[ext_resource type="Texture2D" uid="uid://jhruwtg5qep3" path="res://assets/Placeholders/ui/sword-brandish.png" id="1_r0rvb"]
+[ext_resource type="Texture2D" uid="uid://d5vg0c33phy4" path="res://assets/Placeholders/ui/sword-brandish.png" id="1_r0rvb"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
+[ext_resource type="AudioStream" uid="uid://dvckm0d6oyx53" path="res://assets/Sounds/combat/Sharp Blade_1.wav" id="3_nj51v"]
 
 [resource]
 script = ExtResource("1_spelldata")
@@ -14,6 +15,7 @@ energy = 2
 accuracy = 100.0
 weight = 100.0
 icon = ExtResource("1_r0rvb")
+sfx = ExtResource("3_nj51v")
 vfx_lifetime = 1.0
 duration_rounds = 2
 outgoing_damage_flat_bonus = 8
