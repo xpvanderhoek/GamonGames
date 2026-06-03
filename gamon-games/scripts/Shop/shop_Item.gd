@@ -25,6 +25,9 @@ func build_item_tooltip_bbcode(item: ItemData, shift_pressed: bool = false) -> S
 
 	var t := "[b][font_size=15]%s[/font_size][/b]" % item.item_name
 	
+	if item is ConsumableItemData:
+		t += " [color=#a0d8ff][font_size=12][CONSUMABLE][/font_size][/color]"
+	
 	# Category and cost
 	t += "\n[color=#cccccc]Category: %s[/color]" % item.category
 	t += "\n[color=#f0d060]Cost: %d[/color]" % item.cost
