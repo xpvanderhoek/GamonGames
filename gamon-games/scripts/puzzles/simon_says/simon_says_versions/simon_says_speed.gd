@@ -18,6 +18,6 @@ func show_sequence():
 	can_click = true
 
 func calculate_coins():
-	coin_amount = coin_amount + 2
-	show_coin_popup(2)
+	coin_amount = coin_amount + 5
+	show_coin_popup(5)
 	print_coins(coin_amount)
