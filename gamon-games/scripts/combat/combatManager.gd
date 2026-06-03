@@ -973,9 +973,13 @@ func _get_adjusted_hit_chance_percent(limb: CombatLimb, source_enemy: CombatEnti
 		return 0.0
 	if source_enemy != null and _only_vital_limbs_remain(source_enemy):
 		return 100.0
+		
+	var precision_multiplier: float = RunData.get_stat("precision") / 100.0
 	var item_precision_bonus: float = _item_effects.get_item_precision_bonus(limb)
 	var temp_precision_bonus: float = _item_effects.get_temp_precision_bonus()
-	return clampf(limb.hit_chance_percent + player_hit_chance_bonus_percent + item_precision_bonus + temp_precision_bonus, 0.0, 100.0)
+	
+	var final_chance := (limb.hit_chance_percent * precision_multiplier) + item_precision_bonus + temp_precision_bonus
+	return clampf(final_chance, 0.0, 100.0)
 
 func _roll_player_hit_on_limb(limb: CombatLimb, source_enemy: CombatEntity = null) -> bool:
 	return randf() * 100.0 < _get_adjusted_hit_chance_percent(limb, source_enemy)

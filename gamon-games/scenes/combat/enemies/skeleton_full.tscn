@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://boiud0xsgu5tb"]
 
 [ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_16f70"]
-[ext_resource type="AudioStream" uid="uid://bmn4thesxo60y" path="res://assets/enemies/skeleton/hit.wav" id="2_crdjk"]
-[ext_resource type="Texture2D" uid="uid://cvrg5pxbpmxnl" path="res://assets/enemies/skeleton/head.png" id="2_lt0ji"]
-[ext_resource type="Texture2D" uid="uid://dnmywmed8rveo" path="res://assets/enemies/skeleton/torso.png" id="3_ml463"]
-[ext_resource type="Texture2D" uid="uid://dnrjcf6l5mmh4" path="res://assets/enemies/skeleton/arm.png" id="4_pe5k4"]
+[ext_resource type="AudioStream" uid="uid://4rpfjodftcu1" path="res://assets/enemies/skeleton/hit.wav" id="2_crdjk"]
+[ext_resource type="Texture2D" uid="uid://h0i38men0paw" path="res://assets/enemies/skeleton/head.png" id="2_lt0ji"]
+[ext_resource type="Texture2D" uid="uid://c0y5u1eik3elk" path="res://assets/enemies/skeleton/torso.png" id="3_ml463"]
+[ext_resource type="Texture2D" uid="uid://byfpibow1ntny" path="res://assets/enemies/skeleton/arm.png" id="4_pe5k4"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="4_v7s83"]
 [ext_resource type="Texture2D" uid="uid://chnx0dcj13ni1" path="res://assets/enemies/shadow.png" id="4_xej5o"]
-[ext_resource type="Texture2D" uid="uid://cm4og8dey6cju" path="res://assets/enemies/skeleton/leg.png" id="5_pe5k4"]
+[ext_resource type="Texture2D" uid="uid://br4knwitwf2fc" path="res://assets/enemies/skeleton/leg.png" id="5_pe5k4"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="5_xej5o"]
-[ext_resource type="Texture2D" uid="uid://bojw0f4jf0hh6" path="res://assets/enemies/skeleton/weapon_1.png" id="6_5q3o5"]
-[ext_resource type="AudioStream" uid="uid://ck0bb4bm58hoe" path="res://assets/enemies/skeleton/weapon1.wav" id="8_ltakh"]
+[ext_resource type="Texture2D" uid="uid://bemkaxp582h1d" path="res://assets/enemies/skeleton/weapon_1.png" id="6_5q3o5"]
+[ext_resource type="AudioStream" uid="uid://le051l3scext" path="res://assets/enemies/skeleton/weapon1.wav" id="8_ltakh"]
 
 [sub_resource type="Resource" id="Resource_xej5o"]
 script = ExtResource("5_xej5o")
