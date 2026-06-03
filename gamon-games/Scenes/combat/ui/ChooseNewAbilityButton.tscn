@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://h8ukyhg1q2o1"]
+
+[ext_resource type="Script" uid="uid://beyte0f2c5med" path="res://scripts/combat/ui/ChooseNewAbilityButton.gd" id="1_xsaps"]
+[ext_resource type="StyleBox" uid="uid://bux2vlu8f7c70" path="res://resources/levelup_ability_buttons/blue_button_normal.tres" id="2_ugpib"]
+[ext_resource type="StyleBox" uid="uid://csqayr5chq2vs" path="res://resources/levelup_ability_buttons/blue_button_selected.tres" id="3_r3uug"]
+[ext_resource type="StyleBox" uid="uid://dsvhvjwrmt033" path="res://resources/levelup_ability_buttons/gold_button_normal.tres" id="4_pyjtm"]
+[ext_resource type="StyleBox" uid="uid://librw810pk0m" path="res://resources/levelup_ability_buttons/gold_button_selected.tres" id="5_102b3"]
+
+[node name="AbilityButton" type="Button" unique_id=283986988]
+custom_minimum_size = Vector2(0, 45)
+offset_right = 8.0
+offset_bottom = 8.0
+size_flags_vertical = 3
+script = ExtResource("1_xsaps")
+blue_normal = ExtResource("2_ugpib")
+blue_selected = ExtResource("3_r3uug")
+gold_normal = ExtResource("4_pyjtm")
+gold_selected = ExtResource("5_102b3")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://d1ufhvink1jiy"]
 
-[ext_resource type="Texture2D" uid="uid://buygcaexn7mq0" path="res://assets/Placeholders/ui/biceps.png" id="1_a4ljg"]
+[ext_resource type="Texture2D" uid="uid://b1wb7ncedvi6x" path="res://assets/Placeholders/ui/biceps.png" id="1_a4ljg"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
 
 [resource]

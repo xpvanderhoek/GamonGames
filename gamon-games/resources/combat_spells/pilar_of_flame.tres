@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://dfgacxhmow3xg"]
 
-[ext_resource type="Texture2D" uid="uid://dkocdb6jdkdy8" path="res://assets/Placeholders/ui/burning-embers.png" id="1_r0db5"]
+[ext_resource type="Texture2D" uid="uid://bv58hjnylnhcb" path="res://assets/Placeholders/ui/burning-embers.png" id="1_r0db5"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_qk4kk"]
 
 [resource]

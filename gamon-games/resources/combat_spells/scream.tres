@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://bthd6cmu8h0qe"]
 
-[ext_resource type="Texture2D" uid="uid://doou5lva2kna1" path="res://assets/Placeholders/ui/shouting.png" id="1_gw4sn"]
+[ext_resource type="Texture2D" uid="uid://bt67irtcvn4kb" path="res://assets/Placeholders/ui/shouting.png" id="1_gw4sn"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
 
 [resource]

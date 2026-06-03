@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://5nopcxc4jtfp"]
 
-[ext_resource type="Texture2D" uid="uid://rvcckx0mak8b" path="res://assets/Placeholders/ui/triple-scratches.png" id="1_p13sb"]
+[ext_resource type="Texture2D" uid="uid://d1vp6adr5wccu" path="res://assets/Placeholders/ui/triple-scratches.png" id="1_p13sb"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_gvh21"]
 
 [resource]

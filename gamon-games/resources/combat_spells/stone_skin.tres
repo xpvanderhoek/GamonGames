@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://cka2l3deaxxe4"]
 
-[ext_resource type="Texture2D" uid="uid://bydbsgc7mwfao" path="res://assets/Placeholders/ui/abdominal-armor.png" id="1_6nhf1"]
+[ext_resource type="Texture2D" uid="uid://chddpcy8ak2n8" path="res://assets/Placeholders/ui/abdominal-armor.png" id="1_6nhf1"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
 
 [resource]
