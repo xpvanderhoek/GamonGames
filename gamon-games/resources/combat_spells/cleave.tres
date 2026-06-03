@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dehplo3er5u10" path="res://assets/Placeholders/ui/claw-slashes.png" id="1_en65a"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_bxno7"]
-[ext_resource type="AudioStream" uid="uid://inr3cs4o4gfv" path="res://assets/Sounds/combat/Cleave_2.wav" id="3_bxno7"]
+[ext_resource type="AudioStream" uid="uid://c21h2663q0qqq" path="res://assets/Sounds/combat/Cleave_2.wav" id="3_bxno7"]
 
 [resource]
 script = ExtResource("2_bxno7")

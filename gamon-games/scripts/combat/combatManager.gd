@@ -89,6 +89,8 @@ var _spell_tooltip: PanelContainer = null
 var _spell_tooltip_label: RichTextLabel = null
 var _spell_tooltip_spell: SpellData = null
 var _spell_tooltip_was_shift_pressed: bool = false
+var _spell_tooltip_show_upgrade_comparison: bool = false
+
 
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
@@ -234,7 +236,7 @@ func _process(_delta: float) -> void:
 		var shift_now := Input.is_key_pressed(KEY_SHIFT)
 		if shift_now != _spell_tooltip_was_shift_pressed:
 			_spell_tooltip_was_shift_pressed = shift_now
-			_show_spell_tooltip(_spell_tooltip_spell)
+			_show_spell_tooltip(_spell_tooltip_spell, _spell_tooltip_show_upgrade_comparison)
 
 func _exit_combat():
 	if _is_exiting_combat:
@@ -461,14 +463,21 @@ func _configure_empty_spell_button(button: Button) -> void:
 	if button.mouse_exited.is_connected(on_mouse_exited):
 		button.mouse_exited.disconnect(on_mouse_exited)
 
-func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false) -> String:
+func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false, show_upgrade_comparison: bool = false) -> String:
 	if spell == null:
 		return ""
+
+	var existing: SpellData = RunData.get_spell_by_id(spell.spell_id)
+	var is_upgrade := (show_upgrade_comparison and existing != null)
 
 	var type_color := _spell_type_color(spell.spell_type)
 	var type_hex := type_color.to_html(false)
 
-	var t := "[b][font_size=15]%s[/font_size][/b]" % spell.spell_name
+	var spell_display_name := spell.spell_name
+	if is_upgrade:
+		spell_display_name += " (Lvl %d → %d)" % [existing.level, existing.level + 1]
+
+	var t := "[b][font_size=15]%s[/font_size][/b]" % spell_display_name
 	t += "\n[color=#%s]%s[/color]" % [type_hex, _spell_type_to_text(spell.spell_type)]
 	t += "\nTarget: [color=#cccccc]%s[/color]" % _target_scope_to_text(spell.target_scope)
 
@@ -479,26 +488,42 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false) -
 		if shift_pressed:
 			t += "\n[color=#8a8a9e][font_size=11]  - Energy cost to use this spell.[/font_size][/color]"
 
-	# if spell.accuracy > 0.0:
-	# 	t += "\nAccuracy: [color=#cccccc]%s%%[/color]" % str(snappedf(spell.accuracy, 0.1))
-
 	if spell.has_damage():
 		var min_damage := spell.get_min_damage()
 		var max_damage := spell.get_max_damage()
 		var attacks := spell.get_attack_count()
 		var dmg_type_text := _damage_type_to_text(spell.damage_type)
 		var dmg_color := "b8d4ff" if spell.damage_type == SpellData.DamageType.MAGIC else "ffcca0"
-		if min_damage == max_damage:
-			t += "\nDamage: [color=#%s]%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, dmg_type_text]
+		
+		if is_upgrade:
+			var curr_min := existing.get_min_damage()
+			var curr_max := existing.get_max_damage()
+			var next_min := int(round(curr_min * 1.2))
+			var next_max := int(round(curr_max * 1.2))
+			if next_max < next_min:
+				next_max = next_min
+			
+			if curr_min == curr_max:
+				t += "\nDamage: [color=#%s]%d[/color] → [color=#90d080]%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, curr_min, next_min, dmg_type_text]
+			else:
+				t += "\nDamage: [color=#%s]%d-%d[/color] → [color=#90d080]%d-%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, curr_min, curr_max, next_min, next_max, dmg_type_text]
 		else:
-			t += "\nDamage: [color=#%s]%d-%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, max_damage, dmg_type_text]
+			if min_damage == max_damage:
+				t += "\nDamage: [color=#%s]%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, dmg_type_text]
+			else:
+				t += "\nDamage: [color=#%s]%d-%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, max_damage, dmg_type_text]
 		if attacks > 1:
 			t += "\nHits: [color=#e0d080]%d[/color]" % attacks
 			if shift_pressed:
 				t += "\n[color=#8a8a9e][font_size=11]  - This spell strikes multiple times.[/font_size][/color]"
 
-	if spell.heal_amount > 0:
-		t += "\nHeal: [color=#64e09e]%d[/color]" % spell.heal_amount
+	if spell.heal_amount > 0 or (is_upgrade and existing.heal_amount > 0):
+		if is_upgrade:
+			var curr_heal := existing.heal_amount
+			var next_heal := int(round(curr_heal * 1.2))
+			t += "\nHeal: [color=#64e09e]%d[/color] → [color=#90d080]%d[/color]" % [curr_heal, next_heal]
+		else:
+			t += "\nHeal: [color=#64e09e]%d[/color]" % spell.heal_amount
 
 	var effect_lines: Array[String] = []
 	if spell.outgoing_damage_flat_bonus != 0:
@@ -598,12 +623,13 @@ func _ensure_spell_tooltip() -> void:
 
 	add_child(_spell_tooltip)
 
-func _show_spell_tooltip(spell: SpellData) -> void:
+func _show_spell_tooltip(spell: SpellData, show_upgrade_comparison: bool = false) -> void:
 	_ensure_spell_tooltip()
 	_spell_tooltip_spell = spell
 	_spell_tooltip_was_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
+	_spell_tooltip_show_upgrade_comparison = show_upgrade_comparison
 
-	var bbcode := build_spell_tooltip_bbcode(spell, _spell_tooltip_was_shift_pressed)
+	var bbcode := build_spell_tooltip_bbcode(spell, _spell_tooltip_was_shift_pressed, show_upgrade_comparison)
 	_spell_tooltip_label.text = ""
 	_spell_tooltip.reset_size()
 	_spell_tooltip_label.text = bbcode
@@ -615,8 +641,8 @@ func _hide_spell_tooltip() -> void:
 		_spell_tooltip.visible = false
 
 ## Public wrappers — safe to call from external scripts (e.g. combat_summary)
-func show_spell_tooltip(spell: SpellData) -> void:
-	_show_spell_tooltip(spell)
+func show_spell_tooltip(spell: SpellData, show_upgrade_comparison: bool = false) -> void:
+	_show_spell_tooltip(spell, show_upgrade_comparison)
 
 func hide_spell_tooltip() -> void:
 	_hide_spell_tooltip()
