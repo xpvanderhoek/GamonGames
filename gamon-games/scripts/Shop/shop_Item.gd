@@ -22,62 +22,7 @@ const NO_COINS_DIALOGUE_COOLDOWN_MS := 2000
 func build_item_tooltip_bbcode(item: ItemData, shift_pressed: bool = false) -> String:
 	if item == null:
 		return ""
-
-	var t := "[b][font_size=15]%s[/font_size][/b]" % item.item_name
-	
-	if item is ConsumableItemData:
-		t += " [color=#a0d8ff][font_size=12][CONSUMABLE][/font_size][/color]"
-	
-	# Category and cost
-	t += "\n[color=#cccccc]Category: %s[/color]" % item.category
-	t += "\n[color=#f0d060]Cost: %d[/color]" % item.cost
-	
-	# Main effect
-	if item.effect.strip_edges() != "":
-		t += "\n[color=#90d080]%s[/color]" % item.effect
-
-	# Buff information
-	if item.buff_type != "None" and item.buff_value != 0:
-		t += "\n"
-		var buff_display := _format_buff_type(item.buff_type)
-		var buff_color := _get_buff_type_color(item.buff_type)
-		
-		# Show current value and new value
-		var current_value := _get_current_stat_value(item.buff_type)
-		var new_value := _calculate_new_stat_value(item)
-		
-		t += "\n%s: [color=#%s]%s[/color] → [color=#90d080]%s[/color]" % [
-			buff_display,
-			buff_color,
-			_format_stat_value(current_value, item.buff_type),
-			_format_stat_value(new_value, item.buff_type)
-		]
-		
-		if shift_pressed:
-			var value_type := _get_value_type_hint(item.buff_value)
-			t += "\n[color=#8a8a9e][font_size=11]  - Increases by %s (%s)[/font_size][/color]" % [
-				_format_signed_value(item.buff_value),
-				value_type
-			]
-
-	# Target limb info if applicable
-	if item.target_limb != "None":
-		t += "\n[color=#8a8a9e][font_size=11]Affects: %s[/font_size][/color]" % item.target_limb
-		if shift_pressed:
-			t += "\n[color=#8a8a9e][font_size=11]  - Only applies when targeting this limb.[/font_size][/color]"
-
-	# Status effect info if applicable
-	if item.status_to_apply != "None":
-		t += "\n[color=#e09060]Status Effect: %s[/color]" % item.status_to_apply
-
-	# Lore
-	if item.lore.strip_edges() != "" and shift_pressed:
-		t += "\n[color=#6a7a8e][font_size=11][i]%s[/i][/font_size][/color]" % item.lore
-
-	if not shift_pressed:
-		t += "\n[color=#5a5a6a][font_size=10][i]Hold Shift for more info[/i][/font_size][/color]"
-
-	return t
+	return item.build_tooltip_bbcode(shift_pressed)
 
 func _format_buff_type(buff_type: String) -> String:
 	match buff_type.to_lower():

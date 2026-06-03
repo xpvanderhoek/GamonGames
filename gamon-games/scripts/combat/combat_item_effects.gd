@@ -87,12 +87,22 @@ func has_item_named(name: String) -> bool:
 			return true
 	return false
 
-func get_item_value_by_name(name: String, fallback: float) -> float:
+func get_item_count_by_name(name: String) -> int:
+	var count := 0
 	for item in RunData.items:
 		if item != null and item.item_name == name:
-			if name == "The Hollow Heart":
-				return fallback
-			return item.buff_value
+			count += 1
+	return count
+
+func get_item_value_by_name(name: String, fallback: float) -> float:
+	var total := 0.0
+	var found := false
+	for item in RunData.items:
+		if item != null and item.item_name == name:
+			found = true
+			total += item.buff_value
+	if found:
+		return total
 	return fallback
 
 func get_item_damage_bonus(target_limb: CombatLimb) -> int:
@@ -354,10 +364,12 @@ func apply_player_reflect_damage(amount: int, source_enemy: CombatEntity, source
 	if source_enemy == null or not is_instance_valid(source_enemy) or not source_enemy.is_alive:
 		return
 	var reflect_damage := 0
-	if has_item_named("The Shroud of Malice"):
-		reflect_damage += int(round(float(amount) * 0.5))
-	if has_item_named("Thorned Bracer"):
-		reflect_damage += 8
+	var shroud_count := get_item_count_by_name("The Shroud of Malice")
+	var bracer_count := get_item_count_by_name("Thorned Bracer")
+	if shroud_count > 0:
+		reflect_damage += int(round(float(amount) * 0.5 * float(shroud_count)))
+	if bracer_count > 0:
+		reflect_damage += 8 * bracer_count
 	if reflect_damage <= 0:
 		return
 	var target_limb: CombatLimb = manager._get_first_alive_enemy_limb(source_enemy)
