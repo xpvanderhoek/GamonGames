@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bt67irtcvn4kb" path="res://assets/Placeholders/ui/shouting.png" id="1_gw4sn"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
+[ext_resource type="AudioStream" uid="uid://cxqvcl4gu3wi2" path="res://assets/Sounds/combat/Default DeBuff Sound_2.wav" id="3_i6ilq"]
 
 [resource]
 script = ExtResource("1_spelldata")
@@ -15,6 +16,7 @@ energy = 2
 accuracy = 100.0
 weight = 100.0
 icon = ExtResource("1_gw4sn")
+sfx = ExtResource("3_i6ilq")
 vfx_anchor = 1
 vfx_lifetime = 1.0
 outgoing_damage_multiplier_delta = -0.3

@@ -5,10 +5,11 @@
 [ext_resource type="AudioStream" uid="uid://d32ecsmj6fj8p" path="res://sfx/hover.wav" id="3_rs7eg"]
 [ext_resource type="AudioStream" uid="uid://t0cdm3ymanuh" path="res://sfx/potion.wav" id="4_kysrt"]
 [ext_resource type="AudioStream" uid="uid://cyqfh42dpdjgp" path="res://sfx/pencil_circle.wav" id="5_yai5u"]
-[ext_resource type="AudioStream" uid="uid://2m2em64vl84w" path="res://sfx/Purchase.wav" id="6_4xaxn"]
+[ext_resource type="AudioStream" uid="uid://cwel4wdi3va0o" path="res://sfx/Purchase.wav" id="6_4xaxn"]
 [ext_resource type="AudioStream" uid="uid://cp4ghbhrahrwn" path="res://sfx/FailSound.mp3" id="7_kysrt"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/levelup.wav" id="8_lvlup"]
-[ext_resource type="AudioStream" path="res://assets/Sounds/xpbar.wav" id="9_xpbar"]
+[ext_resource type="AudioStream" uid="uid://b2ax2ovehd6pm" path="res://assets/Sounds/levelup.wav" id="8_lvlup"]
+[ext_resource type="AudioStream" uid="uid://7yetv6dg1d2v" path="res://assets/Sounds/xpbar.wav" id="9_xpbar"]
+[ext_resource type="AudioStream" uid="uid://c8cnaawjas1ma" path="res://assets/Sounds/combat/Miss_2.wav" id="10_8cji2"]
 
 [node name="SoundManager" type="Node" unique_id=440982374]
 script = ExtResource("1_rs7eg")
@@ -41,10 +42,13 @@ stream = ExtResource("7_kysrt")
 volume_db = -16.0
 bus = &"SFX"
 
-[node name="SFXLevelUp" type="AudioStreamPlayer" parent="."]
+[node name="SFXLevelUp" type="AudioStreamPlayer" parent="." unique_id=1612744707]
 stream = ExtResource("8_lvlup")
 bus = &"SFX"
 
-[node name="SFXXPBarTick" type="AudioStreamPlayer" parent="."]
+[node name="SFXXPBarTick" type="AudioStreamPlayer" parent="." unique_id=469884311]
 stream = ExtResource("9_xpbar")
 bus = &"SFX"
+
+[node name="SFXMiss" type="AudioStreamPlayer" parent="." unique_id=1291264167]
+stream = ExtResource("10_8cji2")

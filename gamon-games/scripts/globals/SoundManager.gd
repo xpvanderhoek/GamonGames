@@ -18,6 +18,9 @@ func play_purchase():
 func play_failsound():
 	$SFXFailSound.play()
 
+func play_miss():
+	$SFXMiss.play()
+
 func play_xpbar_tick(pitch: float = 1.0) -> void:
 	var player := AudioStreamPlayer.new()
 	player.stream = $SFXXPBarTick.stream

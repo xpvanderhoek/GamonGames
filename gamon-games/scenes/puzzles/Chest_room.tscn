@@ -39,6 +39,7 @@ grow_vertical = 2
 expand_mode = 1
 
 [node name="Shadow" type="Sprite2D" parent="TextureRect2" unique_id=2029031685]
+visible = false
 position = Vector2(560, 519)
 scale = Vector2(1.3565401, 1.5380952)
 texture = ExtResource("2_3mo0r")
