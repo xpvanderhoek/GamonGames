@@ -19,7 +19,7 @@ class_name ItemData
 @export_group("Status Effects")
 @export_enum("None", "Bleed", "Poison", "Decay", "Vulnerable", "Burn", "Invulnerable") var status_to_apply: String = "None"
 
-func build_tooltip_bbcode(shift_pressed: bool = false, stack_count: int = 1) -> String:
+func build_tooltip_bbcode(shift_pressed: bool = false, stack_count: int = 1, is_shop_preview: bool = false) -> String:
 	var count := maxi(1, stack_count)
 	var text := "[b][font_size=15]%s[/font_size][/b]" % item_name
 
@@ -36,8 +36,31 @@ func build_tooltip_bbcode(shift_pressed: bool = false, stack_count: int = 1) -> 
 
 	if buff_type != "None" and not is_zero_approx(buff_value):
 		var current_value := _get_current_stat_value(buff_type)
-		var total_bonus := buff_value * float(count)
-		var new_value := current_value + total_bonus
+		var new_value := 0.0
+		
+		if is_shop_preview:
+			var owned_count := 0
+			var current_key := resource_path if not resource_path.is_empty() else item_name
+			
+			if RunData.get("items") is Array:
+				for existing_item in RunData.items:
+					if existing_item == null:
+						continue
+					var existing_key := existing_item.resource_path if not existing_item.resource_path.is_empty() else existing_item.item_name
+					if existing_key == current_key:
+						owned_count += 1
+			
+			var items_already_factored := int(current_value / buff_value) if buff_value != 0.0 else 0
+			if items_already_factored < owned_count:
+				var missing_stacks := owned_count - items_already_factored
+				current_value += missing_stacks * buff_value
+			
+			# preview always increments by exactly 1 more shop item copy just to get that buffed tier value, regardless of how many are already owned
+			new_value = current_value + buff_value
+		else:
+			var total_bonus := buff_value * float(count)
+			new_value = current_value + total_bonus
+			
 		text += "\n%s: [color=#%s]%s[/color] → [color=#90d080]%s[/color]" % [
 			_format_buff_type(buff_type),
 			_get_buff_type_color(buff_type),
