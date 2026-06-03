@@ -22,10 +22,6 @@ func _ready():
 	good_color = all_colors[randi() % all_colors.size()]
 	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
 		open_explaination(PuzzleData.knows_puzzles[get_puzzle_data()])
-	$MouseLeftButton.visible = true
-	$Arrow.visible = true
-	$TextureRect2.modulate = good_color
-	$TextureRect2.visible = true
 	versionLabel.text = data.title
 	sequence.append(randi() % buttons.size())
 	switchDisabled(true)
@@ -100,8 +96,8 @@ func checkCorrect(clicked_button: int, click_position: int):
 		return
 
 func calculate_coins():
-	coin_amount = coin_amount + 2
-	show_coin_popup(2)
+	coin_amount = coin_amount + 6
+	show_coin_popup(6)
 	print_coins(coin_amount)
 	
 	

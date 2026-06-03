@@ -10,7 +10,7 @@ const PATHS := 5
 const MIN_PATH_STARTS := 2
 const COMBAT_ROOM_WEIGHT := 10.0
 const SHOP_ROOM_WEIGHT := 3
-const PUZZLE_ROOM_WEIGHT := 3
+const PUZZLE_ROOM_WEIGHT := 237846
 
 var random_room_type_weights = {
 	Room.Type.COMBAT: 0.0,

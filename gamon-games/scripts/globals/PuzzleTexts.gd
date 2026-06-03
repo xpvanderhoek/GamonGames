@@ -26,7 +26,7 @@ const PUZZLES := {
 			"tips": [
 				"Vind een patroon dat makkelijk te onthouden is"
 			],
-			"reward": "Deze puzzel levert [color=#1a7726]1 coin[/color] op per ronde dat je overleeft\nSucces!"
+			"reward": "Deze puzzel levert [color=#1a7726]3 coins[/color] op per ronde dat je overleeft\nSucces!"
 		},
 		"EN": {
 			"title": "Simon Says (Normal)",
@@ -34,7 +34,7 @@ const PUZZLES := {
 			"tips": [
 				"Look for patterns that are easy to remember"
 			],
-			"reward": "You earn [color=#1a7726]1 coin[/color] for every round you survive\nGood luck!"
+			"reward": "You earn [color=#1a7726]3 coins[/color] for every round you survive\nGood luck!"
 		}
 	},
 	"simon_says_speed": {
@@ -44,7 +44,7 @@ const PUZZLES := {
 			"tips": [
 				"Vind een patroon in de volgorde dat makkelijk te onthouden is"
 			],
-			"reward": "Deze puzzel levert [color=#1a7726]2 coins[/color] op per ronde dat je overleeft\nSucces!"
+			"reward": "Deze puzzel levert [color=#1a7726]5 coins[/color] op per ronde dat je overleeft\nSucces!"
 		},
 		"EN": {
 			"title": "Simon Says (Speed)",
@@ -52,7 +52,7 @@ const PUZZLES := {
 			"tips": [
 				"Look for patterns that are easy to remember"
 			],
-			"reward": "You earn [color=#1a7726]2 coins[/color] for every round you survive\nGood luck!"
+			"reward": "You earn [color=#1a7726]5 coins[/color] for every round you survive\nGood luck!"
 		}
 	},
 	"simon_says_mirror": {
@@ -63,7 +63,7 @@ const PUZZLES := {
 				"Vind een patroon dat makkelijk te onthouden is",
 				"Het patroon is in spiegelbeeld!"
 			],
-			"reward": "Deze puzzel levert [color=#1a7726]3 coins[/color] op per ronde dat je overleeft\nSucces!"
+			"reward": "Deze puzzel levert [color=#1a7726]7 coins[/color] op per ronde dat je overleeft\nSucces!"
 		},
 		"EN": {
 			"title": "syaS somiS (Mirrored)",
@@ -72,7 +72,7 @@ const PUZZLES := {
 				"Look for patterns that are easy to remember",
 				"The pattern is mirrored!"
 			],
-			"reward": "You earn [color=#1a7726]3 coins[/color] for every round you survive\nGood luck!"
+			"reward": "You earn [color=#1a7726]7 coins[/color] for every round you survive\nGood luck!"
 		}
 	},
 	"simon_says_reverse": {
@@ -84,7 +84,7 @@ const PUZZLES := {
 				"Het patroon is van achter naar voren!",
 				"Als het patroon 6, 3, 1 is, moet jij 1, 3, 6 indrukken in die volgorde"
 			],
-			"reward": "Deze puzzel levert [color=#1a7726]4 coins[/color] op per ronde dat je overleeft\nSucces!"
+			"reward": "Deze puzzel levert [color=#1a7726]8 coins[/color] op per ronde dat je overleeft\nSucces!"
 		},
 		"EN": {
 			"title": "Simon Says (Reverse)",
@@ -94,7 +94,7 @@ const PUZZLES := {
 				"The pattern is reversed!",
 				"If the pattern is 6, 3, 1, you must press 1, 3, 6"
 			],
-			"reward": "You earn [color=#1a7726]4 coins[/color] for every round you survive\nGood luck!"
+			"reward": "You earn [color=#1a7726]8 coins[/color] for every round you survive\nGood luck!"
 		}
 	},
 	"simon_says_inverted": {
@@ -105,7 +105,7 @@ const PUZZLES := {
 				"Vind een patroon dat makkelijk te onthouden is",
 				"Zit op een afstandje om beter overzicht te houden"
 			],
-			"reward": "Deze puzzel levert [color=#1a7726]3 coins[/color] op per ronde dat je overleeft\nSucces!"
+			"reward": "Deze puzzel levert [color=#1a7726]6 coins[/color] op per ronde dat je overleeft\nSucces!"
 		},
 		"EN": {
 			"title": "Simon Says (Inverted)",
@@ -114,7 +114,7 @@ const PUZZLES := {
 				"Look for patterns that are easy to remember",
 				"Sit a bit further back to get a better overview"
 			],
-			"reward": "You earn [color=#1a7726]3 coins[/color] for every round you survive\nGood luck!"
+			"reward": "You earn [color=#1a7726]6 coins[/color] for every round you survive\nGood luck!"
 		}
 	},
 	"simon_says_color": {
@@ -126,7 +126,7 @@ const PUZZLES := {
 				"Onthoud alleen de aangegeven kleur",
 				"Nu moet je alleen de knoppen met deze kleur indrukken: "
 			],
-			"reward": "Deze puzzel levert [color=#1a7726]3 coins[/color] op per ronde dat je overleeft\nSucces!"
+			"reward": "Deze puzzel levert [color=#1a7726]5 coins[/color] op per ronde dat je overleeft\nSucces!"
 		},
 		"EN": {
 			"title": "Simon Says (Color)",
@@ -136,7 +136,7 @@ const PUZZLES := {
 				"Focus only on the indicated color",
 				"Now you only need to press the buttons with this color: "
 			],
-			"reward": "You earn [color=#1a7726]3 coins[/color] for every round you survive\nGood luck!"
+			"reward": "You earn [color=#1a7726]5 coins[/color] for every round you survive\nGood luck!"
 		}
 	}
 }

@@ -7,7 +7,7 @@ class_name SimonSays
 @onready var coinLabel: Label = $CoinLabel
 @onready var totalCoins: Label = $TotalCoinsLabel
 @onready var lives: TextureRect = $Lives
-@onready var finishRound: int = 1
+@onready var finishRound: int = 7
 const COMBAT_SCENE := "res://scenes/combat/combat.tscn"
 
 var coin_amount: int = 0
@@ -162,8 +162,8 @@ func print_coins(coins: int):
 	shake_control(coinLabel, 3.0, 0.15)
 	
 func calculate_coins():
-	coin_amount = coin_amount + 1
-	show_coin_popup(1)
+	coin_amount = coin_amount + 3
+	show_coin_popup(3)
 	print_coins(coin_amount)
 	
 func show_coin_popup(amount: int) -> void:
