@@ -92,6 +92,11 @@ var _spell_tooltip_was_shift_pressed: bool = false
 var _spell_tooltip_show_upgrade_comparison: bool = false
 
 
+var _item_tooltip: PanelContainer = null
+var _item_tooltip_label: RichTextLabel = null
+var _item_tooltip_item: ItemData = null
+var _item_tooltip_was_shift_pressed: bool = false
+
 signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 
 @onready var spells_panel: HBoxContainer = $SpellsPanel/Container
@@ -232,11 +237,17 @@ func _input(event): #Temporary
 func _process(_delta: float) -> void:
 	_update_spell_cursor_overlay_position()
 	_update_spell_tooltip_position()
+	_update_item_tooltip_position()
 	if _spell_tooltip_spell != null and _spell_tooltip != null and _spell_tooltip.visible:
 		var shift_now := Input.is_key_pressed(KEY_SHIFT)
 		if shift_now != _spell_tooltip_was_shift_pressed:
 			_spell_tooltip_was_shift_pressed = shift_now
-			_show_spell_tooltip(_spell_tooltip_spell, _spell_tooltip_show_upgrade_comparison)
+			_show_spell_tooltip(_spell_tooltip_spell)
+	if _item_tooltip_item != null and _item_tooltip != null and _item_tooltip.visible:
+		var item_shift_now := Input.is_key_pressed(KEY_SHIFT)
+		if item_shift_now != _item_tooltip_was_shift_pressed:
+			_item_tooltip_was_shift_pressed = item_shift_now
+			_show_item_tooltip(_item_tooltip_item)
 
 func _exit_combat():
 	if _is_exiting_combat:
@@ -995,9 +1006,13 @@ func _get_adjusted_hit_chance_percent(limb: CombatLimb, source_enemy: CombatEnti
 		return 0.0
 	if source_enemy != null and _only_vital_limbs_remain(source_enemy):
 		return 100.0
+		
+	var precision_multiplier: float = RunData.get_stat("precision") / 100.0
 	var item_precision_bonus: float = _item_effects.get_item_precision_bonus(limb)
 	var temp_precision_bonus: float = _item_effects.get_temp_precision_bonus()
-	return clampf(limb.hit_chance_percent + player_hit_chance_bonus_percent + item_precision_bonus + temp_precision_bonus, 0.0, 100.0)
+	
+	var final_chance := (limb.hit_chance_percent * precision_multiplier) + item_precision_bonus + temp_precision_bonus
+	return clampf(final_chance, 0.0, 100.0)
 
 func _roll_player_hit_on_limb(limb: CombatLimb, source_enemy: CombatEntity = null) -> bool:
 	return randf() * 100.0 < _get_adjusted_hit_chance_percent(limb, source_enemy)
@@ -2440,27 +2455,161 @@ func _format_turn_name(entity: CombatEntity) -> String:
 func _on_item_added(item: ItemData) -> void:
 	if items_container == null or item == null:
 		return
+	var item_resource_path := item.resource_path
+	for child in items_container.get_children():
+		if child is Control and child.has_meta("item_resource_path") and child.get_meta("item_resource_path") == item_resource_path:
+			_update_item_display_count(child, item)
+			return
+
+	_create_item_display(item, item_resource_path)
+
+func _create_item_display(item: ItemData, resource_path: String) -> void:
+	var container := Control.new()
+	container.name = "ItemSlot"
+	container.set_meta("item_resource_path", resource_path)
+	container.custom_minimum_size = Vector2(48.0, 48.0)
+	container.mouse_filter = Control.MOUSE_FILTER_STOP
 	
 	var item_icon := TextureRect.new()
+	item_icon.name = "Icon"
+	item_icon.set_anchors_preset(Control.PRESET_FULL_RECT)
 	item_icon.texture = item.texture
 	item_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	item_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	item_icon.custom_minimum_size = Vector2(48.0, 48.0)
-	item_icon.mouse_filter = Control.MOUSE_FILTER_STOP
+	item_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
-	var tooltip_lines: Array[String] = []
-	if item.item_name.strip_edges() != "":
-		tooltip_lines.append(item.item_name)
-	if item.effect.strip_edges() != "":
-		tooltip_lines.append(item.effect)
-	item_icon.tooltip_text = "\n".join(tooltip_lines)
+	container.add_child(item_icon)
 	
-	items_container.add_child(item_icon)
+	var count_label := Label.new()
+	count_label.name = "CountLabel"
+	count_label.text = "1x"
+	count_label.add_theme_font_size_override("font_size", 7)
+	count_label.add_theme_color_override("font_color", Color(1, 1, 1, 1))
+	count_label.position = Vector2(1.0, -1.0)
+	count_label.z_index = 2
+	count_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	container.add_child(count_label)
+	container.mouse_entered.connect(_on_item_slot_mouse_entered.bind(item))
+	container.mouse_exited.connect(_on_item_slot_mouse_exited)
+	items_container.add_child(container)
+
+func _update_item_display_count(display_container: Control, item: ItemData) -> void:
+	var item_resource_path := item.resource_path
+	var count := 0
+	for existing_item in RunData.items:
+		if existing_item != null and existing_item.resource_path == item_resource_path:
+			count += 1
+	
+	var count_label := display_container.get_node_or_null("CountLabel") as Label
+	if count_label != null:
+		count_label.text = "%dx" % count
+
+func _on_item_slot_mouse_entered(item: ItemData) -> void:
+	_show_item_tooltip(item)
+
+func _on_item_slot_mouse_exited() -> void:
+	_hide_item_tooltip()
+
+func _ensure_item_tooltip() -> void:
+	if _item_tooltip != null:
+		return
+
+	_item_tooltip = PanelContainer.new()
+	_item_tooltip.name = "ItemTooltip"
+	_item_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_item_tooltip.top_level = true
+	_item_tooltip.visible = false
+	_item_tooltip.z_index = 200
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.05, 0.05, 0.07, 0.96)
+	style.border_width_left = 1
+	style.border_width_right = 1
+	style.border_width_top = 1
+	style.border_width_bottom = 1
+	style.border_color = Color(0.35, 0.35, 0.45, 0.6)
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_left = 8
+	style.corner_radius_bottom_right = 8
+	style.content_margin_left = 14.0
+	style.content_margin_right = 14.0
+	style.content_margin_top = 10.0
+	style.content_margin_bottom = 10.0
+	_item_tooltip.add_theme_stylebox_override("panel", style)
+
+	_item_tooltip_label = RichTextLabel.new()
+	_item_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_item_tooltip_label.fit_content = true
+	_item_tooltip_label.scroll_active = false
+	_item_tooltip_label.bbcode_enabled = true
+	_item_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_item_tooltip_label.add_theme_font_size_override("normal_font_size", 13)
+	_item_tooltip_label.add_theme_font_size_override("bold_font_size", 14)
+	_item_tooltip_label.add_theme_color_override("default_color", Color(0.92, 0.92, 0.95, 1.0))
+	_item_tooltip.add_child(_item_tooltip_label)
+
+	add_child(_item_tooltip)
+
+func _show_item_tooltip(item: ItemData) -> void:
+	if item == null:
+		return
+	_ensure_item_tooltip()
+	_item_tooltip_item = item
+	_item_tooltip_was_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
+	var stack_count := _get_item_stack_count(item)
+	_item_tooltip_label.text = ""
+	_item_tooltip.reset_size()
+	_item_tooltip_label.text = item.build_tooltip_bbcode(_item_tooltip_was_shift_pressed, stack_count)
+	_item_tooltip.visible = true
+	_update_item_tooltip_position()
+
+func _hide_item_tooltip() -> void:
+	_item_tooltip_item = null
+	if _item_tooltip != null:
+		_item_tooltip.visible = false
+
+func _update_item_tooltip_position() -> void:
+	if _item_tooltip == null or not _item_tooltip.visible:
+		return
+	var vp_size := get_viewport().get_visible_rect().size
+	var mouse := get_viewport().get_mouse_position()
+	var tip_size := _item_tooltip.size
+	var pos := mouse + Vector2(-tip_size.x * 0.5, -tip_size.y - 124.0)
+	pos.x = clamp(pos.x, 0.0, maxf(0.0, vp_size.x - tip_size.x))
+	pos.y = clamp(pos.y, 48.0, maxf(0.0, vp_size.y - tip_size.y))
+	_item_tooltip.global_position = pos
+
+func _get_item_stack_count(item: ItemData) -> int:
+	if item == null:
+		return 1
+	var item_key := item.resource_path if not item.resource_path.is_empty() else item.item_name
+	var count := 0
+	for existing_item in RunData.items:
+		if existing_item == null:
+			continue
+		var existing_key := existing_item.resource_path if not existing_item.resource_path.is_empty() else existing_item.item_name
+		if existing_key == item_key:
+			count += 1
+	return maxi(1, count)
 
 func _populate_existing_items() -> void:
 	if items_container == null:
 		return
-	
+	for child in items_container.get_children():
+		child.queue_free()
+
+	var displayed_items: Dictionary = {}
 	for item in RunData.items:
-		if item != null:
-			_on_item_added(item)
+		if item == null:
+			continue
+		var item_key := item.resource_path if not item.resource_path.is_empty() else item.item_name
+		if not displayed_items.has(item_key):
+			displayed_items[item_key] = item
+
+	for resource_path in displayed_items.keys():
+		_create_item_display(displayed_items[resource_path], str(resource_path))
+		var slot := items_container.get_child(items_container.get_child_count() - 1) as Control
+		if slot != null:
+			_update_item_display_count(slot, displayed_items[resource_path])

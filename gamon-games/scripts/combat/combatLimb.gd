@@ -50,8 +50,16 @@ func get_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
 		_:
 			return max(0.0, physical_defense)
 
+func get_modified_hit_chance() -> float:
+	if hit_chance_percent >= 100.0:
+		return 100.0
+		
+	var precision_bonus: float = RunData.get_stat("precision") - 100.0
+	var final_chance: float = hit_chance_percent + precision_bonus
+	return clampf(final_chance, 0.0, 100.0)
+
 func roll_hit() -> bool:
-	return randf() * 100.0 < hit_chance_percent
+	return randf() * 100.0 < get_modified_hit_chance()
 
 func has_attack_options() -> bool:
 	return get_attack_options().size() > 0

@@ -165,14 +165,20 @@ func get_stat(buff_type: String):
 		return 0
 
 	var total = float(PlayerStats.stats[stat_key])
-	var buff_key := buff_type.to_lower()
-	if buff_key in ["damage", "precision", "defense", "speed", "cooldown"]:
-		return total
-	for item in items:
-		if item.buff_type.to_lower() == buff_key:
-			total += item.buff_value
-	return total
+	
+	var meta_stats = PlayerStats.get("meta_stats")
+	if meta_stats != null:
+		if stat_key == "precision" and meta_stats.has_method("get_base_precision_bonus"):
+			total += meta_stats.get_base_precision_bonus()
+		elif stat_key == "health" and meta_stats.has_method("get_bonus_hp_percent"):
+			total += total * meta_stats.get_bonus_hp_percent()
 
+	var buff_key := buff_type.to_lower()
+	for item in items:
+		if item != null and item.buff_type.to_lower() == buff_key:
+			total += item.buff_value
+			
+	return total
 func _is_consumable_item(item: ItemData) -> bool:
 	return item is ConsumableItemData
 

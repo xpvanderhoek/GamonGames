@@ -28,7 +28,6 @@ var _shop_chatter_timer: Timer
 @onready var _shop_dialogue_ui: CanvasLayer = $Parallax2D2/SpeechBubble
 var _is_exiting := false
 
-# Enhanced tooltip system for items
 var _item_tooltip: PanelContainer = null
 var _item_tooltip_label: RichTextLabel = null
 var _item_tooltip_item: ItemData = null
@@ -322,11 +321,9 @@ func _show_item_tooltip(item: ItemData, shop_item: Node2D) -> void:
 	_item_tooltip_shop_item = shop_item
 	_item_tooltip_was_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
 
-	var bbcode := ""
-	if shop_item != null and shop_item.has_method("build_item_tooltip_bbcode"):
-		bbcode = shop_item.build_item_tooltip_bbcode(item, _item_tooltip_was_shift_pressed)
+	# FORCE the tooltip to use the resource method directly with the shop flag enabled
+	var bbcode := item.build_tooltip_bbcode(_item_tooltip_was_shift_pressed, 1, true)
 	
-
 	_item_tooltip_label.text = ""
 	_item_tooltip.reset_size()
 	_item_tooltip_label.text = bbcode

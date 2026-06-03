@@ -74,7 +74,7 @@ func _process(_delta: float) -> void:
 		var shift_now := Input.is_key_pressed(KEY_SHIFT)
 		if shift_now != _was_shift_pressed:
 			_was_shift_pressed = shift_now
-			_show_limb_tooltip(_tooltip_limb)
+			_show_limb_tooltip(_tooltip_limb, self)
 
 func _on_limb_mouse_entered(limb: CombatLimb) -> void:
 	var hovered_limb := _resolve_hover_target(limb)
@@ -483,7 +483,7 @@ func _ensure_limb_tooltip() -> void:
 
 	add_child(_limb_tooltip)
 
-func _show_limb_tooltip(limb: CombatLimb) -> void:
+func _show_limb_tooltip(limb: CombatLimb, source_enemy: CombatEntity = null) -> void:	
 	_ensure_limb_tooltip()
 	_tooltip_limb = limb
 	_was_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
@@ -492,9 +492,10 @@ func _show_limb_tooltip(limb: CombatLimb) -> void:
 	var hp_hex   := hp_color.to_html(false)
 
 	var hit_chance := limb.hit_chance_percent
-	var manager := _find_combat_manager() as CombatManager
-	if manager != null:
-		hit_chance = manager._get_adjusted_hit_chance_percent(limb, self)
+	var manager := _find_combat_manager()
+	
+	if manager != null and manager.has_method("_get_adjusted_hit_chance_percent"):
+		hit_chance = manager._get_adjusted_hit_chance_percent(limb, source_enemy)
 
 	var hit_color: Color
 	if hit_chance >= 75.0:
