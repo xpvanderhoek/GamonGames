@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://y4qrkefn2l4k"]
 
-[ext_resource type="Texture2D" uid="uid://nq7y1vw4wbbk" path="res://assets/Placeholders/ui/ice-spell-cast.png" id="1_g0o6u"]
+[ext_resource type="Texture2D" uid="uid://x1q673fo7mw2" path="res://assets/Placeholders/ui/ice-spell-cast.png" id="1_g0o6u"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_t5nyw"]
+[ext_resource type="AudioStream" uid="uid://dfnigpi6drcnb" path="res://assets/Sounds/combat/Debuff (Freeze)_1.wav" id="3_t5nyw"]
 
 [resource]
 script = ExtResource("2_t5nyw")
@@ -15,6 +16,7 @@ accuracy = 100.0
 damage_type = 1
 weight = 100.0
 icon = ExtResource("1_g0o6u")
+sfx = ExtResource("3_t5nyw")
 vfx_anchor = 1
 vfx_lifetime = 1.0
 duration_rounds = 2

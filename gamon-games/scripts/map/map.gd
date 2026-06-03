@@ -13,7 +13,6 @@ const COMBAT_SCENE := "res://scenes/combat/combat.tscn"
 const SHOP_SCENE := "res://scenes/Shop/ShopRoom.tscn"
 
 const PUZZLE_SCENES := [
-	"res://scenes/puzzles/sliding_puzzle/sliding_puzzle.tscn",
 	"res://scenes/puzzles/simon_says/start_simon.tscn"
 ]
 

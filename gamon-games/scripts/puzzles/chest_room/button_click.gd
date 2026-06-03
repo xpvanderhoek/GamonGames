@@ -1,7 +1,6 @@
 extends TextureButton
 
 const PUZZLE_SCENES := [
-	"res://scenes/puzzles/sliding_puzzle/sliding_puzzle.tscn",
 	"res://scenes/puzzles/simon_says/start_simon.tscn"
 ]
 
