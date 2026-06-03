@@ -244,8 +244,6 @@ func animate_labels(label_a: Label, label_b: Label):
 	tween.parallel().tween_property(label_a, "scale", Vector2(0.6, 0.6), 0.5)
 	
 	tween.tween_callback(func():
-		RunData.coins += coin_amount
-		totalCoins.text = str(RunData.coins)
 		label_a.queue_free()
 	)
 	
