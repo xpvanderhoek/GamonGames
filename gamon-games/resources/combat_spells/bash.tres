@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cdg7ub4flk5bf" path="res://assets/Placeholders/ui/shield-bash.png" id="1_5cksw"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_f550v"]
-[ext_resource type="AudioStream" uid="uid://eg7yjl4k244" path="res://assets/Sounds/combat/Default Buff Sound_2.wav" id="3_f550v"]
+[ext_resource type="AudioStream" uid="uid://5v7for1kfhca" path="res://assets/Sounds/combat/Default Buff Sound_2.wav" id="3_f550v"]
 
 [resource]
 script = ExtResource("2_f550v")

@@ -3,17 +3,18 @@ extends Control
 signal continue_pressed
 
 
-@onready var exp_recieved: Label = $PanelContainer/VBoxContainer/ExpRecieved
-@onready var current_level: Label = $PanelContainer/VBoxContainer/LevelContainer/CurrentLevel
-@onready var next_level: Label = $PanelContainer/VBoxContainer/LevelContainer/NextLevel
-@onready var progress_bar: ProgressBar = $PanelContainer/VBoxContainer/LevelContainer/ProgressBar
-@onready var continue_button: Button = $PanelContainer/VBoxContainer/MarginContainer/ContinueButton
-@onready var h_separator: HSeparator = $PanelContainer/VBoxContainer/HSeparator
-@onready var level_up: Label = $PanelContainer/VBoxContainer/LevelUp
-@onready var spell_options_container: VBoxContainer = $PanelContainer/VBoxContainer/SpellOptionsContainer
+@onready var exp_recieved: Label = $PanelContainer/PanelMargin/VBoxContainer/ExpRecieved
+@onready var current_level: Label = $PanelContainer/PanelMargin/VBoxContainer/LevelContainer/CurrentLevel
+@onready var next_level: Label = $PanelContainer/PanelMargin/VBoxContainer/LevelContainer/NextLevel
+@onready var progress_bar: ProgressBar = $PanelContainer/PanelMargin/VBoxContainer/LevelContainer/ProgressBar
+@onready var continue_button: Button = $PanelContainer/PanelMargin/VBoxContainer/MarginContainer/ContinueButton
+@onready var h_separator: HSeparator = $PanelContainer/PanelMargin/VBoxContainer/HSeparator
+@onready var level_up: Label = $PanelContainer/PanelMargin/VBoxContainer/LevelUp
+@onready var spell_options_container: VBoxContainer = $PanelContainer/PanelMargin/VBoxContainer/SpellOptionsContainer
 
 @export var SPELLS: Array[SpellData] = []
 const SPELL_DIR := "res://resources/combat_spells/"
+const CHOOSE_BUTTON_SCENE = preload("res://Scenes/combat/ui/ChooseNewAbilityButton.tscn")
 
 var _target_exp: int = 0
 var _animation_start_exp: int = 0
@@ -23,10 +24,11 @@ var _last_tick_exp: int = 0
 var _exp_text_label: Label = null
 var _did_level_up: bool = false
 var _all_spells: Array[SpellData] = []
+var _selected_spell: SpellData = null
 
 func _ready() -> void:
 	if continue_button:
-		continue_button.pressed.connect(func(): continue_pressed.emit())
+		continue_button.pressed.connect(_on_continue_button_pressed)
 		continue_button.disabled = true
 		
 	if progress_bar:
@@ -170,26 +172,16 @@ func _show_spell_options() -> void:
 		return
 	
 	for spell in options:
-		var button: Button = Button.new()
+		var button = CHOOSE_BUTTON_SCENE.instantiate() as ChooseNewAbilityButton
 		var existing: SpellData = RunData.get_spell_by_id(spell.spell_id)
 		
-		if existing:
-			button.text = spell.spell_name + " - Upgrade to Lvl " + str(existing.level + 1)
-		else:
-			button.text = spell.spell_name + " - Unlock new ability"
-		
-		if spell.icon:
-			button.icon = spell.icon
-
-		button.tooltip_text = ""
-		button.custom_minimum_size = Vector2(0, 30)
-		button.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		button.pressed.connect(_on_spell_option_selected.bind(spell))
+		button.setup(spell, existing != null)
+		button.pressed.connect(func(): _on_spell_option_clicked(button))
 
 		var spell_ref := spell
 		button.mouse_entered.connect(func():
 			if combat_manager != null and is_instance_valid(combat_manager):
-				combat_manager.show_spell_tooltip(spell_ref)
+				combat_manager.show_spell_tooltip(spell_ref, true)
 		)
 		button.mouse_exited.connect(func():
 			if combat_manager != null and is_instance_valid(combat_manager):
@@ -202,24 +194,40 @@ func _show_spell_options() -> void:
 	level_up.visible = true
 	spell_options_container.visible = true
 
-func _on_spell_option_selected(spell: SpellData) -> void:
+func _on_spell_option_clicked(button: ChooseNewAbilityButton) -> void:
 	var combat_manager := get_parent() as CombatManager
 	if combat_manager != null and is_instance_valid(combat_manager):
 		combat_manager.hide_spell_tooltip()
-
-	var existing = RunData.get_spell_by_id(spell.spell_id)
 	
-	if existing:
-		RunData.upgrade_spell(spell.spell_id)
-	else:
-		RunData.add_spell(spell)
-	
-	h_separator.visible = false
-	level_up.visible = false
-	spell_options_container.visible = false
+	_selected_spell = button.spell_data
 	
 	for child in spell_options_container.get_children():
-		child.queue_free()
-	
+		if child is ChooseNewAbilityButton:
+			child.set_selected(child == button)
+			
 	if continue_button:
 		continue_button.disabled = false
+
+func _on_continue_button_pressed() -> void:
+	var combat_manager := get_parent() as CombatManager
+	if combat_manager != null and is_instance_valid(combat_manager):
+		combat_manager.hide_spell_tooltip()
+		
+	if _did_level_up and _selected_spell != null:
+		var existing = RunData.get_spell_by_id(_selected_spell.spell_id)
+		
+		if existing:
+			RunData.upgrade_spell(_selected_spell.spell_id)
+		else:
+			RunData.add_spell(_selected_spell)
+		
+		h_separator.visible = false
+		level_up.visible = false
+		spell_options_container.visible = false
+		
+		for child in spell_options_container.get_children():
+			child.queue_free()
+			
+		_selected_spell = null
+		
+	continue_pressed.emit()

@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://d5vg0c33phy4" path="res://assets/Placeholders/ui/sword-brandish.png" id="1_r0rvb"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
-[ext_resource type="AudioStream" uid="uid://cmtbxk5t0aegg" path="res://assets/Sounds/combat/Sharp Blade_1.wav" id="3_nj51v"]
+[ext_resource type="AudioStream" uid="uid://dvckm0d6oyx53" path="res://assets/Sounds/combat/Sharp Blade_1.wav" id="3_nj51v"]
 
 [resource]
 script = ExtResource("1_spelldata")

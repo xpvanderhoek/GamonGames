@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://x7l4cfcgm7yp" path="res://assets/Placeholders/ui/vibrating-shield.png" id="1_v0vkc"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_61hga"]
-[ext_resource type="AudioStream" uid="uid://5plbvtbhd1ve" path="res://assets/Sounds/combat/Block_2.wav" id="3_61hga"]
+[ext_resource type="AudioStream" uid="uid://1j8xvn2wxu78" path="res://assets/Sounds/combat/Block_2.wav" id="3_61hga"]
 
 [resource]
 script = ExtResource("2_61hga")
