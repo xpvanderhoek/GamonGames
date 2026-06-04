@@ -104,13 +104,11 @@ func _top_hovered_limb() -> CombatLimb:
 			top = limb
 			continue
 		
-		# If one is a descendant of the other, the descendant (child) is drawn on top
 		if _is_descendant_of(limb, top):
 			top = limb
 		elif _is_descendant_of(top, limb):
-			pass # top is already the descendant, so it stays on top
+			pass
 		else:
-			# If they are not parent/child, compare their indices in their closest common ancestor
 			if _get_relative_draw_order(limb, top) > 0:
 				top = limb
 				
@@ -125,11 +123,9 @@ func _is_descendant_of(node: Node, potential_parent: Node) -> bool:
 	return false
 
 func _get_relative_draw_order(node_a: Node, node_b: Node) -> int:
-	# Returns > 0 if node_a is drawn after (on top of) node_b
 	var path_a = _get_path_to_root(node_a)
 	var path_b = _get_path_to_root(node_b)
 	
-	# Find the first point where their paths diverge
 	var i = 0
 	while i < path_a.size() and i < path_b.size():
 		if path_a[i] != path_b[i]:
