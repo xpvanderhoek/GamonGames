@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://c4v6x4ghgyn5j"]
 
 [ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_dvbgm"]
-[ext_resource type="Texture2D" uid="uid://dbu4oby6vdvem" path="res://assets/Placeholders/enemies/torso.png" id="2_q3xq3"]
+[ext_resource type="Texture2D" uid="uid://c00yinhi0j7pd" path="res://assets/Placeholders/enemies/torso.png" id="2_q3xq3"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="3_w2142"]
-[ext_resource type="Texture2D" uid="uid://b6ac7ajy0np0i" path="res://assets/Placeholders/enemies/head.png" id="4_w3sxh"]
-[ext_resource type="Texture2D" uid="uid://c81e321k3wt7n" path="res://assets/Placeholders/enemies/left_hand.png" id="5_8f83m"]
+[ext_resource type="Texture2D" uid="uid://dsxoo5xbeqhc" path="res://assets/Placeholders/enemies/head.png" id="4_w3sxh"]
+[ext_resource type="Texture2D" uid="uid://j1m2vp1g8ig8" path="res://assets/Placeholders/enemies/left_hand.png" id="5_8f83m"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="6_e5vg6"]
-[ext_resource type="Texture2D" uid="uid://cdf0tccyb8gln" path="res://assets/Placeholders/ui/bowie-knife.png" id="6_piwf1"]
-[ext_resource type="Texture2D" uid="uid://d4jcro5jb2y3k" path="res://assets/Placeholders/enemies/right_hand.png" id="7_kbcej"]
-[ext_resource type="Script" path="res://scripts/combat/target_indicator.gd" id="8_tgtind"]
+[ext_resource type="Texture2D" uid="uid://nmh6yd4vw0i" path="res://assets/Placeholders/ui/bowie-knife.png" id="6_piwf1"]
+[ext_resource type="Texture2D" uid="uid://dmvr7hisp4pak" path="res://assets/Placeholders/enemies/right_hand.png" id="7_kbcej"]
+[ext_resource type="PackedScene" uid="uid://dlgsbmg808o8n" path="res://scenes/combat/ui/TargetIndicator.tscn" id="8_tgtind"]
 
 [sub_resource type="Resource" id="Resource_nsp1d"]
 script = ExtResource("6_e5vg6")
@@ -65,58 +65,57 @@ position = Vector2(121, 177.00002)
 scale = Vector2(0.4423119, 0.4423119)
 texture = ExtResource("2_q3xq3")
 script = ExtResource("3_w2142")
+target_indicator = NodePath("TargetIndicator")
 limb_name = "Torso"
 max_health = 70
 is_vital = true
-target_indicator = NodePath("TargetIndicator")
 
-[node name="TargetIndicator" type="Node2D" parent="torso" unique_id=700000001]
-position = Vector2(0, 0)
-script = ExtResource("8_tgtind")
+[node name="TargetIndicator" parent="torso" unique_id=700000001 instance=ExtResource("8_tgtind")]
+position = Vector2(-4.521696, -18.086819)
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="head" type="Sprite2D" parent="." unique_id=433218234]
 position = Vector2(118.02294, 83.31077)
 scale = Vector2(0.44132692, 0.44720063)
 texture = ExtResource("4_w3sxh")
 script = ExtResource("3_w2142")
+target_indicator = NodePath("TargetIndicator")
 limb_name = "Head"
 max_health = 30
 is_vital = true
 hit_chance_percent = 35.0
 attacks = Array[ExtResource("6_e5vg6")]([SubResource("Resource_nsp1d")])
-target_indicator = NodePath("TargetIndicator")
 
-[node name="TargetIndicator" type="Node2D" parent="head" unique_id=700000002]
-position = Vector2(0, 0)
-script = ExtResource("8_tgtind")
+[node name="TargetIndicator" parent="head" unique_id=700000002 instance=ExtResource("8_tgtind")]
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="left_hand" type="Sprite2D" parent="." unique_id=1018948439]
 position = Vector2(191, 129.00002)
 scale = Vector2(0.50949365, 0.50949365)
 texture = ExtResource("5_8f83m")
 script = ExtResource("3_w2142")
+target_indicator = NodePath("TargetIndicator")
 limb_name = "Left Hand"
 max_health = 25
 attacks = Array[ExtResource("6_e5vg6")]([SubResource("Resource_6gc6u")])
-target_indicator = NodePath("TargetIndicator")
 
-[node name="TargetIndicator" type="Node2D" parent="left_hand" unique_id=700000003]
-position = Vector2(0, 0)
-script = ExtResource("8_tgtind")
+[node name="TargetIndicator" parent="left_hand" unique_id=700000003 instance=ExtResource("8_tgtind")]
+position = Vector2(29.440996, -33.366493)
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="right_hand" type="Sprite2D" parent="." unique_id=1029105267]
 position = Vector2(62, 173)
 scale = Vector2(0.50949365, 0.50949365)
 texture = ExtResource("7_kbcej")
 script = ExtResource("3_w2142")
+target_indicator = NodePath("TargetIndicator")
 limb_name = "Right Hand"
 max_health = 25
 attacks = Array[ExtResource("6_e5vg6")]([SubResource("Resource_e5vg6")])
-target_indicator = NodePath("TargetIndicator")
 
-[node name="TargetIndicator" type="Node2D" parent="right_hand" unique_id=700000004]
-position = Vector2(0, 0)
-script = ExtResource("8_tgtind")
+[node name="TargetIndicator" parent="right_hand" unique_id=700000004 instance=ExtResource("8_tgtind")]
+position = Vector2(-17.664597, 11.776399)
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
 layout_mode = 1

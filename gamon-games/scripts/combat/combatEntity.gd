@@ -21,8 +21,6 @@ var _group_highlighted_limbs: Array[CombatLimb] = []
 var _spell_targeting_enabled: bool = false
 var _spell_targeting_whole_enemy: bool = false
 var _spell_targeting_icon: Texture2D = null
-var _spell_targeting_center_frame: TextureRect = null
-var _spell_targeting_center_icon: TextureRect = null
 
 var block_click_emit: bool = false
 var single_highlight_enabled: bool = true
@@ -102,16 +100,54 @@ func _on_limb_mouse_exited(limb: CombatLimb) -> void:
 func _top_hovered_limb() -> CombatLimb:
 	var top: CombatLimb = null
 	for limb in _hovered_limbs:
-		if top == null or limb.get_index() > top.get_index():
+		if top == null:
 			top = limb
+			continue
+		
+		# If one is a descendant of the other, the descendant (child) is drawn on top
+		if _is_descendant_of(limb, top):
+			top = limb
+		elif _is_descendant_of(top, limb):
+			pass # top is already the descendant, so it stays on top
+		else:
+			# If they are not parent/child, compare their indices in their closest common ancestor
+			if _get_relative_draw_order(limb, top) > 0:
+				top = limb
+				
 	return top				
 
+func _is_descendant_of(node: Node, potential_parent: Node) -> bool:
+	var curr = node.get_parent()
+	while curr != null:
+		if curr == potential_parent:
+			return true
+		curr = curr.get_parent()
+	return false
+
+func _get_relative_draw_order(node_a: Node, node_b: Node) -> int:
+	# Returns > 0 if node_a is drawn after (on top of) node_b
+	var path_a = _get_path_to_root(node_a)
+	var path_b = _get_path_to_root(node_b)
+	
+	# Find the first point where their paths diverge
+	var i = 0
+	while i < path_a.size() and i < path_b.size():
+		if path_a[i] != path_b[i]:
+			return path_a[i].get_index() - path_b[i].get_index()
+		i += 1
+	return 0
+
+func _get_path_to_root(node: Node) -> Array[Node]:
+	var path: Array[Node] = []
+	var curr = node
+	while curr != null:
+		path.insert(0, curr)
+		curr = curr.get_parent()
+	return path
+
 func _resolve_hover_target(limb: CombatLimb) -> CombatLimb:
-	if limb == null or not is_instance_valid(limb):
+	if limb == null or not is_instance_valid(limb) or limb.is_destroyed:
 		return null
-	var parent_limb := limb.get_parent() as CombatLimb
-	if parent_limb != null and is_instance_valid(parent_limb) and not parent_limb.is_destroyed:
-		return parent_limb
 	return limb
 
 func _refresh_highlight() -> void:
@@ -169,93 +205,44 @@ func clear_current_highlight() -> void:
 	_clear_current_highlight_visuals()
 	_refresh_spell_targeting_visuals()
 
-func _create_spell_target_frame_texture() -> Texture2D:
-	var image := Image.create(48, 48, false, Image.FORMAT_RGBA8)
-	image.fill(Color(0.0, 0.0, 0.0, 0.0))
-	for y in range(48):
-		for x in range(48):
-			var is_border := x < 4 or x >= 44 or y < 4 or y >= 44
-			if is_border:
-				image.set_pixel(x, y, Color(1.0, 1.0, 1.0, 0.9))
-	return ImageTexture.create_from_image(image)
-
 func set_spell_targeting_preview(enabled: bool, whole_enemy: bool, spell_icon: Texture2D = null) -> void:
 	_spell_targeting_enabled = enabled
 	_spell_targeting_whole_enemy = whole_enemy and enabled
 	_spell_targeting_icon = spell_icon
 	_refresh_spell_targeting_visuals()
 
+func _get_whole_enemy_indicator_limb() -> CombatLimb:
+	for limb in limbs:
+		if "show_whole_enemy_indicator" in limb and limb.show_whole_enemy_indicator and not limb.is_destroyed:
+			return limb
+	for limb in limbs:
+		if limb.limb_name.to_lower() == "torso" and not limb.is_destroyed:
+			return limb
+	for limb in limbs:
+		if limb.is_vital and not limb.is_destroyed:
+			return limb
+	for limb in limbs:
+		if not limb.is_destroyed:
+			return limb
+	return null
+
 func _refresh_spell_targeting_visuals() -> void:
-	_ensure_spell_targeting_center_visuals()
-	_update_spell_targeting_center_visuals()
+	var whole_enemy_limb: CombatLimb = null
+	if _spell_targeting_whole_enemy:
+		whole_enemy_limb = _get_whole_enemy_indicator_limb()
 
 	for limb in limbs:
 		if limb == null or not is_instance_valid(limb):
 			continue
 		if _spell_targeting_whole_enemy:
-			limb.set_spell_targeting_preview(false, false, null)
+			if limb == whole_enemy_limb:
+				limb.set_spell_targeting_preview(true, _highlighted_limb != null, _spell_targeting_icon)
+			else:
+				limb.set_spell_targeting_preview(false, false, null)
 		else:
 			limb.set_spell_targeting_preview(_spell_targeting_enabled and limb.can_be_targeted, limb == _highlighted_limb, _spell_targeting_icon)
 
-func _ensure_spell_targeting_center_visuals() -> void:
-	if _spell_targeting_center_frame == null:
-		_spell_targeting_center_frame = TextureRect.new()
-		_spell_targeting_center_frame.name = "SpellTargetCenterFrame"
-		_spell_targeting_center_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_spell_targeting_center_frame.z_index = 42
-		_spell_targeting_center_frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		_spell_targeting_center_frame.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		_spell_targeting_center_frame.custom_minimum_size = Vector2(48.0, 48.0)
-		_spell_targeting_center_frame.texture = _create_spell_target_frame_texture()
-		_spell_targeting_center_frame.visible = false
-		_spell_targeting_center_frame.top_level = true
-		add_child(_spell_targeting_center_frame)
 
-	if _spell_targeting_center_icon == null:
-		_spell_targeting_center_icon = TextureRect.new()
-		_spell_targeting_center_icon.name = "SpellTargetCenterIcon"
-		_spell_targeting_center_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_spell_targeting_center_icon.z_index = 43
-		_spell_targeting_center_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		_spell_targeting_center_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		_spell_targeting_center_icon.custom_minimum_size = Vector2(48.0, 48.0)
-		_spell_targeting_center_icon.visible = false
-		_spell_targeting_center_icon.top_level = true
-		add_child(_spell_targeting_center_icon)
-
-func _update_spell_targeting_center_visuals() -> void:
-	if _spell_targeting_center_frame == null or _spell_targeting_center_icon == null:
-		return
-
-	if not is_alive or not _spell_targeting_enabled or not _spell_targeting_whole_enemy:
-		_spell_targeting_center_frame.visible = false
-		_spell_targeting_center_icon.visible = false
-		_spell_targeting_center_icon.texture = null
-		return
-
-	var center_position := _get_spell_targeting_center_position()
-	_spell_targeting_center_frame.size = Vector2(48.0, 48.0)
-	_spell_targeting_center_frame.global_position = center_position - (_spell_targeting_center_frame.size * 0.5)
-	_spell_targeting_center_frame.visible = true
-
-	_spell_targeting_center_icon.size = Vector2(48.0, 48.0)
-	_spell_targeting_center_icon.global_position = _spell_targeting_center_frame.global_position
-	_spell_targeting_center_icon.visible = _highlighted_limb != null and _spell_targeting_icon != null
-	_spell_targeting_center_icon.texture = _spell_targeting_icon if _spell_targeting_center_icon.visible else null
-
-func _get_spell_targeting_center_position() -> Vector2:
-	var sum_position := Vector2.ZERO
-	var count := 0
-	for limb in limbs:
-		if limb == null or not is_instance_valid(limb) or limb.is_destroyed:
-			continue
-		sum_position += limb.global_position
-		count += 1
-	if count > 0:
-		return sum_position / float(count)
-	if _highlighted_limb != null and is_instance_valid(_highlighted_limb):
-		return _highlighted_limb.global_position
-	return Vector2.ZERO
 
 func set_targeting_enabled(enabled: bool) -> void:
 	set_targeting_mode(enabled, false)
@@ -281,7 +268,6 @@ func update_aoe_preview(world_pos: Vector2, radius: float) -> void:
 	var next_aoe := get_aoe_limbs(world_pos, radius)
 	update_aoe_preview_from_list(next_aoe)
 
-## Update the AoE highlight from a pre-computed list of limbs (used by the spell system).
 func update_aoe_preview_from_list(next_aoe) -> void:
 	for limb in _aoe_highlighted_limbs:
 		if not limb in next_aoe:
@@ -531,6 +517,11 @@ func _show_limb_tooltip(limb: CombatLimb, source_enemy: CombatEntity = null) -> 
 		if _was_shift_pressed:
 			t += "\n[color=#8a8a9e][font_size=11]  - Destroying this limb kills the enemy instantly.[/font_size][/color]"
 			t += "\n[color=#8a8a9e][font_size=11]  - If only vital limbs remain, all hit chances become 100%.[/font_size][/color]"
+
+	if manager != null and manager.has_method("get_limb_intent_tooltip"):
+		var intent_text: String = manager.get_limb_intent_tooltip(self, limb)
+		if not intent_text.is_empty():
+			t += intent_text
 
 
 	if not _was_shift_pressed:

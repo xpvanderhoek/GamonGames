@@ -1,51 +1,51 @@
-[gd_scene format=3 uid="uid://wye2th0njrs4"]
+[gd_scene format=3 uid="uid://byytfcg1j2y2q"]
 
 [ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_3wpbg"]
-[ext_resource type="AudioStream" uid="uid://bmn4thesxo60y" path="res://assets/enemies/skeleton/hit.wav" id="2_2m3e0"]
+[ext_resource type="AudioStream" uid="uid://oe88et4sh83g" path="res://assets/enemies/skeleton/hit.wav" id="2_2m3e0"]
 [ext_resource type="Texture2D" uid="uid://cvrg5pxbpmxnl" path="res://assets/enemies/skeleton/head.png" id="3_8fxwp"]
 [ext_resource type="Texture2D" uid="uid://dnmywmed8rveo" path="res://assets/enemies/skeleton/torso.png" id="4_21yfr"]
 [ext_resource type="Texture2D" uid="uid://chnx0dcj13ni1" path="res://assets/enemies/shadow.png" id="4_36475"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="5_7fdr4"]
 [ext_resource type="Texture2D" uid="uid://dnrjcf6l5mmh4" path="res://assets/enemies/skeleton/arm.png" id="6_3ve5h"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="8_sdnsx"]
-[ext_resource type="AudioStream" uid="uid://ck0bb4bm58hoe" path="res://assets/enemies/skeleton/weapon1.wav" id="9_8mlvi"]
-[ext_resource type="Script" path="res://scripts/combat/target_indicator.gd" id="10_tgtind"]
+[ext_resource type="AudioStream" uid="uid://mb0ki3jhjdtu" path="res://assets/enemies/skeleton/weapon1.wav" id="9_8mlvi"]
+[ext_resource type="PackedScene" uid="uid://dlgsbmg808o8n" path="res://scenes/combat/ui/TargetIndicator.tscn" id="10_tgtind"]
 
 [sub_resource type="Resource" id="Resource_xej5o"]
 script = ExtResource("8_sdnsx")
-min_damage = 2
-max_damage = 4
+min_damage = 3
+max_damage = 6
 weight = 75.0
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_ltakh"]
 script = ExtResource("8_sdnsx")
-min_damage = 2
-max_damage = 4
+min_damage = 3
+max_damage = 6
 weight = 75.0
 sfx = ExtResource("9_8mlvi")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_r5pin"]
 script = ExtResource("8_sdnsx")
-min_damage = 1
-max_damage = 3
+min_damage = 2
+max_damage = 4
 weight = 0.0
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
-[node name="ttt2" type="Control" unique_id=1680014499]
+[node name="Skeleton Weak" type="Control" unique_id=1680014499]
 modulate = Color(0.8, 0.8, 0.77, 1)
 custom_minimum_size = Vector2(250, 350)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 250.0
 offset_bottom = 350.0
+size_flags_vertical = 8
 script = ExtResource("1_3wpbg")
 hit_sfx = ExtResource("2_2m3e0")
 turn_order_icon = ExtResource("3_8fxwp")
-spawn_max_fights = 5
 
-[node name="Shadow" type="Sprite2D" parent="." unique_id=2045644955]
+[node name="Shadow" type="Sprite2D" parent="." unique_id=856125639]
 position = Vector2(118, 330)
 scale = Vector2(0.8173901, 0.8452381)
 texture = ExtResource("4_36475")
@@ -71,13 +71,12 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_21yfr")
 script = ExtResource("5_7fdr4")
 limb_name = "Torso"
-max_health = 75
+max_health = 90
 is_vital = true
-target_indicator = NodePath("TargetIndicator")
 
-[node name="TargetIndicator" type="Node2D" parent="Torso" unique_id=200000001]
-position = Vector2(0, 0)
-script = ExtResource("10_tgtind")
+[node name="TargetIndicator" parent="Torso" unique_id=500000001 instance=ExtResource("10_tgtind")]
+position = Vector2(5, -177.5)
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Left Arm" type="Sprite2D" parent="." unique_id=1312305909]
 position = Vector2(174, 141.75)
@@ -85,13 +84,12 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_3ve5h")
 script = ExtResource("5_7fdr4")
 limb_name = "Left Arm"
-max_health = 30
+max_health = 35
 attacks = Array[ExtResource("8_sdnsx")]([SubResource("Resource_xej5o")])
-target_indicator = NodePath("TargetIndicator")
 
-[node name="TargetIndicator" type="Node2D" parent="Left Arm" unique_id=200000002]
-position = Vector2(0, 0)
-script = ExtResource("10_tgtind")
+[node name="TargetIndicator" parent="Left Arm" unique_id=500000002 instance=ExtResource("10_tgtind")]
+position = Vector2(28, 58.5)
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Right Arm" type="Sprite2D" parent="." unique_id=1758730569]
 position = Vector2(67.5, 141.75)
@@ -100,13 +98,12 @@ texture = ExtResource("6_3ve5h")
 flip_h = true
 script = ExtResource("5_7fdr4")
 limb_name = "Right Arm"
-max_health = 30
+max_health = 35
 attacks = Array[ExtResource("8_sdnsx")]([SubResource("Resource_ltakh")])
-target_indicator = NodePath("TargetIndicator")
 
-[node name="TargetIndicator" type="Node2D" parent="Right Arm" unique_id=200000003]
-position = Vector2(0, 0)
-script = ExtResource("10_tgtind")
+[node name="TargetIndicator" parent="Right Arm" unique_id=500000003 instance=ExtResource("10_tgtind")]
+position = Vector2(-25, 58.5)
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Head" type="Sprite2D" parent="." unique_id=1466662351]
 position = Vector2(121.5, 45.75)
@@ -114,12 +111,11 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_8fxwp")
 script = ExtResource("5_7fdr4")
 limb_name = "Head"
-max_health = 35
+max_health = 40
 is_vital = true
 hit_chance_percent = 50.0
 attacks = Array[ExtResource("8_sdnsx")]([SubResource("Resource_r5pin")])
-target_indicator = NodePath("TargetIndicator")
 
-[node name="TargetIndicator" type="Node2D" parent="Head" unique_id=200000004]
-position = Vector2(0, 0)
-script = ExtResource("10_tgtind")
+[node name="TargetIndicator" parent="Head" unique_id=500000006 instance=ExtResource("10_tgtind")]
+position = Vector2(1, -15.5)
+hover_size = Vector2(44.514473, 44.514473)
