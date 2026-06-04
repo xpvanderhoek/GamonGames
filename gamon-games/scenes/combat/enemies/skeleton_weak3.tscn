@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="5_d1tco"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="8_jy53k"]
 [ext_resource type="Texture2D" uid="uid://cm4og8dey6cju" path="res://assets/enemies/skeleton/leg.png" id="10_ddyff"]
+[ext_resource type="Script" path="res://scripts/combat/target_indicator.gd" id="11_tgtind"]
 
 [sub_resource type="Resource" id="Resource_ea6ht"]
 script = ExtResource("8_jy53k")
@@ -71,6 +72,11 @@ script = ExtResource("5_d1tco")
 limb_name = "Torso"
 max_health = 75
 is_vital = true
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="Torso" unique_id=300000001]
+position = Vector2(0, 0)
+script = ExtResource("11_tgtind")
 
 [node name="Left Leg" type="Sprite2D" parent="." unique_id=398040933]
 position = Vector2(84.5, 247.75)
@@ -80,6 +86,11 @@ script = ExtResource("5_d1tco")
 limb_name = "Left Leg"
 max_health = 30
 attacks = Array[ExtResource("8_jy53k")]([SubResource("Resource_ea6ht")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="Left Leg" unique_id=300000002]
+position = Vector2(0, 0)
+script = ExtResource("11_tgtind")
 
 [node name="Right Leg" type="Sprite2D" parent="." unique_id=214963418]
 position = Vector2(156.5, 247.75)
@@ -90,6 +101,11 @@ script = ExtResource("5_d1tco")
 limb_name = "Right Leg"
 max_health = 30
 attacks = Array[ExtResource("8_jy53k")]([SubResource("Resource_3cwjf")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="Right Leg" unique_id=300000003]
+position = Vector2(0, 0)
+script = ExtResource("11_tgtind")
 
 [node name="Head" type="Sprite2D" parent="." unique_id=1466662351]
 position = Vector2(121.5, 45.75)
@@ -101,3 +117,8 @@ max_health = 35
 is_vital = true
 hit_chance_percent = 50.0
 attacks = Array[ExtResource("8_jy53k")]([SubResource("Resource_r5pin")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="Head" unique_id=300000004]
+position = Vector2(0, 0)
+script = ExtResource("11_tgtind")

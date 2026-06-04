@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="5_xej5o"]
 [ext_resource type="Texture2D" uid="uid://bemkaxp582h1d" path="res://assets/enemies/skeleton/weapon_1.png" id="6_5q3o5"]
 [ext_resource type="AudioStream" uid="uid://le051l3scext" path="res://assets/enemies/skeleton/weapon1.wav" id="8_ltakh"]
+[ext_resource type="Script" path="res://scripts/combat/target_indicator.gd" id="12_tgtind"]
 
 [sub_resource type="Resource" id="Resource_xej5o"]
 script = ExtResource("5_xej5o")
@@ -103,6 +104,11 @@ script = ExtResource("4_v7s83")
 limb_name = "Torso"
 max_health = 90
 is_vital = true
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="Torso" unique_id=500000001]
+position = Vector2(0, 0)
+script = ExtResource("12_tgtind")
 
 [node name="Left Arm" type="Sprite2D" parent="." unique_id=1312305909]
 position = Vector2(174, 141.75)
@@ -112,6 +118,11 @@ script = ExtResource("4_v7s83")
 limb_name = "Left Arm"
 max_health = 35
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_xej5o")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="Left Arm" unique_id=500000002]
+position = Vector2(0, 0)
+script = ExtResource("12_tgtind")
 
 [node name="Weapon_Left" type="Sprite2D" parent="Left Arm" unique_id=1866902051]
 position = Vector2(61, 162)
@@ -132,6 +143,11 @@ script = ExtResource("4_v7s83")
 limb_name = "Right Arm"
 max_health = 35
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_ltakh")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="Right Arm" unique_id=500000003]
+position = Vector2(0, 0)
+script = ExtResource("12_tgtind")
 
 [node name="Weapon_Right" type="Sprite2D" parent="Right Arm" unique_id=583386158]
 position = Vector2(-56, 160)
@@ -150,6 +166,11 @@ script = ExtResource("4_v7s83")
 limb_name = "Left Leg"
 max_health = 35
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_ea6ht")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="Left Leg" unique_id=500000004]
+position = Vector2(0, 0)
+script = ExtResource("12_tgtind")
 
 [node name="Right Leg" type="Sprite2D" parent="." unique_id=214963418]
 position = Vector2(156.5, 247.75)
@@ -160,6 +181,11 @@ script = ExtResource("4_v7s83")
 limb_name = "Right Leg"
 max_health = 35
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_3cwjf")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="Right Leg" unique_id=500000005]
+position = Vector2(0, 0)
+script = ExtResource("12_tgtind")
 
 [node name="Head" type="Sprite2D" parent="." unique_id=1466662351]
 position = Vector2(121.5, 45.75)
@@ -171,3 +197,8 @@ max_health = 40
 is_vital = true
 hit_chance_percent = 50.0
 attacks = Array[ExtResource("5_xej5o")]([SubResource("Resource_r5pin")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="Head" unique_id=500000006]
+position = Vector2(0, 0)
+script = ExtResource("12_tgtind")

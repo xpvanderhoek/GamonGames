@@ -8,6 +8,8 @@ const OUTLINE_WIDTH := 3.0
 const OUTLINE_TWEEN_DURATION := 0.14
 const OUTLINE_PADDING := 2
 
+@export var target_indicator: Node2D = null
+
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
 @export var is_vital: bool = false
@@ -89,6 +91,11 @@ func _ready() -> void:
 	_initial_scale = scale
 	_initial_position = position
 	current_health = max_health
+	if target_indicator == null:
+		for child in get_children():
+			if child is TargetIndicator:
+				target_indicator = child as TargetIndicator
+				break
 	_ensure_outline_sprite()
 	if visible and texture:
 		_setup_click_area()
@@ -282,11 +289,17 @@ func set_spell_targeting_preview(enabled: bool, hovered: bool, spell_icon: Textu
 	_ensure_spell_targeting_visuals()
 	_update_spell_targeting_visuals()
 
+func _get_target_indicator_world_position() -> Vector2:
+	if target_indicator != null and is_instance_valid(target_indicator):
+		return target_indicator.global_position
+	return global_position
+
 func _ensure_spell_targeting_visuals() -> void:
 	if _spell_targeting_frame_sprite == null:
 		_spell_targeting_frame_sprite = Sprite2D.new()
 		_spell_targeting_frame_sprite.name = "SpellTargetFrame"
 		_spell_targeting_frame_sprite.centered = true
+		_spell_targeting_frame_sprite.top_level = true  # Ignores parent scale/rotation
 		_spell_targeting_frame_sprite.z_index = 40
 		_spell_targeting_frame_sprite.texture = _create_spell_target_frame_texture()
 		add_child(_spell_targeting_frame_sprite)
@@ -295,6 +308,7 @@ func _ensure_spell_targeting_visuals() -> void:
 		_spell_targeting_icon_sprite = Sprite2D.new()
 		_spell_targeting_icon_sprite.name = "SpellTargetIcon"
 		_spell_targeting_icon_sprite.centered = true
+		_spell_targeting_icon_sprite.top_level = true  # Ignores parent scale/rotation
 		_spell_targeting_icon_sprite.z_index = 41
 		add_child(_spell_targeting_icon_sprite)
 
@@ -317,6 +331,10 @@ func _update_spell_targeting_visuals() -> void:
 		_spell_targeting_icon_sprite.visible = false
 		_spell_targeting_icon_sprite.texture = null
 		return
+
+	var world_pos := _get_target_indicator_world_position()
+	_spell_targeting_frame_sprite.global_position = world_pos
+	_spell_targeting_icon_sprite.global_position = world_pos
 
 	_spell_targeting_frame_sprite.visible = true
 	_spell_targeting_icon_sprite.visible = _spell_targeting_hovered and _spell_targeting_icon != null

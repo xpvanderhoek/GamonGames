@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="6_e5vg6"]
 [ext_resource type="Texture2D" uid="uid://cdf0tccyb8gln" path="res://assets/Placeholders/ui/bowie-knife.png" id="6_piwf1"]
 [ext_resource type="Texture2D" uid="uid://d4jcro5jb2y3k" path="res://assets/Placeholders/enemies/right_hand.png" id="7_kbcej"]
+[ext_resource type="Script" path="res://scripts/combat/target_indicator.gd" id="8_tgtind"]
 
 [sub_resource type="Resource" id="Resource_nsp1d"]
 script = ExtResource("6_e5vg6")
@@ -67,6 +68,11 @@ script = ExtResource("3_w2142")
 limb_name = "Torso"
 max_health = 70
 is_vital = true
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="torso" unique_id=700000001]
+position = Vector2(0, 0)
+script = ExtResource("8_tgtind")
 
 [node name="head" type="Sprite2D" parent="." unique_id=433218234]
 position = Vector2(118.02294, 83.31077)
@@ -78,6 +84,11 @@ max_health = 30
 is_vital = true
 hit_chance_percent = 35.0
 attacks = Array[ExtResource("6_e5vg6")]([SubResource("Resource_nsp1d")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="head" unique_id=700000002]
+position = Vector2(0, 0)
+script = ExtResource("8_tgtind")
 
 [node name="left_hand" type="Sprite2D" parent="." unique_id=1018948439]
 position = Vector2(191, 129.00002)
@@ -87,6 +98,11 @@ script = ExtResource("3_w2142")
 limb_name = "Left Hand"
 max_health = 25
 attacks = Array[ExtResource("6_e5vg6")]([SubResource("Resource_6gc6u")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="left_hand" unique_id=700000003]
+position = Vector2(0, 0)
+script = ExtResource("8_tgtind")
 
 [node name="right_hand" type="Sprite2D" parent="." unique_id=1029105267]
 position = Vector2(62, 173)
@@ -96,6 +112,11 @@ script = ExtResource("3_w2142")
 limb_name = "Right Hand"
 max_health = 25
 attacks = Array[ExtResource("6_e5vg6")]([SubResource("Resource_e5vg6")])
+target_indicator = NodePath("TargetIndicator")
+
+[node name="TargetIndicator" type="Node2D" parent="right_hand" unique_id=700000004]
+position = Vector2(0, 0)
+script = ExtResource("8_tgtind")
 
 [node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
 layout_mode = 1
