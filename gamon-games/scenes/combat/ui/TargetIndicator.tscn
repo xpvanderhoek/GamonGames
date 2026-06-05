@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://dlgsbmg808o8n"]
+
+[ext_resource type="Script" uid="uid://csdkhctp1lusa" path="res://scripts/combat/target_indicator.gd" id="1_targetind"]
+[ext_resource type="Texture2D" uid="uid://360q7wdwa1sn" path="res://assets/ui/target_indicator_frame.png" id="2_targetframe"]
+[ext_resource type="Shader" uid="uid://khgny7kqpptn" path="res://shaders/diamond_crop.gdshader" id="4_diamond_shader"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0a1t3"]
+size = Vector2(50, 50)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_diamond"]
+shader = ExtResource("4_diamond_shader")
+
+[node name="TargetIndicator" type="Node2D" unique_id=725840848]
+script = ExtResource("1_targetind")
+hover_size = Vector2(50, 50)
+
+[node name="IndicatorArea" type="Area2D" parent="." unique_id=41521552]
+top_level = true
+
+[node name="IndicatorShape" type="CollisionShape2D" parent="IndicatorArea" unique_id=284746493]
+shape = SubResource("RectangleShape2D_0a1t3")
+
+[node name="SpellTargetFrame" type="Sprite2D" parent="." unique_id=259540082]
+modulate = Color(1, 1, 1, 0.5)
+top_level = true
+z_index = 40
+scale = Vector2(0.33723086, 0.33723086)
+texture = ExtResource("2_targetframe")
+
+[node name="SpellTargetIcon" type="Sprite2D" parent="." unique_id=475300620]
+top_level = true
+z_index = 40
+material = SubResource("ShaderMaterial_diamond")
+scale = Vector2(0.9500001, 0.9500001)

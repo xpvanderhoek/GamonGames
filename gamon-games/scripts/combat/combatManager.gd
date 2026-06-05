@@ -1371,6 +1371,35 @@ func _clear_enemy_intent_visuals() -> void:
 			label.queue_free()
 	_intent_labels.clear()
 
+func get_limb_intent_tooltip(enemy: CombatEntity, limb: CombatLimb) -> String:
+	if enemy == null or limb == null or not is_instance_valid(enemy) or not is_instance_valid(limb):
+		return ""
+	var intent := _enemy_intents.get(enemy.get_instance_id(), {}) as Dictionary
+	if intent.is_empty():
+		return ""
+	var attack_limb := intent.get("limb") as CombatLimb
+	if attack_limb != limb:
+		return ""
+		
+	var attack := intent.get("attack") as SpellData
+	if attack == null:
+		return ""
+
+	var outgoing_mult := _get_enemy_outgoing_multiplier(enemy)
+	var count := attack.get_attack_count()
+	var min_dmg := int(round(float(attack.get_min_damage()) * outgoing_mult)) * count
+	var max_dmg := int(round(float(attack.get_max_damage()) * outgoing_mult)) * count
+	
+	var dmg_text: String
+	if min_dmg == max_dmg:
+		dmg_text = str(min_dmg)
+	else:
+		dmg_text = "%d-%d" % [min_dmg, max_dmg]
+
+	var intent_string := "\n\n[color=red]ENEMY INTENT[/color]"
+	intent_string += "\nWill attack using this limb next turn, dealing [color=#ff5555]%s[/color] damage." % dmg_text
+	return intent_string
+
 func _reset_combat_effects() -> void:
 	_player_effects.clear()
 	_enemy_effects.clear()
@@ -2362,11 +2391,10 @@ func _refresh_limb_highlighting_from_mouse() -> void:
 			if limb == null or not is_instance_valid(limb) or limb.is_destroyed:
 				continue
 			if limb is Sprite2D and limb.texture != null:
-				var texture_size := limb.texture.get_size()
+				var texture_size := limb.texture.get_size() * limb.scale
 				var limb_rect := Rect2(limb.global_position - texture_size * 0.5, texture_size)
 				if limb_rect.has_point(mouse_pos):
-					if limb.has_method("set_current_highlight"):
-						limb.set_current_highlight()
+					enemy._on_limb_mouse_entered(limb)
 					return
 
 func _update_player_health_label() -> void:

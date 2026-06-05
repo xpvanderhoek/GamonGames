@@ -8,10 +8,13 @@ const OUTLINE_WIDTH := 3.0
 const OUTLINE_TWEEN_DURATION := 0.14
 const OUTLINE_PADDING := 2
 
+@export var target_indicator: Node2D = null
+
 @export var limb_name: String = "Empty Limb"
 @export var max_health: int = 100
 @export var is_vital: bool = false
 @export var can_be_targeted: bool = true
+@export var show_whole_enemy_indicator: bool = false
 @export_range(0.0, 100.0, 0.1) var physical_defense: float = 0.0
 @export_range(0.0, 100.0, 0.1) var magic_defense: float = 0.0
 @export_range(0.0, 100.0, 0.1) var hit_chance_percent: float = 100.0
@@ -89,6 +92,11 @@ func _ready() -> void:
 	_initial_scale = scale
 	_initial_position = position
 	current_health = max_health
+	if target_indicator == null:
+		for child in get_children():
+			if child is TargetIndicator:
+				target_indicator = child as TargetIndicator
+				break
 	_ensure_outline_sprite()
 	if visible and texture:
 		_setup_click_area()
@@ -214,10 +222,6 @@ func _setup_click_area() -> void:
 		area.input_event.connect(_on_area_input_event)
 
 func _get_primary_click_target() -> CombatLimb:
-	var parent_limb := get_parent() as CombatLimb
-	if parent_limb != null and is_instance_valid(parent_limb) and not parent_limb.is_destroyed:
-		return parent_limb
-
 	if is_destroyed:
 		return null
 	return self
@@ -235,7 +239,7 @@ func _on_area_input_event(viewport: Node, event: InputEvent, _shape_idx: int) ->
 func set_highlighted(custom_color: Color = OUTLINE_COLOR) -> void:
 	if not is_destroyed and not is_highlighted:
 		is_highlighted = true
-		modulate = Color.WHITE
+		_sync_modulate_from_state()
 		_set_outline_alpha(1.0, custom_color)
 	
 	for child in get_children():
@@ -246,7 +250,7 @@ func set_highlighted(custom_color: Color = OUTLINE_COLOR) -> void:
 func set_unhighlighted() -> void:
 	if is_highlighted:
 		is_highlighted = false
-		modulate = Color(1, 0.5, 0) if is_aoe_highlighted else Color.WHITE
+		_sync_modulate_from_state()
 		_set_outline_alpha(0.0)
 	
 	for child in get_children():
@@ -257,8 +261,7 @@ func set_unhighlighted() -> void:
 func set_aoe_highlighted() -> void:
 	if not is_destroyed and not is_aoe_highlighted:
 		is_aoe_highlighted = true
-		if not is_highlighted:
-			modulate = Color.WHITE
+		_sync_modulate_from_state()
 	
 	for child in get_children():
 		var child_limb := child as CombatLimb
@@ -268,7 +271,7 @@ func set_aoe_highlighted() -> void:
 func set_aoe_unhighlighted() -> void:
 	if is_aoe_highlighted:
 		is_aoe_highlighted = false
-		modulate = Color.WHITE
+		_sync_modulate_from_state()
 	
 	for child in get_children():
 		var child_limb := child as CombatLimb
@@ -282,56 +285,64 @@ func set_spell_targeting_preview(enabled: bool, hovered: bool, spell_icon: Textu
 	_ensure_spell_targeting_visuals()
 	_update_spell_targeting_visuals()
 
+func _get_target_indicator_world_position() -> Vector2:
+	if target_indicator != null and is_instance_valid(target_indicator):
+		return target_indicator.global_position
+	return global_position
+
 func _ensure_spell_targeting_visuals() -> void:
-	if _spell_targeting_frame_sprite == null:
-		_spell_targeting_frame_sprite = Sprite2D.new()
-		_spell_targeting_frame_sprite.name = "SpellTargetFrame"
-		_spell_targeting_frame_sprite.centered = true
-		_spell_targeting_frame_sprite.z_index = 40
-		_spell_targeting_frame_sprite.texture = _create_spell_target_frame_texture()
-		add_child(_spell_targeting_frame_sprite)
+	if _spell_targeting_frame_sprite == null or not is_instance_valid(_spell_targeting_frame_sprite):
+		if target_indicator != null and is_instance_valid(target_indicator):
+			_spell_targeting_frame_sprite = target_indicator.get_node_or_null("SpellTargetFrame") as Sprite2D
+	if _spell_targeting_icon_sprite == null or not is_instance_valid(_spell_targeting_icon_sprite):
+		if target_indicator != null and is_instance_valid(target_indicator):
+			_spell_targeting_icon_sprite = target_indicator.get_node_or_null("SpellTargetIcon") as Sprite2D
 
-	if _spell_targeting_icon_sprite == null:
-		_spell_targeting_icon_sprite = Sprite2D.new()
-		_spell_targeting_icon_sprite.name = "SpellTargetIcon"
-		_spell_targeting_icon_sprite.centered = true
-		_spell_targeting_icon_sprite.z_index = 41
-		add_child(_spell_targeting_icon_sprite)
+	if _spell_targeting_frame_sprite == null or not is_instance_valid(_spell_targeting_frame_sprite):
+		return
 
-func _create_spell_target_frame_texture() -> Texture2D:
-	var image := Image.create(48, 48, false, Image.FORMAT_RGBA8)
-	image.fill(Color(0.0, 0.0, 0.0, 0.0))
-	for y in range(48):
-		for x in range(48):
-			var is_border := x < 4 or x >= 44 or y < 4 or y >= 44
-			if is_border:
-				image.set_pixel(x, y, Color(1.0, 1.0, 1.0, 0.9))
-	return ImageTexture.create_from_image(image)
+	_spell_targeting_frame_sprite.visible = false
+	if _spell_targeting_icon_sprite != null and is_instance_valid(_spell_targeting_icon_sprite):
+		_spell_targeting_icon_sprite.visible = false
 
 func _update_spell_targeting_visuals() -> void:
-	if _spell_targeting_frame_sprite == null or _spell_targeting_icon_sprite == null:
+	if _spell_targeting_frame_sprite == null or not is_instance_valid(_spell_targeting_frame_sprite):
 		return
 
 	if is_destroyed or not _spell_targeting_enabled:
 		_spell_targeting_frame_sprite.visible = false
-		_spell_targeting_icon_sprite.visible = false
-		_spell_targeting_icon_sprite.texture = null
+		if _spell_targeting_icon_sprite != null and is_instance_valid(_spell_targeting_icon_sprite):
+			_spell_targeting_icon_sprite.visible = false
+			_spell_targeting_icon_sprite.texture = null
 		return
 
-	_spell_targeting_frame_sprite.visible = true
-	_spell_targeting_icon_sprite.visible = _spell_targeting_hovered and _spell_targeting_icon != null
+	var world_pos := _get_target_indicator_world_position()
+	_spell_targeting_frame_sprite.global_position = world_pos
+	if _spell_targeting_icon_sprite != null and is_instance_valid(_spell_targeting_icon_sprite):
+		_spell_targeting_icon_sprite.global_position = world_pos
 
-	if _spell_targeting_icon != null:
-		_spell_targeting_icon_sprite.texture = _spell_targeting_icon
-		var icon_size := _spell_targeting_icon.get_size()
-		if icon_size.x > 0.0 and icon_size.y > 0.0:
-			var frame_size := Vector2(48.0, 48.0)
-			var padding := 10.0
-			var available_size := frame_size - Vector2(padding, padding)
-			var scale_factor := minf(available_size.x / icon_size.x, available_size.y / icon_size.y)
-			_spell_targeting_icon_sprite.scale = Vector2.ONE * scale_factor
-	else:
-		_spell_targeting_icon_sprite.texture = null
+	_spell_targeting_frame_sprite.visible = true
+	if _spell_targeting_icon_sprite != null and is_instance_valid(_spell_targeting_icon_sprite):
+		_spell_targeting_icon_sprite.visible = _spell_targeting_hovered and _spell_targeting_icon != null
+
+	if target_indicator != null and is_instance_valid(target_indicator):
+		if target_indicator.has_method("set_hovered"):
+			target_indicator.set_hovered(_spell_targeting_hovered)
+
+	if _spell_targeting_icon_sprite != null and is_instance_valid(_spell_targeting_icon_sprite):
+		if _spell_targeting_icon != null:
+			_spell_targeting_icon_sprite.texture = _spell_targeting_icon
+			var icon_size := _spell_targeting_icon.get_size()
+			if icon_size.x > 0.0 and icon_size.y > 0.0:
+				var frame_size := Vector2(40.0, 40.0)
+				if _spell_targeting_frame_sprite.texture != null:
+					frame_size = _spell_targeting_frame_sprite.texture.get_size() * _spell_targeting_frame_sprite.scale
+				var padding := 10.0
+				var available_size := frame_size - Vector2(padding, padding)
+				var scale_factor := minf(available_size.x / icon_size.x, available_size.y / icon_size.y)
+				_spell_targeting_icon_sprite.scale = Vector2.ONE * scale_factor
+		else:
+			_spell_targeting_icon_sprite.texture = null
 
 func take_damage(amount: int) -> void:
 	if is_destroyed:
@@ -482,9 +493,6 @@ func _flash_hit() -> void:
 
 func _sync_modulate_from_state() -> void:
 	if is_destroyed:
-		return
-	if is_highlighted:
-		modulate = Color.GREEN
 		return
 	if is_aoe_highlighted:
 		modulate = Color(1, 0.5, 0)
