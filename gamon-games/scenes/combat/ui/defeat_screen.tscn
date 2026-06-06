@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bxc8xxl5ma06d"]
 
-[ext_resource type="Script" path="res://scripts/combat/ui/defeat_screen.gd" id="1_defeat"]
-[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_defeat"]
-[ext_resource type="Texture2D" uid="uid://rhhkwexpth8p" path="res://assets/settings/pause_settings.png" id="2_qnqv3"]
+[ext_resource type="Script" uid="uid://leewle6vt74f" path="res://scripts/combat/ui/defeat_screen.gd" id="1_defeat"]
+[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://Assets/fonts/AlegreyaSans-Bold.ttf" id="2_defeat"]
+[ext_resource type="Texture2D" uid="uid://b243pqp2c12ym" path="res://assets/settings/pause_settings.png" id="2_qnqv3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_defeat"]
 bg_color = Color(0.15, 0.05, 0.05, 0.9)
@@ -36,7 +36,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="DefeatScreen" type="Control" unique_id=3458945871]
+[node name="DefeatScreen" type="Control" unique_id=-836021425]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -114,8 +114,8 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-alignment = 1
 theme_override_constants/separation = 30
+alignment = 1
 
 [node name="RetryButton" type="Button" parent="PanelContainer/VBoxContainer/ButtonContainer" unique_id=942357134]
 custom_minimum_size = Vector2(150, 50)
