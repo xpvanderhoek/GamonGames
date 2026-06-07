@@ -9,6 +9,7 @@ extends CanvasLayer
 @onready var back_button: Button = $Panel/BackButton
 @onready var next_button: Button = $Panel/NextButton
 @onready var exit_button: Button = $Panel/ExitButton
+@onready var video: VideoStreamPlayer = $Panel/ImageContainer/Video
 
 var current_page : int
 
@@ -28,6 +29,17 @@ func show_page(index : int):
 		image.show()
 	else:
 		image.hide()
+	
+	if page.video:
+		video.show()
+		video.autoplay = true
+		video.loop = true
+		video.expand = true
+		video.stream = page.video
+		video.play()
+		print ("i added the stream brev, see: " + str(video.stream) + " " + str(video.visible))
+	else:
+		video.hide()
 	
 	page_number_label.text = "(Page " + str(index + 1) + " of " + str(pages.size()) + ")"
 	

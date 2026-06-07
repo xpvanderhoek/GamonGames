@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://c80vkx6l0g4kf"]
 
 [ext_resource type="Script" uid="uid://dcepokqishiur" path="res://scripts/UI/tutorial/tutorial_overlay.gd" id="1_ooshf"]
-[ext_resource type="Texture2D" uid="uid://cy7tq82tr6nek" path="res://assets/ui/tutorial/combat_limb_targeting.png" id="1_p7s34"]
 [ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_ld6dx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_07g78"]
 bg_color = Color(0.09277264, 0.14177725, 0.12733826, 1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ooshf"]
+load_path = "res://.godot/imported/combat_limb_targeting.png-17fabdf2f8dc7433f1a96eb76c1b96ae.ctex"
 
 [node name="TutorialOverlay" type="CanvasLayer" unique_id=282468504]
 script = ExtResource("1_ooshf")
@@ -53,13 +55,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ImageContainer" type="Control" parent="Panel" unique_id=1540356257]
-anchors_preset = 0
-offset_left = 139.0
-offset_top = 178.0
-offset_right = 573.0
-offset_bottom = 483.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -426.0
+offset_top = -152.5
+offset_right = 8.0
+offset_bottom = 152.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Image" type="TextureRect" parent="Panel/ImageContainer" unique_id=561380921]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -72,16 +82,34 @@ offset_right = 217.5
 offset_bottom = 153.5
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_p7s34")
+texture = SubResource("CompressedTexture2D_ooshf")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Video" type="VideoStreamPlayer" parent="Panel/ImageContainer" unique_id=610867409]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+autoplay = true
+expand = true
+loop = true
+
 [node name="Text" type="RichTextLabel" parent="Panel" unique_id=671145385]
-layout_mode = 0
-offset_left = 617.0
-offset_top = 170.0
-offset_right = 1039.0
-offset_bottom = 488.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 47.0
+offset_top = -159.0
+offset_right = 469.0
+offset_bottom = 159.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/normal_font = ExtResource("2_ld6dx")
 theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
