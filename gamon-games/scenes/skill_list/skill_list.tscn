@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://behh6gmxwv2vq" path="res://assets/main_menu/main_menu_background.png" id="12_r8qnw"]
 [ext_resource type="Texture2D" uid="uid://bdl6ds02ccw48" path="res://assets/skill_list_background.png" id="13_20qiw"]
 [ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="13_qn87k"]
+[ext_resource type="StyleBox" uid="uid://fg66y1mcxs3y" path="res://assets/button_highlight.tres" id="15_4jjhm"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fh4ca"]
 texture = ExtResource("13_qn87k")
@@ -26,11 +27,6 @@ Panel/styles/panel = SubResource("StyleBoxTexture_fh4ca")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3tci0"]
 content_margin_left = 9.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20qiw"]
-content_margin_left = 9.0
-bg_color = Color(0.05, 0.05, 0.05, 0.8509804)
-expand_margin_right = 40.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_20qiw"]
 font_size = 23
@@ -119,14 +115,16 @@ offset_top = -47.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
-theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 13
 theme_override_fonts/font = ExtResource("12_loq5n")
-theme_override_font_sizes/font_size = 46
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_3tci0")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_20qiw")
-theme_override_styles/hover = SubResource("StyleBoxFlat_20qiw")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_20qiw")
+theme_override_styles/pressed = ExtResource("15_4jjhm")
+theme_override_styles/hover = ExtResource("15_4jjhm")
+theme_override_styles/hover_pressed = ExtResource("15_4jjhm")
 text = "Back"
 alignment = 0
 
