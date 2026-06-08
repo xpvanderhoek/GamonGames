@@ -37,7 +37,6 @@ func show_page(index : int):
 		video.expand = true
 		video.stream = page.video
 		video.play()
-		print ("i added the stream brev, see: " + str(video.stream) + " " + str(video.visible))
 	else:
 		video.hide()
 	

@@ -7,7 +7,6 @@
 bg_color = Color(0.09277264, 0.14177725, 0.12733826, 1)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ooshf"]
-load_path = "res://.godot/imported/combat_limb_targeting.png-17fabdf2f8dc7433f1a96eb76c1b96ae.ctex"
 
 [node name="TutorialOverlay" type="CanvasLayer" unique_id=282468504]
 script = ExtResource("1_ooshf")
