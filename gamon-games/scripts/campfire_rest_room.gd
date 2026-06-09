@@ -6,6 +6,7 @@ extends Control
 @onready var healed_up_label: Label = $CanvasLayer/HealedUpLabel
 
 const UPGRADE_SCREEN = preload("res://scenes/UI/upgrade_screen.tscn")
+const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
 
 func _ready() -> void:
 	if !RunData.run_active:
@@ -13,6 +14,10 @@ func _ready() -> void:
 	
 	description_label.hide()
 	healed_up_label.modulate = Color(1.0, 1.0, 1.0, 0.0)
+
+func _input(event):
+	if event.is_action_pressed("escape"):
+		canvas_layer.add_child(PAUSE_MENU.instantiate())
 
 func _on_rest_button_mouse_entered() -> void:
 	SoundManager.play_hover()
