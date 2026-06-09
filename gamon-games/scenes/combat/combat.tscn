@@ -1,43 +1,56 @@
 [gd_scene format=3 uid="uid://b1r88pxgxdvwr"]
 
-[ext_resource type="Texture2D" uid="uid://cws830736mswa" path="res://assets/Placeholders/backgrounds/combatbg.png" id="2_ltalu"]
-[ext_resource type="Texture2D" uid="uid://cwp4d5bjoxefw" path="res://assets/player.png" id="3_ltalu"]
-[ext_resource type="PackedScene" uid="uid://cw35es2dvr2it" path="res://Scenes/UI/health_bar.tscn" id="4_4voa6"]
-[ext_resource type="PackedScene" uid="uid://bnspxqohk3rfu" path="res://Scenes/combat/ui/ItemButton.tscn" id="5_4voa6"]
-[ext_resource type="PackedScene" uid="uid://c80vkx6l0g4kf" path="res://Scenes/UI/tutorial/tutorial_overlay.tscn" id="6_jgg25"]
+[ext_resource type="Texture2D" uid="uid://b31ymbl4e7ykd" path="res://assets/Placeholders/backgrounds/combatbg.png" id="2_ltalu"]
+[ext_resource type="Texture2D" uid="uid://1ntv4j640typ" path="res://assets/player.png" id="3_ltalu"]
+[ext_resource type="PackedScene" uid="uid://cw35es2dvr2it" path="res://scenes/UI/health_bar.tscn" id="4_4voa6"]
+[ext_resource type="PackedScene" uid="uid://bnspxqohk3rfu" path="res://scenes/combat/ui/ItemButton.tscn" id="5_4voa6"]
+[ext_resource type="PackedScene" uid="uid://c80vkx6l0g4kf" path="res://scenes/UI/tutorial/tutorial_overlay.tscn" id="6_jgg25"]
 [ext_resource type="Script" uid="uid://emcsn5t5bncn" path="res://scripts/UI/tutorial/tutorial_page.gd" id="7_4a6i5"]
 [ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://scripts/combat/combatManager.gd" id="7_mgr"]
-[ext_resource type="Texture2D" uid="uid://cy7tq82tr6nek" path="res://assets/ui/tutorial/combat_limb_targeting.png" id="8_3dmww"]
-[ext_resource type="Texture2D" uid="uid://dsm1b05f088x" path="res://assets/ui/tutorial/combat_limb_removal.png" id="9_gwckk"]
-[ext_resource type="Texture2D" uid="uid://djemakuq0800j" path="res://assets/ui/tutorial/combat_moves.png" id="10_mrrmw"]
+[ext_resource type="VideoStream" uid="uid://3mk8tlrcmudh" path="res://assets/ui/tutorial/combat_limb_removed.ogv" id="8_3dmww"]
+[ext_resource type="VideoStream" uid="uid://dyn70vntwxswx" path="res://assets/ui/tutorial/combat_vital_kill.ogv" id="9_3dmww"]
+[ext_resource type="Texture2D" uid="uid://bp1mt2tya5sli" path="res://assets/ui/tutorial/combat_attack_intent.png" id="10_3dmww"]
+[ext_resource type="Texture2D" uid="uid://dx154qxj5crxg" path="res://assets/ui/tutorial/combat_moves_energy.png" id="11_3dmww"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ijgaf"]
 blend_mode = 1
 
 [sub_resource type="Resource" id="Resource_h2sm1"]
 script = ExtResource("7_4a6i5")
-text = "Defeat enemies by attacking their [color=#d1ae3d]limbs[/color]!
+text = "Defeat monsters by attacking their [color=#d1ae3d]limbs[/color]!
 
-Hover over an enemy's limbs and click to attack them!"
-image = ExtResource("8_3dmww")
+Dealing enough damage to a limb will [color=#d1ae3d]cut it off[/color]!
+
+A monster with missing limbs has a lowered [color=#d1ae3d]defense[/color] and [color=#d1ae3d]damage[/color] output."
+video = ExtResource("8_3dmww")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
+
+[sub_resource type="Resource" id="Resource_4a6i5"]
+script = ExtResource("7_4a6i5")
+text = "[color=#d1ae3d]Vital[/color] limbs are limbs that will immediately kill the monsters when they're cut off!
+
+Common vital limbs are the [color=#d1ae3d]head[/color] and the [color=#d1ae3d]torso[/color].
+
+The more non-vital limbs a monster has, the lower the [color=#d1ae3d]hit-chance[/color] of the [color=#d1ae3d]vital[/color] limbs, so choose your attacks wisely."
+video = ExtResource("9_3dmww")
 metadata/_custom_type_script = "uid://emcsn5t5bncn"
 
 [sub_resource type="Resource" id="Resource_si0bq"]
 script = ExtResource("7_4a6i5")
-text = "Limbs aren't permanent, doing enough damage to a limb will result in it being [color=#d1ae3d]cut off[/color]!
+text = "Red-highlighted limbs are the ones that the monsters will attack you with.
 
-An enemy with missing limbs has a lowered [color=#d1ae3d]defense[/color] and [color=#d1ae3d]damage[/color] output."
-image = ExtResource("9_gwckk")
+The attacking limb also shows the amount of [color=#d1ae3d]potential damage[/color] it will deal."
+image = ExtResource("10_3dmww")
 metadata/_custom_type_script = "uid://emcsn5t5bncn"
 
 [sub_resource type="Resource" id="Resource_j3cqa"]
 script = ExtResource("7_4a6i5")
-text = "Actions are done using moves.
+text = "Actions are done using [color=#d1ae3d]moves[/color].
 
-Using a move costs [color=#d1ae3d]Energy[/color]. Some moves are stronger than others, and will require more [color=#d1ae3d]Energy[/color], so choose wisely.
+Using a move costs [color=#d1ae3d]Energy[/color]. Some moves are stronger than others, and will require more [color=#d1ae3d]Energy[/color], so choose wisely. 
 
-After each round, 2 of your [color=#d1ae3d]Energy[/color] points get replenished."
-image = ExtResource("10_mrrmw")
+When you run out of [color=#d1ae3d]Energy[/color], end your turn. After each round, your [color=#d1ae3d]Energy[/color] points get replenished."
+image = ExtResource("11_3dmww")
 metadata/_custom_type_script = "uid://emcsn5t5bncn"
 
 [node name="Combat" type="CanvasLayer" unique_id=294642076]
@@ -242,6 +255,5 @@ layout_mode = 2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1290529617]
 
-[node name="TutorialOverlay" parent="CanvasLayer" unique_id=282468504 instance=ExtResource("6_jgg25")]
-visible = false
-pages = Array[ExtResource("7_4a6i5")]([SubResource("Resource_h2sm1"), SubResource("Resource_si0bq"), SubResource("Resource_j3cqa")])
+[node name="TutorialOverlay" parent="CanvasLayer" unique_id=1771534117 instance=ExtResource("6_jgg25")]
+pages = Array[ExtResource("7_4a6i5")]([SubResource("Resource_h2sm1"), SubResource("Resource_4a6i5"), SubResource("Resource_si0bq"), SubResource("Resource_j3cqa")])
