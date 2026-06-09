@@ -11,11 +11,13 @@ const MIN_PATH_STARTS := 2
 const COMBAT_ROOM_WEIGHT := 10.0
 const SHOP_ROOM_WEIGHT := 3
 const PUZZLE_ROOM_WEIGHT := 5
+const CAMPFIRE_ROOM_WEIGHT:= 3
 
 var random_room_type_weights = {
 	Room.Type.COMBAT: 0.0,
 	Room.Type.PUZZLE: 0.0,
-	Room.Type.SHOP: 0.0
+	Room.Type.SHOP: 0.0,
+	Room.Type.CAMPFIRE: 0.0,
 }
 var random_room_total_weight := 0
 var map_data : Array[Array]
@@ -138,8 +140,9 @@ func _setup_random_room_weights():
 	random_room_type_weights[Room.Type.COMBAT] = COMBAT_ROOM_WEIGHT
 	random_room_type_weights[Room.Type.PUZZLE] = PUZZLE_ROOM_WEIGHT + COMBAT_ROOM_WEIGHT
 	random_room_type_weights[Room.Type.SHOP] = SHOP_ROOM_WEIGHT + COMBAT_ROOM_WEIGHT + PUZZLE_ROOM_WEIGHT
+	random_room_type_weights[Room.Type.CAMPFIRE] = CAMPFIRE_ROOM_WEIGHT + SHOP_ROOM_WEIGHT + COMBAT_ROOM_WEIGHT + PUZZLE_ROOM_WEIGHT
 	
-	random_room_total_weight = random_room_type_weights[Room.Type.SHOP]
+	random_room_total_weight = random_room_type_weights[Room.Type.CAMPFIRE]
 
 func _setup_room_types():
 	# first floor is always combat
@@ -150,7 +153,7 @@ func _setup_room_types():
 	# Optional: last floor before the boss fight is always a shop
 	for room : Room in map_data[FLOORS - 2]:
 		if room.next_rooms.size() > 0:
-			room.type = Room.Type.SHOP
+			room.type = Room.Type.CAMPFIRE
 	
 	# remainder of rooms
 	for current_floor in map_data:
@@ -161,17 +164,21 @@ func _setup_room_types():
 
 func _set_room_randomly(room_to_set : Room):
 	var consecutive_shop := true
+	var consecutive_campfire := true
 	var shop_below_boss := true
 	
 	var type_candidate : Room.Type
 	
-	while shop_below_boss or consecutive_shop:
+	while shop_below_boss or consecutive_shop or consecutive_campfire:
 		type_candidate = _get_random_room_type_by_weight()
 		
 		var is_shop := type_candidate == Room.Type.SHOP
+		var is_campfire := type_candidate == Room.Type.CAMPFIRE
 		var has_shop_parent := _room_has_parent_of_type(room_to_set, Room.Type.SHOP)
+		var has_campfire_parent := _room_has_parent_of_type(room_to_set, Room.Type.CAMPFIRE)
 		
 		consecutive_shop = is_shop and has_shop_parent
+		consecutive_campfire = is_campfire and has_campfire_parent
 		shop_below_boss = is_shop and room_to_set.row == FLOORS - 3
 	
 	room_to_set.type = type_candidate
