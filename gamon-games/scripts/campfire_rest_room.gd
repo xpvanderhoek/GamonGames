@@ -4,6 +4,8 @@ extends Control
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var healed_up_label: Label = $CanvasLayer/HealedUpLabel
+@onready var train_button: Button = $CanvasLayer/Window/HBoxContainer/TrainButton
+@onready var rest_button: Button = $CanvasLayer/Window/HBoxContainer/RestButton
 
 const UPGRADE_SCREEN = preload("res://scenes/UI/upgrade_screen.tscn")
 const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
@@ -40,6 +42,8 @@ func _on_train_button_mouse_entered() -> void:
 
 func _on_rest_button_pressed() -> void:
 	SoundManager.play_click()
+	rest_button.disabled = true
+	train_button.disabled = true
 	animation_player.play("HealedUpAnimation")
 	fade_out()
 	var current_hp : int = RunData.current_health
@@ -54,6 +58,8 @@ func _on_rest_button_pressed() -> void:
 
 func _on_train_button_pressed() -> void:
 	SoundManager.play_click()
+	rest_button.disabled = true
+	train_button.disabled = true
 	fade_out()
 	#var upgrade_screen = UPGRADE_SCREEN.instantiate()
 	#upgrade_screen.show_random_options()
