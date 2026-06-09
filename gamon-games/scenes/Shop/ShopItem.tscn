@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://ccjrv1y6hb003"]
 
 [ext_resource type="Script" uid="uid://u67a3erwqvta" path="res://scripts/Shop/shop_Item.gd" id="1_6j5au"]
-[ext_resource type="Texture2D" uid="uid://dx7qeb3jcuxpw" path="res://assets/ShopItems/ShopEnvironment/Pricetag.png" id="2_6j5au"]
-[ext_resource type="Texture2D" uid="uid://2f6ei0gykdh6" path="res://assets/ShopItems/ShopEnvironment/buysign.png" id="3_iahut"]
-[ext_resource type="Script" path="res://scripts/Shop/BuyItemButton.gd" id="4_buybutton"]
+[ext_resource type="Texture2D" uid="uid://ttxnfx2mcbph" path="res://assets/ShopItems/ShopEnvironment/Pricetag.png" id="2_6j5au"]
+[ext_resource type="Texture2D" uid="uid://8myqjc8g6ubs" path="res://assets/ShopItems/ShopEnvironment/buysign.png" id="3_iahut"]
+[ext_resource type="Script" uid="uid://daxrnhp17dkps" path="res://scripts/Shop/BuyItemButton.gd" id="4_buybutton"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6j5au"]
 font_color = Color(0.36604783, 0.23913273, 0.16171762, 1)
@@ -64,7 +64,6 @@ position = Vector2(5, 20)
 scale = Vector2(1, 0.3)
 
 [node name="Item" type="Sprite2D" parent="." unique_id=386328136]
-centered = true
 
 [node name="ItemHoverArea" type="Area2D" parent="Item" unique_id=-421339814]
 
