@@ -5,13 +5,13 @@ const X_DIST := 150
 const Y_DIST := 100
 const PLACEMENT_RANDOMNESS := 40
 const FLOORS := 15
-const MAP_WIDTH := 3
-const PATHS := 5
+const MAP_WIDTH := 4
+const PATHS := 6
 const MIN_PATH_STARTS := 2
-const COMBAT_ROOM_WEIGHT := 10.0
-const SHOP_ROOM_WEIGHT := 3
-const PUZZLE_ROOM_WEIGHT := 5
-const CAMPFIRE_ROOM_WEIGHT:= 3
+const COMBAT_ROOM_WEIGHT := 53.0
+const PUZZLE_ROOM_WEIGHT := 22.0
+const SHOP_ROOM_WEIGHT := 5.0
+const CAMPFIRE_ROOM_WEIGHT := 12.0
 
 var random_room_type_weights = {
 	Room.Type.COMBAT: 0.0,
