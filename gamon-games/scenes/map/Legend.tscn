@@ -4,12 +4,13 @@
 [ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_jx14c"]
 [ext_resource type="Texture2D" uid="uid://16hr84bcpmgg" path="res://assets/map/icons/map_icon_combat.png" id="3_m2r12"]
 [ext_resource type="Texture2D" uid="uid://b43s4gayrtsq" path="res://assets/map/icons/map_icon_puzzle.png" id="4_bws55"]
+[ext_resource type="Texture2D" uid="uid://bljjrtw3r6iee" path="res://assets/map/icons/campfire.png" id="5_jx14c"]
 [ext_resource type="Texture2D" uid="uid://bft3203ljtd8a" path="res://assets/map/icons/map_icon_boss.png" id="5_yhyiq"]
 [ext_resource type="Texture2D" uid="uid://dempq44n1ahcv" path="res://assets/map/icons/map_icon_shop.png" id="6_2rcfn"]
 
 [node name="TextureRect" type="TextureRect" unique_id=1977336399]
 offset_right = 186.0
-offset_bottom = 296.0
+offset_bottom = 318.0
 texture = ExtResource("1_s1h33")
 expand_mode = 1
 flip_h = true
@@ -22,9 +23,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -52.0
-offset_top = -94.75
+offset_top = -116.0
 offset_right = 52.0
-offset_bottom = 94.75
+offset_bottom = 108.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 8
@@ -81,6 +82,28 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/font = ExtResource("2_jx14c")
 theme_override_font_sizes/font_size = 17
 text = "Puzzle"
+horizontal_alignment = 3
+
+[node name="Rest" type="HBoxContainer" parent="Legends" unique_id=471054165]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="TextureRect" type="TextureRect" parent="Legends/Rest" unique_id=536105801]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_jx14c")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Legends/Rest" unique_id=1256238246]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Rest"
 horizontal_alignment = 3
 
 [node name="Boss" type="HBoxContainer" parent="Legends" unique_id=1262809156]
