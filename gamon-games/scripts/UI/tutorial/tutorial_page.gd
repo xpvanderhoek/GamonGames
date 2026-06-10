@@ -3,3 +3,4 @@ extends Resource
 
 @export_multiline var text : String
 @export var image : Texture2D = null
+@export var video : VideoStream = null
