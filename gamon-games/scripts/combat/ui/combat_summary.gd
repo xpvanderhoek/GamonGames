@@ -199,10 +199,14 @@ func _show_spell_options() -> void:
 		button.mouse_entered.connect(func():
 			if combat_manager != null and is_instance_valid(combat_manager):
 				combat_manager.show_spell_tooltip(spell_ref, true)
+			elif _is_campfire_training:
+				button.show_campfire_tooltip()
 		)
 		button.mouse_exited.connect(func():
 			if combat_manager != null and is_instance_valid(combat_manager):
 				combat_manager.hide_spell_tooltip()
+			elif _is_campfire_training:
+				button.hide_campfire_tooltip()
 		)
 
 		spell_options_container.add_child(button)
@@ -215,6 +219,8 @@ func _on_spell_option_clicked(button: ChooseNewAbilityButton) -> void:
 	var combat_manager := get_parent() as CombatManager
 	if combat_manager != null and is_instance_valid(combat_manager):
 		combat_manager.hide_spell_tooltip()
+	elif _is_campfire_training:
+		button.hide_campfire_tooltip()
 	
 	_selected_spell = button.spell_data
 	
