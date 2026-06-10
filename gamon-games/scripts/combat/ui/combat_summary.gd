@@ -25,6 +25,19 @@ var _exp_text_label: Label = null
 var _did_level_up: bool = false
 var _all_spells: Array[SpellData] = []
 var _selected_spell: SpellData = null
+var _is_campfire_training: bool = false
+
+func setup_campfire_training() -> void:
+	_is_campfire_training = true
+	if exp_recieved:
+		exp_recieved.hide()
+	if current_level:
+		current_level.get_parent().hide()
+	if progress_bar:
+		progress_bar.hide()
+	
+	_did_level_up = true
+	_show_spell_options()
 
 func _ready() -> void:
 	if continue_button:
@@ -159,6 +172,10 @@ func _play_levelup_sfx() -> void:
 func _show_spell_options() -> void:
 	var combat_manager := get_parent() as CombatManager
 	var shuffled_spells = _all_spells.duplicate()
+	if _is_campfire_training:
+		shuffled_spells = RunData.spells.duplicate()
+		level_up.text = "Choose a spell to upgrade"
+		
 	shuffled_spells.shuffle()
 	var options: Array[SpellData] = []
 	for spell in shuffled_spells:

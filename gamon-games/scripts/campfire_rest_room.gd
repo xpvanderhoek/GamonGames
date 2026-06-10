@@ -61,14 +61,12 @@ func _on_train_button_pressed() -> void:
 	rest_button.disabled = true
 	train_button.disabled = true
 	fade_out()
-	#var upgrade_screen = UPGRADE_SCREEN.instantiate()
-	#upgrade_screen.show_random_options()
-	#canvas_layer.add_child(upgrade_screen)
-	#get_tree().paused = true
-	#await upgrade_screen.upgrade_selected()
-	#get_tree().paused = false
 	
-	# Yo insert random upgrade stats here please
+	var upgrade_screen = preload("res://scenes/combat/ui/combat_summary.tscn").instantiate()
+	canvas_layer.add_child(upgrade_screen)
+	upgrade_screen.setup_campfire_training()
+	await upgrade_screen.continue_pressed
+	upgrade_screen.queue_free()
 	
 	TransitionManager.change_scene("res://scenes/map/map.tscn")
 	
