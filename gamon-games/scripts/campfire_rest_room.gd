@@ -37,7 +37,7 @@ func _on_button_mouse_exited() -> void:
 
 func _on_train_button_mouse_entered() -> void:
 	SoundManager.play_hover()
-	description_label.text = "Train: Upgrade 1 of 3 base stats"
+	description_label.text = "Train: Upgrade 1 of 3 moves"
 	description_label.show()
 
 func _on_rest_button_pressed() -> void:
