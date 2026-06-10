@@ -3,6 +3,7 @@ extends Control
 signal continue_pressed
 
 
+@onready var title: Label = $PanelContainer/PanelMargin/VBoxContainer/Title
 @onready var exp_recieved: Label = $PanelContainer/PanelMargin/VBoxContainer/ExpRecieved
 @onready var current_level: Label = $PanelContainer/PanelMargin/VBoxContainer/LevelContainer/CurrentLevel
 @onready var next_level: Label = $PanelContainer/PanelMargin/VBoxContainer/LevelContainer/NextLevel
@@ -29,6 +30,8 @@ var _is_campfire_training: bool = false
 
 func setup_campfire_training() -> void:
 	_is_campfire_training = true
+	if title:
+		title.text = "Campfire Training"
 	if exp_recieved:
 		exp_recieved.hide()
 	if current_level:
