@@ -6,10 +6,11 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "Adrenaline Spike"
-effect = "Grants Haste for 2 turns; -10 HP after effect ends"
+effect = "Adds +25 Precision for 2 turns; -15 HP after effect ends"
 lore = "Borrowing strength from a future that may not come."
 category = "Tier III"
 texture = ExtResource("2_fmm0x")
 cost = 55
 target_limb = "Self"
-buff_type = "Speed"
+buff_type = "Precision"
+buff_value = 25.0
