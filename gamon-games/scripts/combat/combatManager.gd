@@ -112,6 +112,7 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 @onready var end_turn_button: Button = get_node_or_null("EndTurn") as Button
 
 func _ready() -> void:
+	SoundManager.play_combat_music()
 	if _queued_encounter_scenes.size() <= 0:
 		if RunData.current_encounter.size() > 0:
 			_queued_encounter_scenes = RunData.current_encounter.duplicate()
@@ -253,6 +254,7 @@ func _exit_combat():
 	if _is_exiting_combat:
 		return
 	_is_exiting_combat = true
+	SoundManager.stop_combat_music()
 	# Temporary
 	if PuzzleData.from_puzzle:
 		print(PuzzleData.puzzle_coins)
@@ -2128,7 +2130,7 @@ func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target
 	var vfx_lifetime_timer: SceneTreeTimer = null
 
 	if attack.sfx != null:
-		SoundManager.play_sfx(attack.sfx)
+		SoundManager.play_sfx(attack.sfx, attack.sfx_volume_db)
 
 	await _play_attack_lunge(source_entity, target_entity)
 

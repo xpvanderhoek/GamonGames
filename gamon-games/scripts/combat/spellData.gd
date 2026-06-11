@@ -51,6 +51,7 @@ var level: int = 1
 @export var icon_color: Color = Color.WHITE
 @export_category("VFX-SFX")
 @export var sfx: AudioStream
+@export_range(-80.0, 24.0, 0.1) var sfx_volume_db: float = 0.0
 @export var vfx_scene: PackedScene
 @export var vfx_anchor: VfxAnchor = VfxAnchor.SELF
 @export var vfx_offset: Vector2 = Vector2.ZERO
