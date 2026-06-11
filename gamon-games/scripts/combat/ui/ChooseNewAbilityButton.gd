@@ -89,3 +89,34 @@ func update_appearance() -> void:
 		var pressed_style := style.duplicate() as StyleBoxFlat
 		pressed_style.bg_color = style.bg_color.darkened(0.1)
 		add_theme_stylebox_override("pressed", pressed_style)
+
+var _dummy_cm = null
+var _my_tooltip = null
+
+func show_campfire_tooltip() -> void:
+	if _dummy_cm == null:
+		_dummy_cm = preload("res://scripts/combat/combatManager.gd").new()
+		_dummy_cm._item_effects = preload("res://scripts/combat/combat_item_effects.gd").new(_dummy_cm)
+		_dummy_cm._ensure_spell_tooltip()
+		_my_tooltip = _dummy_cm._spell_tooltip
+		_dummy_cm.remove_child(_my_tooltip)
+		add_child(_my_tooltip)
+	
+	_my_tooltip.show()
+
+func hide_campfire_tooltip() -> void:
+	if _my_tooltip != null:
+		_my_tooltip.hide()
+
+func _process(_delta: float) -> void:
+	if _my_tooltip != null and _my_tooltip.visible and spell_data != null and _dummy_cm != null:
+		var bbcode = _dummy_cm.build_spell_tooltip_bbcode(spell_data, Input.is_key_pressed(KEY_SHIFT), is_upgrade)
+		_my_tooltip.get_child(0).text = bbcode
+		
+		var vp_size  := get_viewport().get_visible_rect().size
+		var mouse    := get_viewport().get_mouse_position()
+		var tip_size = _my_tooltip.size
+		var pos := mouse + Vector2(-tip_size.x * 0.5, -tip_size.y - 14.0)
+		pos.x = clamp(pos.x, 0.0, vp_size.x - tip_size.x)
+		pos.y = clamp(pos.y, 0.0, vp_size.y - tip_size.y)
+		_my_tooltip.global_position = pos

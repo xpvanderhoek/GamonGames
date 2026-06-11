@@ -10,6 +10,7 @@ const MAP_ROOM = preload("res://scenes/map/map_room.tscn")
 const MAP_LINE = preload("res://scenes/map/map_line.tscn")
 
 const COMBAT_SCENE := "res://scenes/combat/combat.tscn"
+const CAMPFIRE_SCENE := "res://scenes/campfire_rest_room.tscn"
 const SHOP_SCENE := "res://scenes/Shop/ShopRoom.tscn"
 
 const PUZZLE_SCENES := [
@@ -161,5 +162,7 @@ func _go_to_room(room : Room) -> void:
 			TransitionManager.change_scene(SHOP_SCENE, TransitionManager.TransitionType.FADE)
 		Room.Type.PUZZLE:
 			TransitionManager.change_scene("res://scenes/puzzles/Chest_room.tscn")
+		Room.Type.CAMPFIRE:
+			TransitionManager.change_scene(CAMPFIRE_SCENE)
 		Room.Type.BOSS:
 			TransitionManager.change_scene(COMBAT_SCENE)
