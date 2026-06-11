@@ -132,7 +132,7 @@ alignment = 0
 layout_mode = 0
 offset_right = 167.40822
 offset_bottom = 86.0
-tooltip_text = "Gain marrowshards by defeating enemies"
+tooltip_text = "Gain Marrow Shards by defeating enemies"
 texture = ExtResource("12_3tci0")
 expand_mode = 1
 
