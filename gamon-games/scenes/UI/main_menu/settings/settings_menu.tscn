@@ -216,9 +216,9 @@ bus_name = "Music"
 [node name="AccessibilityContainer" type="VBoxContainer" parent="Window/Contents" unique_id=100000002]
 layout_mode = 0
 offset_left = -18.0
-offset_top = 175.0
-offset_right = 566.0
-offset_bottom = 261.0
+offset_top = 184.0
+offset_right = 291.0
+offset_bottom = 281.0
 theme_override_constants/separation = 4
 
 [node name="AccessibilityLabel" type="Label" parent="Window/Contents/AccessibilityContainer" unique_id=100000003]
@@ -256,19 +256,31 @@ popup/item_2/id = 2
 popup/item_3/text = "Tritanopia"
 popup/item_3/id = 3
 
-[node name="FontFamily" type="HBoxContainer" parent="Window/Contents/AccessibilityContainer" unique_id=100000012]
+[node name="FontFamily" type="HBoxContainer" parent="Window/Contents/AccessibilityContainer" unique_id=1476414860]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Contents/AccessibilityContainer/FontFamily" unique_id=100000013]
-custom_minimum_size = Vector2(75, 0)
+[node name="Label" type="Label" parent="Window/Contents/AccessibilityContainer/FontFamily" unique_id=1840057016]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 17
 text = "Font:"
 
-[node name="OptionButton" type="OptionButton" parent="Window/Contents/AccessibilityContainer/FontFamily" unique_id=100000014]
+[node name="Control" type="Control" parent="Window/Contents/AccessibilityContainer/FontFamily" unique_id=448447172]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="Window/Contents/AccessibilityContainer/FontFamily" unique_id=433322882]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+item_count = 4
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Protanopia"
+popup/item_1/id = 1
+popup/item_2/text = "Deuteranopia"
+popup/item_2/id = 2
+popup/item_3/text = "Tritanopia"
+popup/item_3/id = 3
 
 [node name="Abandon" type="Button" parent="Window/Contents" unique_id=2113631439]
 layout_mode = 1
