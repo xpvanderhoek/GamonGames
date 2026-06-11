@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ctc0o0gqj1d72"]
 
 [ext_resource type="Script" uid="uid://clp812257p2tl" path="res://scripts/map/map.gd" id="1_ph54e"]
-[ext_resource type="Texture2D" uid="uid://bxfbim0paqpa7" path="res://assets/map/map_foreground.png" id="2_fcby6"]
+[ext_resource type="Texture2D" uid="uid://cmvqqhuk2lklo" path="res://assets/map/map_foreground.png" id="2_fcby6"]
 [ext_resource type="Script" uid="uid://bwr8prrp5yj2m" path="res://scripts/map/map_generator.gd" id="3_jcaow"]
 [ext_resource type="Texture2D" uid="uid://c3vbvw0npfbyi" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="4_04w0f"]
 [ext_resource type="PackedScene" uid="uid://blmvj80nl5op8" path="res://scenes/map/Legend.tscn" id="5_fcby6"]
@@ -11,9 +11,29 @@
 font_size = 67
 font_color = Color(0.57715225, 0.47292823, 0.33508357, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_jcaow"]
-font_size = 67
-font_color = Color(0.7490196, 0.11372549, 0.20784314, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.25, 0.22, 0.17, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 0.5, 0.35, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.35, 0.3, 0.22, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.7, 0.45, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="Map" type="Node2D" unique_id=1667129948]
 script = ExtResource("1_ph54e")
@@ -115,3 +135,18 @@ offset_left = 957.0
 offset_top = 124.0
 offset_right = 1143.0
 offset_bottom = 420.0
+
+[node name="StatsButton" type="Button" parent="CanvasLayer" unique_id=1111111111]
+offset_left = 22.0
+offset_top = 114.0
+offset_right = 140.0
+offset_bottom = 142.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.6, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Stats"
+
+[node name="PlayerStatsPanel" parent="CanvasLayer" unique_id=-2072745074 instance=ExtResource("6_stats")]
+offset_left = 22.0
+offset_top = 148.0
