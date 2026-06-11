@@ -10,6 +10,7 @@ const LEADERBOARD_MENU := preload("res://Scenes/UI/main_menu/leaderboard/Leaderb
 @onready var sfx_hover: AudioStreamPlayer2D = $SFXHover
 
 func _ready() -> void:
+	SoundManager.play_main_menu_music()
 	print(get_tree().paused)
 	SaveLoad.profile_changed.connect(_on_profile_changed)
 	
@@ -24,6 +25,7 @@ func _ready() -> void:
 	print(DisplayServer.window_get_mode())
 
 func _on_play_button_pressed() -> void:
+	SoundManager.stop_main_menu_music()
 	TransitionManager.change_scene(MAP_SCENE)
 
 func _on_settings_button_pressed() -> void:

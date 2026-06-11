@@ -20,8 +20,8 @@ func apply_consumable_item(item: ItemData) -> void:
 			})
 		"Adrenaline Spike":
 			add_player_item_effect("item:adrenaline_spike", item.item_name, item.texture, 2, {
-				"energy_regen_delta": 2.0,
-				"expire_damage": 10,
+				"precision_delta": item.buff_value, 
+				"expire_damage": 15,               
 			})
 		"Essence of the Void":
 			add_player_item_effect("item:essence_void", item.item_name, item.texture, 1, {

@@ -112,6 +112,7 @@ signal enemy_targeting_changed(enabled: bool, highlight_whole_enemy: bool)
 @onready var end_turn_button: Button = get_node_or_null("EndTurn") as Button
 
 func _ready() -> void:
+	SoundManager.play_combat_music()
 	if _queued_encounter_scenes.size() <= 0:
 		if RunData.current_encounter.size() > 0:
 			_queued_encounter_scenes = RunData.current_encounter.duplicate()
@@ -253,6 +254,7 @@ func _exit_combat():
 	if _is_exiting_combat:
 		return
 	_is_exiting_combat = true
+	SoundManager.stop_combat_music()
 	# Temporary
 	if PuzzleData.from_puzzle:
 		print(PuzzleData.puzzle_coins)
@@ -882,7 +884,11 @@ func _on_consumable_pressed(slot_index: int) -> void:
 func _get_spell_energy_cost(spell: SpellData) -> int:
 	if spell == null:
 		return 0
+		
 	var reduction: int = _item_effects.get_item_cooldown_reduction() + _item_effects.get_temp_cooldown_reduction()
+	if spell.energy >= 3 and _item_effects.has_item_named("Vial of Stagnant Time"):
+		reduction += 1
+	
 	return maxi(0, spell.energy - reduction)
 
 func _can_afford_spell(spell: SpellData) -> bool:
@@ -2095,7 +2101,7 @@ func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target
 	var vfx_lifetime_timer: SceneTreeTimer = null
 
 	if attack.sfx != null:
-		SoundManager.play_sfx(attack.sfx)
+		SoundManager.play_sfx(attack.sfx, attack.sfx_volume_db)
 
 	await _play_attack_lunge(source_entity, target_entity)
 

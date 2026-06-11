@@ -3,6 +3,7 @@ extends Node
 
 @export_category("VFX-SFX")
 @export var hit_sfx: AudioStream
+@export_range(-80.0, 24.0, 0.1) var hit_sfx_volume_db: float = 0.0
 
 @export var turn_order_icon: Texture2D
 @export_category("Spawn")
@@ -310,7 +311,7 @@ func take_damage(limb: CombatLimb, amount: int) -> void:
 		remaining_damage = maxi(0, remaining_damage - damage_dealt)
 
 		if hit_sfx != null:
-			SoundManager.play_sfx(hit_sfx)
+			SoundManager.play_sfx(hit_sfx, hit_sfx_volume_db)
 
 		entity_took_damage.emit(self, target_limb, damage_dealt)
 
