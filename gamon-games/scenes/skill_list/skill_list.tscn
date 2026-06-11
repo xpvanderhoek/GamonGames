@@ -9,7 +9,6 @@
 [ext_resource type="Resource" uid="uid://crhxl5b2q35f5" path="res://scripts/skill_list/skill_resources/scavengers_eye.tres" id="8_ed1i2"]
 [ext_resource type="Resource" uid="uid://x3hhxu7knfbq" path="res://scripts/skill_list/skill_resources/starting_kit.tres" id="9_usirg"]
 [ext_resource type="Resource" uid="uid://k1vhjfkad0qa" path="res://scripts/skill_list/skill_resources/steady_hand.tres" id="10_or8jn"]
-[ext_resource type="Resource" uid="uid://7tr4mnrpca1c" path="res://scripts/skill_list/skill_resources/magic_defense.tres" id="11_am412"]
 [ext_resource type="Resource" uid="uid://80wse1xg4dkb" path="res://scripts/skill_list/skill_resources/stone_guard.tres" id="11_gli5f"]
 [ext_resource type="Texture2D" uid="uid://c3tbae11b3ovt" path="res://scenes/skill_list/Marrow_shards_currency.png" id="12_3tci0"]
 [ext_resource type="FontFile" uid="uid://dr8r1buo47v6k" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="12_loq5n"]
@@ -48,7 +47,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lvfat")
-skills = Array[ExtResource("2_loq5n")]([ExtResource("3_3tci0"), ExtResource("4_20qiw"), ExtResource("5_r8qnw"), ExtResource("6_qn87k"), ExtResource("8_ed1i2"), ExtResource("9_usirg"), ExtResource("10_or8jn"), ExtResource("11_gli5f"), ExtResource("11_am412")])
+skills = Array[ExtResource("2_loq5n")]([ExtResource("3_3tci0"), ExtResource("4_20qiw"), ExtResource("5_r8qnw"), ExtResource("6_qn87k"), ExtResource("8_ed1i2"), ExtResource("9_usirg"), ExtResource("10_or8jn"), ExtResource("11_gli5f")])
 
 [node name="Background" type="TextureRect" parent="." unique_id=1022203630]
 layout_mode = 0
@@ -73,6 +72,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ItemTooltipPanel" type="Panel" parent="Control" unique_id=1108486703]
+self_modulate = Color(0.0700346, 5.4062864e-05, 0.23660174, 1)
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -99,7 +99,7 @@ offset_right = 143.5
 offset_bottom = 51.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.23921569, 0.16470589, 0.14117648, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 vertical_alignment = 1
 autowrap_mode = 3
 

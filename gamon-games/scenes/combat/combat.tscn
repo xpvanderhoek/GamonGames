@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://b1r88pxgxdvwr"]
 
-[ext_resource type="Texture2D" uid="uid://b31ymbl4e7ykd" path="res://assets/Placeholders/backgrounds/combatbg.png" id="2_ltalu"]
-[ext_resource type="Texture2D" uid="uid://1ntv4j640typ" path="res://assets/player.png" id="3_ltalu"]
+[ext_resource type="Texture2D" uid="uid://cws830736mswa" path="res://assets/Placeholders/backgrounds/combatbg.png" id="2_ltalu"]
+[ext_resource type="Texture2D" uid="uid://cwp4d5bjoxefw" path="res://assets/player.png" id="3_ltalu"]
 [ext_resource type="PackedScene" uid="uid://cw35es2dvr2it" path="res://scenes/UI/health_bar.tscn" id="4_4voa6"]
 [ext_resource type="PackedScene" uid="uid://bnspxqohk3rfu" path="res://scenes/combat/ui/ItemButton.tscn" id="5_4voa6"]
+[ext_resource type="Texture2D" uid="uid://bdl6ds02ccw48" path="res://assets/skill_list_background.png" id="5_gwckk"]
 [ext_resource type="PackedScene" uid="uid://c80vkx6l0g4kf" path="res://scenes/UI/tutorial/tutorial_overlay.tscn" id="6_jgg25"]
 [ext_resource type="Script" uid="uid://emcsn5t5bncn" path="res://scripts/UI/tutorial/tutorial_page.gd" id="7_4a6i5"]
 [ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://scripts/combat/combatManager.gd" id="7_mgr"]
@@ -181,6 +182,16 @@ offset_top = 548.0
 offset_right = 332.0
 offset_bottom = 612.0
 
+[node name="TextureRect" type="TextureRect" parent="EnergyPanel" unique_id=928179106]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_gwckk")
+expand_mode = 1
+
 [node name="Label" type="Label" parent="EnergyPanel" unique_id=479513994]
 layout_mode = 0
 offset_right = 57.0
@@ -210,6 +221,16 @@ offset_left = 765.0
 offset_top = 497.0
 offset_right = 880.0
 offset_bottom = 612.0
+
+[node name="TextureRect" type="TextureRect" parent="Panel" unique_id=2092553944]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_gwckk")
+expand_mode = 1
 
 [node name="GridContainer" type="GridContainer" parent="Panel" unique_id=1834709144]
 layout_mode = 1
