@@ -440,8 +440,30 @@ func _configure_spell_button(button: Button, spell: SpellData) -> void:
 		bind_label.text = str(slot_index + 1)
 
 	button.tooltip_text = ""
-	if spell != null and spell.icon != null:
-		button.icon = spell.icon
+	if spell != null:
+		if spell.icon != null:
+			button.icon = spell.icon
+		
+		var panel := button.get_node_or_null("Panel") as Panel
+		if panel != null:
+			var sb := panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+			if sb != null:
+				sb.border_width_left = 2
+				sb.border_width_right = 2
+				sb.border_width_top = 2
+				sb.border_width_bottom = 2
+				sb.border_color = spell.get_tier_color()
+				sb.corner_radius_top_left = 2
+				sb.corner_radius_top_right = 2
+				sb.corner_radius_bottom_left = 2
+				sb.corner_radius_bottom_right = 2
+				panel.add_theme_stylebox_override("panel", sb)
+		
+		button.add_theme_color_override("icon_normal_color", spell.icon_color)
+		button.add_theme_color_override("icon_pressed_color", spell.icon_color)
+		button.add_theme_color_override("icon_hover_color", spell.icon_color)
+		button.add_theme_color_override("icon_hover_pressed_color", spell.icon_color)
+		button.add_theme_color_override("icon_focus_color", spell.icon_color)
 	
 	button.disabled = false
 	button.modulate = Color.WHITE
@@ -495,7 +517,9 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false, s
 		spell_display_name += " (Lvl %d → %d)" % [existing.level, existing.level + 1]
 
 	var t := "[b][font_size=15]%s[/font_size][/b]" % spell_display_name
-	t += "\n[color=#%s]%s[/color]" % [type_hex, _spell_type_to_text(spell.spell_type)]
+	var tier_hex := spell.get_tier_color().to_html(false)
+	var tier_name := "Tier " + str(int(spell.tier) + 1)
+	t += "\n[color=#%s]%s[/color]  •  [color=#%s]%s[/color]" % [type_hex, _spell_type_to_text(spell.spell_type), tier_hex, tier_name]
 	t += "\nTarget: [color=#cccccc]%s[/color]" % _target_scope_to_text(spell.target_scope)
 
 	if spell.energy > 0:
@@ -1511,6 +1535,8 @@ func _append_player_effect(spell: SpellData) -> void:
 		"spell_name": spell.spell_name,
 		"spell_type": int(spell.spell_type),
 		"icon": spell.icon,
+		"icon_color": spell.icon_color,
+		"border_color": spell.get_tier_color(),
 		"outgoing_flat": spell.outgoing_damage_flat_bonus,
 		"outgoing_mult_delta": spell.outgoing_damage_multiplier_delta,
 		"damage_over_time": spell.damage_over_time,
@@ -1552,6 +1578,9 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 		"spell_name": spell.spell_name,
 		"spell_type": int(spell.spell_type),
 		"icon": spell.icon,
+		"icon_color": spell.icon_color,
+		"border_width": spell.border_width,
+		"border_color": spell.get_tier_color(),
 	}
 
 	var enemy_id := target_enemy.get_instance_id()
@@ -1654,12 +1683,29 @@ func _refresh_enemy_buffs_ui() -> void:
 			if count_label != null:
 				count_label.text = str(turns_remaining)
 
+			var icon_color = effect.get("icon_color", Color.WHITE) as Color
+			var border_width = 2
+			var border_color = effect.get("border_color", Color.WHITE) as Color
+			
+			var sb := buff_icon.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+			if sb != null:
+				sb.border_width_left = border_width
+				sb.border_width_right = border_width
+				sb.border_width_top = border_width
+				sb.border_width_bottom = border_width
+				sb.border_color = border_color
+				sb.corner_radius_top_left = 2
+				sb.corner_radius_top_right = 2
+				sb.corner_radius_bottom_left = 2
+				sb.corner_radius_bottom_right = 2
+				buff_icon.add_theme_stylebox_override("panel", sb)
+
 			if int(effect.get("spell_type", SpellData.SpellType.DEBUFF)) == int(SpellData.SpellType.DEBUFF):
 				if icon_rect != null:
-					icon_rect.modulate = Color(1.0, 0.85, 0.85, 1.0)
+					icon_rect.modulate = icon_color * Color(1.0, 0.85, 0.85, 1.0)
 			else:
 				if icon_rect != null:
-					icon_rect.modulate = Color(1.0, 1.0, 1.0, 1.0)
+					icon_rect.modulate = icon_color
 
 			buffs_panel.add_child(buff_icon)
 
@@ -1693,7 +1739,25 @@ func _refresh_player_buffs_ui() -> void:
 		var turn_suffix := "s" if turns_remaining != 1 else ""
 		buff_icon.tooltip_text = "%s (%d turn%s)" % [effect_name, turns_remaining, turn_suffix]
 		count_label.text = str(turns_remaining)
-		icon_rect.modulate = Color(1.0, 1.0, 1.0, 1.0)
+		
+		var icon_color = effect.get("icon_color", Color.WHITE) as Color
+		var border_width = 2
+		var border_color = effect.get("border_color", Color.WHITE) as Color
+		
+		var sb := buff_icon.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+		if sb != null:
+			sb.border_width_left = border_width
+			sb.border_width_right = border_width
+			sb.border_width_top = border_width
+			sb.border_width_bottom = border_width
+			sb.border_color = border_color
+			sb.corner_radius_top_left = 2
+			sb.corner_radius_top_right = 2
+			sb.corner_radius_bottom_left = 2
+			sb.corner_radius_bottom_right = 2
+			buff_icon.add_theme_stylebox_override("panel", sb)
+			
+		icon_rect.modulate = icon_color
 
 		player_buffs_panel.add_child(buff_icon)
 
@@ -2092,7 +2156,13 @@ func _play_attack_lunge(source_entity: Node, target_entity: Node) -> void:
 	if not (raw_target_position is Vector2):
 		return
 
-	var start_position: Vector2 = source_canvas.global_position
+	var start_position: Vector2
+	if source_canvas.has_meta("base_position"):
+		start_position = source_canvas.get_meta("base_position")
+	else:
+		start_position = source_canvas.global_position
+		source_canvas.set_meta("base_position", start_position)
+
 	var target_position := raw_target_position as Vector2
 	var attack_direction := target_position - start_position
 	if attack_direction.length_squared() <= 0.01:
@@ -2104,11 +2174,22 @@ func _play_attack_lunge(source_entity: Node, target_entity: Node) -> void:
 
 	var lunge_position := start_position + attack_direction.normalized() * lunge_distance
 	var tween := create_tween()
+	
+	source_canvas.set_meta("active_lunge_tween", tween)
+	
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(source_canvas, "global_position", lunge_position, 0.09)
 	tween.set_ease(Tween.EASE_IN)
 	tween.tween_property(source_canvas, "global_position", start_position, 0.12)
+	
+	tween.finished.connect(func():
+		if is_instance_valid(source_canvas):
+			if source_canvas.has_meta("active_lunge_tween") and source_canvas.get_meta("active_lunge_tween") == tween:
+				source_canvas.remove_meta("base_position")
+				source_canvas.remove_meta("active_lunge_tween")
+	)
+	
 	await tween.finished
 
 func _resolve_vfx_position(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> Vector2:
@@ -2317,9 +2398,15 @@ func _get_energy_label_world_position() -> Variant:
 
 func _update_enemy_spell_targeting_preview() -> void:
 	var spell_icon: Texture2D = null
+	var spell_icon_color: Color = Color.WHITE
+	var spell_border_color: Color = Color.WHITE
+	var spell_border_width: int = 0
 	var use_whole_enemy_preview := false
 	if _attack_selected and selected_spell != null:
 		spell_icon = selected_spell.icon
+		spell_icon_color = selected_spell.icon_color
+		spell_border_color = selected_spell.get_tier_color()
+		spell_border_width = 2
 		var resolved_scope := _resolve_target_scope(selected_spell)
 		use_whole_enemy_preview = resolved_scope == TargetScope.WHOLE_ENEMY or resolved_scope == TargetScope.ALL_ENEMIES
 
@@ -2327,7 +2414,7 @@ func _update_enemy_spell_targeting_preview() -> void:
 		if enemy == null or not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
 			continue
 		if enemy.has_method("set_spell_targeting_preview"):
-			enemy.set_spell_targeting_preview(_attack_selected, use_whole_enemy_preview, spell_icon)
+			enemy.set_spell_targeting_preview(_attack_selected, use_whole_enemy_preview, spell_icon, spell_icon_color, spell_border_color, spell_border_width)
 
 func _setup_spell_cursor_overlay() -> void:
 	if _spell_cursor_overlay != null:
@@ -2352,6 +2439,7 @@ func _update_spell_cursor_overlay() -> void:
 		return
 
 	_spell_cursor_overlay.texture = selected_spell.icon
+	_spell_cursor_overlay.modulate = selected_spell.icon_color
 	_spell_cursor_overlay.visible = true
 	_update_spell_cursor_overlay_position()
 

@@ -3,6 +3,7 @@ extends Control
 signal continue_pressed
 
 
+@onready var title: Label = $PanelContainer/PanelMargin/VBoxContainer/Title
 @onready var exp_recieved: Label = $PanelContainer/PanelMargin/VBoxContainer/ExpRecieved
 @onready var current_level: Label = $PanelContainer/PanelMargin/VBoxContainer/LevelContainer/CurrentLevel
 @onready var next_level: Label = $PanelContainer/PanelMargin/VBoxContainer/LevelContainer/NextLevel
@@ -25,6 +26,21 @@ var _exp_text_label: Label = null
 var _did_level_up: bool = false
 var _all_spells: Array[SpellData] = []
 var _selected_spell: SpellData = null
+var _is_campfire_training: bool = false
+
+func setup_campfire_training() -> void:
+	_is_campfire_training = true
+	if title:
+		title.text = "Campfire Training"
+	if exp_recieved:
+		exp_recieved.hide()
+	if current_level:
+		current_level.get_parent().hide()
+	if progress_bar:
+		progress_bar.hide()
+	
+	_did_level_up = true
+	_show_spell_options()
 
 func _ready() -> void:
 	if continue_button:
@@ -159,6 +175,10 @@ func _play_levelup_sfx() -> void:
 func _show_spell_options() -> void:
 	var combat_manager := get_parent() as CombatManager
 	var shuffled_spells = _all_spells.duplicate()
+	if _is_campfire_training:
+		shuffled_spells = RunData.spells.duplicate()
+		level_up.text = "Choose a spell to upgrade"
+		
 	shuffled_spells.shuffle()
 	var options: Array[SpellData] = []
 	for spell in shuffled_spells:
@@ -182,10 +202,14 @@ func _show_spell_options() -> void:
 		button.mouse_entered.connect(func():
 			if combat_manager != null and is_instance_valid(combat_manager):
 				combat_manager.show_spell_tooltip(spell_ref, true)
+			elif _is_campfire_training:
+				button.show_campfire_tooltip()
 		)
 		button.mouse_exited.connect(func():
 			if combat_manager != null and is_instance_valid(combat_manager):
 				combat_manager.hide_spell_tooltip()
+			elif _is_campfire_training:
+				button.hide_campfire_tooltip()
 		)
 
 		spell_options_container.add_child(button)
@@ -198,6 +222,8 @@ func _on_spell_option_clicked(button: ChooseNewAbilityButton) -> void:
 	var combat_manager := get_parent() as CombatManager
 	if combat_manager != null and is_instance_valid(combat_manager):
 		combat_manager.hide_spell_tooltip()
+	elif _is_campfire_training:
+		button.hide_campfire_tooltip()
 	
 	_selected_spell = button.spell_data
 	
