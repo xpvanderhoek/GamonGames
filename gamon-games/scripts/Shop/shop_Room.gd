@@ -131,7 +131,7 @@ func _exit_shop() -> void:
 	color_rect.modulate.a = 0.0
 	fade_tween.tween_property(color_rect, "modulate:a", 0.5, 3)
 
-	var played_exit_bark := _show_random_bark(SHOP_DIALOGUE_EXIT_KEY, 3.0)
+	var played_exit_bark := _show_random_bark(SHOP_DIALOGUE_EXIT_KEY, 2.3)
 	if played_exit_bark and _shop_dialogue_ui != null:
 		await _shop_dialogue_ui.bark_finished
 
