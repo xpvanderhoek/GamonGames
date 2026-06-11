@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c3vbvw0npfbyi" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="4_04w0f"]
 [ext_resource type="PackedScene" uid="uid://blmvj80nl5op8" path="res://scenes/map/Legend.tscn" id="5_fcby6"]
 [ext_resource type="Texture2D" uid="uid://cmrkad26p7yq4" path="res://assets/map/icons/HeartIcon.png" id="5_jcaow"]
+[ext_resource type="PackedScene" uid="uid://but3dsdgjg5xb" path="res://scenes/UI/PlayerStatsPanel.tscn" id="6_stats"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0cso3"]
 font_size = 67
@@ -107,7 +108,7 @@ offset_top = 23.0
 offset_right = 191.6605
 offset_bottom = 115.0
 text = "0"
-label_settings = SubResource("LabelSettings_jcaow")
+label_settings = SubResource("LabelSettings_0cso3")
 horizontal_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/Health" unique_id=1082995949]
