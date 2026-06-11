@@ -42,7 +42,7 @@ signal highlighted_limb_clicked(limb: CombatLimb)
 const DEATH_DISSOLVE_SHADER := preload("res://shaders/black_disintegrate.gdshader")
 
 var exp_reward: int = 100
-@export var marrow_shard_reward: int = 75
+@export var marrow_shard_reward: int = 150
 var combat_scaling_multiplier: float = 1.0
 
 var _death_started: bool = false
@@ -436,7 +436,7 @@ func _ensure_limb_tooltip() -> void:
 	_limb_tooltip = PanelContainer.new()
 	_limb_tooltip.name = "LimbTooltip"
 	_limb_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_limb_tooltip.z_index = 100
+	_limb_tooltip.z_index = 600
 	_limb_tooltip.top_level = true
 	_limb_tooltip.visible = false
 
