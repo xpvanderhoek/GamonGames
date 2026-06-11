@@ -118,7 +118,6 @@ func _exit_shop() -> void:
 		_shop_chatter_timer.stop()
 
 	SoundManager.play_click()
-	SoundManager.stop_shop_music()
 	if exit_button and exit_button[0]:
 		exit_button[0].disabled = true
 
@@ -138,6 +137,7 @@ func _exit_shop() -> void:
 		await _shop_dialogue_ui.bark_finished
 
 	DialogueManager.cancel_dialogue()
+	SoundManager.stop_shop_music()
 	TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 
 func _show_random_bark(key: String, duration_sec: float = 4.0) -> bool:
