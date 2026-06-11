@@ -1,0 +1,366 @@
+[gd_scene format=3 uid="uid://c5hnhkum0x6jg"]
+
+[ext_resource type="Texture2D" uid="uid://b31ymbl4e7ykd" path="res://assets/Placeholders/backgrounds/combatbg.png" id="1_137lc"]
+[ext_resource type="Script" uid="uid://b8pgox2ogdxpk" path="res://scripts/campfire_rest_room.gd" id="1_p11uv"]
+[ext_resource type="Texture2D" uid="uid://1ntv4j640typ" path="res://assets/player.png" id="2_5yeil"]
+[ext_resource type="Texture2D" uid="uid://bgmiqdkenqde3" path="res://assets/environment/campfire_sprite.png" id="3_qdcec"]
+[ext_resource type="Texture2D" uid="uid://brwyvoxeplsnd" path="res://assets/environment/thought_bubble_best.png" id="5_w6gm4"]
+[ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="8_mdykl"]
+
+[sub_resource type="Gradient" id="Gradient_qdcec"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1ivmy"]
+gradient = SubResource("Gradient_qdcec")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mchu7"]
+bg_color = Color(0.019607844, 0.101960786, 0.019607844, 0.7019608)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.101960786, 0.6, 0.101960786, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j7ggg"]
+bg_color = Color(0.03137255, 0.14901961, 0.03137255, 0.8509804)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3019608, 1, 0.3019608, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mia23"]
+bg_color = Color(0.03137255, 0.14901961, 0.03137255, 0.8509804)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3019608, 1, 0.3019608, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qgqyk"]
+bg_color = Color(0.03137255, 0.14901961, 0.03137255, 0.8509804)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3019608, 1, 0.3019608, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ftl8b"]
+bg_color = Color(0.1, 0.02, 0.02, 0.7)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.1, 0.1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m55wu"]
+bg_color = Color(0.15, 0.03, 0.03, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.3, 0.3, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Animation" id="Animation_4onla"]
+resource_name = "HealedUpAnimation"
+length = 1.5666667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/HealedUpLabel:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.36666667, 1.0333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(95.14, 215.3), Vector2(95.14, 105.55)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasLayer/HealedUpLabel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3, 0.6666667, 1.1, 1.3666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mdykl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/HealedUpLabel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(160, 165)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasLayer/HealedUpLabel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mchu7"]
+_data = {
+&"HealedUpAnimation": SubResource("Animation_4onla"),
+&"RESET": SubResource("Animation_mdykl")
+}
+
+[node name="CampfireRestRoom" type="Control" unique_id=1809767097]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p11uv")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1228654442]
+color = Color(0.36078432, 0.36078432, 0.36078432, 1)
+
+[node name="Background" type="TextureRect" parent="." unique_id=1874193037]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.38700002
+anchor_top = 0.5
+anchor_right = 0.38700002
+anchor_bottom = 0.5
+offset_left = -739.824
+offset_top = -458.0
+offset_right = 346.01563
+offset_bottom = 148.46667
+grow_vertical = 0
+scale = Vector2(1.3636364, 1.3636364)
+texture = ExtResource("1_137lc")
+expand_mode = 1
+
+[node name="Campfire" type="TextureButton" parent="." unique_id=1791440711]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = -134.0
+offset_right = 663.25
+offset_bottom = 362.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.848262, 0.848262)
+texture_normal = ExtResource("3_qdcec")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="LightSource" type="PointLight2D" parent="Campfire" unique_id=714547262]
+position = Vector2(383, 222)
+scale = Vector2(2.8057249, 2.8057249)
+color = Color(1, 0.627451, 0.23529412, 1)
+energy = 1.22
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 0.7058824)
+texture = SubResource("GradientTexture2D_1ivmy")
+texture_scale = 5.0
+
+[node name="Knight" type="TextureRect" parent="." unique_id=1804581048]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -374.0
+offset_top = -485.571
+offset_right = 334.30817
+offset_bottom = 493.6864
+grow_vertical = 0
+scale = Vector2(1.1520411, 1.1520411)
+texture = ExtResource("2_5yeil")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1685325045]
+
+[node name="Window" type="Control" parent="CanvasLayer" unique_id=702626325]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -164.0
+offset_top = 93.0
+offset_right = 163.32062
+offset_bottom = 291.0
+grow_horizontal = 2
+
+[node name="ThoughtBubble" type="TextureRect" parent="CanvasLayer/Window" unique_id=1592832285]
+modulate = Color(1, 0.97889286, 0.9069416, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.61
+anchor_top = -0.795
+anchor_right = -0.61
+anchor_bottom = -0.795
+offset_left = 12.665588
+offset_top = 17.441666
+offset_right = 582.1656
+offset_bottom = 561.44165
+texture = ExtResource("5_w6gm4")
+expand_mode = 1
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/Window" unique_id=847364049]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -47.5
+offset_top = 16.0
+offset_right = 47.5
+offset_bottom = 39.0
+grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0.15127608, 0.15127608, 0.15127605, 0.63529414)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 7
+theme_override_constants/shadow_outline_size = 8
+theme_override_fonts/font = ExtResource("8_mdykl")
+theme_override_font_sizes/font_size = 30
+text = "I'm going to:"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Window" unique_id=555324488]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -131.99524
+offset_top = -25.0
+offset_right = 131.99524
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="RestButton" type="Button" parent="CanvasLayer/Window/HBoxContainer" unique_id=1067881280]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.6, 0.9019608, 0.6, 1)
+theme_override_colors/font_focus_color = Color(0.8, 1, 0.8, 1)
+theme_override_colors/font_hover_color = Color(0.7019608, 1, 0.7019608, 1)
+theme_override_fonts/font = ExtResource("8_mdykl")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_mchu7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_j7ggg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_mia23")
+theme_override_styles/focus = SubResource("StyleBoxFlat_qgqyk")
+text = "Rest"
+
+[node name="TrainButton" type="Button" parent="CanvasLayer/Window/HBoxContainer" unique_id=592992417]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.7, 0.6, 0.6, 1)
+theme_override_colors/font_focus_color = Color(0.9, 0.8, 0.8, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.7, 0.7, 1)
+theme_override_fonts/font = ExtResource("8_mdykl")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_ftl8b")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_m55wu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_m55wu")
+theme_override_styles/focus = SubResource("StyleBoxFlat_m55wu")
+text = "Train"
+
+[node name="DescriptionLabel" type="Label" parent="CanvasLayer/Window" unique_id=261928175]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -87.0
+offset_top = -53.0
+offset_right = 87.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_shadow_color = Color(0.15127608, 0.15127608, 0.15127605, 0.63529414)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 7
+theme_override_constants/shadow_outline_size = 8
+theme_override_fonts/font = ExtResource("8_mdykl")
+theme_override_font_sizes/font_size = 17
+text = "Rest: Heal 30% of Max HP
+(NaN HP -> NaN + Max * .3 HP)"
+horizontal_alignment = 1
+
+[node name="HealedUpLabel" type="Label" parent="CanvasLayer" unique_id=179100001]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 160.0
+offset_top = -159.0
+offset_right = 329.00012
+offset_bottom = -119.99988
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.27967054, 0.9941756, 0.2785619, 1)
+theme_override_colors/font_shadow_color = Color(0.15127608, 0.15127608, 0.15127605, 0.63529414)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 7
+theme_override_constants/shadow_outline_size = 8
+theme_override_fonts/font = ExtResource("8_mdykl")
+theme_override_font_sizes/font_size = 38
+text = "Healed Up!"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1913364]
+libraries/ = SubResource("AnimationLibrary_mchu7")
+
+[connection signal="mouse_entered" from="CanvasLayer/Window/HBoxContainer/RestButton" to="." method="_on_rest_button_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Window/HBoxContainer/RestButton" to="." method="_on_button_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/Window/HBoxContainer/RestButton" to="." method="_on_rest_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Window/HBoxContainer/TrainButton" to="." method="_on_train_button_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Window/HBoxContainer/TrainButton" to="." method="_on_button_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/Window/HBoxContainer/TrainButton" to="." method="_on_train_button_pressed"]
