@@ -35,6 +35,7 @@ bus = &"SFX"
 [node name="SFXPencil" type="AudioStreamPlayer" parent="." unique_id=791986334]
 stream = ExtResource("5_yai5u")
 volume_db = -20.0
+bus = &"SFX"
 
 [node name="SFXPurchase" type="AudioStreamPlayer" parent="." unique_id=317878505]
 stream = ExtResource("6_4xaxn")
@@ -59,15 +60,14 @@ bus = &"SFX"
 
 [node name="BGMMainMenu" type="AudioStreamPlayer" parent="." unique_id=1369189855]
 stream = ExtResource("11_bgm_mm")
-volume_db = -10.0
 bus = &"Music"
 
 [node name="BGMCombat" type="AudioStreamPlayer" parent="." unique_id=2106065711]
 stream = ExtResource("12_bgm_cb")
-volume_db = 1.0
+volume_db = -50.0
 bus = &"Music"
 
 [node name="BGMShop" type="AudioStreamPlayer" parent="." unique_id=578363306]
 stream = ExtResource("13_bgm_sh")
-volume_db = -50.0
+volume_db = -75.0
 bus = &"Music"
