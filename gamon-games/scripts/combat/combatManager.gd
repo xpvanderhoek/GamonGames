@@ -2130,7 +2130,7 @@ func _play_attack_feedback(attack: SpellData, source_entity: Node = null, target
 	var vfx_lifetime_timer: SceneTreeTimer = null
 
 	if attack.sfx != null:
-		SoundManager.play_sfx(attack.sfx)
+		SoundManager.play_sfx(attack.sfx, attack.sfx_volume_db)
 
 	await _play_attack_lunge(source_entity, target_entity)
 

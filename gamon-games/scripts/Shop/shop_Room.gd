@@ -38,6 +38,7 @@ const SHOP_CHATTER_MIN_SEC := 10.0
 const SHOP_CHATTER_MAX_SEC := 25.0
 
 func _ready():
+	SoundManager.play_shop_music()
 	if exit_button != null:
 		var on_exit_pressed := Callable(self, "_exit_shop")
 		if not exit_button[0].pressed.is_connected(on_exit_pressed):
@@ -117,6 +118,7 @@ func _exit_shop() -> void:
 		_shop_chatter_timer.stop()
 
 	SoundManager.play_click()
+	SoundManager.stop_shop_music()
 	if exit_button and exit_button[0]:
 		exit_button[0].disabled = true
 

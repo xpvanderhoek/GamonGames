@@ -18,6 +18,7 @@ func _ready() -> void:
 func _on_yes_pressed() -> void:
 	get_tree().paused = false
 	SoundManager.stop_combat_music()
+	SoundManager.stop_shop_music()
 	RunData.end_run()
 	SoundManager.play_click()
 	TransitionManager.change_scene(MAIN_MENU)
