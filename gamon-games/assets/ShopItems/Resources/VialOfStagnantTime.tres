@@ -6,10 +6,10 @@
 [resource]
 script = ExtResource("1_script")
 item_name = "Vial of Stagnant Time"
-effect = "Skills cost 1 less energy"
+effect = "Skills that cost 3 or more energy cost 1 less energy"
 lore = "The liquid inside never ripples."
-category = "Tier III"
+category = "Tier II"
 texture = ExtResource("2_pa2dk")
-cost = 95
+cost = 80
 buff_type = "Cooldown"
-buff_value = -1.0
+buff_value = 0.0
