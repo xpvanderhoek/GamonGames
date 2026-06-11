@@ -33,6 +33,7 @@ PuzzleTexts="*uid://cw0prrlqfph4m"
 SaveLoad="*uid://ke4840xrkklm"
 Settings="*uid://cq05e68agxlrk"
 SoundManager="*uid://brby8kl4myox2"
+ColorblindFilter="*res://scripts/globals/colorblind_filter.gd"
 
 [display]
 

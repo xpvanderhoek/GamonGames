@@ -5,6 +5,7 @@ const ABANDON_SCREEN := preload("res://scenes/UI/main_menu/settings/abandon_conf
 @onready var window_mode: OptionButton = $Window/Contents/GraphicsContainer/WindowMode/OptionButton
 @onready var res_options: OptionButton = $Window/Contents/GraphicsContainer/Resolution/OptionButton
 @onready var v_sync_button: CheckBox = $Window/Contents/GraphicsContainer/VSyncButton
+@onready var colorblind_mode: OptionButton = $Window/Contents/GraphicsContainer/ColorblindMode/OptionButton
 @onready var title_label: Label = $Window/Title
 @onready var abandon: Button = $Window/Contents/Abandon
 @onready var master_slider: HSlider = $Window/Contents/SoundContainer/Master/VolumeSlider
@@ -74,6 +75,8 @@ func _sync_graphics():
 		v_sync_button.button_pressed = true
 	else:
 		v_sync_button.button_pressed = false
+	
+	colorblind_mode.select(Settings.data.colorblind_mode)
 
 func _on_back_pressed() -> void:
 	SoundManager.play_click()
@@ -128,6 +131,11 @@ func _on_v_sync_button_pressed() -> void:
 	else:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		Settings.data.vsync = false
+	Settings.save_settings()
+
+func _on_colorblind_item_selected(index: int) -> void:
+	Settings.data.colorblind_mode = index
+	Settings.apply_settings()
 	Settings.save_settings()
 
 func _on_abandon_pressed() -> void:

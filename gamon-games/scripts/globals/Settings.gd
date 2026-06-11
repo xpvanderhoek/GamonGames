@@ -22,6 +22,9 @@ func apply_settings():
 	DisplayServer.window_set_vsync_mode(
 		DisplayServer.VSYNC_ENABLED if data.vsync else DisplayServer.VSYNC_DISABLED
 	)
+	
+	if ColorblindFilter.has_method("set_mode"):
+		ColorblindFilter.set_mode(data.colorblind_mode)
 
 	# Audio
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(data.master_volume))
