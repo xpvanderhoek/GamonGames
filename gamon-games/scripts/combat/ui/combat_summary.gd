@@ -15,6 +15,7 @@ signal continue_pressed
 @export var SPELLS: Array[SpellData] = []
 const SPELL_DIR := "res://resources/combat_spells/"
 const CHOOSE_BUTTON_SCENE = preload("res://Scenes/combat/ui/ChooseNewAbilityButton.tscn")
+const MAX_SPELL_SLOTS := 6
 
 var _target_exp: int = 0
 var _animation_start_exp: int = 0
@@ -23,6 +24,7 @@ var _current_displayed_exp: int = 0
 var _last_tick_exp: int = 0
 var _exp_text_label: Label = null
 var _did_level_up: bool = false
+var _pending_level_ups: int = 0
 var _all_spells: Array[SpellData] = []
 var _selected_spell: SpellData = null
 
@@ -56,6 +58,8 @@ func setup(exp_gained: int) -> void:
 	var start_lvl: int = _get_level_from_exp(starting_exp)
 	var end_lvl: int = _get_level_from_exp(_target_exp)
 	_did_level_up = end_lvl > start_lvl
+	_pending_level_ups = max(0, end_lvl - start_lvl)
+	_selected_spell = null
 	
 	_update_ui_for_exp(_current_displayed_exp)
 	_animate_exp_bar(starting_exp, _target_exp)
@@ -146,7 +150,7 @@ func _animate_exp_bar(from_exp: int, to_exp: int) -> void:
 	tween.tween_callback(_on_animation_finished)
 
 func _on_animation_finished() -> void:
-	if _did_level_up:
+	if _pending_level_ups > 0:
 		_play_levelup_sfx()
 		_show_spell_options()
 	else:
@@ -157,11 +161,21 @@ func _play_levelup_sfx() -> void:
 	SoundManager.play_levelup()
 
 func _show_spell_options() -> void:
+	_clear_spell_options()
+	_selected_spell = null
+	if continue_button:
+		continue_button.disabled = true
+
 	var combat_manager := get_parent() as CombatManager
 	var shuffled_spells = _all_spells.duplicate()
 	shuffled_spells.shuffle()
+	var can_unlock_new_spell := RunData.spells.size() < MAX_SPELL_SLOTS
 	var options: Array[SpellData] = []
 	for spell in shuffled_spells:
+		if not can_unlock_new_spell:
+			var existing_spell := RunData.get_spell_by_id(spell.spell_id)
+			if existing_spell == null:
+				continue
 		if options.size() >= 3:
 			break
 		options.append(spell)
@@ -194,6 +208,11 @@ func _show_spell_options() -> void:
 	level_up.visible = true
 	spell_options_container.visible = true
 
+func _clear_spell_options() -> void:
+	for child in spell_options_container.get_children():
+		child.queue_free()
+	_selected_spell = null
+
 func _on_spell_option_clicked(button: ChooseNewAbilityButton) -> void:
 	var combat_manager := get_parent() as CombatManager
 	if combat_manager != null and is_instance_valid(combat_manager):
@@ -213,7 +232,7 @@ func _on_continue_button_pressed() -> void:
 	if combat_manager != null and is_instance_valid(combat_manager):
 		combat_manager.hide_spell_tooltip()
 		
-	if _did_level_up and _selected_spell != null:
+	if _pending_level_ups > 0 and _selected_spell != null:
 		var existing = RunData.get_spell_by_id(_selected_spell.spell_id)
 		
 		if existing:
@@ -221,13 +240,16 @@ func _on_continue_button_pressed() -> void:
 		else:
 			RunData.add_spell(_selected_spell)
 		
+		_pending_level_ups -= 1
+		
+		if _pending_level_ups > 0:
+			_show_spell_options()
+			return
+		
 		h_separator.visible = false
 		level_up.visible = false
 		spell_options_container.visible = false
-		
-		for child in spell_options_container.get_children():
-			child.queue_free()
-			
+		_clear_spell_options()
 		_selected_spell = null
 		
 	continue_pressed.emit()
