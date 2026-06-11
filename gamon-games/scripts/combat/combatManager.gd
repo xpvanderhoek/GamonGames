@@ -2156,7 +2156,13 @@ func _play_attack_lunge(source_entity: Node, target_entity: Node) -> void:
 	if not (raw_target_position is Vector2):
 		return
 
-	var start_position: Vector2 = source_canvas.global_position
+	var start_position: Vector2
+	if source_canvas.has_meta("base_position"):
+		start_position = source_canvas.get_meta("base_position")
+	else:
+		start_position = source_canvas.global_position
+		source_canvas.set_meta("base_position", start_position)
+
 	var target_position := raw_target_position as Vector2
 	var attack_direction := target_position - start_position
 	if attack_direction.length_squared() <= 0.01:
@@ -2168,11 +2174,22 @@ func _play_attack_lunge(source_entity: Node, target_entity: Node) -> void:
 
 	var lunge_position := start_position + attack_direction.normalized() * lunge_distance
 	var tween := create_tween()
+	
+	source_canvas.set_meta("active_lunge_tween", tween)
+	
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(source_canvas, "global_position", lunge_position, 0.09)
 	tween.set_ease(Tween.EASE_IN)
 	tween.tween_property(source_canvas, "global_position", start_position, 0.12)
+	
+	tween.finished.connect(func():
+		if is_instance_valid(source_canvas):
+			if source_canvas.has_meta("active_lunge_tween") and source_canvas.get_meta("active_lunge_tween") == tween:
+				source_canvas.remove_meta("base_position")
+				source_canvas.remove_meta("active_lunge_tween")
+	)
+	
 	await tween.finished
 
 func _resolve_vfx_position(attack: SpellData, source_entity: Node = null, target_entity: Node = null) -> Vector2:
