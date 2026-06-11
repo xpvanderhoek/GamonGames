@@ -1565,7 +1565,6 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 		"spell_type": int(spell.spell_type),
 		"icon": spell.icon,
 		"icon_color": spell.icon_color,
-		"border_width": spell.border_width,
 		"border_color": spell.get_tier_color(),
 	}
 
