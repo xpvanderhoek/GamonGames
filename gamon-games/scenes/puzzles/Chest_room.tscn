@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://5u5j03j30vtm"]
 
-[ext_resource type="Texture2D" uid="uid://behh6gmxwv2vq" path="res://assets/main_menu/main_menu_background.png" id="1_weo3e"]
+[ext_resource type="Texture2D" uid="uid://cxly65sw53pgn" path="res://assets/main_menu/main_menu_background.png" id="1_weo3e"]
 [ext_resource type="Texture2D" uid="uid://chnx0dcj13ni1" path="res://assets/enemies/shadow.png" id="2_3mo0r"]
-[ext_resource type="Shader" uid="uid://x8nmx6b0y0sd" path="res://shaders/outline_hover.gdshader" id="2_m0lns"]
 [ext_resource type="Texture2D" uid="uid://cn1rjadgwh0ig" path="res://assets/enemies/chest/locked_chest.png" id="2_uq2yn"]
+[ext_resource type="Shader" uid="uid://bwd45g78fas4l" path="res://scenes/puzzles/Chest_room.gdshader" id="3_3mo0r"]
 [ext_resource type="Script" uid="uid://douj8fp4ctxr6" path="res://scripts/puzzles/chest_room/button_click.gd" id="3_lj5rt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3mo0r"]
-shader = ExtResource("2_m0lns")
+shader = ExtResource("3_3mo0r")
 shader_parameter/hovering = false
 shader_parameter/outline_color = Color(1, 1, 1, 1)
 

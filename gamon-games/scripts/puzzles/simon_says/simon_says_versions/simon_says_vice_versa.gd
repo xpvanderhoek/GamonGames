@@ -4,6 +4,9 @@ func get_puzzle_data() -> String:
 	return "simon_says_reverse"
 
 func _ready():
+	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
+		PuzzleData.knows_puzzles[get_puzzle_data()] = true
+		$TutorialOverlay4.visible = true
 	super._ready()
 
 func checkCorrect(clicked_button: int, click_position: int):

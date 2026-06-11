@@ -14,7 +14,10 @@ func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -
 	puzzle = true
 
 func _ready():
-	print("hoisdaf")
+	print(!PuzzleData.knows_puzzles[get_puzzle_data()])
+	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
+		PuzzleData.knows_puzzles[get_puzzle_data()] = true
+		$TutorialOverlay6.visible = true
 	PuzzleData.chest_open = false
 	totalCoins.text = str(RunData.coins)
 	all_colors.append(Color(0.0, 0.0, 0.616, 1.0))
