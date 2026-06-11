@@ -191,6 +191,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_gwckk")
 expand_mode = 1
+flip_v = true
 
 [node name="Label" type="Label" parent="EnergyPanel" unique_id=479513994]
 layout_mode = 0
@@ -231,6 +232,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_gwckk")
 expand_mode = 1
+flip_h = true
 
 [node name="GridContainer" type="GridContainer" parent="Panel" unique_id=1834709144]
 layout_mode = 1
