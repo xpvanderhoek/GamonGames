@@ -288,14 +288,12 @@ func apply_status_effect(target_enemy: CombatEntity, target_limb: CombatLimb, st
 		"spell_name": "%s (%s)" % [source_name, status],
 		"spell_type": int(SpellData.SpellType.DEBUFF),
 		"icon": icon,
-		"damage_type": int(SpellData.DamageType.PHYSICAL),
 		"target_scope": int(CombatManager.TargetScope.LIMB),
 		"outgoing_mult_delta": 0.0,
 		"incoming_mult_delta": 0.0,
 		"damage_over_time": 0,
 		"stun_turns": false,
-		"physical_defense_delta": 0.0,
-		"magic_defense_delta": 0.0,
+		"defense_delta": 0.0,
 	}
 
 	match status_key:

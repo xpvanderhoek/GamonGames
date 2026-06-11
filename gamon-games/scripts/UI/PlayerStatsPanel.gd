@@ -12,8 +12,7 @@ const STAT_META := {
 	"gold_gain":         { "label": "Gold gain",       "suffix": "×",  "icon": "🪙" },
 	"debuff_resistance": { "label": "Debuff resist",   "suffix": "%",  "icon": "🛡" },
 	"luck":              { "label": "Luck",            "suffix": "",   "icon": "🍀" },
-	"physical_defense":  { "label": "Phys defense",    "suffix": "",   "icon": "🪨" },
-	"magic_defense":     { "label": "Magic defense",   "suffix": "",   "icon": "✨" },
+	"defense":           { "label": "Defense",         "suffix": "",   "icon": "🪨" },
 }
 
 @onready var profile_label   : Label         = $MarginContainer/VBox/Header/ProfileLabel

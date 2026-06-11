@@ -40,13 +40,10 @@ func set_selected(selected: bool) -> void:
 	update_appearance()
 
 func _get_spell_category(spell: SpellData) -> int:
-	if spell.player_physical_defense_delta > 0.0 or spell.player_magic_defense_delta > 0.0:
+	if spell.player_defense_delta > 0.0:
 		return SpellCategory.BLOCK
 	if spell.spell_type == SpellData.SpellType.ATTACK:
-		if spell.damage_type == SpellData.DamageType.MAGIC:
-			return SpellCategory.MAGIC_ATTACK
-		else:
-			return SpellCategory.PHYSICAL_ATTACK
+		return SpellCategory.PHYSICAL_ATTACK
 	if spell.spell_type == SpellData.SpellType.BUFF or spell.spell_type == SpellData.SpellType.HEAL:
 		return SpellCategory.BUFF_HEAL
 	return SpellCategory.DEBUFF

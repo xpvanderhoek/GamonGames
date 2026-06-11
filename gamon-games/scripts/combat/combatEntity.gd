@@ -8,8 +8,7 @@ extends Node
 @export_category("Spawn")
 @export var spawn_min_fights: int = 0
 @export var spawn_max_fights: int = 999
-@export_range(0.0, 100.0, 0.1) var physical_defense: float = 0.0
-@export_range(0.0, 100.0, 0.1) var magic_defense: float = 0.0
+@export_range(0.0, 100.0, 0.1) var defense: float = 0.0
 
 var limbs: Array[CombatLimb] = []
 var is_alive: bool = true
@@ -47,12 +46,8 @@ var combat_scaling_multiplier: float = 1.0
 var _death_started: bool = false
 var _death_materials: Array[ShaderMaterial] = []
 
-func get_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
-	match damage_type:
-		SpellData.DamageType.MAGIC:
-			return max(0.0, magic_defense)
-		_:
-			return max(0.0, physical_defense)
+func get_defense() -> float:
+	return max(0.0, defense)
 
 func _ready() -> void:
 	_discover_limbs()
@@ -504,15 +499,10 @@ func _show_limb_tooltip(limb: CombatLimb, source_enemy: CombatEntity = null) -> 
 	if _was_shift_pressed:
 		t += "\n[color=#8a8a9e][font_size=11]  - Your chance to successfully hit this limb.[/font_size][/color]"
 
-	if limb.physical_defense > 0.0:
-		t += "\nPhys Def: [color=#cccccc]%.0f%%[/color]" % limb.physical_defense
+	if limb.defense > 0.0:
+		t += "\nDefense: [color=#cccccc]%.0f%%[/color]" % limb.defense
 		if _was_shift_pressed:
-			t += "\n[color=#8a8a9e][font_size=11]  - Reduces incoming physical damage.[/font_size][/color]"
-
-	if limb.magic_defense > 0.0:
-		t += "\nMagic Def: [color=#cccccc]%.0f%%[/color]" % limb.magic_defense
-		if _was_shift_pressed:
-			t += "\n[color=#8a8a9e][font_size=11]  - Reduces incoming magic damage.[/font_size][/color]"
+			t += "\n[color=#8a8a9e][font_size=11]  - Reduces incoming damage.[/font_size][/color]"
 
 	if limb.is_vital:
 		t += "\n[color=#ffaa00][b]VITAL[/b][/color]"
