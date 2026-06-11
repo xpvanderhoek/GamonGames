@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dx0f572m5o1ba"]
 
 [ext_resource type="Script" uid="uid://qiwowcomefom" path="res://scripts/UI/main_menu/settings/settings_menu.gd" id="1_b6b0x"]
-[ext_resource type="FontFile" uid="uid://ddwbv0ig5m60d" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_kv4nn"]
-[ext_resource type="FontFile" uid="uid://by4n0atvi5g7v" path="res://assets/fonts/CaesarDressing-Regular.ttf" id="3_rar7h"]
+[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_kv4nn"]
+[ext_resource type="FontFile" uid="uid://2rwd85jki8i8" path="res://assets/fonts/CaesarDressing-Regular.ttf" id="3_rar7h"]
 [ext_resource type="Texture2D" uid="uid://b243pqp2c12ym" path="res://assets/settings/pause_settings.png" id="4_ekf0g"]
 [ext_resource type="PackedScene" uid="uid://bwnbuxnh3g7hj" path="res://scenes/UI/main_menu/settings/volume_slider.tscn" id="5_kv4nn"]
 
@@ -79,9 +79,8 @@ grow_vertical = 2
 [node name="GraphicsContainer" type="VBoxContainer" parent="Window/Contents" unique_id=52162237]
 layout_mode = 0
 offset_left = -18.0
-offset_top = 28.0
 offset_right = 270.0
-offset_bottom = 214.0
+offset_bottom = 186.0
 
 [node name="Label" type="Label" parent="Window/Contents/GraphicsContainer" unique_id=1682791833]
 layout_mode = 2
@@ -152,38 +151,11 @@ theme_override_fonts/font = ExtResource("2_kv4nn")
 theme_override_font_sizes/font_size = 17
 text = "VSync"
 
-[node name="ColorblindMode" type="HBoxContainer" parent="Window/Contents/GraphicsContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Window/Contents/GraphicsContainer/ColorblindMode"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_kv4nn")
-theme_override_font_sizes/font_size = 17
-text = "Colorblind:"
-
-[node name="Control" type="Control" parent="Window/Contents/GraphicsContainer/ColorblindMode"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="OptionButton" type="OptionButton" parent="Window/Contents/GraphicsContainer/ColorblindMode"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-item_count = 4
-popup/item_0/text = "None"
-popup/item_0/id = 0
-popup/item_1/text = "Protanopia"
-popup/item_1/id = 1
-popup/item_2/text = "Deuteranopia"
-popup/item_2/id = 2
-popup/item_3/text = "Tritanopia"
-popup/item_3/id = 3
-
 [node name="SoundContainer" type="VBoxContainer" parent="Window/Contents" unique_id=1500271597]
 layout_mode = 0
 offset_left = 310.0
-offset_top = 28.0
 offset_right = 590.0
-offset_bottom = 214.0
+offset_bottom = 186.0
 
 [node name="Label" type="Label" parent="Window/Contents/SoundContainer" unique_id=1216378668]
 layout_mode = 2
@@ -241,6 +213,63 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 bus_name = "Music"
 
+[node name="AccessibilityContainer" type="VBoxContainer" parent="Window/Contents" unique_id=100000002]
+layout_mode = 0
+offset_left = -18.0
+offset_top = 175.0
+offset_right = 566.0
+offset_bottom = 261.0
+theme_override_constants/separation = 4
+
+[node name="AccessibilityLabel" type="Label" parent="Window/Contents/AccessibilityContainer" unique_id=100000003]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96474224, 0.96474224, 0.9647421, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 26
+text = "Accessibility"
+horizontal_alignment = 1
+
+[node name="ColorblindMode" type="HBoxContainer" parent="Window/Contents/AccessibilityContainer" unique_id=1793140368]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/AccessibilityContainer/ColorblindMode" unique_id=864975081]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "Colorblind:"
+
+[node name="Control" type="Control" parent="Window/Contents/AccessibilityContainer/ColorblindMode" unique_id=790961411]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="Window/Contents/AccessibilityContainer/ColorblindMode" unique_id=1852666827]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+item_count = 4
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Protanopia"
+popup/item_1/id = 1
+popup/item_2/text = "Deuteranopia"
+popup/item_2/id = 2
+popup/item_3/text = "Tritanopia"
+popup/item_3/id = 3
+
+[node name="FontFamily" type="HBoxContainer" parent="Window/Contents/AccessibilityContainer" unique_id=100000012]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/AccessibilityContainer/FontFamily" unique_id=100000013]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 15
+text = "Font:"
+
+[node name="OptionButton" type="OptionButton" parent="Window/Contents/AccessibilityContainer/FontFamily" unique_id=100000014]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="Abandon" type="Button" parent="Window/Contents" unique_id=2113631439]
 layout_mode = 1
 anchors_preset = 7
@@ -295,11 +324,12 @@ autowrap_trim_flags = 0
 
 [connection signal="item_selected" from="Window/Contents/GraphicsContainer/Resolution/OptionButton" to="." method="_on_resolution_item_selected"]
 [connection signal="item_selected" from="Window/Contents/GraphicsContainer/WindowMode/OptionButton" to="." method="_on_window_item_selected"]
-[connection signal="item_selected" from="Window/Contents/GraphicsContainer/ColorblindMode/OptionButton" to="." method="_on_colorblind_item_selected"]
 [connection signal="pressed" from="Window/Contents/GraphicsContainer/VSyncButton" to="." method="_on_v_sync_button_pressed"]
 [connection signal="done_sliding" from="Window/Contents/SoundContainer/Master/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
 [connection signal="done_sliding" from="Window/Contents/SoundContainer/SFX/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
 [connection signal="done_sliding" from="Window/Contents/SoundContainer/Music/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
+[connection signal="item_selected" from="Window/Contents/AccessibilityContainer/ColorblindMode/OptionButton" to="." method="_on_colorblind_item_selected"]
+[connection signal="item_selected" from="Window/Contents/AccessibilityContainer/FontFamily/OptionButton" to="." method="_on_font_item_selected"]
 [connection signal="mouse_entered" from="Window/Contents/Abandon" to="." method="_on_abandon_hover"]
 [connection signal="pressed" from="Window/Contents/Abandon" to="." method="_on_abandon_pressed"]
 [connection signal="mouse_entered" from="Window/Contents/Back" to="." method="_on_back_hover"]

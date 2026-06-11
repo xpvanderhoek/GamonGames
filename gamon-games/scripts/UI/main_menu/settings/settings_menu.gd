@@ -5,7 +5,8 @@ const ABANDON_SCREEN := preload("res://scenes/UI/main_menu/settings/abandon_conf
 @onready var window_mode: OptionButton = $Window/Contents/GraphicsContainer/WindowMode/OptionButton
 @onready var res_options: OptionButton = $Window/Contents/GraphicsContainer/Resolution/OptionButton
 @onready var v_sync_button: CheckBox = $Window/Contents/GraphicsContainer/VSyncButton
-@onready var colorblind_mode: OptionButton = $Window/Contents/GraphicsContainer/ColorblindMode/OptionButton
+@onready var colorblind_mode: OptionButton = $Window/Contents/AccessibilityContainer/ColorblindMode/OptionButton
+@onready var font_option: OptionButton = $Window/Contents/AccessibilityContainer/FontFamily/OptionButton
 @onready var title_label: Label = $Window/Title
 @onready var abandon: Button = $Window/Contents/Abandon
 @onready var master_slider: HSlider = $Window/Contents/SoundContainer/Master/VolumeSlider
@@ -28,6 +29,7 @@ func _ready() -> void:
 	tween.tween_property(self, "modulate:a", 1.0, 0.1)
 	_fill_resolutions()
 	_sync_graphics()
+	_sync_accessibility()
 
 func _fill_resolutions():
 	var resolutions := _get_resolutions()
@@ -77,6 +79,12 @@ func _sync_graphics():
 		v_sync_button.button_pressed = false
 	
 	colorblind_mode.select(Settings.data.colorblind_mode)
+
+func _sync_accessibility():
+	font_option.clear()
+	for font_name in Settings.FONT_NAMES:
+		font_option.add_item(font_name)
+	font_option.select(Settings.data.font_index)
 
 func _on_back_pressed() -> void:
 	SoundManager.play_click()
@@ -136,6 +144,11 @@ func _on_v_sync_button_pressed() -> void:
 func _on_colorblind_item_selected(index: int) -> void:
 	Settings.data.colorblind_mode = index
 	Settings.apply_settings()
+	Settings.save_settings()
+
+func _on_font_item_selected(index: int) -> void:
+	Settings.data.font_index = index
+	Settings.apply_font_settings()
 	Settings.save_settings()
 
 func _on_abandon_pressed() -> void:

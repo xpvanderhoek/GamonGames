@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ctc0o0gqj1d72"]
 
 [ext_resource type="Script" uid="uid://clp812257p2tl" path="res://scripts/map/map.gd" id="1_ph54e"]
-[ext_resource type="Texture2D" uid="uid://cmvqqhuk2lklo" path="res://assets/map/map_foreground.png" id="2_fcby6"]
+[ext_resource type="Texture2D" uid="uid://cc4nst630wuay" path="res://assets/map/map_foreground.png" id="2_fcby6"]
 [ext_resource type="Script" uid="uid://bwr8prrp5yj2m" path="res://scripts/map/map_generator.gd" id="3_jcaow"]
 [ext_resource type="Texture2D" uid="uid://c3vbvw0npfbyi" path="res://assets/ShopItems/ShopEnvironment/LirahSign.png" id="4_04w0f"]
 [ext_resource type="PackedScene" uid="uid://blmvj80nl5op8" path="res://scenes/map/Legend.tscn" id="5_fcby6"]
@@ -90,7 +90,8 @@ offset_right = 209.0
 offset_bottom = 115.0
 text = "0"
 label_settings = SubResource("LabelSettings_0cso3")
-horizontal_alignment = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Health" type="TextureRect" parent="CanvasLayer" unique_id=1511055501]
 offset_left = 22.0
@@ -110,6 +111,7 @@ offset_bottom = 115.0
 text = "0"
 label_settings = SubResource("LabelSettings_0cso3")
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/Health" unique_id=1082995949]
 layout_mode = 1
