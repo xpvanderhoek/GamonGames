@@ -27,6 +27,9 @@ var is_aoe_highlighted: bool = false
 var _spell_targeting_enabled: bool = false
 var _spell_targeting_hovered: bool = false
 var _spell_targeting_icon: Texture2D = null
+var _spell_targeting_icon_color: Color = Color.WHITE
+var _spell_targeting_border_color: Color = Color.WHITE
+var _spell_targeting_border_width: int = 0
 var _spell_targeting_frame_sprite: Sprite2D = null
 var _spell_targeting_icon_sprite: Sprite2D = null
 var _initial_scale: Vector2 = Vector2.ONE
@@ -278,10 +281,13 @@ func set_aoe_unhighlighted() -> void:
 		if child_limb != null and is_instance_valid(child_limb):
 			child_limb.set_aoe_unhighlighted()
 
-func set_spell_targeting_preview(enabled: bool, hovered: bool, spell_icon: Texture2D = null) -> void:
+func set_spell_targeting_preview(enabled: bool, hovered: bool, spell_icon: Texture2D = null, spell_icon_color: Color = Color.WHITE, spell_border_color: Color = Color.WHITE, spell_border_width: int = 0) -> void:
 	_spell_targeting_enabled = enabled and not is_destroyed
 	_spell_targeting_hovered = hovered and _spell_targeting_enabled
 	_spell_targeting_icon = spell_icon
+	_spell_targeting_icon_color = spell_icon_color
+	_spell_targeting_border_color = spell_border_color
+	_spell_targeting_border_width = spell_border_width
 	_ensure_spell_targeting_visuals()
 	_update_spell_targeting_visuals()
 
@@ -332,6 +338,7 @@ func _update_spell_targeting_visuals() -> void:
 	if _spell_targeting_icon_sprite != null and is_instance_valid(_spell_targeting_icon_sprite):
 		if _spell_targeting_icon != null:
 			_spell_targeting_icon_sprite.texture = _spell_targeting_icon
+			_spell_targeting_icon_sprite.modulate = _spell_targeting_icon_color
 			var icon_size := _spell_targeting_icon.get_size()
 			if icon_size.x > 0.0 and icon_size.y > 0.0:
 				var frame_size := Vector2(40.0, 40.0)
@@ -343,6 +350,7 @@ func _update_spell_targeting_visuals() -> void:
 				_spell_targeting_icon_sprite.scale = Vector2.ONE * scale_factor
 		else:
 			_spell_targeting_icon_sprite.texture = null
+			_spell_targeting_icon_sprite.modulate = Color.WHITE
 
 func take_damage(amount: int) -> void:
 	if is_destroyed:

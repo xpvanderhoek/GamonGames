@@ -8,6 +8,7 @@ const ICONS := {
 	Room.Type.COMBAT: [preload("res://assets/map/icons/map_icon_combat.png"), Vector2.ONE],
 	Room.Type.SHOP: [preload("res://assets/map/icons/map_icon_shop.png"), Vector2.ONE],
 	Room.Type.PUZZLE: [preload("res://assets/map/icons/map_icon_puzzle.png"), Vector2.ONE],
+	Room.Type.CAMPFIRE: [preload("res://assets/map/icons/campfire.png"), Vector2.ONE],
 	Room.Type.BOSS: [preload("res://assets/map/icons/map_icon_boss.png"), Vector2(2, 2)]
 }
 

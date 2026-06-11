@@ -3,6 +3,7 @@ extends Node
 
 @export_category("VFX-SFX")
 @export var hit_sfx: AudioStream
+@export_range(-80.0, 24.0, 0.1) var hit_sfx_volume_db: float = 0.0
 
 @export var turn_order_icon: Texture2D
 @export_category("Spawn")
@@ -21,6 +22,9 @@ var _group_highlighted_limbs: Array[CombatLimb] = []
 var _spell_targeting_enabled: bool = false
 var _spell_targeting_whole_enemy: bool = false
 var _spell_targeting_icon: Texture2D = null
+var _spell_targeting_icon_color: Color = Color.WHITE
+var _spell_targeting_border_color: Color = Color.WHITE
+var _spell_targeting_border_width: int = 0
 
 var block_click_emit: bool = false
 var single_highlight_enabled: bool = true
@@ -201,10 +205,13 @@ func clear_current_highlight() -> void:
 	_clear_current_highlight_visuals()
 	_refresh_spell_targeting_visuals()
 
-func set_spell_targeting_preview(enabled: bool, whole_enemy: bool, spell_icon: Texture2D = null) -> void:
+func set_spell_targeting_preview(enabled: bool, whole_enemy: bool, spell_icon: Texture2D = null, spell_icon_color: Color = Color.WHITE, spell_border_color: Color = Color.WHITE, spell_border_width: int = 0) -> void:
 	_spell_targeting_enabled = enabled
 	_spell_targeting_whole_enemy = whole_enemy and enabled
 	_spell_targeting_icon = spell_icon
+	_spell_targeting_icon_color = spell_icon_color
+	_spell_targeting_border_color = spell_border_color
+	_spell_targeting_border_width = spell_border_width
 	_refresh_spell_targeting_visuals()
 
 func _get_whole_enemy_indicator_limb() -> CombatLimb:
@@ -232,11 +239,11 @@ func _refresh_spell_targeting_visuals() -> void:
 			continue
 		if _spell_targeting_whole_enemy:
 			if limb == whole_enemy_limb:
-				limb.set_spell_targeting_preview(true, _highlighted_limb != null, _spell_targeting_icon)
+				limb.set_spell_targeting_preview(true, _highlighted_limb != null, _spell_targeting_icon, _spell_targeting_icon_color, _spell_targeting_border_color, _spell_targeting_border_width)
 			else:
-				limb.set_spell_targeting_preview(false, false, null)
+				limb.set_spell_targeting_preview(false, false, null, Color.WHITE, Color.WHITE, 0)
 		else:
-			limb.set_spell_targeting_preview(_spell_targeting_enabled and limb.can_be_targeted, limb == _highlighted_limb, _spell_targeting_icon)
+			limb.set_spell_targeting_preview(_spell_targeting_enabled and limb.can_be_targeted, limb == _highlighted_limb, _spell_targeting_icon, _spell_targeting_icon_color, _spell_targeting_border_color, _spell_targeting_border_width)
 
 
 
@@ -309,7 +316,7 @@ func take_damage(limb: CombatLimb, amount: int) -> void:
 		remaining_damage = maxi(0, remaining_damage - damage_dealt)
 
 		if hit_sfx != null:
-			SoundManager.play_sfx(hit_sfx)
+			SoundManager.play_sfx(hit_sfx, hit_sfx_volume_db)
 
 		entity_took_damage.emit(self, target_limb, damage_dealt)
 

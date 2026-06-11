@@ -279,4 +279,5 @@ layout_mode = 2
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1290529617]
 
 [node name="TutorialOverlay" parent="CanvasLayer" unique_id=1771534117 instance=ExtResource("6_jgg25")]
+visible = false
 pages = Array[ExtResource("7_4a6i5")]([SubResource("Resource_h2sm1"), SubResource("Resource_4a6i5"), SubResource("Resource_si0bq"), SubResource("Resource_j3cqa")])

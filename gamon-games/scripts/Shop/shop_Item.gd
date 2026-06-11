@@ -139,17 +139,20 @@ func buy_item():
 	if RunData.coins >= item_data.cost:
 		if RunData.add_item(item_data):
 			RunData.coins -= item_data.cost
+			SoundManager.play_purchase()
 			item_hover_ended.emit()
 			_is_being_purchased = true
 			await _play_buy_smoke_effect()
 			queue_free()
 		else:
+			SoundManager.play_failsound()
 			print("Cannot pick up item right now.")
 	else:
 		var now_ms := Time.get_ticks_msec()
 		if now_ms - _last_no_coins_dialogue_ms < NO_COINS_DIALOGUE_COOLDOWN_MS:
 			return
 
+		SoundManager.play_failsound()
 		_last_no_coins_dialogue_ms = now_ms
 		no_coins_attempted.emit()
 

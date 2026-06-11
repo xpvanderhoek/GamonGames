@@ -18,10 +18,10 @@ func _ready() -> void:
 	if RunData.run_active:
 		abandon.visible = true
 		title_label.text = "P A U S E D"
+		get_tree().paused = true
 	else:
 		abandon.visible = false
 		title_label.text = title
-	get_tree().paused = true
 	modulate.a = 0.0
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 1.0, 0.1)

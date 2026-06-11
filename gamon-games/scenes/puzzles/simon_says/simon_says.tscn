@@ -41,18 +41,16 @@ script = ExtResource("1_s13xn")
 [node name="TextureRect" type="TextureRect" parent="." unique_id=642298664]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -1.6630001
-anchor_top = -3.6390002
-anchor_right = 2.6030002
-anchor_bottom = 3.091
-offset_left = -0.22387695
-offset_top = 0.072021484
-offset_right = 0.34375
-offset_bottom = 0.031982422
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1916.0
+offset_top = -2358.0
+offset_right = 1847.0
+offset_bottom = 1355.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_c4gcl")
-expand_mode = 2
+expand_mode = 1
 stretch_mode = 4
 
 [node name="topleft" parent="." unique_id=470095919 instance=ExtResource("3_bogql")]
@@ -119,16 +117,16 @@ offset_right = 1026.3335
 offset_bottom = 750.8889
 
 [node name="Pngimg_comGravestonePng35" type="Sprite2D" parent="." unique_id=1511149445]
-position = Vector2(169, 416)
+position = Vector2(140, 509)
 scale = Vector2(0.39682543, 0.3567901)
 texture = ExtResource("4_bwhsd")
 
 [node name="RoundLabel" type="Label" parent="." unique_id=1117392395]
 layout_mode = 0
-offset_left = 110.4024
-offset_top = 353.92352
-offset_right = 200.02347
-offset_bottom = 386.92352
+offset_left = 79.999985
+offset_top = 451.0
+offset_right = 169.62106
+offset_bottom = 484.0
 rotation = -0.23212878
 text = "Round:"
 label_settings = SubResource("LabelSettings_bwhsd")
@@ -136,15 +134,15 @@ horizontal_alignment = 1
 
 [node name="RoundNumberLabel" type="Label" parent="." unique_id=1320825437]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -465.8039
-offset_top = 44.863342
-offset_right = -374.0583
-offset_bottom = 153.25827
+anchors_preset = -1
+anchor_left = 0.067
+anchor_top = 0.68200004
+anchor_right = 0.17500001
+anchor_bottom = 0.87700003
+offset_left = 5.8159943
+offset_top = 22.063965
+offset_right = -26.8544
+offset_bottom = 4.098877
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -0.23212878

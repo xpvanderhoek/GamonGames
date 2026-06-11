@@ -10,6 +10,7 @@ const MAP_ROOM = preload("res://scenes/map/map_room.tscn")
 const MAP_LINE = preload("res://scenes/map/map_line.tscn")
 
 const COMBAT_SCENE := "res://scenes/combat/combat.tscn"
+const CAMPFIRE_SCENE := "res://scenes/campfire_rest_room.tscn"
 const SHOP_SCENE := "res://scenes/Shop/ShopRoom.tscn"
 
 const PUZZLE_SCENES := [
@@ -24,6 +25,8 @@ const PUZZLE_SCENES := [
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 @onready var coin_label: Label = $CanvasLayer/Coins/CoinLabel
 @onready var health_label: Label = $CanvasLayer/Health/Label
+@onready var stats_panel = $CanvasLayer/PlayerStatsPanel
+@onready var stats_button: Button = $CanvasLayer/StatsButton
 
 var map_data : Array[Array]
 var floors_climbed : int
@@ -34,6 +37,8 @@ var dragging := false
 var drag_speed := 1.0
 
 func _ready() -> void:
+	stats_button.pressed.connect(stats_panel.toggle)
+	stats_panel.set_stats(PlayerStats)
 	camera_edge_y = MapGenerator.Y_DIST * (MapGenerator.FLOORS - 1)
 
 	if not RunData.run_active or RunData.map_data.is_empty():
@@ -161,5 +166,7 @@ func _go_to_room(room : Room) -> void:
 			TransitionManager.change_scene(SHOP_SCENE, TransitionManager.TransitionType.FADE)
 		Room.Type.PUZZLE:
 			TransitionManager.change_scene("res://scenes/puzzles/Chest_room.tscn")
+		Room.Type.CAMPFIRE:
+			TransitionManager.change_scene(CAMPFIRE_SCENE)
 		Room.Type.BOSS:
 			TransitionManager.change_scene(COMBAT_SCENE)
