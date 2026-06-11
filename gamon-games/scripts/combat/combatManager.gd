@@ -896,7 +896,11 @@ func _on_consumable_pressed(slot_index: int) -> void:
 func _get_spell_energy_cost(spell: SpellData) -> int:
 	if spell == null:
 		return 0
+		
 	var reduction: int = _item_effects.get_item_cooldown_reduction() + _item_effects.get_temp_cooldown_reduction()
+	if spell.energy >= 3 and _item_effects.has_item_named("Vial of Stagnant Time"):
+		reduction += 1
+	
 	return maxi(0, spell.energy - reduction)
 
 func _can_afford_spell(spell: SpellData) -> bool:
