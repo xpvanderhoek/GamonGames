@@ -1,5 +1,31 @@
 extends Node
 
+func _ready() -> void:
+	play_main_menu_music()
+
+func play_main_menu_music() -> void:
+	if !$BGMMainMenu.playing:
+		$BGMMainMenu.play()
+
+func stop_main_menu_music() -> void:
+	$BGMMainMenu.stop()
+
+func play_combat_music() -> void:
+	if $BGMCombat.playing:
+		return
+	$BGMCombat.volume_db = -40.0
+	$BGMCombat.play()
+	var tween = get_tree().create_tween().bind_node(self)
+	tween.tween_property($BGMCombat, "volume_db", -10.0, 1.5)
+
+func stop_combat_music() -> void:
+	if !$BGMCombat.playing:
+		return
+	var tween = get_tree().create_tween().bind_node(self)
+	tween.tween_property($BGMCombat, "volume_db", -40.0, 1.5)
+	tween.tween_callback($BGMCombat.stop)
+	tween.tween_callback(func(): $BGMCombat.volume_db = -10.0)
+
 func play_click():
 	$SFXClick.play()
 

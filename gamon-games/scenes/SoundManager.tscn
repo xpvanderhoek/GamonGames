@@ -10,6 +10,8 @@
 [ext_resource type="AudioStream" uid="uid://b2ax2ovehd6pm" path="res://assets/Sounds/levelup.wav" id="8_lvlup"]
 [ext_resource type="AudioStream" uid="uid://7yetv6dg1d2v" path="res://assets/Sounds/xpbar.wav" id="9_xpbar"]
 [ext_resource type="AudioStream" uid="uid://c8cnaawjas1ma" path="res://assets/Sounds/combat/Miss_2.wav" id="10_8cji2"]
+[ext_resource type="AudioStream" uid="uid://ct0ifyt0nqag2" path="res://assets/Sounds/background_sounds/Main_Menu.wav" id="11_bgm_mm"]
+[ext_resource type="AudioStream" uid="uid://crn7l7716qsag" path="res://assets/Sounds/background_sounds/Combat_BackgroundSound.wav" id="12_bgm_cb"]
 
 [node name="SoundManager" type="Node" unique_id=440982374]
 script = ExtResource("1_rs7eg")
@@ -52,3 +54,13 @@ bus = &"SFX"
 
 [node name="SFXMiss" type="AudioStreamPlayer" parent="." unique_id=1291264167]
 stream = ExtResource("10_8cji2")
+
+[node name="BGMMainMenu" type="AudioStreamPlayer" parent="." unique_id=1369189855]
+stream = ExtResource("11_bgm_mm")
+volume_db = -10.0
+bus = &"Music"
+
+[node name="BGMCombat" type="AudioStreamPlayer" parent="." unique_id=2106065711]
+stream = ExtResource("12_bgm_cb")
+volume_db = -10.0
+bus = &"Music"

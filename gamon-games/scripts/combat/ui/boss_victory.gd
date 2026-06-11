@@ -23,6 +23,7 @@ func _ready() -> void:
 	if continue_button:
 		get_tree().paused = false
 		continue_button.pressed.connect(func():
+			SoundManager.stop_combat_music()
 			TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)
 		)
 		continue_button.disabled = true

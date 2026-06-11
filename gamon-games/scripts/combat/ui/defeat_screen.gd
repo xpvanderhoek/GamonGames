@@ -22,6 +22,7 @@ func _ready() -> void:
  
 	if retry_button:
 		retry_button.pressed.connect(func():
+			SoundManager.stop_combat_music()
 			SaveLoad.record_run_stats()
 			RunData.end_run()
 			RunData.new_run()
@@ -33,6 +34,7 @@ func _ready() -> void:
  
 	if menu_button:
 		menu_button.pressed.connect(func():
+			SoundManager.stop_combat_music()
 			SaveLoad.record_run_stats()
 			RunData.end_run()
 			SaveLoad.save_data()
