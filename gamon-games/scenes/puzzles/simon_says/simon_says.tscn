@@ -8,7 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://bxffbjpqptt4l" path="res://assets/Placeholders/Puzzle/Heart.png" id="8_iikmj"]
 [ext_resource type="AudioStream" uid="uid://b6qndig5uw80n" path="res://assets/Sounds/puzzle/FailSound.mp3" id="10_d0fpf"]
 [ext_resource type="AudioStream" uid="uid://tlxlgdl02n7y" path="res://assets/Sounds/puzzle/correctSound.mp3" id="11_2rhfv"]
+[ext_resource type="PackedScene" uid="uid://c80vkx6l0g4kf" path="res://scenes/UI/tutorial/tutorial_overlay.tscn" id="11_sltw8"]
 [ext_resource type="AudioStream" uid="uid://b7br0fma3a1k2" path="res://assets/Sounds/puzzle/coinIncrease.mp3" id="12_c4gcl"]
+[ext_resource type="Script" uid="uid://emcsn5t5bncn" path="res://scripts/UI/tutorial/tutorial_page.gd" id="12_sltw8"]
+[ext_resource type="VideoStream" uid="uid://blhxgq8oo2ai1" path="res://assets/puzzle/SS-normal - kopie.ogv" id="13_2xjno"]
 [ext_resource type="AudioStream" uid="uid://bgicp1tl7aarw" path="res://assets/Sounds/puzzle/liveDisappear.mp3" id="13_c4gcl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
@@ -28,6 +31,12 @@ font_color = Color(0.7137255, 0.7137255, 0, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_iikmj"]
 font_size = 46
 font_color = Color(0.2509804, 0.20784314, 0.1254902, 1)
+
+[sub_resource type="Resource" id="Resource_c4gcl"]
+script = ExtResource("12_sltw8")
+text = "Remember the sequence and repeat it correctly."
+video = ExtResource("13_2xjno")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
 
 [node name="SimonSays" type="Control" unique_id=1237460606]
 layout_mode = 3
@@ -243,6 +252,10 @@ stream = ExtResource("12_c4gcl")
 
 [node name="AudioStreamPlayer4" type="AudioStreamPlayer" parent="." unique_id=1540497803]
 stream = ExtResource("13_c4gcl")
+
+[node name="TutorialOverlay" parent="." unique_id=282468504 instance=ExtResource("11_sltw8")]
+title = "Simon Says"
+pages = Array[ExtResource("12_sltw8")]([SubResource("Resource_c4gcl")])
 
 [connection signal="pressed" from="Button" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_explanation_pressed"]

@@ -8,6 +8,7 @@ class_name SimonSays
 @onready var totalCoins: Label = $TotalCoinsLabel
 @onready var lives: TextureRect = $Lives
 @onready var finishRound: int = 7
+@onready var tutorial = $TutorialOverlay
 const COMBAT_SCENE := "res://scenes/combat/combat.tscn"
 
 var coin_amount: int = 0
