@@ -40,6 +40,7 @@ func _ready() -> void:
 	stats_button.pressed.connect(stats_panel.toggle)
 	stats_panel.set_stats(PlayerStats)
 	camera_edge_y = MapGenerator.Y_DIST * (MapGenerator.FLOORS - 1)
+	print(PlayerStats.stats)
 
 	if not RunData.run_active or RunData.map_data.is_empty():
 		RunData.new_run()
