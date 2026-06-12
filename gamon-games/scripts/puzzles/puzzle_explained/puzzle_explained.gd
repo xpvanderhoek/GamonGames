@@ -25,7 +25,7 @@ func setup(title_text: String = "", description_text: String = "", tips: Array =
 
 
 func _on_continue_button_pressed() -> void:
-	PuzzleData.knows_puzzles["slide"] = true
+	PlayerStats.knows_puzzles["slide"] = true
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
 	

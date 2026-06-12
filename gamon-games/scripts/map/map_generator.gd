@@ -148,7 +148,7 @@ func _setup_room_types():
 	# first floor is always combat
 	for room : Room in map_data[0]:
 		if room.next_rooms.size() > 0:
-			room.type = Room.Type.COMBAT
+			room.type = Room.Type.PUZZLE
 	
 	# Optional: last floor before the boss fight is always a shop
 	for room : Room in map_data[FLOORS - 2]:

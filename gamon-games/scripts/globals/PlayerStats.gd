@@ -5,6 +5,15 @@ var slot : int = 0
 
 var knows_combat : bool = false
 var knows_avarus : bool = false
+var knows_puzzles := {
+	"slide": false,
+	"simon_says_normal": false,
+	"simon_says_mirror": false,
+	"simon_says_reverse": false,
+	"simon_says_color": false,
+	"simon_says_speed": false,
+	"simon_says_inverted": false
+}
 
 signal stats_changed(stat_name: String, new_value: float)
 signal upgrade_completed(stat_name: String, level: int)
@@ -98,6 +107,13 @@ func reset_stats() -> void:
 	
 	for key in upgrade_levels:
 		upgrade_levels[key] = 0
+
+func reset_tutorials() -> void:
+	knows_combat = false
+	knows_avarus = false
+	
+	for key in knows_puzzles:
+		knows_puzzles[key] = false
 
 func apply_skill_bonuses(skills: Array) -> void:
 	for skill in skills:

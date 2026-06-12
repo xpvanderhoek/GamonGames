@@ -5,6 +5,7 @@ extends Resource
 @export var profile_name: String = ""
 @export var knows_combat: bool = false
 @export var knows_avarus: bool = false
+@export var knows_puzzles: Dictionary = {}
 @export var marrow_shards: int = 0
 @export var stats: Dictionary = {}
 @export var upgrade_levels: Dictionary = {}

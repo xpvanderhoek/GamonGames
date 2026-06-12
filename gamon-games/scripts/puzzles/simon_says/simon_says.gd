@@ -34,7 +34,7 @@ func pulse_first_button(highlight_color: Color = Color(2, 2, 2)):
 	buttons[idx].modulate = Color(1,1,1)
 	await get_tree().create_timer(0.2).timeout
 
-func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -> void:
+func open_explaination(puzzle = PlayerStats.knows_puzzles["simon_says_normal"]) -> void:
 	var explanation = puzzle_explained.instantiate()
 	get_tree().current_scene.add_child(explanation)
 	explanation.setup(data.title, data.description, data.tips, data.reward)

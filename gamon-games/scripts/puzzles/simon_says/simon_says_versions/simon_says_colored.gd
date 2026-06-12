@@ -7,16 +7,16 @@ var colored_sequence: Array[Dictionary] = []
 func get_puzzle_data() -> String:
 	return "simon_says_color"
 	
-func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -> void:
+func open_explaination(puzzle = PlayerStats.knows_puzzles["simon_says_normal"]) -> void:
 	var explanation = puzzle_explained.instantiate()
 	get_tree().current_scene.add_child(explanation)
 	explanation.setup(data.title, data.description, data.tips, data.reward, good_color)
 	puzzle = true
 
 func _ready():
-	print(!PuzzleData.knows_puzzles[get_puzzle_data()])
-	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
-		PuzzleData.knows_puzzles[get_puzzle_data()] = true
+	print(!PlayerStats.knows_puzzles[get_puzzle_data()])
+	if !PlayerStats.knows_puzzles[get_puzzle_data()]:
+		PlayerStats.knows_puzzles[get_puzzle_data()] = true
 		$TutorialOverlay6.visible = true
 	PuzzleData.chest_open = false
 	totalCoins.text = str(RunData.coins)
@@ -24,8 +24,8 @@ func _ready():
 	all_colors.append(Color(0.514, 0.514, 0.0, 1.0))
 	all_colors.append(Color(0.549, 0.0, 0.549, 1.0))
 	good_color = all_colors[randi() % all_colors.size()]
-	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
-		open_explaination(PuzzleData.knows_puzzles[get_puzzle_data()])
+	if !PlayerStats.knows_puzzles[get_puzzle_data()]:
+		open_explaination(PlayerStats.knows_puzzles[get_puzzle_data()])
 	versionLabel.text = data.title
 	sequence.append(randi() % buttons.size())
 	switchDisabled(true)
