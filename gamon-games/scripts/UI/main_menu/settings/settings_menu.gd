@@ -5,6 +5,7 @@ const ABANDON_SCREEN := preload("res://scenes/UI/main_menu/settings/abandon_conf
 @onready var window_mode: OptionButton = $Window/Contents/TabContainer/Graphics/WindowMode/OptionButton
 @onready var res_options: OptionButton = $Window/Contents/TabContainer/Graphics/Resolution/OptionButton
 @onready var v_sync_button: CheckButton = $Window/Contents/TabContainer/Graphics/VSync/VSyncButton
+@onready var fps_limit_button: OptionButton = $Window/Contents/TabContainer/Graphics/FPSLimit/OptionButton
 @onready var colorblind_mode: OptionButton = $Window/Contents/TabContainer/Accessibility/ColorblindMode/OptionButton
 @onready var font_option: OptionButton = $Window/Contents/TabContainer/Accessibility/FontFamily/OptionButton
 @onready var title_label: Label = $Window/Title
@@ -130,6 +131,13 @@ func _sync_graphics():
 		v_sync_button.button_pressed = true
 	else:
 		v_sync_button.button_pressed = false
+		
+	# FPS Limit
+	var fps_map = {0: 0, 30: 1, 60: 2, 120: 3, 144: 4, 200:5, 300:6}
+	if fps_map.has(Settings.data.fps_limit):
+		fps_limit_button.select(fps_map[Settings.data.fps_limit])
+	else:
+		fps_limit_button.select(0)
 	
 	colorblind_mode.select(Settings.data.colorblind_mode)
 
@@ -193,6 +201,13 @@ func _on_v_sync_button_pressed() -> void:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		Settings.data.vsync = false
 	Settings.save_settings()
+
+func _on_fps_limit_item_selected(index: int) -> void:
+	var fps_values = [0, 30, 60, 120, 144, 200, 300]
+	if index >= 0 and index < fps_values.size():
+		Settings.data.fps_limit = fps_values[index]
+		Engine.max_fps = Settings.data.fps_limit
+		Settings.save_settings()
 
 func _on_colorblind_item_selected(index: int) -> void:
 	Settings.data.colorblind_mode = index

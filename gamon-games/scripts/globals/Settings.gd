@@ -50,6 +50,7 @@ func apply_settings():
 	DisplayServer.window_set_vsync_mode(
 		DisplayServer.VSYNC_ENABLED if data.vsync else DisplayServer.VSYNC_DISABLED
 	)
+	Engine.max_fps = data.fps_limit
 
 	if ColorblindFilter.has_method("set_mode"):
 		ColorblindFilter.set_mode(data.colorblind_mode)
