@@ -15,6 +15,7 @@ func save_data():
 	data.profile_name = PlayerStats.profile_name
 	data.knows_combat = PlayerStats.knows_combat
 	data.knows_avarus = PlayerStats.knows_avarus
+	data.knows_puzzles = PlayerStats.knows_puzzles.duplicate()
 	data.stats = PlayerStats.stats.duplicate()
 	data.upgrade_levels = PlayerStats.upgrade_levels.duplicate()
 	data.marrow_shards = PlayerStats.marrow_shards
@@ -40,6 +41,7 @@ func load_data(slot: int):
 	PlayerStats.slot = data.slot
 	PlayerStats.knows_combat = data.knows_combat
 	PlayerStats.knows_avarus = data.knows_avarus
+	PlayerStats.knows_puzzles.merge(data.knows_puzzles, true)
 	PlayerStats.stats.merge(data.stats, true)
 	PlayerStats.upgrade_levels.merge(data.upgrade_levels, true)
 	PlayerStats.marrow_shards = data.marrow_shards
@@ -95,8 +97,7 @@ func create_profile(slot: int, name: String = "Knight") -> void:
 	PlayerStats.slot = slot
 	PlayerStats.reset_stats()
 	PlayerStats.profile_name = name
-	PlayerStats.knows_avarus = false
-	PlayerStats.knows_combat = false
+	PlayerStats.reset_tutorials()
 	PlayerStats.marrow_shards = 0
 	PlayerStats.best_level = 0
 	PlayerStats.total_runs = 0

@@ -1,7 +1,4 @@
 extends Node
-
-func _ready():
-	pick_random_puzzle()
 	
 var slide_puzzle_size: int = 2
 var failed_slide_puzzle_times: int = 0
@@ -20,7 +17,7 @@ var puzzle_coins: int = 0
 var chest_open = false
 var from_puzzle = false
 
-func pick_random_puzzle():
+func pick_random_puzzle():	
 	var keys = knows_puzzles.keys()
 	keys.erase("slide")
 	
