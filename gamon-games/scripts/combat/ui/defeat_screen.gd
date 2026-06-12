@@ -63,7 +63,7 @@ func get_highlight() -> Dictionary:
 	var floor: int = RunData.floors_climbed
 	if floor <= 4:
 		return {
-		"title": "Early Fallen",
+		"title": "An early death",
 	}
 	var highlights = [
 	{
