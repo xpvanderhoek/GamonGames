@@ -9,13 +9,13 @@
 [ext_resource type="Resource" uid="uid://crhxl5b2q35f5" path="res://scripts/skill_list/skill_resources/scavengers_eye.tres" id="8_ed1i2"]
 [ext_resource type="Resource" uid="uid://x3hhxu7knfbq" path="res://scripts/skill_list/skill_resources/starting_kit.tres" id="9_usirg"]
 [ext_resource type="Resource" uid="uid://k1vhjfkad0qa" path="res://scripts/skill_list/skill_resources/steady_hand.tres" id="10_or8jn"]
-[ext_resource type="Resource" uid="uid://7tr4mnrpca1c" path="res://scripts/skill_list/skill_resources/magic_defense.tres" id="11_am412"]
 [ext_resource type="Resource" uid="uid://80wse1xg4dkb" path="res://scripts/skill_list/skill_resources/stone_guard.tres" id="11_gli5f"]
 [ext_resource type="Texture2D" uid="uid://c3tbae11b3ovt" path="res://scenes/skill_list/Marrow_shards_currency.png" id="12_3tci0"]
 [ext_resource type="FontFile" uid="uid://dr8r1buo47v6k" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="12_loq5n"]
 [ext_resource type="Texture2D" uid="uid://behh6gmxwv2vq" path="res://assets/main_menu/main_menu_background.png" id="12_r8qnw"]
 [ext_resource type="Texture2D" uid="uid://bdl6ds02ccw48" path="res://assets/skill_list_background.png" id="13_20qiw"]
 [ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="13_qn87k"]
+[ext_resource type="StyleBox" uid="uid://fg66y1mcxs3y" path="res://assets/button_highlight.tres" id="15_4jjhm"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fh4ca"]
 texture = ExtResource("13_qn87k")
@@ -26,11 +26,6 @@ Panel/styles/panel = SubResource("StyleBoxTexture_fh4ca")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3tci0"]
 content_margin_left = 9.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20qiw"]
-content_margin_left = 9.0
-bg_color = Color(0.05, 0.05, 0.05, 0.8509804)
-expand_margin_right = 40.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_20qiw"]
 font_size = 23
@@ -52,7 +47,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lvfat")
-skills = Array[ExtResource("2_loq5n")]([ExtResource("3_3tci0"), ExtResource("4_20qiw"), ExtResource("5_r8qnw"), ExtResource("6_qn87k"), ExtResource("8_ed1i2"), ExtResource("9_usirg"), ExtResource("10_or8jn"), ExtResource("11_gli5f"), ExtResource("11_am412")])
+skills = Array[ExtResource("2_loq5n")]([ExtResource("3_3tci0"), ExtResource("4_20qiw"), ExtResource("5_r8qnw"), ExtResource("6_qn87k"), ExtResource("8_ed1i2"), ExtResource("9_usirg"), ExtResource("10_or8jn"), ExtResource("11_gli5f")])
 
 [node name="Background" type="TextureRect" parent="." unique_id=1022203630]
 layout_mode = 0
@@ -77,6 +72,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ItemTooltipPanel" type="Panel" parent="Control" unique_id=1108486703]
+self_modulate = Color(0.0700346, 5.4062864e-05, 0.23660174, 1)
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -103,7 +99,7 @@ offset_right = 143.5
 offset_bottom = 51.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.23921569, 0.16470589, 0.14117648, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 vertical_alignment = 1
 autowrap_mode = 3
 
@@ -119,14 +115,16 @@ offset_top = -47.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
-theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 13
 theme_override_fonts/font = ExtResource("12_loq5n")
-theme_override_font_sizes/font_size = 46
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_3tci0")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_20qiw")
-theme_override_styles/hover = SubResource("StyleBoxFlat_20qiw")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_20qiw")
+theme_override_styles/pressed = ExtResource("15_4jjhm")
+theme_override_styles/hover = ExtResource("15_4jjhm")
+theme_override_styles/hover_pressed = ExtResource("15_4jjhm")
 text = "Back"
 alignment = 0
 
@@ -134,7 +132,7 @@ alignment = 0
 layout_mode = 0
 offset_right = 167.40822
 offset_bottom = 86.0
-tooltip_text = "Gain marrowshards by defeating enemies"
+tooltip_text = "Gain Marrow Shards by defeating enemies"
 texture = ExtResource("12_3tci0")
 expand_mode = 1
 

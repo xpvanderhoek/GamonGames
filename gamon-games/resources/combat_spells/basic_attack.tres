@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://brqp1tf0obe77"]
 
-[ext_resource type="Texture2D" uid="uid://cdf0tccyb8gln" path="res://assets/Placeholders/ui/bowie-knife.png" id="1_gxnck"]
+[ext_resource type="Texture2D" uid="uid://cbrj3tgkpig5f" path="res://assets/Placeholders/ui/bowie-knife.png" id="1_gxnck"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
 [ext_resource type="AudioStream" uid="uid://dds3iqlw5r3g4" path="res://assets/Sounds/combat/Basic Attack_1.wav" id="3_ylob2"]
 
@@ -15,5 +15,6 @@ accuracy = 100.0
 weight = 100.0
 icon = ExtResource("1_gxnck")
 sfx = ExtResource("3_ylob2")
+sfx_volume_db = -10.0
 vfx_anchor = 1
 vfx_lifetime = 1.0

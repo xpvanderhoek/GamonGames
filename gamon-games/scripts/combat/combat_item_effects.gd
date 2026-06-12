@@ -20,8 +20,8 @@ func apply_consumable_item(item: ItemData) -> void:
 			})
 		"Adrenaline Spike":
 			add_player_item_effect("item:adrenaline_spike", item.item_name, item.texture, 2, {
-				"energy_regen_delta": 2.0,
-				"expire_damage": 10,
+				"precision_delta": item.buff_value, 
+				"expire_damage": 15,               
 			})
 		"Essence of the Void":
 			add_player_item_effect("item:essence_void", item.item_name, item.texture, 1, {
@@ -288,14 +288,12 @@ func apply_status_effect(target_enemy: CombatEntity, target_limb: CombatLimb, st
 		"spell_name": "%s (%s)" % [source_name, status],
 		"spell_type": int(SpellData.SpellType.DEBUFF),
 		"icon": icon,
-		"damage_type": int(SpellData.DamageType.PHYSICAL),
 		"target_scope": int(CombatManager.TargetScope.LIMB),
 		"outgoing_mult_delta": 0.0,
 		"incoming_mult_delta": 0.0,
 		"damage_over_time": 0,
 		"stun_turns": false,
-		"physical_defense_delta": 0.0,
-		"magic_defense_delta": 0.0,
+		"defense_delta": 0.0,
 	}
 
 	match status_key:

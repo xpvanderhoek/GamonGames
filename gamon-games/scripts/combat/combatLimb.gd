@@ -15,8 +15,7 @@ const OUTLINE_PADDING := 2
 @export var is_vital: bool = false
 @export var can_be_targeted: bool = true
 @export var show_whole_enemy_indicator: bool = false
-@export_range(0.0, 100.0, 0.1) var physical_defense: float = 0.0
-@export_range(0.0, 100.0, 0.1) var magic_defense: float = 0.0
+@export_range(0.0, 100.0, 0.1) var defense: float = 0.0
 @export_range(0.0, 100.0, 0.1) var hit_chance_percent: float = 100.0
 @export var attacks: Array[SpellData] = []
 
@@ -49,12 +48,8 @@ signal limb_clicked(limb: CombatLimb)
 signal mouse_entered_limb
 signal mouse_exited_limb
 
-func get_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
-	match damage_type:
-		SpellData.DamageType.MAGIC:
-			return max(0.0, magic_defense)
-		_:
-			return max(0.0, physical_defense)
+func get_defense() -> float:
+	return max(0.0, defense)
 
 func get_modified_hit_chance() -> float:
 	if hit_chance_percent >= 100.0:

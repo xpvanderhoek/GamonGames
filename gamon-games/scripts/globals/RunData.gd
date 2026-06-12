@@ -63,7 +63,7 @@ var items : Array[ItemData] = []
 var consumables : Array = [null, null, null, null, null, null, null, null, null]
 
 # Values are placeholders for now, needs testing
-var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000]
+var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3250, 3850, 4500, 5200, 5950, 6750, 7600, 8500, 9450, 10450]
 
 signal coins_changed(new_amount)
 signal health_changed(new_amount)

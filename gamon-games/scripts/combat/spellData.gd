@@ -8,10 +8,7 @@ enum SpellType {
 	HEAL,
 }
 
-enum DamageType {
-	PHYSICAL,
-	MAGIC,
-}
+
 
 enum TargetScope {
 	LIMB,
@@ -44,13 +41,14 @@ var level: int = 1
 @export var energy: int = 0
 @export_range(0, 100, 1) var accuracy: float = 1
 
-@export var damage_type: DamageType = DamageType.PHYSICAL
+
 @export_range(0.0, 100.0, 0.1) var weight: float = 1.0
 @export var icon: Texture2D
 @export var tier: SpellTier = SpellTier.TIER_1
 @export var icon_color: Color = Color.WHITE
 @export_category("VFX-SFX")
 @export var sfx: AudioStream
+@export_range(-80.0, 24.0, 0.1) var sfx_volume_db: float = 0.0
 @export var vfx_scene: PackedScene
 @export var vfx_anchor: VfxAnchor = VfxAnchor.SELF
 @export var vfx_offset: Vector2 = Vector2.ZERO
@@ -63,11 +61,9 @@ var level: int = 1
 
 @export_range(-0.95, 3.0, 0.01) var incoming_damage_multiplier_delta: float = 0.0
 @export var heal_amount: int = 0
-@export_range(-100.0, 100.0, 0.1) var player_physical_defense_delta: float = 0.0
-@export_range(-100.0, 100.0, 0.1) var player_magic_defense_delta: float = 0.0
+@export_range(-100.0, 100.0, 0.1) var player_defense_delta: float = 0.0
 @export_range(-100.0, 100.0, 0.1) var player_precision_delta: float = 0.0
-@export_range(-100.0, 100.0, 0.1) var target_physical_defense_delta: float = 0.0
-@export_range(-100.0, 100.0, 0.1) var target_magic_defense_delta: float = 0.0
+@export_range(-100.0, 100.0, 0.1) var target_defense_delta: float = 0.0
 @export var extra_turn_count: int = 0
 
 @export var damage_over_time: int = 0

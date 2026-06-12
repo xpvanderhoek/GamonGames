@@ -38,6 +38,7 @@ const SHOP_CHATTER_MIN_SEC := 10.0
 const SHOP_CHATTER_MAX_SEC := 25.0
 
 func _ready():
+	SoundManager.play_shop_music()
 	if exit_button != null:
 		var on_exit_pressed := Callable(self, "_exit_shop")
 		if not exit_button[0].pressed.is_connected(on_exit_pressed):
@@ -131,11 +132,12 @@ func _exit_shop() -> void:
 	color_rect.modulate.a = 0.0
 	fade_tween.tween_property(color_rect, "modulate:a", 0.5, 3)
 
-	var played_exit_bark := _show_random_bark(SHOP_DIALOGUE_EXIT_KEY, 3.0)
+	var played_exit_bark := _show_random_bark(SHOP_DIALOGUE_EXIT_KEY, 2.3)
 	if played_exit_bark and _shop_dialogue_ui != null:
 		await _shop_dialogue_ui.bark_finished
 
 	DialogueManager.cancel_dialogue()
+	SoundManager.stop_shop_music()
 	TransitionManager.change_scene("res://scenes/map/map.tscn", TransitionManager.TransitionType.FADE)
 
 func _show_random_bark(key: String, duration_sec: float = 4.0) -> bool:
