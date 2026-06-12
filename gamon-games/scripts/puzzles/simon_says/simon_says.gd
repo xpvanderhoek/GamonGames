@@ -43,8 +43,6 @@ func open_explaination(puzzle = PuzzleData.knows_puzzles["simon_says_normal"]) -
 
 func _ready():
 	PuzzleData.chest_open = false
-	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
-		open_explaination(PuzzleData.knows_puzzles[get_puzzle_data()])
 	var continue_button = PuzzleTexts.CONTINUE[RunData.language]
 	$Button.text = continue_button
 	versionLabel.text = data.title
