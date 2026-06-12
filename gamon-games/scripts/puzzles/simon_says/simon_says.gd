@@ -8,7 +8,9 @@ class_name SimonSays
 @onready var totalCoins: Label = $TotalCoinsLabel
 @onready var lives: TextureRect = $Lives
 @onready var finishRound: int = 7
+@onready var pause: CanvasLayer = $Pause
 const COMBAT_SCENE := "res://scenes/combat/combat.tscn"
+const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
 
 var coin_amount: int = 0
 var sequence: Array[int] = []
@@ -19,6 +21,9 @@ var can_click := false
 var data = PuzzleTexts.PUZZLES[get_puzzle_data()][RunData.language]
 var puzzle_explained = preload("res://scenes/puzzles/puzzle_explained/puzzle_explained.tscn")
 
+func _input(event):
+	if event.is_action_pressed("escape"):
+		pause.add_child(PAUSE_MENU.instantiate())
 
 func get_puzzle_data() -> String:
 	return "simon_says_normal"
