@@ -4,6 +4,9 @@ func get_puzzle_data() -> String:
 	return "simon_says_speed"
 
 func _ready():
+	if !PuzzleData.knows_puzzles[get_puzzle_data()]:
+		PuzzleData.knows_puzzles[get_puzzle_data()] = true
+		$TutorialOverlay2.visible = true
 	super._ready()
 
 func show_sequence():

@@ -8,8 +8,16 @@
 [ext_resource type="Texture2D" uid="uid://bxffbjpqptt4l" path="res://assets/Placeholders/Puzzle/Heart.png" id="8_iikmj"]
 [ext_resource type="AudioStream" uid="uid://b6qndig5uw80n" path="res://assets/Sounds/puzzle/FailSound.mp3" id="10_d0fpf"]
 [ext_resource type="AudioStream" uid="uid://tlxlgdl02n7y" path="res://assets/Sounds/puzzle/correctSound.mp3" id="11_2rhfv"]
+[ext_resource type="PackedScene" uid="uid://c80vkx6l0g4kf" path="res://scenes/UI/tutorial/tutorial_overlay.tscn" id="11_sltw8"]
 [ext_resource type="AudioStream" uid="uid://b7br0fma3a1k2" path="res://assets/Sounds/puzzle/coinIncrease.mp3" id="12_c4gcl"]
+[ext_resource type="Script" uid="uid://emcsn5t5bncn" path="res://scripts/UI/tutorial/tutorial_page.gd" id="12_sltw8"]
+[ext_resource type="VideoStream" uid="uid://eyfsd4i73rx0" path="res://assets/puzzle/SS-normal.ogv" id="13_2xjno"]
 [ext_resource type="AudioStream" uid="uid://bgicp1tl7aarw" path="res://assets/Sounds/puzzle/liveDisappear.mp3" id="13_c4gcl"]
+[ext_resource type="VideoStream" uid="uid://c7wrtlguqddgg" path="res://assets/puzzle/SS-speed.ogv" id="14_abjov"]
+[ext_resource type="VideoStream" uid="uid://rymc4ym1hei2" path="res://assets/puzzle/SS-mirrored.ogv" id="15_abjov"]
+[ext_resource type="VideoStream" uid="uid://cbwlhhxsv7wgs" path="res://assets/puzzle/SS-reverse.ogv" id="16_c0j4j"]
+[ext_resource type="VideoStream" uid="uid://2ume41yk0xx0" path="res://assets/puzzle/SS-inverted.ogv" id="17_i7dua"]
+[ext_resource type="VideoStream" uid="uid://chhpm23xavdq0" path="res://assets/puzzle/SS-colored.ogv" id="18_yvdqt"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwhsd"]
 font_color = Color(0.3529412, 0.3529412, 0.3529412, 1)
@@ -28,6 +36,42 @@ font_color = Color(0.7137255, 0.7137255, 0, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_iikmj"]
 font_size = 46
 font_color = Color(0.2509804, 0.20784314, 0.1254902, 1)
+
+[sub_resource type="Resource" id="Resource_abjov"]
+script = ExtResource("12_sltw8")
+text = "Remember the sequence and repeat it correctly."
+video = ExtResource("13_2xjno")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
+
+[sub_resource type="Resource" id="Resource_c0j4j"]
+script = ExtResource("12_sltw8")
+text = "Remember the sequence and repeat it correctly, but the buttons flash faster."
+video = ExtResource("14_abjov")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
+
+[sub_resource type="Resource" id="Resource_euvv2"]
+script = ExtResource("12_sltw8")
+text = "Remember the sequence and repeat it correctly.\\nBut be careful: you must mirror the sequence."
+video = ExtResource("15_abjov")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
+
+[sub_resource type="Resource" id="Resource_i7dua"]
+script = ExtResource("12_sltw8")
+text = "Remember the sequence and repeat it correctly.\\nBut be careful: you must repeat it in reverse order.\\nFrom end to start!"
+video = ExtResource("16_c0j4j")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
+
+[sub_resource type="Resource" id="Resource_vgav0"]
+script = ExtResource("12_sltw8")
+text = "Remember the sequence and repeat it correctly.\\nBut all buttons light up except the ones you need!"
+video = ExtResource("17_i7dua")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
+
+[sub_resource type="Resource" id="Resource_3e56p"]
+script = ExtResource("12_sltw8")
+text = "Remember the sequence and repeat it correctly.\\nMultiple colors will appear.\\nBut only press the indicated color and ignore the others."
+video = ExtResource("18_yvdqt")
+metadata/_custom_type_script = "uid://emcsn5t5bncn"
 
 [node name="SimonSays" type="Control" unique_id=1237460606]
 layout_mode = 3
@@ -243,6 +287,36 @@ stream = ExtResource("12_c4gcl")
 
 [node name="AudioStreamPlayer4" type="AudioStreamPlayer" parent="." unique_id=1540497803]
 stream = ExtResource("13_c4gcl")
+
+[node name="TutorialOverlay" parent="." unique_id=282468504 instance=ExtResource("11_sltw8")]
+visible = false
+title = "Simon Says Normal"
+pages = Array[ExtResource("12_sltw8")]([SubResource("Resource_abjov")])
+
+[node name="TutorialOverlay2" parent="." unique_id=1690431829 instance=ExtResource("11_sltw8")]
+visible = false
+title = "Simon Says Speed"
+pages = Array[ExtResource("12_sltw8")]([SubResource("Resource_c0j4j")])
+
+[node name="TutorialOverlay3" parent="." unique_id=493669907 instance=ExtResource("11_sltw8")]
+visible = false
+title = "Simon Says Mirrored"
+pages = Array[ExtResource("12_sltw8")]([SubResource("Resource_euvv2")])
+
+[node name="TutorialOverlay4" parent="." unique_id=1237557483 instance=ExtResource("11_sltw8")]
+visible = false
+title = "Simon Says Reverse"
+pages = Array[ExtResource("12_sltw8")]([SubResource("Resource_i7dua")])
+
+[node name="TutorialOverlay5" parent="." unique_id=1843832675 instance=ExtResource("11_sltw8")]
+visible = false
+title = "Simon Says Inverted"
+pages = Array[ExtResource("12_sltw8")]([SubResource("Resource_vgav0")])
+
+[node name="TutorialOverlay6" parent="." unique_id=1007716603 instance=ExtResource("11_sltw8")]
+visible = false
+title = "Simon Says Colored"
+pages = Array[ExtResource("12_sltw8")]([SubResource("Resource_3e56p")])
 
 [connection signal="pressed" from="Button" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_explanation_pressed"]

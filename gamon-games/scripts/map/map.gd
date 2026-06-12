@@ -167,6 +167,7 @@ func _go_to_room(room : Room) -> void:
 			TransitionManager.change_scene(SHOP_SCENE, TransitionManager.TransitionType.FADE)
 		Room.Type.PUZZLE:
 			TransitionManager.change_scene("res://scenes/puzzles/Chest_room.tscn")
+			print("chestroom")
 		Room.Type.CAMPFIRE:
 			TransitionManager.change_scene(CAMPFIRE_SCENE)
 		Room.Type.BOSS:
