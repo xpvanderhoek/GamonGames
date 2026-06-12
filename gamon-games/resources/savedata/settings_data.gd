@@ -14,3 +14,6 @@ extends Resource
 # Accessibility
 @export var colorblind_mode: int = 0
 @export var font_index: int = 0
+
+# Keybinds
+@export var spell_keybinds: Array[int] = [KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6]

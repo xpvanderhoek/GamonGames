@@ -2,8 +2,10 @@ extends Node
 
 const SAVE_PATH = "user://settings.tres"
 var data: SettingsData
+var last_settings_tab: int = 0
 
 signal font_settings_changed
+signal keybinds_changed
 
 const FONT_FAMILIES: Array = [
 	["Alegreya Sans","res://assets/fonts/AlegreyaSans-Bold.ttf", "res://assets/fonts/AlegreyaSans-Medium.ttf"],

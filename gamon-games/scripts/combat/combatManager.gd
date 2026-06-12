@@ -143,7 +143,17 @@ func _ready() -> void:
 	_populate_existing_items()
 	if end_turn_button != null:
 		end_turn_button.pressed.connect(_on_end_turn_button_pressed)
+	Settings.keybinds_changed.connect(_on_keybinds_changed)
 	_begin_player_turn()
+
+func _on_keybinds_changed() -> void:
+	for i in range(_spell_buttons.size()):
+		var button = _spell_buttons[i]
+		if is_instance_valid(button):
+			var bind_label = button.get_node_or_null("Bind") as Label
+			if bind_label != null:
+				var keycode = Settings.data.spell_keybinds[i]
+				bind_label.text = OS.get_keycode_string(keycode)
 
 	
 	if PlayerStats.knows_combat:
@@ -439,7 +449,8 @@ func _configure_spell_button(button: Button, spell: SpellData) -> void:
 	var bind_label = button.get_node_or_null("Bind") as Label
 	var slot_index := _spell_buttons.find(button)
 	if bind_label != null:
-		bind_label.text = str(slot_index + 1)
+		var keycode = Settings.data.spell_keybinds[slot_index]
+		bind_label.text = OS.get_keycode_string(keycode)
 
 	button.tooltip_text = ""
 	if spell != null:
@@ -486,7 +497,8 @@ func _configure_empty_spell_button(button: Button) -> void:
 	var bind_label = button.get_node_or_null("Bind") as Label
 	var slot_index := _spell_buttons.find(button)
 	if bind_label != null:
-		bind_label.text = str(slot_index + 1)
+		var keycode = Settings.data.spell_keybinds[slot_index]
+		bind_label.text = OS.get_keycode_string(keycode)
 	
 	button.icon = null
 	button.tooltip_text = ""
@@ -761,21 +773,11 @@ func _select_spell_by_index(index: int) -> void:
 	_on_spell_button_pressed(spell_button)
 
 func _get_spell_index_from_key_event(event: InputEventKey) -> int:
-	match event.keycode:
-		KEY_1, KEY_KP_1:
-			return 0
-		KEY_2, KEY_KP_2:
-			return 1
-		KEY_3, KEY_KP_3:
-			return 2
-		KEY_4, KEY_KP_4:
-			return 3
-		KEY_5, KEY_KP_5:
-			return 4
-		KEY_6, KEY_KP_6:
-			return 5
-		_:
-			return -1
+	for i in range(Settings.data.spell_keybinds.size()):
+		var keycode = Settings.data.spell_keybinds[i]
+		if event.physical_keycode == keycode or event.keycode == keycode:
+			return i
+	return -1
 
 func _update_button_states() -> void:
 	var should_disable_buttons := current_state != CombatState.PLAYER_TURN or _attack_selected or not _has_alive_enemies()
