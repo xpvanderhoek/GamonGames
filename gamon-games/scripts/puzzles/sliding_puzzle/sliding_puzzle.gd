@@ -42,11 +42,11 @@ var puzzle_explained = preload("res://scenes/puzzles/puzzle_explained/puzzle_exp
 func _ready() -> void:
 	var continue_button = PuzzleTexts.CONTINUE[RunData.language]
 	$Button.text = continue_button
-	if !PuzzleData.knows_puzzles["slide"]:
+	if !PlayerStats.knows_puzzles["slide"]:
 		var explanation = puzzle_explained.instantiate()
 		get_tree().current_scene.add_child(explanation)
 		explanation.setup(data.title, data.description, data.tips, data.reward)
-		PuzzleData.knows_puzzles["slide"] = true
+		PlayerStats.knows_puzzles["slide"] = true
 	total_coins.text = str(RunData.coins)
 	coin_amount.text = str(coins)
 	base_coin_pos = coin_amount.position

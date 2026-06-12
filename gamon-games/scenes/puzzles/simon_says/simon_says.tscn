@@ -318,5 +318,7 @@ visible = false
 title = "Simon Says Colored"
 pages = Array[ExtResource("12_sltw8")]([SubResource("Resource_3e56p")])
 
+[node name="Pause" type="CanvasLayer" parent="." unique_id=769594440]
+
 [connection signal="pressed" from="Button" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_explanation_pressed"]

@@ -94,6 +94,7 @@ func new_run():
 	add_spell(BLOCK)
 	_add_starting_kit_consumable()
 	combats_fought = 0
+	PuzzleData.pick_random_puzzle()
 
 func reset_energy() -> void:
 	max_energy = 6
