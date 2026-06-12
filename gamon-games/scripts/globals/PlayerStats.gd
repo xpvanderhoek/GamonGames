@@ -28,8 +28,7 @@ var stats = {
 	"gold_gain": 1.0,         # Scavenger's Eye
 	"debuff_resistance": 10.0, # Iron Will
 	"luck": 1.0,               # Fortune's Blessing
-	"physical_defense": 10.0, # Stoneguard
-	"magic_defense": 10.0,
+	"defense": 10.0, # Stoneguard
 }
 
 var base_stats = {
@@ -40,8 +39,7 @@ var base_stats = {
 	"gold_gain": 1.0,
 	"debuff_resistance": 10.0,
 	"luck": 1.0,
-	"physical_defense": 10.0,
-	"magic_defense": 10.0,
+	"defense": 10.0,
 }
 
 var upgrade_levels = {
@@ -52,8 +50,7 @@ var upgrade_levels = {
 	"gold_gain": 0,
 	"debuff_resistance": 0,
 	"luck": 0,
-	"physical_defense": 0,
-	"magic_defense": 0,
+	"defense": 0,
 	"starting_kit": 0,
 }
 
@@ -65,8 +62,7 @@ var upgrade_costs = {
 	"gold_gain": {"min": 400, "max": 2000},
 	"debuff_resistance": {"min": 300, "max": 1500},
 	"luck": {"min": 200, "max": 1200},
-	"physical_defense": {"min": 100, "max": 1000},
-	"magic_defense": {"min": 100, "max": 1000},
+	"defense": {"min": 100, "max": 1000},
 }
 
 func get_stat_value(stat_name: String) -> float:

@@ -535,8 +535,7 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false, s
 		var min_damage := spell.get_min_damage()
 		var max_damage := spell.get_max_damage()
 		var attacks := spell.get_attack_count()
-		var dmg_type_text := _damage_type_to_text(spell.damage_type)
-		var dmg_color := "b8d4ff" if spell.damage_type == SpellData.DamageType.MAGIC else "ffcca0"
+		var dmg_color := "ffcca0"
 		
 		if is_upgrade:
 			var curr_min := existing.get_min_damage()
@@ -547,14 +546,14 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false, s
 				next_max = next_min
 			
 			if curr_min == curr_max:
-				t += "\nDamage: [color=#%s]%d[/color] → [color=#90d080]%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, curr_min, next_min, dmg_type_text]
+				t += "\nDamage: [color=#%s]%d[/color] → [color=#90d080]%d[/color]" % [dmg_color, curr_min, next_min]
 			else:
-				t += "\nDamage: [color=#%s]%d-%d[/color] → [color=#90d080]%d-%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, curr_min, curr_max, next_min, next_max, dmg_type_text]
+				t += "\nDamage: [color=#%s]%d-%d[/color] → [color=#90d080]%d-%d[/color]" % [dmg_color, curr_min, curr_max, next_min, next_max]
 		else:
 			if min_damage == max_damage:
-				t += "\nDamage: [color=#%s]%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, dmg_type_text]
+				t += "\nDamage: [color=#%s]%d[/color]" % [dmg_color, min_damage]
 			else:
-				t += "\nDamage: [color=#%s]%d-%d[/color] [color=#8a8a9e][font_size=11](%s)[/font_size][/color]" % [dmg_color, min_damage, max_damage, dmg_type_text]
+				t += "\nDamage: [color=#%s]%d-%d[/color]" % [dmg_color, min_damage, max_damage]
 		if attacks > 1:
 			t += "\nHits: [color=#e0d080]%d[/color]" % attacks
 			if shift_pressed:
@@ -575,14 +574,10 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false, s
 		effect_lines.append("Outgoing Damage Mult: [color=#e0d080]%s%%[/color]" % _format_signed_percent(spell.outgoing_damage_multiplier_delta * 100.0))
 	if not is_zero_approx(spell.incoming_damage_multiplier_delta):
 		effect_lines.append("Incoming Damage Mult: [color=#e09080]%s%%[/color]" % _format_signed_percent(spell.incoming_damage_multiplier_delta * 100.0))
-	if not is_zero_approx(spell.player_physical_defense_delta):
-		effect_lines.append("Player Phys Def: [color=#80c8e0]%s%%[/color]" % _format_signed_percent(spell.player_physical_defense_delta))
-	if not is_zero_approx(spell.player_magic_defense_delta):
-		effect_lines.append("Player Magic Def: [color=#b0a0e0]%s%%[/color]" % _format_signed_percent(spell.player_magic_defense_delta))
-	if not is_zero_approx(spell.target_physical_defense_delta):
-		effect_lines.append("Target Phys Def: [color=#cccccc]%s%%[/color]" % _format_signed_percent(spell.target_physical_defense_delta))
-	if not is_zero_approx(spell.target_magic_defense_delta):
-		effect_lines.append("Target Magic Def: [color=#cccccc]%s%%[/color]" % _format_signed_percent(spell.target_magic_defense_delta))
+	if not is_zero_approx(spell.player_defense_delta):
+		effect_lines.append("Player Defense: [color=#80c8e0]%s%%[/color]" % _format_signed_percent(spell.player_defense_delta))
+	if not is_zero_approx(spell.target_defense_delta):
+		effect_lines.append("Target Defense: [color=#cccccc]%s%%[/color]" % _format_signed_percent(spell.target_defense_delta))
 	if spell.damage_over_time != 0:
 		effect_lines.append("Damage Over Time: [color=#e07060]%s/turn[/color]" % _format_signed_int(spell.damage_over_time))
 	if spell.stun_turns:
@@ -727,14 +722,7 @@ func _target_scope_to_text(target_scope: SpellData.TargetScope) -> String:
 		_:
 			return "Unknown"
 
-func _damage_type_to_text(damage_type: SpellData.DamageType) -> String:
-	match damage_type:
-		SpellData.DamageType.PHYSICAL:
-			return "Physical"
-		SpellData.DamageType.MAGIC:
-			return "Magic"
-		_:
-			return "Unknown"
+
 
 func _format_signed_int(value: int) -> String:
 	if value > 0:
@@ -961,13 +949,11 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 	if _roll_player_hit_on_limb(limb, source_enemy):
 		var spell_damage := 0
 		var spell_type := SpellData.SpellType.ATTACK
-		var attack_damage_type := SpellData.DamageType.PHYSICAL
 		var can_deal_damage := true
 		var attack_count := 1
 		if active_spell != null:
 			spell_damage = active_spell.roll_damage()
 			spell_type = active_spell.spell_type
-			attack_damage_type = active_spell.damage_type
 			can_deal_damage = active_spell.has_damage()
 			attack_count = active_spell.get_attack_count()
 
@@ -990,7 +976,7 @@ func _on_enemy_limb_clicked(limb: CombatLimb, source_enemy: CombatEntity) -> voi
 						var raw_damage = base_damage + item_damage_bonus
 						var incoming_multiplier := _get_enemy_incoming_multiplier(target_enemy, target_limb)
 						var final_damage := int(round(float(raw_damage) * outgoing_multiplier * incoming_multiplier))
-						var enemy_defense := _get_enemy_total_defense_for_damage_type(target_enemy, target_limb, attack_damage_type)
+						var enemy_defense := _get_enemy_total_defense(target_enemy, target_limb)
 						final_damage = _apply_defense_to_damage(final_damage, enemy_defense)
 						final_damage = max(0, final_damage)
 						if debug_round_stats:
@@ -1252,7 +1238,7 @@ func _perform_enemy_turn() -> void:
 				print("\nEnemy Attack from %s:" % attacking_enemy.name)
 				print("  Base: %d (rolled damage, outgoing mult: %.2f)" % [base_damage, outgoing_multiplier])
 				print("  Final Pre-Defense: %d (defense will reduce this)" % damage)
-			_apply_player_damage(damage, attack.damage_type, attacking_enemy, attack_limb)
+			_apply_player_damage(damage, attacking_enemy, attack_limb)
 			if current_state == CombatState.COMBAT_OVER:
 				return
 			if _attack_iteration < attack_count - 1 and multi_hit_delay_seconds > 0.0:
@@ -1520,8 +1506,7 @@ func _append_player_effect(spell: SpellData) -> void:
 		or not is_zero_approx(spell.outgoing_damage_multiplier_delta) \
 		or spell.damage_over_time != 0 \
 		or spell.stun_turns \
-		or not is_zero_approx(spell.player_physical_defense_delta) \
-		or not is_zero_approx(spell.player_magic_defense_delta)
+		or not is_zero_approx(spell.player_defense_delta)
 	if not has_effect:
 		return
 
@@ -1547,10 +1532,8 @@ func _append_player_effect(spell: SpellData) -> void:
 		"outgoing_mult_delta": spell.outgoing_damage_multiplier_delta,
 		"damage_over_time": spell.damage_over_time,
 		"stun_turns": bool(spell.stun_turns),
-		"damage_type": int(spell.damage_type),
 		"target_scope": int(spell.target_scope),
-		"physical_defense_delta": spell.player_physical_defense_delta,
-		"magic_defense_delta": spell.player_magic_defense_delta,
+		"defense_delta": spell.player_defense_delta,
 	})
 
 	_refresh_player_buffs_ui()
@@ -1563,8 +1546,7 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 		or not is_zero_approx(spell.incoming_damage_multiplier_delta) \
 		or spell.damage_over_time != 0 \
 		or spell.stun_turns \
-		or not is_zero_approx(spell.target_physical_defense_delta) \
-		or not is_zero_approx(spell.target_magic_defense_delta)
+		or not is_zero_approx(spell.target_defense_delta)
 	if not has_effect:
 		return
 
@@ -1577,15 +1559,12 @@ func _append_enemy_effect(target_enemy: CombatEntity, spell: SpellData, target_l
 		"incoming_mult_delta": spell.incoming_damage_multiplier_delta,
 		"damage_over_time": spell.damage_over_time,
 		"stun_turns": bool(spell.stun_turns),
-		"damage_type": int(spell.damage_type),
 		"target_scope": int(spell.target_scope),
-		"physical_defense_delta": spell.target_physical_defense_delta,
-		"magic_defense_delta": spell.target_magic_defense_delta,
+		"defense_delta": spell.target_defense_delta,
 		"spell_name": spell.spell_name,
 		"spell_type": int(spell.spell_type),
 		"icon": spell.icon,
 		"icon_color": spell.icon_color,
-		"border_width": spell.border_width,
 		"border_color": spell.get_tier_color(),
 	}
 
@@ -1853,7 +1832,6 @@ func _apply_enemy_effect_damage_over_time(target_enemy: CombatEntity, effect: Di
 	if damage_over_time <= 0:
 		return
 
-	var damage_type := int(effect.get("damage_type", int(SpellData.DamageType.PHYSICAL))) as SpellData.DamageType
 	var target_scope := int(effect.get("target_scope", int(TargetScope.LIMB))) as TargetScope
 	var target_limbs: Array[CombatLimb] = []
 
@@ -1874,7 +1852,7 @@ func _apply_enemy_effect_damage_over_time(target_enemy: CombatEntity, effect: Di
 	for affected_limb in target_limbs:
 		var incoming_multiplier := _get_enemy_incoming_multiplier(target_enemy, affected_limb)
 		var final_damage := int(round(float(damage_over_time) * incoming_multiplier))
-		var enemy_defense := _get_enemy_total_defense_for_damage_type(target_enemy, affected_limb, damage_type)
+		var enemy_defense := _get_enemy_total_defense(target_enemy, affected_limb)
 		final_damage = _apply_defense_to_damage(final_damage, enemy_defense)
 		final_damage = max(0, final_damage)
 		if final_damage > 0:
@@ -1951,7 +1929,7 @@ func _get_target_limbs(source_enemy: CombatEntity, hovered_limb: CombatLimb, spe
 			target_limbs.append(limb)
 	return target_limbs
 
-func _apply_player_damage(amount: int, damage_type: SpellData.DamageType = SpellData.DamageType.PHYSICAL, source_enemy: CombatEntity = null, source_limb: CombatLimb = null) -> void:
+func _apply_player_damage(amount: int, source_enemy: CombatEntity = null, source_limb: CombatLimb = null) -> void:
 	if current_state == CombatState.COMBAT_OVER:
 		return
 	if amount <= 0:
@@ -1961,7 +1939,7 @@ func _apply_player_damage(amount: int, damage_type: SpellData.DamageType = Spell
 		if immune_hit_position is Vector2:
 			_spawn_floating_damage_number(0, immune_hit_position as Vector2, true, false, "IMMUNE")
 		return
-	var mitigated_amount := _apply_player_defense(amount, damage_type)
+	var mitigated_amount := _apply_player_defense(amount)
 	if mitigated_amount <= 0:
 		return
 	var player_hit_position = _get_vfx_anchor_position(null)
@@ -2041,45 +2019,33 @@ func _spawn_floating_damage_number(amount: int, world_position: Vector2, hit_pla
 	tween.tween_property(damage_label, "modulate:a", 0.0, 0.32 if is_enemy_damage else 0.28).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.finished.connect(damage_label.queue_free)
 
-func _apply_player_defense(amount: int, damage_type: SpellData.DamageType) -> int:
-	var defense := _get_player_defense_for_damage_type(damage_type)
+func _apply_player_defense(amount: int) -> int:
+	var defense := _get_player_defense()
 	return _apply_defense_to_damage(amount, defense)
 
-func _get_player_defense_for_damage_type(damage_type: SpellData.DamageType) -> float:
+func _get_player_defense() -> float:
 	_cleanup_expired_effects()
 
-	var total_defense := 0.0
-	match damage_type:
-		SpellData.DamageType.MAGIC:
-			total_defense = float(RunData.get_stat("magic_defense"))
-			total_defense += _item_effects.get_item_defense_bonus()
-			for effect in _player_effects:
-				var expires_round := int(effect.get("expires_round", current_round))
-				if current_round <= expires_round:
-					total_defense += float(effect.get("magic_defense_delta", 0.0))
-		_:
-			total_defense = float(RunData.get_stat("physical_defense"))
-			total_defense += _item_effects.get_item_defense_bonus()
-			for effect in _player_effects:
-				var expires_round := int(effect.get("expires_round", current_round))
-				if current_round <= expires_round:
-					total_defense += float(effect.get("physical_defense_delta", 0.0))
+	var total_defense := float(RunData.get_stat("defense"))
+	total_defense += _item_effects.get_item_defense_bonus()
+	for effect in _player_effects:
+		var expires_round := int(effect.get("expires_round", current_round))
+		if current_round <= expires_round:
+			total_defense += float(effect.get("defense_delta", 0.0))
 
 	return max(0.0, total_defense)
 
-func _get_enemy_total_defense_for_damage_type(source_enemy: CombatEntity, source_limb: CombatLimb, damage_type: SpellData.DamageType) -> float:
+func _get_enemy_total_defense(source_enemy: CombatEntity, source_limb: CombatLimb) -> float:
 	if source_enemy == null or not is_instance_valid(source_enemy):
 		return 0.0
 
 	_cleanup_expired_effects()
 
-	var total_defense := source_enemy.get_defense_for_damage_type(damage_type)
+	var total_defense := source_enemy.get_defense()
 	if source_limb != null and is_instance_valid(source_limb):
-		total_defense += source_limb.get_defense_for_damage_type(damage_type)
+		total_defense += source_limb.get_defense()
 
-	var defense_key := "physical_defense_delta"
-	if damage_type == SpellData.DamageType.MAGIC:
-		defense_key = "magic_defense_delta"
+	var defense_key := "defense_delta"
 
 	var enemy_effects: Array = _enemy_effects.get(source_enemy.get_instance_id(), [])
 	for raw_effect in enemy_effects:
@@ -2275,12 +2241,11 @@ func _begin_player_turn() -> void:
 	call_deferred("_show_enemy_intent_visuals")
 
 func _debug_print_round_stats() -> void:
-	var stats_to_log := ["damage", "precision", "physical_defense", "magic_defense", "speed", "energy_regen", "luck"]
+	var stats_to_log := ["damage", "precision", "defense", "speed", "energy_regen", "luck"]
 	var global_item_bonus := {
 		"damage": 0.0,
 		"precision": 0.0,
-		"physical_defense": 0.0,
-		"magic_defense": 0.0,
+		"defense": 0.0,
 		"speed": 0.0,
 		"energy_regen": 0.0,
 		"luck": 0.0,
@@ -2324,8 +2289,7 @@ func _debug_print_round_stats() -> void:
 			global_item_bonus["precision"] += item.buff_value
 		elif buff_type == "defense":
 			if item.status_to_apply.to_lower() == "none" and item.item_name != "Thorned Bracer":
-				global_item_bonus["physical_defense"] += item.buff_value
-				global_item_bonus["magic_defense"] += item.buff_value
+				global_item_bonus["defense"] += item.buff_value
 		elif buff_type == "speed":
 			global_item_bonus["speed"] += item.buff_value
 		elif buff_type == "luck":

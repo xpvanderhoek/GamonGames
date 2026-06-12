@@ -36,6 +36,9 @@ func _ready():
 
 	DialogueManager.register_ui(self)
 
+	_apply_font_settings()
+	Settings.font_settings_changed.connect(_apply_font_settings)
+
 func start_dialogue(dialogue):
 	current_dialogue = dialogue
 	index = 0
@@ -120,3 +123,13 @@ func force_close_dialogue() -> void:
 
 	hide()
 	dialogue_completed.emit()
+
+func _apply_font_settings() -> void:
+	var bold_font := Settings.get_bold_font()
+	var medium_font := Settings.get_medium_font()
+
+	name_label.add_theme_font_override("font", bold_font)
+
+	text_label.add_theme_font_override("normal_font",  medium_font)
+	text_label.add_theme_font_override("bold_font",    bold_font)
+	text_label.add_theme_font_override("italics_font", medium_font)
