@@ -47,6 +47,17 @@ func generate_map() -> Array[Array]:
 	
 	return map_data
 
+func _count_room(type: Room.Type):
+	match type:
+		Room.Type.COMBAT:
+			RunData.total_combat += 1
+		Room.Type.PUZZLE:
+			RunData.total_puzzles += 1
+		Room.Type.SHOP:
+			RunData.total_shops += 1
+		Room.Type.CAMPFIRE:
+			RunData.total_resting_camps += 1
+			
 func _generate_initial_grid() -> Array[Array]:
 	var result: Array[Array] = []
 	
@@ -149,11 +160,13 @@ func _setup_room_types():
 	for room : Room in map_data[0]:
 		if room.next_rooms.size() > 0:
 			room.type = Room.Type.COMBAT
+			_count_room(room.type)
 	
 	# Optional: last floor before the boss fight is always a shop
 	for room : Room in map_data[FLOORS - 2]:
 		if room.next_rooms.size() > 0:
 			room.type = Room.Type.CAMPFIRE
+			_count_room(room.type)
 	
 	# remainder of rooms
 	for current_floor in map_data:
@@ -180,8 +193,9 @@ func _set_room_randomly(room_to_set : Room):
 		consecutive_shop = is_shop and has_shop_parent
 		consecutive_campfire = is_campfire and has_campfire_parent
 		shop_below_boss = is_shop and room_to_set.row == FLOORS - 3
-	
+	_count_room(type_candidate)
 	room_to_set.type = type_candidate
+	
 
 func _room_has_parent_of_type(room : Room, type : Room.Type) -> bool:
 	var parents: Array[Room] = []

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bxc8xxl5ma06d"]
 
 [ext_resource type="Script" uid="uid://leewle6vt74f" path="res://scripts/combat/ui/defeat_screen.gd" id="1_defeat"]
-[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://Assets/fonts/AlegreyaSans-Bold.ttf" id="2_defeat"]
-[ext_resource type="Texture2D" uid="uid://b243pqp2c12ym" path="res://Assets/settings/pause_settings.png" id="2_qnqv3"]
+[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_defeat"]
+[ext_resource type="Texture2D" uid="uid://b243pqp2c12ym" path="res://assets/settings/pause_settings.png" id="2_qnqv3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_defeat"]
 bg_color = Color(0.15, 0.05, 0.05, 0.9)

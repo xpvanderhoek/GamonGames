@@ -38,6 +38,7 @@ const SHOP_CHATTER_MIN_SEC := 10.0
 const SHOP_CHATTER_MAX_SEC := 25.0
 
 func _ready():
+	RunData.shops_visited += 1
 	SoundManager.play_shop_music()
 	if exit_button != null:
 		var on_exit_pressed := Callable(self, "_exit_shop")
