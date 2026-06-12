@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://dtjnk0wotkb74"]
+
+[ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_itw8y"]
+[ext_resource type="AudioStream" uid="uid://oe88et4sh83g" path="res://assets/enemies/skeleton/hit.wav" id="2_ahw5o"]
+[ext_resource type="Texture2D" uid="uid://cvrg5pxbpmxnl" path="res://assets/enemies/skeleton/head.png" id="3_6t245"]
+[ext_resource type="Texture2D" uid="uid://bihte1g0hkq82" path="res://assets/enemies/boss/body.png" id="4_ahw5o"]
+[ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="6_auufy"]
+[ext_resource type="Texture2D" uid="uid://datekt8hmv5ip" path="res://assets/enemies/boss/1st_arm.png" id="7_6t245"]
+[ext_resource type="PackedScene" uid="uid://dlgsbmg808o8n" path="res://scenes/combat/ui/TargetIndicator.tscn" id="7_hba3j"]
+[ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="9_gbion"]
+[ext_resource type="Texture2D" uid="uid://c5307xramqwwd" path="res://assets/enemies/boss/3rd_arm.png" id="10_ndqa6"]
+[ext_resource type="Texture2D" uid="uid://dc3lhkw7qt5oq" path="res://assets/enemies/boss/4th_arm.png" id="11_53xnk"]
+[ext_resource type="Texture2D" uid="uid://cwfw53v3tyls0" path="res://assets/enemies/boss/2nd_arm.png" id="11_auufy"]
+
+[sub_resource type="Resource" id="Resource_xej5o"]
+script = ExtResource("9_gbion")
+min_damage = 3
+max_damage = 6
+weight = 75.0
+metadata/_custom_type_script = "uid://cds04x2mi4kl6"
+
+[node name="Boss" type="Control" unique_id=1680014499]
+modulate = Color(0.8, 0.8, 0.77, 1)
+custom_minimum_size = Vector2(125, 175)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1305.0
+offset_bottom = 906.0
+size_flags_vertical = 8
+script = ExtResource("1_itw8y")
+hit_sfx = ExtResource("2_ahw5o")
+turn_order_icon = ExtResource("3_6t245")
+
+[node name="BuffsPanel" type="HBoxContainer" parent="." unique_id=688364622]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.99700004
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -45.0
+offset_top = 55.049988
+offset_right = 155.0
+offset_bottom = 84.96503
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Torso" type="Sprite2D" parent="." unique_id=582211915]
+position = Vector2(652, 421)
+texture = ExtResource("4_ahw5o")
+script = ExtResource("6_auufy")
+limb_name = "Torso"
+max_health = 90
+is_vital = true
+
+[node name="TargetIndicator" parent="Torso" unique_id=500000001 instance=ExtResource("7_hba3j")]
+position = Vector2(-9, -37)
+hover_size = Vector2(44.514473, 44.514473)
+
+[node name="Arm1" type="Sprite2D" parent="." unique_id=1312305909]
+position = Vector2(1032, 276)
+texture = ExtResource("7_6t245")
+script = ExtResource("6_auufy")
+limb_name = "Left Arm"
+max_health = 35
+attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
+
+[node name="TargetIndicator" parent="Arm1" unique_id=500000002 instance=ExtResource("7_hba3j")]
+position = Vector2(74, 38)
+hover_size = Vector2(44.514473, 44.514473)
+
+[node name="Arm2" type="Sprite2D" parent="." unique_id=1682569086]
+position = Vector2(1057, 648)
+texture = ExtResource("11_auufy")
+script = ExtResource("6_auufy")
+limb_name = "Left Arm"
+max_health = 35
+attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
+
+[node name="TargetIndicator" parent="Arm2" unique_id=725840848 instance=ExtResource("7_hba3j")]
+position = Vector2(-15, 76)
+hover_size = Vector2(44.514473, 44.514473)
+
+[node name="Arm3" type="Sprite2D" parent="." unique_id=1254311535]
+position = Vector2(268, 147)
+texture = ExtResource("10_ndqa6")
+script = ExtResource("6_auufy")
+limb_name = "Left Arm"
+max_health = 35
+attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
+
+[node name="TargetIndicator" parent="Arm3" unique_id=589595359 instance=ExtResource("7_hba3j")]
+position = Vector2(-156.5, 16)
+hover_size = Vector2(44.514473, 44.514473)
+
+[node name="Arm4" type="Sprite2D" parent="." unique_id=1625574404]
+position = Vector2(193, 545)
+texture = ExtResource("11_53xnk")
+script = ExtResource("6_auufy")
+limb_name = "Left Arm"
+max_health = 35
+attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
+
+[node name="TargetIndicator" parent="Arm4" unique_id=862512854 instance=ExtResource("7_hba3j")]
+position = Vector2(-148, 34)
+hover_size = Vector2(44.514473, 44.514473)

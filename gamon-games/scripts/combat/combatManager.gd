@@ -44,6 +44,8 @@ enum TargetScope {
 @export var player_base_damage: int = 25
 @export var enemy_entity_path: NodePath
 @export var enemy_container_path: NodePath = NodePath("EnemyContainer")
+@export var boss_container_path: NodePath = NodePath("BossContainer")
+@export var background_rect_path: NodePath = NodePath("Background")
 @export var ui_player: NodePath = NodePath("Player")
 @export var turns_order_path: NodePath = NodePath("TurnsOrder")
 @export var player_turn_icon: Texture2D
@@ -152,6 +154,10 @@ func _ready() -> void:
 		tutorial_overlay.visible = true
 
 func _get_random_encounters() -> void:
+	if RunData.combats_fought == 0:
+		_queued_encounter_scenes.append(preload("res://scenes/combat/enemies/boss.tscn"))
+		return
+
 	var range := _get_enemy_count_range_for_progress()
 	var enemy_count : int = RunData.rng.randi_range(int(range[0]), int(range[1]))
 
@@ -316,18 +322,41 @@ func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 
 func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	var enemy_container := get_node_or_null(enemy_container_path)
-	if enemy_container == null:
-		return
+	var boss_container := get_node_or_null(boss_container_path)
+	var bg_rect := get_node_or_null(background_rect_path) as TextureRect
 
-	for child in enemy_container.get_children():
-		if child is CombatEntity:
-			child.queue_free()
+	var is_boss_fight := false
+	if RunData.combats_fought == 0:
+		is_boss_fight = true
+	elif RunData.last_map_room != null and RunData.last_map_room.type == Room.Type.BOSS:
+		is_boss_fight = true
+
+	var active_container = boss_container if is_boss_fight and boss_container else enemy_container
+
+	if bg_rect:
+		if is_boss_fight:
+			bg_rect.texture = preload("res://assets/enemies/boss/backgroundboss.png")
+		else:
+			bg_rect.texture = preload("res://assets/Placeholders/backgrounds/combatbg.png")
+
+	if enemy_container:
+		for child in enemy_container.get_children():
+			if child is CombatEntity:
+				child.queue_free()
+				
+	if boss_container:
+		for child in boss_container.get_children():
+			if child is CombatEntity:
+				child.queue_free()
+
+	if active_container == null:
+		return
 
 	for enemy_scene in encounter_enemy_scenes:
 		if enemy_scene == null:
 			continue
 		var enemy_instance := enemy_scene.instantiate()
-		enemy_container.add_child(enemy_instance)
+		active_container.add_child(enemy_instance)
 		_apply_enemy_scaling(enemy_instance)
 
 func _refresh_enemy_entities() -> void:
@@ -336,6 +365,12 @@ func _refresh_enemy_entities() -> void:
 	var enemy_container := get_node_or_null(enemy_container_path)
 	if enemy_container != null:
 		for child in enemy_container.get_children():
+			if child is CombatEntity and not child.is_queued_for_deletion():
+				_register_enemy_entity(child as CombatEntity)
+
+	var boss_container := get_node_or_null(boss_container_path)
+	if boss_container != null:
+		for child in boss_container.get_children():
 			if child is CombatEntity and not child.is_queued_for_deletion():
 				_register_enemy_entity(child as CombatEntity)
 
