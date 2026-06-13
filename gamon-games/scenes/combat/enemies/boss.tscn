@@ -13,7 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://cdkpr5abuiybb" path="res://assets/enemies/boss/4th_arm.png" id="11_53xnk"]
 [ext_resource type="Texture2D" uid="uid://p6s6t57om70b" path="res://assets/enemies/boss/2nd_arm.png" id="11_auufy"]
 [ext_resource type="Texture2D" uid="uid://c2xi4s3p1j5tr" path="res://assets/enemies/boss/statue.png" id="12_6t245"]
-[ext_resource type="Texture2D" uid="uid://bx11hbvlyo8t3" path="res://assets/enemies/boss/shadow.png" id="14_53xnk"]
 
 [sub_resource type="Resource" id="Resource_xej5o"]
 script = ExtResource("9_gbion")
@@ -121,8 +120,3 @@ hover_size = Vector2(44.514473, 44.514473)
 position = Vector2(299, 411)
 scale = Vector2(0.8173901, 0.8452381)
 texture = ExtResource("12_6t245")
-
-[node name="Shadow" type="Sprite2D" parent="." unique_id=1888199177]
-position = Vector2(293, 298)
-scale = Vector2(1.3112885, 1.3838707)
-texture = ExtResource("14_53xnk")
