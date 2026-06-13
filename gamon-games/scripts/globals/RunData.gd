@@ -58,9 +58,18 @@ var current_encounter: Array[PackedScene] = []
 var map_data: Array = []
 var floors_climbed: int = 0
 var combats_fought: int = 0
+var puzzles_solved: int = 0
+var puzzles_failed: int = 0
+var shops_visited: int = 0
+var camps_visited: int = 0
 var last_map_room: Room = null
 var items : Array[ItemData] = [] 
 var consumables : Array = [null, null, null, null, null, null, null, null, null]
+
+var total_shops: int = 0
+var total_puzzles: int = 0
+var total_combat: int = 0
+var total_resting_camps: int = 0
 
 # Values are placeholders for now, needs testing
 var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3250, 3850, 4500, 5200, 5950, 6750, 7600, 8500, 9450, 10450]

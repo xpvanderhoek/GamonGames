@@ -11,6 +11,7 @@ var _tween: Tween = null
 func _ready() -> void:
 	title = get_node_or_null("PanelContainer/VBoxContainer/Title")
 	message = get_node_or_null("PanelContainer/VBoxContainer/Message")
+	message.text = get_highlight().title + "! " + "You have fallen in battle..."
 	retry_button = get_node_or_null("PanelContainer/VBoxContainer/ButtonContainer/RetryButton")
 	menu_button = get_node_or_null("PanelContainer/VBoxContainer/ButtonContainer/MenuButton")
 	bg_panel = get_node_or_null("PanelContainer")
@@ -52,7 +53,67 @@ func _ready() -> void:
  
 	_build_stats_panel()
 	_play_defeat_sequence()
- 
+
+func safe_divide(a: float, b: float) -> float:
+	if b == 0.0:
+		return 0.0
+	return a / b
+	
+func get_highlight() -> Dictionary:
+	var floor: int = RunData.floors_climbed
+	if floor <= 4:
+		return {
+		"title": "An early death",
+	}
+	var highlights = [
+	{
+		"title": "Relentless Fighter",
+		"value": safe_divide(float(RunData.combats_fought), floor * 1.5),
+	},
+	{
+		"title": "Puzzle Master",
+		"value": safe_divide(float(RunData.puzzles_solved), floor / 2.0),
+	},
+	{
+		"title": "Puzzle Loser",
+		"value": safe_divide(
+			float(RunData.puzzles_failed),
+			float(RunData.puzzles_solved + RunData.puzzles_failed)
+		),
+	},
+	{
+		"title": "Merchant’s Friend",
+		"value": safe_divide(float(RunData.shops_visited), floor / 3.0),
+	},
+	{
+		"title": "Pack Rat",
+		"value": safe_divide(float(RunData.items.size()), 10.0),
+	},
+	{
+		"title": "Treasure Keeper",
+		"value": safe_divide(float(RunData.coins), 400.0),
+	},
+	{
+		"title": "Restful Wanderer",
+		"value": safe_divide(
+			float(RunData.camps_visited),
+			float(RunData.total_resting_camps) - 3
+		),
+	}
+	]
+	print(highlights)
+	var best = highlights[0]
+	var best_score = float(best.value)
+
+	for h in highlights:
+		var score = float(h.value)
+		if score > best_score:
+			best = h
+			best_score = score
+
+	return best
+	
+	
 func _build_stats_panel() -> void:
 	var vbox = get_node_or_null("PanelContainer/VBoxContainer")
 	if vbox == null:

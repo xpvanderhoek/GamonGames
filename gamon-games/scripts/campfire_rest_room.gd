@@ -11,6 +11,7 @@ const UPGRADE_SCREEN = preload("res://scenes/UI/upgrade_screen.tscn")
 const PAUSE_MENU := preload("res://scenes/UI/main_menu/settings/settings_menu.tscn")
 
 func _ready() -> void:
+	RunData.camps_visited += 1
 	if !RunData.run_active:
 		TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn")
 	

@@ -2,19 +2,27 @@ extends Control
 
 const ABANDON_SCREEN := preload("res://scenes/UI/main_menu/settings/abandon_confirm_window.tscn")
 
-@onready var window_mode: OptionButton = $Window/Contents/GraphicsContainer/WindowMode/OptionButton
-@onready var res_options: OptionButton = $Window/Contents/GraphicsContainer/Resolution/OptionButton
-@onready var v_sync_button: CheckBox = $Window/Contents/GraphicsContainer/VSyncButton
-@onready var colorblind_mode: OptionButton = $Window/Contents/AccessibilityContainer/ColorblindMode/OptionButton
-@onready var font_option: OptionButton = $Window/Contents/AccessibilityContainer/FontFamily/OptionButton
+@onready var window_mode: OptionButton = $Window/Contents/TabContainer/Graphics/WindowMode/OptionButton
+@onready var res_options: OptionButton = $Window/Contents/TabContainer/Graphics/Resolution/OptionButton
+@onready var v_sync_button: CheckButton = $Window/Contents/TabContainer/Graphics/VSync/VSyncButton
+@onready var fps_limit_button: OptionButton = $Window/Contents/TabContainer/Graphics/FPSLimit/OptionButton
+@onready var colorblind_mode: OptionButton = $Window/Contents/TabContainer/Accessibility/ColorblindMode/OptionButton
+@onready var font_option: OptionButton = $Window/Contents/TabContainer/Accessibility/FontFamily/OptionButton
 @onready var title_label: Label = $Window/Title
 @onready var abandon: Button = $Window/Contents/Abandon
-@onready var master_slider: HSlider = $Window/Contents/SoundContainer/Master/VolumeSlider
-@onready var sfx_slider: HSlider = $Window/Contents/SoundContainer/SFX/VolumeSlider
-@onready var music_slider: HSlider = $Window/Contents/SoundContainer/Music/VolumeSlider
+@onready var master_slider: HSlider = $Window/Contents/TabContainer/Sound/Master/VolumeSlider
+@onready var sfx_slider: HSlider = $Window/Contents/TabContainer/Sound/SFX/VolumeSlider
+@onready var music_slider: HSlider = $Window/Contents/TabContainer/Sound/Music/VolumeSlider
+@onready var master_label: Label = $Window/Contents/TabContainer/Sound/Master/ValueLabel
+@onready var sfx_label: Label = $Window/Contents/TabContainer/Sound/SFX/ValueLabel
+@onready var music_label: Label = $Window/Contents/TabContainer/Sound/Music/ValueLabel
+@onready var keybinds_container: VBoxContainer = $Window/Contents/TabContainer/Keybinds
+@onready var tab_container: TabContainer = $Window/Contents/TabContainer
+
 
 @export var title : String
 var last_resolution : Vector2i
+var waiting_for_input_index: int = -1
 
 func _ready() -> void:
 	if RunData.run_active:
@@ -30,6 +38,52 @@ func _ready() -> void:
 	_fill_resolutions()
 	_sync_graphics()
 	_sync_accessibility()
+	_sync_keybinds()
+	
+	tab_container.current_tab = Settings.last_settings_tab
+	tab_container.tab_changed.connect(_on_tab_changed)
+
+	master_slider.value_changed.connect(func(v): master_label.text = str(int(v*100)) + "%")
+	sfx_slider.value_changed.connect(func(v): sfx_label.text = str(int(v*100)) + "%")
+	music_slider.value_changed.connect(func(v): music_label.text = str(int(v*100)) + "%")
+	master_label.text = str(int(master_slider.value*100)) + "%"
+	sfx_label.text = str(int(sfx_slider.value*100)) + "%"
+	music_label.text = str(int(music_slider.value*100)) + "%"
+
+func _on_tab_changed(tab: int) -> void:
+	Settings.last_settings_tab = tab
+
+func _sync_keybinds():
+	var index = 0
+	for child in keybinds_container.get_children():
+		if child is HBoxContainer:
+			if index < Settings.data.spell_keybinds.size():
+				var label := child.get_node("Label") as Label
+				var button := child.get_node("Button") as Button
+				
+				var keycode = Settings.data.spell_keybinds[index]
+				button.text = OS.get_keycode_string(keycode)
+				
+				# Ensure signals are connected only once
+				if not button.pressed.is_connected(self._on_keybind_button_pressed):
+					button.pressed.connect(self._on_keybind_button_pressed.bind(index, button))
+				
+				index += 1
+
+func _on_keybind_button_pressed(index: int, button: Button):
+	waiting_for_input_index = index
+	button.text = "Press any key..."
+
+func _input(event: InputEvent) -> void:
+	if waiting_for_input_index != -1 and event is InputEventKey and event.pressed:
+		var keycode = event.keycode
+		if keycode != KEY_ESCAPE:
+			Settings.data.spell_keybinds[waiting_for_input_index] = event.physical_keycode if event.physical_keycode != 0 else event.keycode
+			Settings.save_settings()
+			Settings.keybinds_changed.emit()
+		waiting_for_input_index = -1
+		_sync_keybinds()
+		get_viewport().set_input_as_handled()
 
 func _fill_resolutions():
 	var resolutions := _get_resolutions()
@@ -77,6 +131,13 @@ func _sync_graphics():
 		v_sync_button.button_pressed = true
 	else:
 		v_sync_button.button_pressed = false
+		
+	# FPS Limit
+	var fps_map = {0: 0, 30: 1, 60: 2, 120: 3, 144: 4, 200:5, 300:6}
+	if fps_map.has(Settings.data.fps_limit):
+		fps_limit_button.select(fps_map[Settings.data.fps_limit])
+	else:
+		fps_limit_button.select(0)
 	
 	colorblind_mode.select(Settings.data.colorblind_mode)
 
@@ -140,6 +201,13 @@ func _on_v_sync_button_pressed() -> void:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		Settings.data.vsync = false
 	Settings.save_settings()
+
+func _on_fps_limit_item_selected(index: int) -> void:
+	var fps_values = [0, 30, 60, 120, 144, 200, 300]
+	if index >= 0 and index < fps_values.size():
+		Settings.data.fps_limit = fps_values[index]
+		Engine.max_fps = Settings.data.fps_limit
+		Settings.save_settings()
 
 func _on_colorblind_item_selected(index: int) -> void:
 	Settings.data.colorblind_mode = index
