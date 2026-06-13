@@ -6,6 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://b243pqp2c12ym" path="res://assets/settings/pause_settings.png" id="4_ekf0g"]
 [ext_resource type="PackedScene" uid="uid://bwnbuxnh3g7hj" path="res://scenes/UI/main_menu/settings/volume_slider.tscn" id="5_kv4nn"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tab"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dmolg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
@@ -37,10 +43,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -340.0
-offset_top = -220.0
-offset_right = 340.0
-offset_bottom = 220.0
+offset_left = -352.0
+offset_top = -248.5
+offset_right = 352.0
+offset_bottom = 248.5
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_ekf0g")
@@ -76,42 +82,38 @@ offset_bottom = 188.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GraphicsContainer" type="VBoxContainer" parent="Window/Contents" unique_id=52162237]
-layout_mode = 0
-offset_left = -18.0
-offset_right = 270.0
-offset_bottom = 186.0
+[node name="TabContainer" type="TabContainer" parent="Window/Contents" unique_id=349427530]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+offset_bottom = -69.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_tab")
+current_tab = 0
 
-[node name="Label" type="Label" parent="Window/Contents/GraphicsContainer" unique_id=1682791833]
+[node name="Graphics" type="VBoxContainer" parent="Window/Contents/TabContainer" unique_id=52162237]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.96474224, 0.96474224, 0.9647421, 1)
-theme_override_constants/outline_size = 8
-theme_override_fonts/font = ExtResource("2_kv4nn")
-theme_override_font_sizes/font_size = 26
-text = "Graphics"
-horizontal_alignment = 1
+theme_override_constants/separation = 16
+metadata/_tab_index = 0
 
-[node name="Label2" type="Label" parent="Window/Contents/GraphicsContainer" unique_id=1014642830]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_kv4nn")
-theme_override_font_sizes/font_size = 11
-text = "*Game restart is recommended*"
-horizontal_alignment = 1
-
-[node name="Resolution" type="HBoxContainer" parent="Window/Contents/GraphicsContainer" unique_id=1119792551]
+[node name="Resolution" type="HBoxContainer" parent="Window/Contents/TabContainer/Graphics" unique_id=1119792551]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Contents/GraphicsContainer/Resolution" unique_id=1411795647]
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Graphics/Resolution" unique_id=1411795647]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
 theme_override_font_sizes/font_size = 17
 text = "Resolution:"
 
-[node name="Control" type="Control" parent="Window/Contents/GraphicsContainer/Resolution" unique_id=200308121]
+[node name="Control" type="Control" parent="Window/Contents/TabContainer/Graphics/Resolution" unique_id=200308121]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OptionButton" type="OptionButton" parent="Window/Contents/GraphicsContainer/Resolution" unique_id=1239632203]
+[node name="OptionButton" type="OptionButton" parent="Window/Contents/TabContainer/Graphics/Resolution" unique_id=1239632203]
 layout_mode = 2
 item_count = 3
 popup/item_0/text = "1280x720"
@@ -121,20 +123,21 @@ popup/item_1/id = 1
 popup/item_2/text = "2560x1440"
 popup/item_2/id = 2
 
-[node name="WindowMode" type="HBoxContainer" parent="Window/Contents/GraphicsContainer" unique_id=1655981946]
+[node name="WindowMode" type="HBoxContainer" parent="Window/Contents/TabContainer/Graphics" unique_id=1655981946]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Contents/GraphicsContainer/WindowMode" unique_id=153360764]
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Graphics/WindowMode" unique_id=153360764]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
 theme_override_font_sizes/font_size = 17
 text = "Window:"
 
-[node name="Control" type="Control" parent="Window/Contents/GraphicsContainer/WindowMode" unique_id=1180294630]
+[node name="Control" type="Control" parent="Window/Contents/TabContainer/Graphics/WindowMode" unique_id=1180294630]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OptionButton" type="OptionButton" parent="Window/Contents/GraphicsContainer/WindowMode" unique_id=1962324983]
+[node name="OptionButton" type="OptionButton" parent="Window/Contents/TabContainer/Graphics/WindowMode" unique_id=1962324983]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 item_count = 3
@@ -145,105 +148,166 @@ popup/item_1/id = 1
 popup/item_2/text = "Borderless Fullscreen"
 popup/item_2/id = 2
 
-[node name="VSyncButton" type="CheckBox" parent="Window/Contents/GraphicsContainer" unique_id=2128175597]
+[node name="VSync" type="HBoxContainer" parent="Window/Contents/TabContainer/Graphics" unique_id=1860118941]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Graphics/VSync" unique_id=495344605]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
 theme_override_font_sizes/font_size = 17
-text = "VSync"
+text = "VSync:"
 
-[node name="SoundContainer" type="VBoxContainer" parent="Window/Contents" unique_id=1500271597]
-layout_mode = 0
-offset_left = 310.0
-offset_right = 590.0
-offset_bottom = 186.0
-
-[node name="Label" type="Label" parent="Window/Contents/SoundContainer" unique_id=1216378668]
+[node name="Control" type="Control" parent="Window/Contents/TabContainer/Graphics/VSync" unique_id=177957087]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.96474224, 0.96474224, 0.9647421, 1)
-theme_override_constants/outline_size = 8
+size_flags_horizontal = 3
+
+[node name="VSyncButton" type="CheckButton" parent="Window/Contents/TabContainer/Graphics/VSync" unique_id=2128175597]
+layout_mode = 2
+
+[node name="FPSLimit" type="HBoxContainer" parent="Window/Contents/TabContainer/Graphics" unique_id=1286608618]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Graphics/FPSLimit" unique_id=1286608619]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
-theme_override_font_sizes/font_size = 26
-text = "Sound"
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 17
+text = "FPS Limit:"
 
-[node name="Master" type="HBoxContainer" parent="Window/Contents/SoundContainer" unique_id=1954549085]
+[node name="Control" type="Control" parent="Window/Contents/TabContainer/Graphics/FPSLimit" unique_id=1286608620]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="Window/Contents/TabContainer/Graphics/FPSLimit" unique_id=1286608621]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+item_count = 7
+popup/item_0/text = "Unlimited"
+popup/item_0/id = 0
+popup/item_1/text = "30"
+popup/item_1/id = 1
+popup/item_2/text = "60"
+popup/item_2/id = 2
+popup/item_3/text = "120"
+popup/item_3/id = 3
+popup/item_4/text = "144"
+popup/item_4/id = 4
+popup/item_5/text = "200"
+popup/item_5/id = 5
+popup/item_6/text = "300"
+popup/item_6/id = 6
+
+[node name="Sound" type="VBoxContainer" parent="Window/Contents/TabContainer" unique_id=1500271597]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+metadata/_tab_index = 1
+
+[node name="Master" type="HBoxContainer" parent="Window/Contents/TabContainer/Sound" unique_id=1954549085]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Contents/SoundContainer/Master" unique_id=2113012799]
-custom_minimum_size = Vector2(75, 0)
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Sound/Master" unique_id=2113012799]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
 theme_override_font_sizes/font_size = 17
 text = "Master:"
 
-[node name="VolumeSlider" parent="Window/Contents/SoundContainer/Master" unique_id=963521810 instance=ExtResource("5_kv4nn")]
+[node name="Control" type="Control" parent="Window/Contents/TabContainer/Sound/Master" unique_id=198892582]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="VolumeSlider" parent="Window/Contents/TabContainer/Sound/Master" unique_id=963521810 instance=ExtResource("5_kv4nn")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="SFX" type="HBoxContainer" parent="Window/Contents/SoundContainer" unique_id=1779704932]
+[node name="ValueLabel" type="Label" parent="Window/Contents/TabContainer/Sound/Master" unique_id=299792488]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "100%"
+horizontal_alignment = 2
+
+[node name="SFX" type="HBoxContainer" parent="Window/Contents/TabContainer/Sound" unique_id=1779704932]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Contents/SoundContainer/SFX" unique_id=1736488882]
-custom_minimum_size = Vector2(75, 0)
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Sound/SFX" unique_id=1736488882]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
 theme_override_font_sizes/font_size = 17
 text = "Effects:"
 
-[node name="VolumeSlider" parent="Window/Contents/SoundContainer/SFX" unique_id=2051478654 instance=ExtResource("5_kv4nn")]
+[node name="Control" type="Control" parent="Window/Contents/TabContainer/Sound/SFX" unique_id=1381159565]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="VolumeSlider" parent="Window/Contents/TabContainer/Sound/SFX" unique_id=2051478654 instance=ExtResource("5_kv4nn")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 bus_name = "SFX"
 
-[node name="Music" type="HBoxContainer" parent="Window/Contents/SoundContainer" unique_id=1788132086]
+[node name="ValueLabel" type="Label" parent="Window/Contents/TabContainer/Sound/SFX" unique_id=454363732]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "100%"
+horizontal_alignment = 2
+
+[node name="Music" type="HBoxContainer" parent="Window/Contents/TabContainer/Sound" unique_id=1788132086]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Contents/SoundContainer/Music" unique_id=1845509266]
-custom_minimum_size = Vector2(75, 0)
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Sound/Music" unique_id=1845509266]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
 theme_override_font_sizes/font_size = 17
 text = "Music:"
 
-[node name="VolumeSlider" parent="Window/Contents/SoundContainer/Music" unique_id=1922007877 instance=ExtResource("5_kv4nn")]
+[node name="Control" type="Control" parent="Window/Contents/TabContainer/Sound/Music" unique_id=1393510279]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="VolumeSlider" parent="Window/Contents/TabContainer/Sound/Music" unique_id=1922007877 instance=ExtResource("5_kv4nn")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 bus_name = "Music"
 
-[node name="AccessibilityContainer" type="VBoxContainer" parent="Window/Contents" unique_id=100000002]
-layout_mode = 0
-offset_left = -18.0
-offset_top = 184.0
-offset_right = 291.0
-offset_bottom = 281.0
-theme_override_constants/separation = 4
-
-[node name="AccessibilityLabel" type="Label" parent="Window/Contents/AccessibilityContainer" unique_id=100000003]
+[node name="ValueLabel" type="Label" parent="Window/Contents/TabContainer/Sound/Music" unique_id=1810728958]
+custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.96474224, 0.96474224, 0.9647421, 1)
-theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("2_kv4nn")
-theme_override_font_sizes/font_size = 26
-text = "Accessibility"
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 17
+text = "100%"
+horizontal_alignment = 2
 
-[node name="ColorblindMode" type="HBoxContainer" parent="Window/Contents/AccessibilityContainer" unique_id=1793140368]
+[node name="Accessibility" type="VBoxContainer" parent="Window/Contents/TabContainer" unique_id=100000002]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+metadata/_tab_index = 2
+
+[node name="ColorblindMode" type="HBoxContainer" parent="Window/Contents/TabContainer/Accessibility" unique_id=1793140368]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Contents/AccessibilityContainer/ColorblindMode" unique_id=864975081]
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Accessibility/ColorblindMode" unique_id=864975081]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
 theme_override_font_sizes/font_size = 17
 text = "Colorblind:"
 
-[node name="Control" type="Control" parent="Window/Contents/AccessibilityContainer/ColorblindMode" unique_id=790961411]
+[node name="Control" type="Control" parent="Window/Contents/TabContainer/Accessibility/ColorblindMode" unique_id=790961411]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OptionButton" type="OptionButton" parent="Window/Contents/AccessibilityContainer/ColorblindMode" unique_id=1852666827]
+[node name="OptionButton" type="OptionButton" parent="Window/Contents/TabContainer/Accessibility/ColorblindMode" unique_id=1852666827]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 item_count = 4
@@ -256,20 +320,21 @@ popup/item_2/id = 2
 popup/item_3/text = "Tritanopia"
 popup/item_3/id = 3
 
-[node name="FontFamily" type="HBoxContainer" parent="Window/Contents/AccessibilityContainer" unique_id=1476414860]
+[node name="FontFamily" type="HBoxContainer" parent="Window/Contents/TabContainer/Accessibility" unique_id=1476414860]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Contents/AccessibilityContainer/FontFamily" unique_id=1840057016]
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Accessibility/FontFamily" unique_id=1840057016]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
 theme_override_font_sizes/font_size = 17
 text = "Font:"
 
-[node name="Control" type="Control" parent="Window/Contents/AccessibilityContainer/FontFamily" unique_id=448447172]
+[node name="Control" type="Control" parent="Window/Contents/TabContainer/Accessibility/FontFamily" unique_id=448447172]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OptionButton" type="OptionButton" parent="Window/Contents/AccessibilityContainer/FontFamily" unique_id=433322882]
+[node name="OptionButton" type="OptionButton" parent="Window/Contents/TabContainer/Accessibility/FontFamily" unique_id=433322882]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 item_count = 4
@@ -281,6 +346,138 @@ popup/item_2/text = "Deuteranopia"
 popup/item_2/id = 2
 popup/item_3/text = "Tritanopia"
 popup/item_3/id = 3
+
+[node name="Keybinds" type="VBoxContainer" parent="Window/Contents/TabContainer" unique_id=479371282]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+metadata/_tab_index = 3
+
+[node name="Spell1" type="HBoxContainer" parent="Window/Contents/TabContainer/Keybinds" unique_id=1726326887]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Keybinds/Spell1" unique_id=1928393633]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "Spell 1"
+
+[node name="Spacer" type="Control" parent="Window/Contents/TabContainer/Keybinds/Spell1" unique_id=2075937784]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Window/Contents/TabContainer/Keybinds/Spell1" unique_id=763449369]
+custom_minimum_size = Vector2(60, 24)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "1"
+
+[node name="Spell2" type="HBoxContainer" parent="Window/Contents/TabContainer/Keybinds" unique_id=609076662]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Keybinds/Spell2" unique_id=510611520]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "Spell 2"
+
+[node name="Spacer" type="Control" parent="Window/Contents/TabContainer/Keybinds/Spell2" unique_id=316896823]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Window/Contents/TabContainer/Keybinds/Spell2" unique_id=1441228720]
+custom_minimum_size = Vector2(60, 24)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "2"
+
+[node name="Spell3" type="HBoxContainer" parent="Window/Contents/TabContainer/Keybinds" unique_id=547922405]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Keybinds/Spell3" unique_id=770655114]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "Spell 3"
+
+[node name="Spacer" type="Control" parent="Window/Contents/TabContainer/Keybinds/Spell3" unique_id=1330071289]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Window/Contents/TabContainer/Keybinds/Spell3" unique_id=2085580517]
+custom_minimum_size = Vector2(60, 24)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "3"
+
+[node name="Spell4" type="HBoxContainer" parent="Window/Contents/TabContainer/Keybinds" unique_id=936010745]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Keybinds/Spell4" unique_id=1143079682]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "Spell 4"
+
+[node name="Spacer" type="Control" parent="Window/Contents/TabContainer/Keybinds/Spell4" unique_id=1270215774]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Window/Contents/TabContainer/Keybinds/Spell4" unique_id=795003270]
+custom_minimum_size = Vector2(60, 24)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "4"
+
+[node name="Spell5" type="HBoxContainer" parent="Window/Contents/TabContainer/Keybinds" unique_id=1433097560]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Keybinds/Spell5" unique_id=476998067]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "Spell 5"
+
+[node name="Spacer" type="Control" parent="Window/Contents/TabContainer/Keybinds/Spell5" unique_id=1589868718]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Window/Contents/TabContainer/Keybinds/Spell5" unique_id=36784803]
+custom_minimum_size = Vector2(60, 24)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "5"
+
+[node name="Spell6" type="HBoxContainer" parent="Window/Contents/TabContainer/Keybinds" unique_id=982668716]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Keybinds/Spell6" unique_id=1119254338]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "Spell 6"
+
+[node name="Spacer" type="Control" parent="Window/Contents/TabContainer/Keybinds/Spell6" unique_id=381215408]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Window/Contents/TabContainer/Keybinds/Spell6" unique_id=1421095227]
+custom_minimum_size = Vector2(60, 24)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "6"
 
 [node name="Abandon" type="Button" parent="Window/Contents" unique_id=2113631439]
 layout_mode = 1
@@ -289,16 +486,18 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -46.0
-offset_top = -64.0
-offset_right = 46.0
-offset_bottom = -39.0
+offset_left = -70.0
+offset_top = -48.0
+offset_right = 70.0
+offset_bottom = -23.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
 theme_override_colors/font_pressed_color = Color(0.80395424, 0.6112818, 0.10585306, 1)
 theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
 theme_override_fonts/font = ExtResource("2_kv4nn")
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = SubResource("StyleBoxFlat_dmolg")
@@ -317,8 +516,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -41.0
-offset_top = -25.0
+offset_top = -14.0
 offset_right = 42.0
+offset_bottom = 11.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -334,14 +534,15 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_dmolg")
 text = "Back"
 autowrap_trim_flags = 0
 
-[connection signal="item_selected" from="Window/Contents/GraphicsContainer/Resolution/OptionButton" to="." method="_on_resolution_item_selected"]
-[connection signal="item_selected" from="Window/Contents/GraphicsContainer/WindowMode/OptionButton" to="." method="_on_window_item_selected"]
-[connection signal="pressed" from="Window/Contents/GraphicsContainer/VSyncButton" to="." method="_on_v_sync_button_pressed"]
-[connection signal="done_sliding" from="Window/Contents/SoundContainer/Master/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
-[connection signal="done_sliding" from="Window/Contents/SoundContainer/SFX/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
-[connection signal="done_sliding" from="Window/Contents/SoundContainer/Music/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
-[connection signal="item_selected" from="Window/Contents/AccessibilityContainer/ColorblindMode/OptionButton" to="." method="_on_colorblind_item_selected"]
-[connection signal="item_selected" from="Window/Contents/AccessibilityContainer/FontFamily/OptionButton" to="." method="_on_font_item_selected"]
+[connection signal="item_selected" from="Window/Contents/TabContainer/Graphics/Resolution/OptionButton" to="." method="_on_resolution_item_selected"]
+[connection signal="item_selected" from="Window/Contents/TabContainer/Graphics/WindowMode/OptionButton" to="." method="_on_window_item_selected"]
+[connection signal="pressed" from="Window/Contents/TabContainer/Graphics/VSync/VSyncButton" to="." method="_on_v_sync_button_pressed"]
+[connection signal="item_selected" from="Window/Contents/TabContainer/Graphics/FPSLimit/OptionButton" to="." method="_on_fps_limit_item_selected"]
+[connection signal="done_sliding" from="Window/Contents/TabContainer/Sound/Master/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
+[connection signal="done_sliding" from="Window/Contents/TabContainer/Sound/SFX/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
+[connection signal="done_sliding" from="Window/Contents/TabContainer/Sound/Music/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
+[connection signal="item_selected" from="Window/Contents/TabContainer/Accessibility/ColorblindMode/OptionButton" to="." method="_on_colorblind_item_selected"]
+[connection signal="item_selected" from="Window/Contents/TabContainer/Accessibility/FontFamily/OptionButton" to="." method="_on_font_item_selected"]
 [connection signal="mouse_entered" from="Window/Contents/Abandon" to="." method="_on_abandon_hover"]
 [connection signal="pressed" from="Window/Contents/Abandon" to="." method="_on_abandon_pressed"]
 [connection signal="mouse_entered" from="Window/Contents/Back" to="." method="_on_back_hover"]
