@@ -21,7 +21,7 @@ metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [node name="Boss" type="Control" unique_id=1680014499]
 modulate = Color(0.8, 0.8, 0.77, 1)
-custom_minimum_size = Vector2(125, 175)
+custom_minimum_size = Vector2(62.5, 87.5)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1305.0
@@ -47,7 +47,7 @@ grow_vertical = 0
 alignment = 1
 
 [node name="Torso" type="Sprite2D" parent="." unique_id=582211915]
-position = Vector2(652, 421)
+position = Vector2(326, 210.5)
 texture = ExtResource("4_ahw5o")
 script = ExtResource("6_auufy")
 limb_name = "Torso"
@@ -55,11 +55,11 @@ max_health = 90
 is_vital = true
 
 [node name="TargetIndicator" parent="Torso" unique_id=500000001 instance=ExtResource("7_hba3j")]
-position = Vector2(-9, -37)
-hover_size = Vector2(44.514473, 44.514473)
+position = Vector2(-4.5, -18.5)
+hover_size = Vector2(22.2572, 22.2572)
 
 [node name="Arm1" type="Sprite2D" parent="." unique_id=1312305909]
-position = Vector2(1032, 276)
+position = Vector2(516, 138)
 texture = ExtResource("7_6t245")
 script = ExtResource("6_auufy")
 limb_name = "Left Arm"
@@ -67,11 +67,11 @@ max_health = 35
 attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
 
 [node name="TargetIndicator" parent="Arm1" unique_id=500000002 instance=ExtResource("7_hba3j")]
-position = Vector2(74, 38)
-hover_size = Vector2(44.514473, 44.514473)
+position = Vector2(37, 19)
+hover_size = Vector2(22.2572, 22.2572)
 
 [node name="Arm2" type="Sprite2D" parent="." unique_id=1682569086]
-position = Vector2(1057, 648)
+position = Vector2(528.5, 324)
 texture = ExtResource("11_auufy")
 script = ExtResource("6_auufy")
 limb_name = "Left Arm"
@@ -79,11 +79,11 @@ max_health = 35
 attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
 
 [node name="TargetIndicator" parent="Arm2" unique_id=725840848 instance=ExtResource("7_hba3j")]
-position = Vector2(-15, 76)
-hover_size = Vector2(44.514473, 44.514473)
+position = Vector2(-7.5, 38)
+hover_size = Vector2(22.2572, 22.2572)
 
 [node name="Arm3" type="Sprite2D" parent="." unique_id=1254311535]
-position = Vector2(268, 147)
+position = Vector2(134, 73.5)
 texture = ExtResource("10_ndqa6")
 script = ExtResource("6_auufy")
 limb_name = "Left Arm"
@@ -91,11 +91,11 @@ max_health = 35
 attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
 
 [node name="TargetIndicator" parent="Arm3" unique_id=589595359 instance=ExtResource("7_hba3j")]
-position = Vector2(-156.5, 16)
-hover_size = Vector2(44.514473, 44.514473)
+position = Vector2(-78.25, 8)
+hover_size = Vector2(22.2572, 22.2572)
 
 [node name="Arm4" type="Sprite2D" parent="." unique_id=1625574404]
-position = Vector2(193, 545)
+position = Vector2(96.5, 272.5)
 texture = ExtResource("11_53xnk")
 script = ExtResource("6_auufy")
 limb_name = "Left Arm"
@@ -103,5 +103,5 @@ max_health = 35
 attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
 
 [node name="TargetIndicator" parent="Arm4" unique_id=862512854 instance=ExtResource("7_hba3j")]
-position = Vector2(-148, 34)
-hover_size = Vector2(44.514473, 44.514473)
+position = Vector2(-74, 17)
+hover_size = Vector2(22.2572, 22.2572)
