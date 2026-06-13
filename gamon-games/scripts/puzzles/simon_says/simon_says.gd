@@ -106,6 +106,7 @@ func checkDone(currentRound: int):
 	if currentRound >= finishRound:
 		PuzzleData.chest_open = true
 		switchDisabled(true)
+		RunData.puzzles_solved += 1
 		await get_tree().create_timer(0.7).timeout
 		TransitionManager.change_scene("res://scenes/puzzles/Chest_room.tscn")
 		await get_tree().create_timer(0.4).timeout
@@ -125,6 +126,7 @@ func switchDisabled(variable: bool):
 func fail():
 	switchDisabled(true)
 	$AudioStreamPlayer.play()
+	RunData.puzzles_failed += 1
 	changeColor(Color(2, 0.5, 0.5))
 	await get_tree().create_timer(0.1).timeout
 	changeColor(Color(2, 0.9, 0.9))
