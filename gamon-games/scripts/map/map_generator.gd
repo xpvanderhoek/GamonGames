@@ -146,6 +146,7 @@ func _setup_boss_room():
 			current_room.next_rooms.append(boss_room)
 		
 	boss_room.type = Room.Type.BOSS
+	boss_room.position.x = (MAP_WIDTH - 1) / 2.0 * X_DIST
 
 func _setup_random_room_weights():
 	random_room_type_weights[Room.Type.COMBAT] = COMBAT_ROOM_WEIGHT

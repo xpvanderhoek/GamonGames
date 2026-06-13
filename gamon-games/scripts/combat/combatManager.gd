@@ -164,12 +164,12 @@ func _on_keybinds_changed() -> void:
 		tutorial_overlay.visible = true
 
 func _get_random_encounters() -> void:
-	if RunData.combats_fought == 0:
+	if RunData.last_map_room != null and RunData.last_map_room.type == Room.Type.BOSS:
 		_queued_encounter_scenes.append(preload("res://scenes/combat/enemies/boss.tscn"))
 		return
 
-	var range := _get_enemy_count_range_for_progress()
-	var enemy_count : int = RunData.rng.randi_range(int(range[0]), int(range[1]))
+	var count_range := _get_enemy_count_range_for_progress()
+	var enemy_count : int = RunData.rng.randi_range(int(count_range[0]), int(count_range[1]))
 
 	for i in range(enemy_count):
 		var chosen_scene := _pick_enemy_by_spawn_ranges(RunData.combats_fought)
@@ -298,12 +298,7 @@ func _show_victory_summary() -> void:
 		is_boss_fight = true
 	
 	if is_boss_fight:
-		if BOSS_VICTORY_SCENE == null:
-			_exit_combat()
-			return
-		
-		var victory_screen = BOSS_VICTORY_SCENE.instantiate()
-		add_child(victory_screen)
+		_setup_boss_statue_interact()
 	else:
 		if COMBAT_SUMMARY_SCENE == null:
 			_exit_combat()
@@ -313,6 +308,48 @@ func _show_victory_summary() -> void:
 		summary.continue_pressed.connect(_exit_combat)
 		add_child(summary)
 		summary.setup(_exp_gained_this_combat)
+
+func _setup_boss_statue_interact() -> void:
+	var boss_container := get_node_or_null(boss_container_path)
+	if boss_container == null:
+		_show_boss_victory_screen()
+		return
+	
+	var statue = boss_container.get_node_or_null("Statue")
+	if statue == null:
+		_show_boss_victory_screen()
+		return
+		
+	var interact_button = TextureButton.new()
+	if statue is Sprite2D:
+		interact_button.texture_normal = statue.texture
+		interact_button.pivot_offset = statue.texture.get_size() / 2.0
+		interact_button.position = statue.position - interact_button.pivot_offset
+		interact_button.scale = statue.scale
+		interact_button.z_index = statue.z_index
+	
+	var tween = create_tween().set_loops()
+	tween.tween_property(interact_button, "modulate", Color(2.0, 1.8, 1.2, 1.0), 0.8)
+	tween.tween_property(interact_button, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.8)
+	
+	interact_button.pressed.connect(func():
+		interact_button.disabled = true
+		tween.kill()
+		interact_button.modulate = Color(1.0, 1.0, 1.0, 1.0)
+		_show_boss_victory_screen()
+	)
+	
+	interact_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	
+	boss_container.add_child(interact_button)
+	statue.visible = false
+
+func _show_boss_victory_screen() -> void:
+	if BOSS_VICTORY_SCENE == null:
+		_exit_combat()
+		return
+	var victory_screen = BOSS_VICTORY_SCENE.instantiate()
+	add_child(victory_screen)
 
 func setup_encounter(encounter_enemy_scenes: Array[PackedScene]) -> void:
 	_queued_encounter_scenes = encounter_enemy_scenes.duplicate()
@@ -336,9 +373,7 @@ func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> voi
 	var bg_rect := get_node_or_null(background_rect_path) as TextureRect
 
 	var is_boss_fight := false
-	if RunData.combats_fought == 0:
-		is_boss_fight = true
-	elif RunData.last_map_room != null and RunData.last_map_room.type == Room.Type.BOSS:
+	if RunData.last_map_room != null and RunData.last_map_room.type == Room.Type.BOSS:
 		is_boss_fight = true
 
 	var active_container = boss_container if is_boss_fight and boss_container else enemy_container
@@ -349,15 +384,24 @@ func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> voi
 		else:
 			bg_rect.texture = preload("res://assets/Placeholders/backgrounds/combatbg.png")
 
+	var player_anchor = get_node_or_null(ui_player)
+	if player_anchor != null:
+		var inner_sprite = player_anchor.get_node_or_null("Player")
+		if inner_sprite is Sprite2D:
+			if is_boss_fight:
+				var mat = ShaderMaterial.new()
+				mat.shader = preload("res://shaders/grayscale.gdshader")
+				inner_sprite.material = mat
+			else:
+				inner_sprite.material = null
+
 	if enemy_container:
 		for child in enemy_container.get_children():
-			if child is CombatEntity:
-				child.queue_free()
+			child.queue_free()
 				
 	if boss_container:
 		for child in boss_container.get_children():
-			if child is CombatEntity:
-				child.queue_free()
+			child.queue_free()
 
 	if active_container == null:
 		return
@@ -368,6 +412,21 @@ func _spawn_encounter_enemies(encounter_enemy_scenes: Array[PackedScene]) -> voi
 		var enemy_instance := enemy_scene.instantiate()
 		active_container.add_child(enemy_instance)
 		_apply_enemy_scaling(enemy_instance)
+		
+		var statue_thing = enemy_instance.get_node_or_null("StatueThing")
+		if statue_thing:
+			var gp = statue_thing.global_position
+			enemy_instance.remove_child(statue_thing)
+			active_container.add_child(statue_thing)
+			statue_thing.global_position = gp
+			active_container.move_child(statue_thing, enemy_instance.get_index())
+			
+		var statue = enemy_instance.get_node_or_null("Statue")
+		if statue:
+			var gp = statue.global_position
+			enemy_instance.remove_child(statue)
+			active_container.add_child(statue)
+			statue.global_position = gp
 
 func _refresh_enemy_entities() -> void:
 	enemy_entities.clear()
@@ -496,10 +555,10 @@ func _configure_spell_button(button: Button, spell: SpellData) -> void:
 		if panel != null:
 			var sb := panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
 			if sb != null:
-				sb.border_width_left = 2
-				sb.border_width_right = 2
-				sb.border_width_top = 2
-				sb.border_width_bottom = 2
+				sb.border_width_left = 0
+				sb.border_width_right = 0
+				sb.border_width_top = 0
+				sb.border_width_bottom = 0
 				sb.border_color = spell.get_tier_color()
 				sb.corner_radius_top_left = 2
 				sb.corner_radius_top_right = 2
@@ -1706,7 +1765,7 @@ func _refresh_enemy_buffs_ui() -> void:
 				count_label.text = str(turns_remaining)
 
 			var icon_color = effect.get("icon_color", Color.WHITE) as Color
-			var border_width = 2
+			var border_width = 0
 			var border_color = effect.get("border_color", Color.WHITE) as Color
 			
 			var sb := buff_icon.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
@@ -1763,7 +1822,7 @@ func _refresh_player_buffs_ui() -> void:
 		count_label.text = str(turns_remaining)
 		
 		var icon_color = effect.get("icon_color", Color.WHITE) as Color
-		var border_width = 2
+		var border_width = 0
 		var border_color = effect.get("border_color", Color.WHITE) as Color
 		
 		var sb := buff_icon.get_theme_stylebox("panel").duplicate() as StyleBoxFlat

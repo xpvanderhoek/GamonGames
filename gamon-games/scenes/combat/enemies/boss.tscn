@@ -3,14 +3,17 @@
 [ext_resource type="Script" uid="uid://rf2oqe4ddcfv" path="res://scripts/combat/combatEntity.gd" id="1_itw8y"]
 [ext_resource type="AudioStream" uid="uid://oe88et4sh83g" path="res://assets/enemies/skeleton/hit.wav" id="2_ahw5o"]
 [ext_resource type="Texture2D" uid="uid://cvrg5pxbpmxnl" path="res://assets/enemies/skeleton/head.png" id="3_6t245"]
-[ext_resource type="Texture2D" uid="uid://bihte1g0hkq82" path="res://assets/enemies/boss/body.png" id="4_ahw5o"]
+[ext_resource type="Texture2D" uid="uid://bckm4uu80cvq0" path="res://assets/enemies/boss/body.png" id="4_ahw5o"]
+[ext_resource type="Texture2D" uid="uid://hhptey5l12ko" path="res://assets/enemies/boss/statue_thing.png" id="4_ndqa6"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="6_auufy"]
-[ext_resource type="Texture2D" uid="uid://datekt8hmv5ip" path="res://assets/enemies/boss/1st_arm.png" id="7_6t245"]
+[ext_resource type="Texture2D" uid="uid://020jrwbu1y8s" path="res://assets/enemies/boss/1st_arm.png" id="7_6t245"]
 [ext_resource type="PackedScene" uid="uid://dlgsbmg808o8n" path="res://scenes/combat/ui/TargetIndicator.tscn" id="7_hba3j"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="9_gbion"]
-[ext_resource type="Texture2D" uid="uid://c5307xramqwwd" path="res://assets/enemies/boss/3rd_arm.png" id="10_ndqa6"]
-[ext_resource type="Texture2D" uid="uid://dc3lhkw7qt5oq" path="res://assets/enemies/boss/4th_arm.png" id="11_53xnk"]
-[ext_resource type="Texture2D" uid="uid://cwfw53v3tyls0" path="res://assets/enemies/boss/2nd_arm.png" id="11_auufy"]
+[ext_resource type="Texture2D" uid="uid://b72j3pjdihjji" path="res://assets/enemies/boss/3rd_arm.png" id="10_ndqa6"]
+[ext_resource type="Texture2D" uid="uid://cdkpr5abuiybb" path="res://assets/enemies/boss/4th_arm.png" id="11_53xnk"]
+[ext_resource type="Texture2D" uid="uid://p6s6t57om70b" path="res://assets/enemies/boss/2nd_arm.png" id="11_auufy"]
+[ext_resource type="Texture2D" uid="uid://c2xi4s3p1j5tr" path="res://assets/enemies/boss/statue.png" id="12_6t245"]
+[ext_resource type="Texture2D" uid="uid://bx11hbvlyo8t3" path="res://assets/enemies/boss/shadow.png" id="14_53xnk"]
 
 [sub_resource type="Resource" id="Resource_xej5o"]
 script = ExtResource("9_gbion")
@@ -24,9 +27,11 @@ modulate = Color(0.8, 0.8, 0.77, 1)
 custom_minimum_size = Vector2(62.5, 87.5)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1305.0
-offset_bottom = 906.0
+offset_left = 6.0
+offset_right = 665.0
+offset_bottom = 463.0
 size_flags_vertical = 8
+mouse_filter = 2
 script = ExtResource("1_itw8y")
 hit_sfx = ExtResource("2_ahw5o")
 turn_order_icon = ExtResource("3_6t245")
@@ -41,10 +46,16 @@ anchor_bottom = 1.0
 offset_left = -45.0
 offset_top = 55.049988
 offset_right = 155.0
-offset_bottom = 84.96503
+offset_bottom = 84.964966
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 alignment = 1
+
+[node name="StatueThing" type="Sprite2D" parent="." unique_id=1441307557]
+position = Vector2(311, 399)
+scale = Vector2(0.8173901, 0.8452381)
+texture = ExtResource("4_ndqa6")
 
 [node name="Torso" type="Sprite2D" parent="." unique_id=582211915]
 position = Vector2(326, 210.5)
@@ -56,10 +67,10 @@ is_vital = true
 
 [node name="TargetIndicator" parent="Torso" unique_id=500000001 instance=ExtResource("7_hba3j")]
 position = Vector2(-4.5, -18.5)
-hover_size = Vector2(22.2572, 22.2572)
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Arm1" type="Sprite2D" parent="." unique_id=1312305909]
-position = Vector2(516, 138)
+position = Vector2(519, 166)
 texture = ExtResource("7_6t245")
 script = ExtResource("6_auufy")
 limb_name = "Left Arm"
@@ -68,10 +79,10 @@ attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
 
 [node name="TargetIndicator" parent="Arm1" unique_id=500000002 instance=ExtResource("7_hba3j")]
 position = Vector2(37, 19)
-hover_size = Vector2(22.2572, 22.2572)
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Arm2" type="Sprite2D" parent="." unique_id=1682569086]
-position = Vector2(528.5, 324)
+position = Vector2(514, 315)
 texture = ExtResource("11_auufy")
 script = ExtResource("6_auufy")
 limb_name = "Left Arm"
@@ -80,10 +91,10 @@ attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
 
 [node name="TargetIndicator" parent="Arm2" unique_id=725840848 instance=ExtResource("7_hba3j")]
 position = Vector2(-7.5, 38)
-hover_size = Vector2(22.2572, 22.2572)
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Arm3" type="Sprite2D" parent="." unique_id=1254311535]
-position = Vector2(134, 73.5)
+position = Vector2(129, 98)
 texture = ExtResource("10_ndqa6")
 script = ExtResource("6_auufy")
 limb_name = "Left Arm"
@@ -92,10 +103,10 @@ attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
 
 [node name="TargetIndicator" parent="Arm3" unique_id=589595359 instance=ExtResource("7_hba3j")]
 position = Vector2(-78.25, 8)
-hover_size = Vector2(22.2572, 22.2572)
+hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Arm4" type="Sprite2D" parent="." unique_id=1625574404]
-position = Vector2(96.5, 272.5)
+position = Vector2(115, 262)
 texture = ExtResource("11_53xnk")
 script = ExtResource("6_auufy")
 limb_name = "Left Arm"
@@ -104,4 +115,14 @@ attacks = Array[ExtResource("9_gbion")]([SubResource("Resource_xej5o")])
 
 [node name="TargetIndicator" parent="Arm4" unique_id=862512854 instance=ExtResource("7_hba3j")]
 position = Vector2(-74, 17)
-hover_size = Vector2(22.2572, 22.2572)
+hover_size = Vector2(44.514473, 44.514473)
+
+[node name="Statue" type="Sprite2D" parent="." unique_id=921669852]
+position = Vector2(299, 411)
+scale = Vector2(0.8173901, 0.8452381)
+texture = ExtResource("12_6t245")
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1888199177]
+position = Vector2(293, 298)
+scale = Vector2(1.3112885, 1.3838707)
+texture = ExtResource("14_53xnk")
