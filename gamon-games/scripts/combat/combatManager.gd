@@ -147,6 +147,11 @@ func _ready() -> void:
 		end_turn_button.pressed.connect(_on_end_turn_button_pressed)
 	Settings.keybinds_changed.connect(_on_keybinds_changed)
 	_begin_player_turn()
+	
+	if PlayerStats.knows_combat:
+		tutorial_overlay.visible = false
+	else:
+		tutorial_overlay.visible = true
 
 func _on_keybinds_changed() -> void:
 	for i in range(_spell_buttons.size()):
@@ -156,12 +161,6 @@ func _on_keybinds_changed() -> void:
 			if bind_label != null:
 				var keycode = Settings.data.spell_keybinds[i]
 				bind_label.text = OS.get_keycode_string(keycode)
-
-	
-	if PlayerStats.knows_combat:
-		tutorial_overlay.visible = false
-	else:
-		tutorial_overlay.visible = true
 
 func _get_random_encounters() -> void:
 	if RunData.last_map_room != null and RunData.last_map_room.type == Room.Type.BOSS:
