@@ -32,7 +32,7 @@ var current_level : int = 1:
 		current_level = value
 		level_changed.emit(value)
 
-var coins : int = 100: # Placeholder starting amount, adjust as needed
+var coins : int = 50: # Placeholder starting amount, adjust as needed
 	set(value):
 		coins = value
 		coins_changed.emit(value)
@@ -86,7 +86,7 @@ signal item_added(item: ItemData)
 func new_run():
 	random_seed = randi()
 	rng.seed = random_seed
-	coins = 100
+	coins = 50
 	current_encounter.clear()
 	map_data.clear()
 	floors_climbed = 0

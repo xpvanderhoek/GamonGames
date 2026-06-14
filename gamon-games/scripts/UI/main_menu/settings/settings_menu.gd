@@ -163,21 +163,42 @@ func _fade_out() -> void:
 
 func _on_window_item_selected(index: int):
 	var current_display : String = window_mode.get_item_text(index)
+	var resolutions := _get_resolutions()
 	
 	if current_display == "Fullscreen":
 		res_options.disabled = true
-		res_options.select(-1)
 		Settings.data.window_mode = DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+		var current := DisplayServer.screen_get_size()
+		if current in resolutions.values():
+			var key : String = resolutions.find_key(current)
+			res_options.select(resolutions.keys().find(key))
+		else:
+			res_options.select(-1)
 	elif current_display == "Borderless Fullscreen":
 		res_options.disabled = true
-		res_options.select(-1)
 		Settings.data.window_mode = DisplayServer.WINDOW_MODE_FULLSCREEN
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		var current := DisplayServer.screen_get_size()
+		if current in resolutions.values():
+			var key : String = resolutions.find_key(current)
+			res_options.select(resolutions.keys().find(key))
+		else:
+			res_options.select(-1)
 	elif current_display == "Windowed":
 		res_options.disabled = false
 		Settings.data.window_mode = DisplayServer.WINDOW_MODE_WINDOWED
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		
+		var res: Vector2i = Settings.data.resolution
+		if res in resolutions.values():
+			var key : String = resolutions.find_key(res)
+			res_options.select(resolutions.keys().find(key))
+			DisplayServer.window_set_size(res)
+			get_window().move_to_center()
+		else:
+			res_options.select(-1)
+		
 		if OS.has_feature("macos"): # fix for mac being buggy with res changes
 			get_window().move_to_center()
 			var pos := DisplayServer.window_get_position()
