@@ -100,20 +100,30 @@ func _ready() -> void:
 func _load_all_profiles() -> void:
 	profile_data.clear()
 	for i in range(1, 4):
-		var path = SAVE_DIR + "save_%d.tres" % i
+		var data: Dictionary = _load_profile_data(i)
+		if not data.is_empty():
+			profile_data.append(data)
+
+func _load_profile_data(slot: int) -> Dictionary:
+	var paths = [
+		SAVE_DIR + "save_%d.tres" % slot,
+		SAVE_DIR + "leaderboard_%d.tres" % slot,
+	]
+	for path in paths:
 		if FileAccess.file_exists(path):
 			var data = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
 			if data is SaveData:
-				profile_data.append({
-					"name":                   data.profile_name,
-					"slot":                   i,
-					"best_level":             data.best_level,
-					"total_runs":             data.total_runs,
-					"total_coins_earned":     data.total_coins_earned,
-					"best_spells_in_deck":    data.best_spells_in_deck,
-					"floors_climbed_best":    data.floors_climbed_best,
-					"combats_fought_total":   data.combats_fought_total,
-				})
+				return {
+					"name":                 data.profile_name,
+					"slot":                 slot,
+					"best_level":           data.best_level,
+					"total_runs":           data.total_runs,
+					"total_coins_earned":   data.total_coins_earned,
+					"best_spells_in_deck":  data.best_spells_in_deck,
+					"floors_climbed_best":  data.floors_climbed_best,
+					"combats_fought_total": data.combats_fought_total,
+				}
+	return {}
 
 func _build_tabs() -> void:
 	var normal_style := _make_stylebox(C_TAB_BG, 14, 7)
