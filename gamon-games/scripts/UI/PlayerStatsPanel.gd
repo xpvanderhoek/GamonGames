@@ -13,8 +13,6 @@ const STAT_META := {
 	"debuff_resistance": { "label": "Debuff resist", "suffix": "%" },
 	"luck":              { "label": "Luck",          "suffix": "" },
 	"defense":           { "label": "Defense",       "suffix": "" },
-	"magic_defense":     { "label": "Magic defense", "suffix": "" },
-	"physical_defense":  { "label": "Phys defense",  "suffix": "" },
 }
 
 @onready var profile_label : Label         = $MarginContainer/VBox/Header/ProfileLabel
