@@ -11,10 +11,10 @@
 [ext_resource type="Resource" uid="uid://k1vhjfkad0qa" path="res://scripts/skill_list/skill_resources/steady_hand.tres" id="10_or8jn"]
 [ext_resource type="Resource" uid="uid://80wse1xg4dkb" path="res://scripts/skill_list/skill_resources/stone_guard.tres" id="11_gli5f"]
 [ext_resource type="Texture2D" uid="uid://c3tbae11b3ovt" path="res://scenes/skill_list/Marrow_shards_currency.png" id="12_3tci0"]
-[ext_resource type="FontFile" uid="uid://dr8r1buo47v6k" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="12_loq5n"]
-[ext_resource type="Texture2D" uid="uid://behh6gmxwv2vq" path="res://assets/main_menu/main_menu_background.png" id="12_r8qnw"]
+[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="12_loq5n"]
+[ext_resource type="Texture2D" uid="uid://cxly65sw53pgn" path="res://assets/main_menu/main_menu_background.png" id="12_r8qnw"]
 [ext_resource type="Texture2D" uid="uid://bdl6ds02ccw48" path="res://assets/skill_list_background.png" id="13_20qiw"]
-[ext_resource type="Texture2D" uid="uid://ddwmtjfmqyxx4" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="13_qn87k"]
+[ext_resource type="Texture2D" uid="uid://dhh5dly20xx58" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="13_qn87k"]
 [ext_resource type="StyleBox" uid="uid://fg66y1mcxs3y" path="res://assets/button_highlight.tres" id="15_4jjhm"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fh4ca"]
@@ -164,7 +164,7 @@ anchor_bottom = 0.5
 offset_left = -203.55078
 offset_top = -211.0
 offset_right = 203.55078
-offset_bottom = 211.0
+offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lvfat")
