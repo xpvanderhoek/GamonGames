@@ -13,5 +13,5 @@ texture = ExtResource("2_d224v")
 cost = 45
 target_limb = "Self"
 buff_type = "Defense"
-buff_value = 1.0
+buff_value = 0.0
 status_to_apply = "Invulnerable"
