@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
 [ext_resource type="Texture2D" uid="uid://bdbb6s47sv2ju" path="res://assets/Placeholders/ui/hammer-break.png" id="1_v6yax"]
-[ext_resource type="AudioStream" uid="uid://c2psxf5cq85kx" path="res://assets/Sounds/combat/Default DeBuff Sound_2.wav" id="3_wdp02"]
+[ext_resource type="AudioStream" uid="uid://cxqvcl4gu3wi2" path="res://assets/Sounds/combat/Default DeBuff Sound_2.wav" id="3_wdp02"]
 
 [resource]
 script = ExtResource("1_spelldata")

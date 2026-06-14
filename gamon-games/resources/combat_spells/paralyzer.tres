@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dnafsavpsq6pd" path="res://assets/Placeholders/ui/stoned-skull.png" id="1_pu4ri"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
-[ext_resource type="AudioStream" uid="uid://bcjmee8nwnwg8" path="res://assets/Sounds/combat/Debuff (Paralyze)_2.wav" id="3_t1ajx"]
+[ext_resource type="AudioStream" uid="uid://cj8eeajjrk57q" path="res://assets/Sounds/combat/Debuff (Paralyze)_2.wav" id="3_t1ajx"]
 
 [resource]
 script = ExtResource("1_spelldata")
@@ -19,5 +19,4 @@ icon = ExtResource("1_pu4ri")
 sfx = ExtResource("3_t1ajx")
 vfx_anchor = 1
 vfx_lifetime = 1.0
-duration_rounds = 1
 stun_turns = true

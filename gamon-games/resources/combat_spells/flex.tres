@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b1wb7ncedvi6x" path="res://assets/Placeholders/ui/biceps.png" id="1_a4ljg"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="1_spelldata"]
-[ext_resource type="AudioStream" uid="uid://5v7for1kfhca" path="res://assets/Sounds/combat/Default Buff Sound_2.wav" id="3_848sm"]
+[ext_resource type="AudioStream" uid="uid://eg7yjl4k244" path="res://assets/Sounds/combat/Default Buff Sound_2.wav" id="3_848sm"]
 
 [resource]
 script = ExtResource("1_spelldata")

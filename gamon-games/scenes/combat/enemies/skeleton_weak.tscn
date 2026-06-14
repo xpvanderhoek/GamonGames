@@ -25,6 +25,7 @@ script = ExtResource("9_8mwip")
 min_damage = 6
 max_damage = 12
 weight = 100.0
+sfx = ExtResource("11_h5ftt")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_r5pin"]
@@ -32,6 +33,7 @@ script = ExtResource("9_8mwip")
 min_damage = 2
 max_damage = 4
 weight = 0.0
+sfx = ExtResource("2_t4cjp")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [node name="Skeleton Weak" type="Control" unique_id=1680014499]
