@@ -11,11 +11,18 @@ func _ready():
 	else "res://assets/enemies/chest/locked_chest.png"
 	)
 
+var is_pressed: bool = false
+
 func _on_pressed() -> void:
+	if is_pressed:
+		return
+	is_pressed = true
+	
 	if PuzzleData.chest_open == false:
 		disabled = true
 		TransitionManager.change_scene(PUZZLE_SCENES[RunData.rng.randi() % PUZZLE_SCENES.size()])
 	else:
+		disabled = true
 		RunData.coins = RunData.coins + PuzzleData.puzzle_coins
 		show_coin_popup(PuzzleData.puzzle_coins)
 		PuzzleData.puzzle_coins = 0

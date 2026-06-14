@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cdg7ub4flk5bf" path="res://assets/Placeholders/ui/shield-bash.png" id="1_5cksw"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="2_f550v"]
-[ext_resource type="AudioStream" uid="uid://5v7for1kfhca" path="res://assets/Sounds/combat/Default Buff Sound_2.wav" id="3_f550v"]
+[ext_resource type="AudioStream" uid="uid://eg7yjl4k244" path="res://assets/Sounds/combat/Default Buff Sound_2.wav" id="3_f550v"]
 
 [resource]
 script = ExtResource("2_f550v")
@@ -10,9 +10,9 @@ spell_id = "bash"
 spell_name = "Bash"
 spell_type = 2
 target_scope = 1
-min_damage = 1
-max_damage = 5
-energy = 3
+min_damage = 10
+max_damage = 20
+energy = 5
 accuracy = 100.0
 weight = 100.0
 icon = ExtResource("1_5cksw")
@@ -20,4 +20,4 @@ sfx = ExtResource("3_f550v")
 vfx_anchor = 1
 vfx_lifetime = 1.0
 duration_rounds = 3
-incoming_damage_multiplier_delta = 0.25
+stun_turns = true
