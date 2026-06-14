@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://020jrwbu1y8s" path="res://assets/enemies/boss/1st_arm.png" id="7_6t245"]
 [ext_resource type="PackedScene" uid="uid://dlgsbmg808o8n" path="res://scenes/combat/ui/TargetIndicator.tscn" id="7_hba3j"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="9_gbion"]
+[ext_resource type="AudioStream" uid="uid://mb0ki3jhjdtu" path="res://assets/enemies/skeleton/weapon1.wav" id="10_53xnk"]
 [ext_resource type="Texture2D" uid="uid://b72j3pjdihjji" path="res://assets/enemies/boss/3rd_arm.png" id="10_ndqa6"]
 [ext_resource type="Texture2D" uid="uid://cdkpr5abuiybb" path="res://assets/enemies/boss/4th_arm.png" id="11_53xnk"]
 [ext_resource type="Texture2D" uid="uid://p6s6t57om70b" path="res://assets/enemies/boss/2nd_arm.png" id="11_auufy"]
@@ -18,6 +19,7 @@
 script = ExtResource("9_gbion")
 min_damage = 1
 max_damage = 10
+sfx = ExtResource("2_ahw5o")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="PackedScene" id="PackedScene_auufy"]
@@ -40,6 +42,7 @@ script = ExtResource("9_gbion")
 min_damage = 5
 max_damage = 20
 weight = 75.0
+sfx = ExtResource("10_53xnk")
 vfx_scene = SubResource("PackedScene_auufy")
 vfx_anchor = 2
 vfx_lifetime = 0.0
@@ -66,10 +69,10 @@ anchor_left = 0.5
 anchor_top = 0.99700004
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -45.0
-offset_top = 55.049988
-offset_right = 155.0
-offset_bottom = 84.964966
+offset_left = -269.5
+offset_top = -98.61102
+offset_right = -69.5
+offset_bottom = -68.696045
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
