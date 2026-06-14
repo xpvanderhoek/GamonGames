@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b1r88pxgxdvwr"]
 
-[ext_resource type="Texture2D" uid="uid://decf63ynsg7d3" path="res://assets/enemies/boss/backgroundboss.png" id="2_mrrmw"]
-[ext_resource type="Texture2D" uid="uid://dm7rgnxirsjjh" path="res://assets/player.png" id="3_ltalu"]
+[ext_resource type="Texture2D" uid="uid://orohh6ius3ec" path="res://assets/enemies/boss/backgroundboss.png" id="2_mrrmw"]
+[ext_resource type="Texture2D" uid="uid://1ntv4j640typ" path="res://assets/player.png" id="3_ltalu"]
 [ext_resource type="PackedScene" uid="uid://cw35es2dvr2it" path="res://scenes/UI/health_bar.tscn" id="4_4voa6"]
 [ext_resource type="Texture2D" uid="uid://chnx0dcj13ni1" path="res://assets/enemies/shadow.png" id="4_h2sm1"]
 [ext_resource type="PackedScene" uid="uid://bnspxqohk3rfu" path="res://scenes/combat/ui/ItemButton.tscn" id="5_4voa6"]
@@ -9,8 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://c80vkx6l0g4kf" path="res://scenes/UI/tutorial/tutorial_overlay.tscn" id="6_jgg25"]
 [ext_resource type="Script" uid="uid://emcsn5t5bncn" path="res://scripts/UI/tutorial/tutorial_page.gd" id="7_4a6i5"]
 [ext_resource type="Script" uid="uid://ct07ilm7lrw34" path="res://scripts/combat/combatManager.gd" id="7_mgr"]
-[ext_resource type="VideoStream" path="res://assets/ui/tutorial/combat_limb_removed.ogv" id="8_3dmww"]
-[ext_resource type="VideoStream" path="res://assets/ui/tutorial/combat_vital_kill.ogv" id="9_3dmww"]
+[ext_resource type="VideoStream" uid="uid://3mk8tlrcmudh" path="res://assets/ui/tutorial/combat_limb_removed.ogv" id="8_3dmww"]
+[ext_resource type="VideoStream" uid="uid://dyn70vntwxswx" path="res://assets/ui/tutorial/combat_vital_kill.ogv" id="9_3dmww"]
 [ext_resource type="Texture2D" uid="uid://bp1mt2tya5sli" path="res://assets/ui/tutorial/combat_attack_intent.png" id="10_3dmww"]
 [ext_resource type="Texture2D" uid="uid://dx154qxj5crxg" path="res://assets/ui/tutorial/combat_moves_energy.png" id="11_3dmww"]
 
