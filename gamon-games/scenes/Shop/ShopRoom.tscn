@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://drtwv8icvu7hw"]
 
 [ext_resource type="Script" uid="uid://mweq4ng0gdhd" path="res://scripts/Shop/shop_Room.gd" id="1_2g6x2"]
-[ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://Scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
+[ext_resource type="PackedScene" uid="uid://ccjrv1y6hb003" path="res://scenes/Shop/ShopItem.tscn" id="2_6tcdb"]
 [ext_resource type="Script" uid="uid://b7cli1nhudpxr" path="res://scripts/Items/ItemData.gd" id="3_lwfny"]
 [ext_resource type="Texture2D" uid="uid://cgyquhn0mjm8f" path="res://assets/ShopItems/ShopEnvironment/LeaveSign.png" id="4_6tcdb"]
 [ext_resource type="Texture2D" uid="uid://b7orjsue2d5tn" path="res://assets/ShopItems/ShopEnvironment/Cabinet.png" id="4_cougk"]
@@ -30,10 +30,10 @@
 [ext_resource type="Resource" uid="uid://bwg7v7na0dhhc" path="res://assets/ShopItems/Resources/ThornedBracer.tres" id="29_shop_item"]
 [ext_resource type="Texture2D" uid="uid://q3m7qtrd0p34" path="res://assets/ShopItems/ShopEnvironment/Shaded cart.png" id="29_w1ajr"]
 [ext_resource type="Resource" uid="uid://bs4tcrv4d0qpt" path="res://assets/ShopItems/Resources/VialOfStagnantTime.tres" id="30_shop_item"]
-[ext_resource type="Texture2D" uid="uid://s66u2oye5601" path="res://assets/ShopItems/ShopEnvironment/goblin.png" id="31_7l5ap"]
+[ext_resource type="Texture2D" uid="uid://hepllyexysve" path="res://assets/ShopItems/ShopEnvironment/goblin.png" id="31_7l5ap"]
 [ext_resource type="Resource" uid="uid://drj8ypf4y6jep" path="res://assets/ShopItems/Resources/Consumables/VipersTongue.tres" id="31_shop_item"]
 [ext_resource type="Resource" uid="uid://bsjm8nf1coqo3" path="res://assets/ShopItems/Resources/WitheredAchillesHeel.tres" id="32_shop_item"]
-[ext_resource type="PackedScene" uid="uid://nwlygbpretr2" path="res://Scenes/UI/ShopDialogueUI.tscn" id="34_7l5ap"]
+[ext_resource type="PackedScene" uid="uid://nwlygbpretr2" path="res://scenes/UI/ShopDialogueUI.tscn" id="34_7l5ap"]
 
 [sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_cougk"]
 
@@ -228,6 +228,8 @@ offset_right = -461.3037
 offset_bottom = -264.7619
 text = "0"
 label_settings = SubResource("LabelSettings_xqf5f")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SpeechBubble" parent="Parallax2D2" unique_id=629855543 instance=ExtResource("34_7l5ap")]
 offset = Vector2(93.075, 50.555)
