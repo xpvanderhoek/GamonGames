@@ -74,6 +74,8 @@ func _on_keybind_button_pressed(index: int, button: Button):
 	waiting_for_input_index = index
 	button.text = "Press any key..."
 
+var is_closing = false
+
 func _input(event: InputEvent) -> void:
 	if waiting_for_input_index != -1 and event is InputEventKey and event.pressed:
 		var keycode = event.keycode
@@ -83,6 +85,9 @@ func _input(event: InputEvent) -> void:
 			Settings.keybinds_changed.emit()
 		waiting_for_input_index = -1
 		_sync_keybinds()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("escape"):
+		_on_back_pressed()
 		get_viewport().set_input_as_handled()
 
 func _fill_resolutions():
@@ -148,6 +153,9 @@ func _sync_accessibility():
 	font_option.select(Settings.data.font_index)
 
 func _on_back_pressed() -> void:
+	if is_closing:
+		return
+	is_closing = true
 	SoundManager.play_click()
 	await _fade_out()
 	get_tree().paused = false
