@@ -83,7 +83,7 @@ func get_highlight() -> Dictionary:
 	},
 	{
 		"title": "Merchant’s Friend",
-		"value": safe_divide(float(RunData.shops_visited), floor / 3.0),
+		"value": safe_divide(float(RunData.shops_visited), floor / 4.0),
 	},
 	{
 		"title": "Pack Rat",
