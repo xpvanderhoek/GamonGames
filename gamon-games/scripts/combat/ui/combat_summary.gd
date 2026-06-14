@@ -15,7 +15,7 @@ signal continue_pressed
 
 @export var SPELLS: Array[SpellData] = []
 const SPELL_DIR := "res://resources/combat_spells/"
-const CHOOSE_BUTTON_SCENE = preload("res://Scenes/combat/ui/ChooseNewAbilityButton.tscn")
+const CHOOSE_BUTTON_SCENE = preload("res://scenes/combat/ui/ChooseNewAbilityButton.tscn")
 const MAX_SPELL_SLOTS := 6
 
 var _target_exp: int = 0
