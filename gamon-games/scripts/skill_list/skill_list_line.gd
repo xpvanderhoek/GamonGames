@@ -36,7 +36,7 @@ func setup_skill(skill_data: SkillData):
 		current_skill.current_level = int(PlayerStats.upgrade_levels.get("starting_kit", 0))
 	
 	if current_skill.current_level >= current_skill.max_level:
-		buff_amount.text = "MAX"
+		buff_amount.text = "Max lvl"
 	elif current_skill.stat_bonus_per_level == 0 and current_skill.max_level == 1:
 		buff_amount.text = "Bought" if current_skill.current_level > 0 else "Locked"
 	else:

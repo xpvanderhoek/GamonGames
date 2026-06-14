@@ -8,6 +8,10 @@ signal profile_changed
 func _save_path(slot: int):
 	return SAVE_DIR + "save_%d.tres" % slot
 
+
+func _leaderboard_path(slot: int):
+	return SAVE_DIR + "leaderboard_%d.tres" % slot
+
 func save_data():
 	var data = SaveData.new()
 	PlayerStats.marrow_shards = RunData.marrow_shards
@@ -28,6 +32,7 @@ func save_data():
 	data.floors_climbed_best = PlayerStats.floors_climbed_best
 	data.combats_fought_total = PlayerStats.combats_fought_total
 	ResourceSaver.save(data, _save_path(PlayerStats.slot))
+	ResourceSaver.save(data, _leaderboard_path(PlayerStats.slot))
 
 func load_data(slot: int):
 	if not FileAccess.file_exists(_save_path(slot)):
