@@ -17,5 +17,4 @@ weight = 100.0
 icon = ExtResource("1_a4ljg")
 sfx = ExtResource("3_848sm")
 vfx_lifetime = 1.0
-duration_rounds = 2
 outgoing_damage_flat_bonus = 12
