@@ -20,5 +20,4 @@ sfx = ExtResource("3_wdp02")
 vfx_anchor = 1
 vfx_lifetime = 1.0
 duration_rounds = 2
-target_physical_defense_delta = -25.0
-target_magic_defense_delta = -25.0
+target_defense_delta = -25.0

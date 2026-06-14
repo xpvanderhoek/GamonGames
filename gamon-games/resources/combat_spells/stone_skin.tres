@@ -18,5 +18,4 @@ icon = ExtResource("1_6nhf1")
 sfx = ExtResource("3_vt8sf")
 vfx_lifetime = 1.0
 duration_rounds = 3
-player_physical_defense_delta = 50.0
-player_magic_defense_delta = 50.0
+player_defense_delta = 50.0
