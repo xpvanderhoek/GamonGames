@@ -84,8 +84,9 @@ signal energy_changed(new_amount)
 signal item_added(item: ItemData)
 
 func new_run():
-	random_seed = randi()
-	rng.seed = random_seed
+	randomize()
+	rng.randomize()
+	random_seed = rng.seed
 	coins = 50
 	current_encounter.clear()
 	map_data.clear()
@@ -93,6 +94,8 @@ func new_run():
 	last_map_room = null
 	items.clear()
 	consumables = [null, null, null, null, null, null, null, null, null]
+	combats_fought = 0
+	current_health = PlayerStats.stats["health"]
 	max_health = PlayerStats.stats["health"]
 	current_health = max_health
 	spells.clear()
