@@ -19,5 +19,4 @@ icon = ExtResource("1_5cksw")
 sfx = ExtResource("3_f550v")
 vfx_anchor = 1
 vfx_lifetime = 1.0
-duration_rounds = 3
 stun_turns = true
