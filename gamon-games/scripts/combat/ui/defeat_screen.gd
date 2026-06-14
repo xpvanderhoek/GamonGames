@@ -78,7 +78,7 @@ func get_highlight() -> Dictionary:
 		"title": "Puzzle Loser",
 		"value": safe_divide(
 			float(RunData.puzzles_failed),
-			float(RunData.puzzles_solved + RunData.puzzles_failed)
+			float(RunData.puzzles_solved + RunData.puzzles_failed) * 3
 		),
 	},
 	{
