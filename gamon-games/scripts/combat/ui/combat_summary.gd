@@ -50,13 +50,7 @@ func _ready() -> void:
 		continue_button.disabled = true
 		
 	if progress_bar:
-		_exp_text_label = Label.new()
-		_exp_text_label.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_exp_text_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_exp_text_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_exp_text_label.add_theme_constant_override("outline_size", 4)
-		_exp_text_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1))
-		progress_bar.add_child(_exp_text_label)
+		_exp_text_label = progress_bar.get_node("ExpText")
 	
 	_load_all_spells()
 
