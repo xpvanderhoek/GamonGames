@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://chnx0dcj13ni1" path="res://assets/enemies/shadow.png" id="4_r8jxm"]
 [ext_resource type="Script" uid="uid://uhwtudadla7m" path="res://scripts/combat/combatLimb.gd" id="5_d1tco"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="8_jy53k"]
+[ext_resource type="AudioStream" uid="uid://mb0ki3jhjdtu" path="res://assets/enemies/skeleton/weapon1.wav" id="10_7fa62"]
 [ext_resource type="Texture2D" uid="uid://cm4og8dey6cju" path="res://assets/enemies/skeleton/leg.png" id="10_ddyff"]
 [ext_resource type="PackedScene" uid="uid://dlgsbmg808o8n" path="res://scenes/combat/ui/TargetIndicator.tscn" id="11_tgtind"]
 
@@ -15,6 +16,7 @@ script = ExtResource("8_jy53k")
 min_damage = 2
 max_damage = 5
 weight = 50.0
+sfx = ExtResource("10_7fa62")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_3cwjf"]
@@ -22,6 +24,7 @@ script = ExtResource("8_jy53k")
 min_damage = 2
 max_damage = 5
 weight = 50.0
+sfx = ExtResource("10_7fa62")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_r5pin"]
@@ -29,6 +32,7 @@ script = ExtResource("8_jy53k")
 min_damage = 2
 max_damage = 4
 weight = 0.0
+sfx = ExtResource("2_cptbb")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [node name="Skeleton Weak" type="Control" unique_id=1680014499]

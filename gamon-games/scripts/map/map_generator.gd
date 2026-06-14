@@ -102,11 +102,16 @@ func _setup_connection(i : int, j : int) -> int:
 	var next_room : Room
 	var current_room := map_data[i][j] as Room
 	
-	while not next_room or _would_cross_existing_path(i, j, next_room):
-		var random_j := clampi(RunData.rng.randi_range(j - 1, j + 1), 0, MAP_WIDTH - 1)
-		next_room = map_data[i + 1][random_j]
+	if i == FLOORS - 4:
+		var target_j = 1 if j <= 1 else 2
+		next_room = map_data[i + 1][target_j]
+	else:
+		while not next_room or _would_cross_existing_path(i, j, next_room):
+			var random_j := clampi(RunData.rng.randi_range(j - 1, j + 1), 0, MAP_WIDTH - 1)
+			next_room = map_data[i + 1][random_j]
 	
-	current_room.next_rooms.append(next_room)
+	if not current_room.next_rooms.has(next_room):
+		current_room.next_rooms.append(next_room)
 	
 	return next_room.column
 
@@ -141,9 +146,23 @@ func _setup_boss_room():
 	
 	for j in MAP_WIDTH:
 		var current_room = map_data[FLOORS - 2][j] as Room
-		if current_room.next_rooms:
-			current_room.next_rooms = [] as Array[Room]
-			current_room.next_rooms.append(boss_room)
+		current_room.next_rooms = [] as Array[Room]
+		
+	var campfire_room = map_data[FLOORS - 2][1] as Room
+	var shop_room = map_data[FLOORS - 2][2] as Room
+	
+	campfire_room.next_rooms.append(boss_room)
+	shop_room.next_rooms.append(boss_room)
+	
+	campfire_room.type = Room.Type.CAMPFIRE
+	shop_room.type = Room.Type.SHOP
+	_count_room(campfire_room.type)
+	_count_room(shop_room.type)
+	
+	for j in MAP_WIDTH:
+		var pre_choice_room = map_data[FLOORS - 3][j] as Room
+		if pre_choice_room.next_rooms.size() > 0:
+			pre_choice_room.next_rooms = [campfire_room, shop_room] as Array[Room]
 		
 	boss_room.type = Room.Type.BOSS
 	boss_room.position.x = (MAP_WIDTH - 1) / 2.0 * X_DIST
@@ -161,12 +180,6 @@ func _setup_room_types():
 	for room : Room in map_data[0]:
 		if room.next_rooms.size() > 0:
 			room.type = Room.Type.COMBAT
-			_count_room(room.type)
-	
-	# Optional: last floor before the boss fight is always a shop
-	for room : Room in map_data[FLOORS - 2]:
-		if room.next_rooms.size() > 0:
-			room.type = Room.Type.CAMPFIRE
 			_count_room(room.type)
 	
 	# remainder of rooms

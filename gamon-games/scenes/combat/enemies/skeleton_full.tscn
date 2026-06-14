@@ -18,6 +18,7 @@ script = ExtResource("5_xej5o")
 min_damage = 3
 max_damage = 6
 weight = 75.0
+sfx = ExtResource("8_ltakh")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_crdjk"]
@@ -25,6 +26,7 @@ script = ExtResource("5_xej5o")
 min_damage = 6
 max_damage = 12
 weight = 100.0
+sfx = ExtResource("8_ltakh")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_ltakh"]
@@ -40,6 +42,7 @@ script = ExtResource("5_xej5o")
 min_damage = 6
 max_damage = 12
 weight = 100.0
+sfx = ExtResource("8_ltakh")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_ea6ht"]
@@ -47,6 +50,7 @@ script = ExtResource("5_xej5o")
 min_damage = 2
 max_damage = 5
 weight = 50.0
+sfx = ExtResource("2_crdjk")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_3cwjf"]
@@ -54,6 +58,7 @@ script = ExtResource("5_xej5o")
 min_damage = 2
 max_damage = 5
 weight = 50.0
+sfx = ExtResource("2_crdjk")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [sub_resource type="Resource" id="Resource_r5pin"]
@@ -61,6 +66,7 @@ script = ExtResource("5_xej5o")
 min_damage = 2
 max_damage = 4
 weight = 0.0
+sfx = ExtResource("2_crdjk")
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [node name="Skeleton Full" type="Control" unique_id=1680014499]

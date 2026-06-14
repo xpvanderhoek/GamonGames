@@ -32,7 +32,7 @@ var current_level : int = 1:
 		current_level = value
 		level_changed.emit(value)
 
-var coins : int = 100: # Placeholder starting amount, adjust as needed
+var coins : int = 50: # Placeholder starting amount, adjust as needed
 	set(value):
 		coins = value
 		coins_changed.emit(value)
@@ -84,15 +84,18 @@ signal energy_changed(new_amount)
 signal item_added(item: ItemData)
 
 func new_run():
-	random_seed = randi()
-	rng.seed = random_seed
-	coins = 100
+	randomize()
+	rng.randomize()
+	random_seed = rng.seed
+	coins = 50
 	current_encounter.clear()
 	map_data.clear()
 	floors_climbed = 0
 	last_map_room = null
 	items.clear()
 	consumables = [null, null, null, null, null, null, null, null, null]
+	combats_fought = 0
+	current_health = PlayerStats.stats["health"]
 	max_health = PlayerStats.stats["health"]
 	current_health = max_health
 	spells.clear()
@@ -246,3 +249,17 @@ func upgrade_spell(spell_id: String) -> void:
 			existing.max_damage = existing.min_damage
 		if existing.heal_amount > 0:
 			existing.heal_amount = int(round(existing.heal_amount * 1.2))
+		if existing.outgoing_damage_flat_bonus != 0:
+			existing.outgoing_damage_flat_bonus = int(round(existing.outgoing_damage_flat_bonus * 1.2))
+		if not is_zero_approx(existing.outgoing_damage_multiplier_delta):
+			existing.outgoing_damage_multiplier_delta *= 1.2
+		if not is_zero_approx(existing.incoming_damage_multiplier_delta):
+			existing.incoming_damage_multiplier_delta *= 1.2
+		if not is_zero_approx(existing.player_defense_delta):
+			existing.player_defense_delta *= 1.2
+		if not is_zero_approx(existing.target_defense_delta):
+			existing.target_defense_delta *= 1.2
+		if existing.damage_over_time != 0:
+			existing.damage_over_time = int(round(existing.damage_over_time * 1.2))
+		if existing.stun_turns and not existing.has_damage() and existing.energy > 1:
+			existing.energy -= 1

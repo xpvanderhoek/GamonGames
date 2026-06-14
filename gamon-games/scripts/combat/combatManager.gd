@@ -630,9 +630,22 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false, s
 	t += "\nTarget: [color=#cccccc]%s[/color]" % _target_scope_to_text(spell.target_scope)
 
 	if spell.energy > 0:
-		var can_afford := RunData.current_energy >= _get_spell_energy_cost(spell)
-		var energy_color := "64e06e" if can_afford else "e06464"
-		t += "\nEnergy: [color=#%s]%d[/color]" % [energy_color, _get_spell_energy_cost(spell)]
+		var curr_cost := _get_spell_energy_cost(existing) if is_upgrade else _get_spell_energy_cost(spell)
+		var next_spell := spell
+		if is_upgrade:
+			next_spell = existing.duplicate()
+			if next_spell.stun_turns and not next_spell.has_damage() and next_spell.energy > 1:
+				next_spell.energy -= 1
+		
+		var next_cost := _get_spell_energy_cost(next_spell)
+		
+		if is_upgrade and curr_cost > next_cost:
+			t += "\nEnergy: [color=#e06464]%d[/color] → [color=#64e06e]%d[/color]" % [curr_cost, next_cost]
+		else:
+			var can_afford := RunData.current_energy >= _get_spell_energy_cost(spell)
+			var energy_color := "64e06e" if can_afford else "e06464"
+			t += "\nEnergy: [color=#%s]%d[/color]" % [energy_color, _get_spell_energy_cost(spell)]
+			
 		if shift_pressed:
 			t += "\n[color=#8a8a9e][font_size=11]  - Energy cost to use this spell.[/font_size][/color]"
 
@@ -673,18 +686,60 @@ func build_spell_tooltip_bbcode(spell: SpellData, shift_pressed: bool = false, s
 			t += "\nHeal: [color=#64e09e]%d[/color]" % spell.heal_amount
 
 	var effect_lines: Array[String] = []
-	if spell.outgoing_damage_flat_bonus != 0:
-		effect_lines.append("Outgoing Damage: [color=#e0d080]%s[/color]" % _format_signed_int(spell.outgoing_damage_flat_bonus))
-	if not is_zero_approx(spell.outgoing_damage_multiplier_delta):
-		effect_lines.append("Outgoing Damage Mult: [color=#e0d080]%s%%[/color]" % _format_signed_percent(spell.outgoing_damage_multiplier_delta * 100.0))
-	if not is_zero_approx(spell.incoming_damage_multiplier_delta):
-		effect_lines.append("Incoming Damage Mult: [color=#e09080]%s%%[/color]" % _format_signed_percent(spell.incoming_damage_multiplier_delta * 100.0))
-	if not is_zero_approx(spell.player_defense_delta):
-		effect_lines.append("Player Defense: [color=#80c8e0]%s%%[/color]" % _format_signed_percent(spell.player_defense_delta))
-	if not is_zero_approx(spell.target_defense_delta):
-		effect_lines.append("Target Defense: [color=#cccccc]%s%%[/color]" % _format_signed_percent(spell.target_defense_delta))
-	if spell.damage_over_time != 0:
-		effect_lines.append("Damage Over Time: [color=#e07060]%s/turn[/color]" % _format_signed_int(spell.damage_over_time))
+	
+	var has_flat_bonus = spell.outgoing_damage_flat_bonus != 0 or (is_upgrade and existing.outgoing_damage_flat_bonus != 0)
+	if has_flat_bonus:
+		if is_upgrade and existing.outgoing_damage_flat_bonus != 0:
+			var curr_val = existing.outgoing_damage_flat_bonus
+			var next_val = int(round(curr_val * 1.2))
+			effect_lines.append("Outgoing Damage: [color=#e0d080]%s[/color] → [color=#90d080]%s[/color]" % [_format_signed_int(curr_val), _format_signed_int(next_val)])
+		else:
+			effect_lines.append("Outgoing Damage: [color=#e0d080]%s[/color]" % _format_signed_int(spell.outgoing_damage_flat_bonus))
+
+	var has_out_mult = not is_zero_approx(spell.outgoing_damage_multiplier_delta) or (is_upgrade and not is_zero_approx(existing.outgoing_damage_multiplier_delta))
+	if has_out_mult:
+		if is_upgrade and not is_zero_approx(existing.outgoing_damage_multiplier_delta):
+			var curr_val = existing.outgoing_damage_multiplier_delta
+			var next_val = curr_val * 1.2
+			effect_lines.append("Outgoing Damage Mult: [color=#e0d080]%s%%[/color] → [color=#90d080]%s%%[/color]" % [_format_signed_percent(curr_val * 100.0), _format_signed_percent(next_val * 100.0)])
+		else:
+			effect_lines.append("Outgoing Damage Mult: [color=#e0d080]%s%%[/color]" % _format_signed_percent(spell.outgoing_damage_multiplier_delta * 100.0))
+
+	var has_inc_mult = not is_zero_approx(spell.incoming_damage_multiplier_delta) or (is_upgrade and not is_zero_approx(existing.incoming_damage_multiplier_delta))
+	if has_inc_mult:
+		if is_upgrade and not is_zero_approx(existing.incoming_damage_multiplier_delta):
+			var curr_val = existing.incoming_damage_multiplier_delta
+			var next_val = curr_val * 1.2
+			effect_lines.append("Incoming Damage Mult: [color=#e09080]%s%%[/color] → [color=#90d080]%s%%[/color]" % [_format_signed_percent(curr_val * 100.0), _format_signed_percent(next_val * 100.0)])
+		else:
+			effect_lines.append("Incoming Damage Mult: [color=#e09080]%s%%[/color]" % _format_signed_percent(spell.incoming_damage_multiplier_delta * 100.0))
+
+	var has_player_def = not is_zero_approx(spell.player_defense_delta) or (is_upgrade and not is_zero_approx(existing.player_defense_delta))
+	if has_player_def:
+		if is_upgrade and not is_zero_approx(existing.player_defense_delta):
+			var curr_val = existing.player_defense_delta
+			var next_val = curr_val * 1.2
+			effect_lines.append("Player Defense: [color=#80c8e0]%s%%[/color] → [color=#90d080]%s%%[/color]" % [_format_signed_percent(curr_val), _format_signed_percent(next_val)])
+		else:
+			effect_lines.append("Player Defense: [color=#80c8e0]%s%%[/color]" % _format_signed_percent(spell.player_defense_delta))
+
+	var has_target_def = not is_zero_approx(spell.target_defense_delta) or (is_upgrade and not is_zero_approx(existing.target_defense_delta))
+	if has_target_def:
+		if is_upgrade and not is_zero_approx(existing.target_defense_delta):
+			var curr_val = existing.target_defense_delta
+			var next_val = curr_val * 1.2
+			effect_lines.append("Target Defense: [color=#cccccc]%s%%[/color] → [color=#90d080]%s%%[/color]" % [_format_signed_percent(curr_val), _format_signed_percent(next_val)])
+		else:
+			effect_lines.append("Target Defense: [color=#cccccc]%s%%[/color]" % _format_signed_percent(spell.target_defense_delta))
+
+	var has_dot = spell.damage_over_time != 0 or (is_upgrade and existing.damage_over_time != 0)
+	if has_dot:
+		if is_upgrade and existing.damage_over_time != 0:
+			var curr_val = existing.damage_over_time
+			var next_val = int(round(curr_val * 1.2))
+			effect_lines.append("Damage Over Time: [color=#e07060]%s[/color] → [color=#90d080]%s[/color]/turn" % [_format_signed_int(curr_val), _format_signed_int(next_val)])
+		else:
+			effect_lines.append("Damage Over Time: [color=#e07060]%s/turn[/color]" % _format_signed_int(spell.damage_over_time))
 	if spell.stun_turns:
 		effect_lines.append("[color=#e0a030]Applies Stun[/color]")
 

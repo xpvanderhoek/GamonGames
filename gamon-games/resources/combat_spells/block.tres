@@ -18,5 +18,4 @@ icon = ExtResource("1_v0vkc")
 sfx = ExtResource("3_61hga")
 vfx_anchor = 1
 vfx_lifetime = 1.0
-player_physical_defense_delta = 80.0
-player_magic_defense_delta = 80.0
+player_defense_delta = 55.0
