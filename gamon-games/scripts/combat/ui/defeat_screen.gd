@@ -68,7 +68,7 @@ func get_highlight() -> Dictionary:
 	var highlights = [
 	{
 		"title": "Relentless Fighter",
-		"value": safe_divide(float(RunData.combats_fought), floor * 1.5),
+		"value": safe_divide(float(RunData.combats_fought), floor * 1.2),
 	},
 	{
 		"title": "Puzzle Master",
@@ -87,7 +87,7 @@ func get_highlight() -> Dictionary:
 	},
 	{
 		"title": "Pack Rat",
-		"value": safe_divide(float(RunData.items.size()), 10.0),
+		"value": safe_divide(float(RunData.items.size()), 8.0),
 	},
 	{
 		"title": "Treasure Keeper",
