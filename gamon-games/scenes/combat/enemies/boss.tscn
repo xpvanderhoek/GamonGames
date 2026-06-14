@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://020jrwbu1y8s" path="res://assets/enemies/boss/1st_arm.png" id="7_6t245"]
 [ext_resource type="PackedScene" uid="uid://dlgsbmg808o8n" path="res://scenes/combat/ui/TargetIndicator.tscn" id="7_hba3j"]
 [ext_resource type="Script" uid="uid://cds04x2mi4kl6" path="res://scripts/combat/spellData.gd" id="9_gbion"]
-[ext_resource type="VideoStream" path="res://assets/enemies/boss/ANIMA 1p.ogv" id="10_53xnk"]
 [ext_resource type="Texture2D" uid="uid://b72j3pjdihjji" path="res://assets/enemies/boss/3rd_arm.png" id="10_ndqa6"]
 [ext_resource type="Texture2D" uid="uid://cdkpr5abuiybb" path="res://assets/enemies/boss/4th_arm.png" id="11_53xnk"]
 [ext_resource type="Texture2D" uid="uid://p6s6t57om70b" path="res://assets/enemies/boss/2nd_arm.png" id="11_auufy"]
@@ -32,7 +31,7 @@ _bundled = {
 "node_ids": PackedInt32Array(0),
 "node_paths": [],
 "nodes": PackedInt32Array(-1, -1, 1, 0, -1, 10, 2, 0, 3, 1, 4, 2, 5, 3, 6, 4, 7, 5, 8, 6, 9, 7, 10, 8, 11, 9, 0),
-"variants": [100, 2, -576.0, -324.0, 576.0, 324.0, ExtResource("10_53xnk"), true, true, true],
+"variants": [100, 2, -576.0, -324.0, 576.0, 324.0, null, true, true, true],
 "version": 3
 }
 
