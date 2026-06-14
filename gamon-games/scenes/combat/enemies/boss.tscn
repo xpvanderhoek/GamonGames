@@ -42,7 +42,7 @@ max_damage = 20
 weight = 75.0
 vfx_scene = SubResource("PackedScene_auufy")
 vfx_anchor = 2
-vfx_lifetime = 4.0
+vfx_lifetime = 0.0
 metadata/_custom_type_script = "uid://cds04x2mi4kl6"
 
 [node name="Boss" type="Control" unique_id=1680014499]
