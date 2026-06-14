@@ -39,8 +39,8 @@ var _outline_tween: Tween = null
 var _outline_source_texture: Texture2D = null
 
 # Auto generate collision polygon
-var alpha_threshold: float = 0.2 # Threshold for generating collision polygons from texture alpha
-var epsilon: float = 2.0 # Epsilon for polygon simplification when generating collision polygons
+var alpha_threshold: float = 0.1 # Threshold for generating collision polygons from texture alpha
+var epsilon: float = 0.5 # Epsilon for polygon simplification when generating collision polygons
 
 signal limb_damaged(limb: CombatLimb, damage: int, remaining_health: int)
 signal limb_destroyed(limb: CombatLimb)
