@@ -347,6 +347,23 @@ popup/item_2/id = 2
 popup/item_3/text = "Tritanopia"
 popup/item_3/id = 3
 
+[node name="SpeedrunTimer" type="HBoxContainer" parent="Window/Contents/TabContainer/Accessibility" unique_id=1286608622]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Contents/TabContainer/Accessibility/SpeedrunTimer" unique_id=1286608623]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 17
+text = "Speedrun Timer:"
+
+[node name="Control" type="Control" parent="Window/Contents/TabContainer/Accessibility/SpeedrunTimer" unique_id=1286608624]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpeedrunTimerButton" type="CheckButton" parent="Window/Contents/TabContainer/Accessibility/SpeedrunTimer" unique_id=1286608625]
+layout_mode = 2
+
 [node name="Keybinds" type="VBoxContainer" parent="Window/Contents/TabContainer" unique_id=479371282]
 visible = false
 layout_mode = 2
@@ -543,6 +560,7 @@ autowrap_trim_flags = 0
 [connection signal="done_sliding" from="Window/Contents/TabContainer/Sound/Music/VolumeSlider" to="." method="_on_volume_slider_done_sliding"]
 [connection signal="item_selected" from="Window/Contents/TabContainer/Accessibility/ColorblindMode/OptionButton" to="." method="_on_colorblind_item_selected"]
 [connection signal="item_selected" from="Window/Contents/TabContainer/Accessibility/FontFamily/OptionButton" to="." method="_on_font_item_selected"]
+[connection signal="pressed" from="Window/Contents/TabContainer/Accessibility/SpeedrunTimer/SpeedrunTimerButton" to="." method="_on_speedrun_timer_button_pressed"]
 [connection signal="mouse_entered" from="Window/Contents/Abandon" to="." method="_on_abandon_hover"]
 [connection signal="pressed" from="Window/Contents/Abandon" to="." method="_on_abandon_pressed"]
 [connection signal="mouse_entered" from="Window/Contents/Back" to="." method="_on_back_hover"]

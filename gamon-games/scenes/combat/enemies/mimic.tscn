@@ -68,7 +68,7 @@ alignment = 1
 
 [node name="Right Arm" type="Sprite2D" parent="." unique_id=1121488834]
 position = Vector2(44.275, 113.225006)
-scale = Vector2(0.15, 0.15)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_xt66o")
 script = ExtResource("5_6l4ag")
 limb_name = "Right Arm"
@@ -77,12 +77,13 @@ hit_chance_percent = 50.0
 attacks = Array[ExtResource("8_mimic")]([SubResource("Resource_arm_slam")])
 
 [node name="TargetIndicator" parent="Right Arm" unique_id=600000001 instance=ExtResource("9_tgtind")]
-position = Vector2(-168.5, -28.166702)
+position = Vector2(-84.25, -14.08335)
+scale = Vector2(0.5, 0.5)
 hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Left Arm" type="Sprite2D" parent="." unique_id=1418505464]
 position = Vector2(185.275, 113.225006)
-scale = Vector2(0.15, 0.15)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_xt66o")
 flip_h = true
 script = ExtResource("5_6l4ag")
@@ -92,12 +93,13 @@ hit_chance_percent = 50.0
 attacks = Array[ExtResource("8_mimic")]([SubResource("Resource_arm_slam")])
 
 [node name="TargetIndicator" parent="Left Arm" unique_id=600000002 instance=ExtResource("9_tgtind")]
-position = Vector2(178.1667, -14.833373)
+position = Vector2(89.08335, -7.4166865)
+scale = Vector2(0.5, 0.5)
 hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Left Leg" type="Sprite2D" parent="." unique_id=542674377]
 position = Vector2(165.275, 185.22502)
-scale = Vector2(0.15, 0.15)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("7_crxq2")
 flip_h = true
 script = ExtResource("5_6l4ag")
@@ -107,12 +109,13 @@ hit_chance_percent = 50.0
 attacks = Array[ExtResource("8_mimic")]([SubResource("Resource_leg_stomp")])
 
 [node name="TargetIndicator" parent="Left Leg" unique_id=600000003 instance=ExtResource("9_tgtind")]
-position = Vector2(64.833374, 78.499855)
+position = Vector2(32.416687, 39.249928)
+scale = Vector2(0.5, 0.5)
 hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Right Leg" type="Sprite2D" parent="." unique_id=1667682554]
 position = Vector2(65.275, 185.225)
-scale = Vector2(0.15, 0.15)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("7_crxq2")
 script = ExtResource("5_6l4ag")
 limb_name = "Right Leg"
@@ -121,24 +124,26 @@ hit_chance_percent = 50.0
 attacks = Array[ExtResource("8_mimic")]([SubResource("Resource_leg_stomp")])
 
 [node name="TargetIndicator" parent="Right Leg" unique_id=600000004 instance=ExtResource("9_tgtind")]
-position = Vector2(-35.166676, 65.166626)
+position = Vector2(-17.583338, 32.583313)
+scale = Vector2(0.5, 0.5)
 hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Torso" type="Sprite2D" parent="." unique_id=582211915]
 position = Vector2(112.275, 95.225006)
-scale = Vector2(0.15, 0.15)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_pbwj5")
 script = ExtResource("5_6l4ag")
 limb_name = "Torso"
 is_vital = true
 
 [node name="TargetIndicator" parent="Torso" unique_id=600000005 instance=ExtResource("9_tgtind")]
-position = Vector2(11.4999895, -334.83337)
+position = Vector2(5.749995, -167.41669)
+scale = Vector2(0.5, 0.5)
 hover_size = Vector2(44.514473, 44.514473)
 
 [node name="Head" type="Sprite2D" parent="." unique_id=1466662351]
 position = Vector2(114.525, 118.725006)
-scale = Vector2(0.15, 0.15)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("6_xt66o")
 script = ExtResource("5_6l4ag")
 limb_name = "Tongue"
@@ -148,4 +153,5 @@ hit_chance_percent = 50.0
 attacks = Array[ExtResource("8_mimic")]([SubResource("Resource_tongue_lash")])
 
 [node name="TargetIndicator" parent="Head" unique_id=600000006 instance=ExtResource("9_tgtind")]
+scale = Vector2(0.5, 0.5)
 hover_size = Vector2(44.514473, 44.514473)

@@ -18,3 +18,4 @@ extends Resource
 @export var best_marrow_shards_run: int = 0
 @export var floors_climbed_best: int = 0
 @export var combats_fought_total: int = 0
+@export var best_speedrun_time: float = 0.0

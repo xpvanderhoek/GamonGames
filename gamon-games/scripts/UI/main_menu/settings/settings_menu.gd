@@ -6,6 +6,7 @@ const ABANDON_SCREEN := preload("res://scenes/UI/main_menu/settings/abandon_conf
 @onready var res_options: OptionButton = $Window/Contents/TabContainer/Graphics/Resolution/OptionButton
 @onready var v_sync_button: CheckButton = $Window/Contents/TabContainer/Graphics/VSync/VSyncButton
 @onready var fps_limit_button: OptionButton = $Window/Contents/TabContainer/Graphics/FPSLimit/OptionButton
+@onready var speedrun_timer_button: CheckButton = $Window/Contents/TabContainer/Accessibility/SpeedrunTimer/SpeedrunTimerButton
 @onready var colorblind_mode: OptionButton = $Window/Contents/TabContainer/Accessibility/ColorblindMode/OptionButton
 @onready var font_option: OptionButton = $Window/Contents/TabContainer/Accessibility/FontFamily/OptionButton
 @onready var title_label: Label = $Window/Title
@@ -144,6 +145,8 @@ func _sync_graphics():
 	else:
 		fps_limit_button.select(0)
 	
+	speedrun_timer_button.button_pressed = Settings.data.show_speedrun_timer
+	
 	colorblind_mode.select(Settings.data.colorblind_mode)
 
 func _sync_accessibility():
@@ -237,6 +240,10 @@ func _on_fps_limit_item_selected(index: int) -> void:
 		Settings.data.fps_limit = fps_values[index]
 		Engine.max_fps = Settings.data.fps_limit
 		Settings.save_settings()
+
+func _on_speedrun_timer_button_pressed() -> void:
+	Settings.data.show_speedrun_timer = speedrun_timer_button.button_pressed
+	Settings.save_settings()
 
 func _on_colorblind_item_selected(index: int) -> void:
 	Settings.data.colorblind_mode = index

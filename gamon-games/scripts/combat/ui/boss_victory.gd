@@ -9,11 +9,12 @@ var _tween: Tween = null
 
 func _ready() -> void:
 	if RunData.run_active:
-		SaveLoad.record_run_stats()
-		RunData.end_run()
+		RunData.end_run(true)
 	get_tree().paused = true
 	title = get_node_or_null("PanelContainer/VBoxContainer/Title")
-	message.text = get_highlight().title + ", " + "Thank you for playtesting!"
+	message = get_node_or_null("PanelContainer/VBoxContainer/Message")
+	if message:
+		message.text = get_highlight().title + ", " + "Thank you for playtesting!"
 	continue_button = get_node_or_null("PanelContainer/VBoxContainer/ContinueButton")
 	bg_panel = get_node_or_null("PanelContainer")
 
@@ -124,6 +125,7 @@ func _build_stats_panel() -> void:
 	inner.add_child(sep1)
 
 	var stats = [
+		["Run Time",        _format_time(RunData.current_run_time)],
 		["Level Reached",   str(RunData.current_level)],
 		["Combats Fought",  str(RunData.combats_fought)],
 		["Items Collected", str(RunData.items.size())],
@@ -238,3 +240,11 @@ func _show_continue_button() -> void:
 			pulse_tween.tween_property(continue_button, "modulate:a", 0.7, 1.2)
 			pulse_tween.tween_property(continue_button, "modulate:a", 1.0, 1.2)
 	)
+
+func _format_time(value: float) -> String:
+	if value <= 0.0:
+		return "--:--"
+	var mins = int(value) / 60
+	var secs = int(value) % 60
+	var ms = int((value - int(value)) * 100)
+	return "%02d:%02d.%02d" % [mins, secs, ms]

@@ -9,6 +9,7 @@ const STAT_CATEGORIES = [
 	{ "key": "best_spells_in_deck",   "label": "Best Spell Deck"    },
 	{ "key": "floors_climbed_best",   "label": "Best Floors"        },
 	{ "key": "combats_fought_total",  "label": "Total Combats"      },
+	{ "key": "best_speedrun_time",    "label": "Best Time"          },
 ]
 
 const COL_RANK  := 50
@@ -122,6 +123,7 @@ func _load_profile_data(slot: int) -> Dictionary:
 					"best_spells_in_deck":  data.best_spells_in_deck,
 					"floors_climbed_best":  data.floors_climbed_best,
 					"combats_fought_total": data.combats_fought_total,
+					"best_speedrun_time":   data.best_speedrun_time,
 				}
 	return {}
 
@@ -209,7 +211,17 @@ func _show_leaderboard(key: String) -> void:
 
 	var sorted := profile_data.duplicate()
 	sorted.sort_custom(func(a, b):
-		return float(a.get(key, 0)) > float(b.get(key, 0)))
+		var val_a = float(a.get(key, 0))
+		var val_b = float(b.get(key, 0))
+		if key == "best_speedrun_time":
+			if val_a <= 0.0 and val_b > 0.0:
+				return false
+			elif val_b <= 0.0 and val_a > 0.0:
+				return true
+			elif val_a <= 0.0 and val_b <= 0.0:
+				return true
+			return val_a < val_b
+		return val_a > val_b)
 
 	var medals: Array[String] = ["🥇", "🥈", "🥉"]
 	var active_slot: int = PlayerStats.slot
@@ -238,14 +250,21 @@ func _show_leaderboard(key: String) -> void:
 		var name_color: Color = C_ACCENT if is_active else C_TEXT
 		row.add_child(_make_cell(display_name, COL_NAME, name_color, FONT_SIZE))
 
-		row.add_child(_make_cell(_format_value(val), COL_VALUE,
+		row.add_child(_make_cell(_format_value(val, key), COL_VALUE,
 				C_VALUE, FONT_SIZE, HORIZONTAL_ALIGNMENT_RIGHT))
 
 		entries_container.add_child(row_bg)
 		if i < sorted.size() - 1:
 			_add_separator()
 
-func _format_value(value: float) -> String:
+func _format_value(value: float, key: String = "") -> String:
+	if key == "best_speedrun_time":
+		if value <= 0.0:
+			return "--:--"
+		var mins = int(value) / 60
+		var secs = int(value) % 60
+		var ms = int((value - int(value)) * 100)
+		return "%02d:%02d.%02d" % [mins, secs, ms]
 	if value == int(value):
 		return str(int(value))
 	return "%.1f" % value
