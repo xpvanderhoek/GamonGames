@@ -24,7 +24,6 @@ func _ready() -> void:
 	if retry_button:
 		retry_button.pressed.connect(func():
 			SoundManager.stop_combat_music()
-			SaveLoad.record_run_stats()
 			RunData.end_run()
 			RunData.new_run()
 			SaveLoad.save_data()
@@ -36,7 +35,6 @@ func _ready() -> void:
 	if menu_button:
 		menu_button.pressed.connect(func():
 			SoundManager.stop_combat_music()
-			SaveLoad.record_run_stats()
 			RunData.end_run()
 			SaveLoad.save_data()
 			TransitionManager.change_scene("res://scenes/UI/main_menu/main_menu.tscn", TransitionManager.TransitionType.FADE)

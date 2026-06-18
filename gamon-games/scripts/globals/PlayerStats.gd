@@ -28,6 +28,7 @@ var best_spells_in_deck: int = 0
 var best_marrow_shards_run: int = 0
 var floors_climbed_best: int = 0
 var combats_fought_total: int = 0
+var best_speedrun_time: float = 0.0
 
 var stats = {
 	"health": 100.0,          # Hardened Flesh

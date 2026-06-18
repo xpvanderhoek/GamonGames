@@ -10,7 +10,32 @@ var random_seed : int = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var spells : Array[SpellData] = []
 
+var current_run_time: float = 0.0
 var run_active : bool = false
+
+var timer_canvas: CanvasLayer
+var timer_label: Label
+const TIMER_SCENE = preload("res://scenes/UI/speedrun_timer_ui.tscn")
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	timer_canvas = TIMER_SCENE.instantiate() as CanvasLayer
+	add_child(timer_canvas)
+	timer_label = timer_canvas.get_node("Label") as Label
+
+func _process(delta: float) -> void:
+	if run_active and not get_tree().paused:
+		current_run_time += delta
+		run_time_changed.emit(current_run_time)
+		
+	if Settings.data and Settings.data.show_speedrun_timer and run_active:
+		timer_canvas.visible = true
+		var mins = int(current_run_time) / 60
+		var secs = int(current_run_time) % 60
+		var ms = int((current_run_time - int(current_run_time)) * 100)
+		timer_label.text = "%02d:%02d.%02d" % [mins, secs, ms]
+	else:
+		timer_canvas.visible = false
 
 var max_health : int = 100:
 	set (value):
@@ -77,6 +102,7 @@ var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2
 signal coins_changed(new_amount)
 signal health_changed(new_amount)
 signal time_remaining_changed(new_amount)
+signal run_time_changed(new_time)
 signal exp_changed(new_amount)
 signal level_changed(new_amount)
 signal marrow_shards_changed(new_amount)
@@ -101,6 +127,7 @@ func new_run():
 	spells.clear()
 	reset_energy()
 	current_exp = 0
+	current_run_time = 0.0
 	run_active = true
 	add_spell(BASIC_ATTACK)
 	add_spell(BLOCK)
@@ -136,10 +163,10 @@ func _get_random_consumable() -> ConsumableItemData:
 	return candidates[rng.randi_range(0, candidates.size() - 1)]
 
 
-func end_run():
+func end_run(is_win: bool = false):
 	run_active = false
 	PlayerStats.marrow_shards = marrow_shards
-	SaveLoad.record_run_stats() 
+	SaveLoad.record_run_stats(is_win) 
 	SaveLoad.save_data()
 
 func add_item(item: Resource) -> bool:

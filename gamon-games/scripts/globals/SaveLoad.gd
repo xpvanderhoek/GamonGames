@@ -31,6 +31,7 @@ func save_data():
 	data.best_marrow_shards_run = PlayerStats.best_marrow_shards_run
 	data.floors_climbed_best = PlayerStats.floors_climbed_best
 	data.combats_fought_total = PlayerStats.combats_fought_total
+	data.best_speedrun_time = PlayerStats.best_speedrun_time
 	ResourceSaver.save(data, _save_path(PlayerStats.slot))
 	ResourceSaver.save(data, _leaderboard_path(PlayerStats.slot))
 
@@ -59,9 +60,10 @@ func load_data(slot: int):
 	PlayerStats.best_marrow_shards_run = data.best_marrow_shards_run
 	PlayerStats.floors_climbed_best = data.floors_climbed_best
 	PlayerStats.combats_fought_total = data.combats_fought_total
+	PlayerStats.best_speedrun_time = data.best_speedrun_time
 	save_meta()
 
-func record_run_stats() -> void:
+func record_run_stats(is_win: bool = false) -> void:
 	PlayerStats.total_runs += 1
 	PlayerStats.total_coins_earned += RunData.coins
 	PlayerStats.combats_fought_total += RunData.combats_fought
@@ -76,6 +78,9 @@ func record_run_stats() -> void:
 	var shards_gained: int = RunData.marrow_shards - PlayerStats.marrow_shards
 	if shards_gained > PlayerStats.best_marrow_shards_run:
 		PlayerStats.best_marrow_shards_run = shards_gained
+	if is_win:
+		if PlayerStats.best_speedrun_time == 0.0 or RunData.current_run_time < PlayerStats.best_speedrun_time:
+			PlayerStats.best_speedrun_time = RunData.current_run_time
 
 func save_meta() -> void:
 	var file = FileAccess.open(META_PATH, FileAccess.WRITE)
@@ -112,6 +117,7 @@ func create_profile(slot: int, name: String = "Knight") -> void:
 	PlayerStats.best_marrow_shards_run = 0
 	PlayerStats.floors_climbed_best = 0
 	PlayerStats.combats_fought_total = 0
+	PlayerStats.best_speedrun_time = 0.0
 	RunData.marrow_shards = 0
 	save_data()
 	save_meta()

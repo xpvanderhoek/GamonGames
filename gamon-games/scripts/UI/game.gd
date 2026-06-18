@@ -95,8 +95,6 @@ func _input(event):
 	if event.is_action("ui_text_delete_word"):
 		DialogueManager.start_dialogue("intro")
 
-func _process(delta: float) -> void:
-	RunData.update_timer(delta)
 
 func _apply_skill_tree_bonuses() -> void:
 	var skills: Array = []
