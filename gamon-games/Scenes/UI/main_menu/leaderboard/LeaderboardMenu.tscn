@@ -1,8 +1,16 @@
-[gd_scene format=3 uid="uid://ke52aai850r0"]
+[gd_scene load_steps=6 format=3 uid="uid://ke52aai850r0"]
 
 [ext_resource type="Script" uid="uid://qkck16205fp" path="res://scripts/UI/main_menu/leaderboard/leaderboard_menu.gd" id="1_pxhub"]
+[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_kv4nn"]
+[ext_resource type="FontFile" uid="uid://2rwd85jki8i8" path="res://assets/fonts/CaesarDressing-Regular.ttf" id="3_rar7h"]
+[ext_resource type="Texture2D" uid="uid://b243pqp2c12ym" path="res://assets/settings/pause_settings.png" id="4_ekf0g"]
 
-[node name="LeaderboardMenu" type="Control" unique_id=508881403]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dmolg"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="LeaderboardMenu" type="Control"]
+process_mode = 3
+z_index = 999
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,42 +19,155 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pxhub")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=111111001]
+[node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0, 0, 0, 0.352)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=111111002]
-layout_mode = 2
+[node name="Window" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -352.0
+offset_top = -248.5
+offset_right = 352.0
+offset_bottom = 248.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_ekf0g")
+
+[node name="Title" type="Label" parent="Window"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -337.0
+offset_top = -33.0
+offset_right = -126.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.5729883, 0.5729883, 0.5729883, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("3_rar7h")
+theme_override_font_sizes/font_size = 27
+text = "L E A D E R B O A R D"
+horizontal_alignment = 3
+
+[node name="Contents" type="Control" parent="Window"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -286.0
+offset_top = -184.0
+offset_right = 286.0
+offset_bottom = 188.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/Contents"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="TitleRow" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=111111003]
+[node name="TabBar" type="TabBar" parent="Window/Contents/VBoxContainer"]
 layout_mode = 2
 
-[node name="TitleLabel" type="Label" parent="PanelContainer/VBoxContainer/TitleRow" unique_id=111111004]
+[node name="HeaderContainer" type="HBoxContainer" parent="Window/Contents/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-text = "Leaderboard"
+theme_override_constants/separation = 0
 
-[node name="CloseButton" type="Button" parent="PanelContainer/VBoxContainer/TitleRow" unique_id=111111005]
+[node name="HeaderSeparator" type="ColorRect" parent="Window/Contents/VBoxContainer"]
+custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
-text = "X"
+color = Color(0.98, 0.77, 0.29, 0.5)
 
-[node name="StatTitle" type="Label" parent="PanelContainer/VBoxContainer" unique_id=111111006]
-layout_mode = 2
-
-[node name="TabBar" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=111111007]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer" unique_id=111111008]
+[node name="ScrollContainer" type="ScrollContainer" parent="Window/Contents/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="EntriesContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer" unique_id=111111009]
+[node name="EntriesContainer" type="VBoxContainer" parent="Window/Contents/VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[connection signal="pressed" from="PanelContainer/VBoxContainer/TitleRow/CloseButton" to="." method="_on_close_button_pressed"]
+[node name="Pagination" type="HBoxContainer" parent="Window/Contents/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PrevButton" type="Button" parent="Window/Contents/VBoxContainer/Pagination"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.98, 0.77, 0.29, 1)
+theme_override_colors/font_focus_color = Color(0.98, 0.77, 0.29, 1)
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_dmolg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dmolg")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dmolg")
+theme_override_styles/focus = SubResource("StyleBoxFlat_dmolg")
+text = " < Prev "
+
+[node name="PageLabel" type="Label" parent="Window/Contents/VBoxContainer/Pagination"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 18
+text = "Page 1"
+horizontal_alignment = 1
+
+[node name="NextButton" type="Button" parent="Window/Contents/VBoxContainer/Pagination"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.98, 0.77, 0.29, 1)
+theme_override_colors/font_focus_color = Color(0.98, 0.77, 0.29, 1)
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_dmolg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dmolg")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dmolg")
+theme_override_styles/focus = SubResource("StyleBoxFlat_dmolg")
+text = " Next > "
+
+[node name="Back" type="Button" parent="Window/Contents"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -41.0
+offset_top = -14.0
+offset_right = 42.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_pressed_color = Color(0.80395424, 0.6112818, 0.10585306, 1)
+theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_fonts/font = ExtResource("2_kv4nn")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_dmolg")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dmolg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dmolg")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_dmolg")
+text = "Back"
+autowrap_trim_flags = 0
+
+[connection signal="pressed" from="Window/Contents/VBoxContainer/Pagination/PrevButton" to="." method="_on_prev_button_pressed"]
+[connection signal="pressed" from="Window/Contents/VBoxContainer/Pagination/NextButton" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="Window/Contents/Back" to="." method="_on_close_button_pressed"]

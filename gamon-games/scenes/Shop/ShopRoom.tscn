@@ -30,10 +30,14 @@
 [ext_resource type="Resource" uid="uid://bwg7v7na0dhhc" path="res://assets/ShopItems/Resources/ThornedBracer.tres" id="29_shop_item"]
 [ext_resource type="Texture2D" uid="uid://q3m7qtrd0p34" path="res://assets/ShopItems/ShopEnvironment/Shaded cart.png" id="29_w1ajr"]
 [ext_resource type="Resource" uid="uid://bs4tcrv4d0qpt" path="res://assets/ShopItems/Resources/VialOfStagnantTime.tres" id="30_shop_item"]
-[ext_resource type="Texture2D" uid="uid://hepllyexysve" path="res://assets/ShopItems/ShopEnvironment/goblin.png" id="31_7l5ap"]
+[ext_resource type="Texture2D" uid="uid://hepllyexysve" path="res://assets/ShopItems/ShopEnvironment/Goblin.png" id="31_7l5ap"]
 [ext_resource type="Resource" uid="uid://drj8ypf4y6jep" path="res://assets/ShopItems/Resources/Consumables/VipersTongue.tres" id="31_shop_item"]
 [ext_resource type="Resource" uid="uid://bsjm8nf1coqo3" path="res://assets/ShopItems/Resources/WitheredAchillesHeel.tres" id="32_shop_item"]
 [ext_resource type="PackedScene" uid="uid://nwlygbpretr2" path="res://scenes/UI/ShopDialogueUI.tscn" id="34_7l5ap"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xqf5f"]
+font_size = 432
+font_color = Color(0.57715225, 0.47292823, 0.33508357, 1)
 
 [sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_cougk"]
 
@@ -95,10 +99,6 @@ _data = {
 &"RESET": SubResource("Animation_6tcdb")
 }
 
-[sub_resource type="LabelSettings" id="LabelSettings_xqf5f"]
-font_size = 432
-font_color = Color(0.57715225, 0.47292823, 0.33508357, 1)
-
 [node name="ShopRoom" type="Node2D" unique_id=334542622]
 script = ExtResource("1_2g6x2")
 item_scene = ExtResource("2_6tcdb")
@@ -106,6 +106,50 @@ shop_items = Array[ExtResource("3_lwfny")]([ExtResource("10_shop_item"), ExtReso
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1182942741]
 layer = 2
+
+[node name="ShopUI" type="Control" parent="CanvasLayer" unique_id=1111111111]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ExitButton" type="Button" parent="CanvasLayer/ShopUI" unique_id=566968292]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -208.00006
+offset_top = 30.0
+offset_right = 819.52
+offset_bottom = 314.0
+grow_horizontal = 0
+scale = Vector2(0.265, 0.265)
+icon = ExtResource("4_6tcdb")
+flat = true
+script = ExtResource("7_exit_hover")
+
+[node name="CoinSprite" type="Sprite2D" parent="CanvasLayer/ShopUI" unique_id=546439882]
+position = Vector2(135.00002, 68.000015)
+scale = Vector2(0.105, 0.105)
+texture = ExtResource("9_t6u03")
+
+[node name="CoinLabel" type="Label" parent="CanvasLayer/ShopUI/CoinSprite" unique_id=1954392693]
+anchors_preset = -1
+anchor_left = 0.37500003
+anchor_top = 0.5
+anchor_right = 0.37500003
+anchor_bottom = 0.5
+offset_left = -1508.9229
+offset_top = -893.3333
+offset_right = -461.3037
+offset_bottom = -264.7619
+text = "0"
+label_settings = SubResource("LabelSettings_xqf5f")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=1523504970]
 scroll_scale = Vector2(0.675, 0.675)
@@ -190,46 +234,6 @@ position = Vector2(557.5801, 555.153)
 
 [node name="Item6" type="Marker2D" parent="Parallax2D2" unique_id=1488438199]
 position = Vector2(758.135, 555.153)
-
-[node name="ExitButton" type="Node2D" parent="Parallax2D2" unique_id=1795726782]
-position = Vector2(0, 42.675)
-
-[node name="Button" type="Button" parent="Parallax2D2/ExitButton" unique_id=566968292]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 935.0
-offset_top = -3.6750107
-offset_right = 1962.52
-offset_bottom = 280.32498
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.265, 0.265)
-icon = ExtResource("4_6tcdb")
-flat = true
-script = ExtResource("7_exit_hover")
-
-[node name="Sprite2D" type="Sprite2D" parent="Parallax2D2" unique_id=546439882]
-position = Vector2(157, 76)
-scale = Vector2(0.105, 0.105)
-texture = ExtResource("9_t6u03")
-
-[node name="CoinLabel" type="Label" parent="Parallax2D2/Sprite2D" unique_id=1954392693]
-anchors_preset = -1
-anchor_left = 0.37500003
-anchor_top = 0.5
-anchor_right = 0.37500003
-anchor_bottom = 0.5
-offset_left = -1508.9229
-offset_top = -893.3333
-offset_right = -461.3037
-offset_bottom = -264.7619
-text = "0"
-label_settings = SubResource("LabelSettings_xqf5f")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="SpeechBubble" parent="Parallax2D2" unique_id=629855543 instance=ExtResource("34_7l5ap")]
 offset = Vector2(93.075, 50.555)

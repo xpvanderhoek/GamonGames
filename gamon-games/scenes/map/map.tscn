@@ -39,13 +39,16 @@ corner_radius_bottom_left = 4
 [node name="Map" type="Node2D" unique_id=1667129948]
 script = ExtResource("1_ph54e")
 
-[node name="Background" type="Parallax2D" parent="." unique_id=1078799763]
-repeat_size = Vector2(40, 40)
-repeat_times = 75
+[node name="Background" type="CanvasLayer" parent="." unique_id=1078799763]
+layer = -1
 
 [node name="ColorRect" type="ColorRect" parent="Background" unique_id=1468175846]
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 color = Color(0.080783345, 0.080783345, 0.080783345, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=15387831]
@@ -74,10 +77,14 @@ script = ExtResource("3_jcaow")
 layer = 0
 
 [node name="Coins" type="TextureRect" parent="CanvasLayer" unique_id=1271540208]
-offset_left = 958.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -194.0
 offset_top = 16.0
-offset_right = 1260.9813
+offset_right = 108.9813
 offset_bottom = 159.0
+grow_horizontal = 0
 scale = Vector2(0.57914907, 0.57914907)
 texture = ExtResource("4_04w0f")
 expand_mode = 1
@@ -134,10 +141,14 @@ scale = Vector2(0.06851222, 0.06851222)
 texture = ExtResource("5_jcaow")
 
 [node name="TextureRect" parent="CanvasLayer" unique_id=1977336399 instance=ExtResource("5_fcby6")]
-offset_left = 957.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -195.0
 offset_top = 124.0
-offset_right = 1143.0
+offset_right = -9.0
 offset_bottom = 420.0
+grow_horizontal = 0
 
 [node name="StatsButton" type="Button" parent="CanvasLayer" unique_id=1111111111]
 offset_left = 22.0

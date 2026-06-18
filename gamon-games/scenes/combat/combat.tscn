@@ -69,24 +69,37 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("2_mrrmw")
 expand_mode = 1
+stretch_mode = 6
 
 [node name="BossContainer" type="Control" parent="." unique_id=1095655910]
 layout_mode = 3
-anchors_preset = 0
-offset_left = 293.00003
-offset_top = -14.999999
-offset_right = 935.2018
-offset_bottom = 447.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -283.0
+offset_top = -339.0
+offset_right = 359.2018
+offset_bottom = 123.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(1.09, 1.09)
 mouse_filter = 2
 
 [node name="Player" type="Control" parent="." unique_id=482095583]
 layout_mode = 3
-anchors_preset = 0
-offset_left = 203.62013
-offset_top = 642.69995
-offset_right = 243.62013
-offset_bottom = 682.69995
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -372.38
+offset_top = 318.7
+offset_right = -332.38
+offset_bottom = 358.7
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Shadow" type="Sprite2D" parent="Player" unique_id=1976199755]
 position = Vector2(-6.0209618, 7.3344116)
@@ -99,14 +112,17 @@ scale = Vector2(0.8511, 0.85109985)
 texture = ExtResource("3_ltalu")
 
 [node name="EnemyContainer" type="HBoxContainer" parent="." unique_id=1990503357]
-anchors_preset = 5
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
+anchor_bottom = 0.5
 offset_left = -386.0
-offset_top = 139.0
+offset_top = -185.0
 offset_right = 372.0
-offset_bottom = 489.0
+offset_bottom = 165.0
 grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
@@ -115,10 +131,17 @@ alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="SpellsPanel" type="PanelContainer" parent="." unique_id=609410318]
-offset_left = 343.0
-offset_top = 548.0
-offset_right = 747.0
-offset_bottom = 612.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -233.0
+offset_top = -100.0
+offset_right = 171.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [node name="Container" type="HBoxContainer" parent="SpellsPanel" unique_id=1942063916]
 layout_mode = 2
@@ -156,15 +179,20 @@ grow_vertical = 0
 
 [node name="TurnsOrderUI" type="Control" parent="." unique_id=148917285]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 9
+anchor_bottom = 1.0
 offset_right = 92.0
-offset_bottom = 648.0
+offset_bottom = 0.0
+grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="TurnsOrderUI" unique_id=171580058]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 13
+anchor_bottom = 1.0
 offset_top = 48.0
 offset_right = 92.0
-offset_bottom = 454.0
+offset_bottom = -100.0
+grow_vertical = 2
 
 [node name="Text" type="Label" parent="TurnsOrderUI" unique_id=1861351399]
 layout_mode = 0
@@ -187,24 +215,40 @@ horizontal_alignment = 1
 z_as_relative = false
 y_sort_enabled = true
 material = SubResource("CanvasItemMaterial_ijgaf")
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 13
+anchor_bottom = 1.0
 offset_top = 125.0
 offset_right = 92.0
-offset_bottom = 548.0
+offset_bottom = -100.0
 grow_vertical = 2
 theme_override_constants/separation = 8
 
 [node name="HealthBar" parent="." unique_id=405192399 instance=ExtResource("4_4voa6")]
-offset_left = 343.0
-offset_top = 497.0
-offset_right = 347.25598
-offset_bottom = 506.248
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -233.0
+offset_top = -151.0
+offset_right = 171.0
+offset_bottom = -125.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [node name="EnergyPanel" type="Panel" parent="." unique_id=2108894780]
-offset_left = 275.0
-offset_top = 548.0
-offset_right = 332.0
-offset_bottom = 612.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -301.0
+offset_top = -100.0
+offset_right = -244.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [node name="TextureRect" type="TextureRect" parent="EnergyPanel" unique_id=928179106]
 visible = false
@@ -236,17 +280,31 @@ theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 
 [node name="EndTurn" type="Button" parent="." unique_id=383427587]
-offset_left = 897.0
-offset_top = 501.0
-offset_right = 1036.0
-offset_bottom = 555.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -255.0
+offset_top = -147.0
+offset_right = -116.0
+offset_bottom = -93.0
+grow_horizontal = 0
+grow_vertical = 0
 text = "END TURN"
 
 [node name="Panel" type="Panel" parent="." unique_id=819468727]
-offset_left = 765.0
-offset_top = 497.0
-offset_right = 880.0
-offset_bottom = 612.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 189.0
+offset_top = -151.0
+offset_right = 304.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [node name="TextureRect" type="TextureRect" parent="Panel" unique_id=2092553944]
 layout_mode = 1

@@ -254,6 +254,7 @@ func _process(_delta: float) -> void:
 	_update_spell_cursor_overlay_position()
 	_update_spell_tooltip_position()
 	_update_item_tooltip_position()
+	_update_combat_scale()
 	if _spell_tooltip_spell != null and _spell_tooltip != null and _spell_tooltip.visible:
 		var shift_now := Input.is_key_pressed(KEY_SHIFT)
 		if shift_now != _spell_tooltip_was_shift_pressed:
@@ -264,6 +265,25 @@ func _process(_delta: float) -> void:
 		if item_shift_now != _item_tooltip_was_shift_pressed:
 			_item_tooltip_was_shift_pressed = item_shift_now
 			_show_item_tooltip(_item_tooltip_item)
+
+func _update_combat_scale() -> void:
+	var viewport_size = get_viewport().get_visible_rect().size
+	var scale_factor = maxf(viewport_size.x / 1152.0, viewport_size.y / 648.0)
+	
+	var player = get_node_or_null(ui_player) as Control
+	if player:
+		player.pivot_offset = Vector2(-player.offset_left, -player.offset_top)
+		player.scale = Vector2(scale_factor, scale_factor)
+		
+	var enemy_container = get_node_or_null(enemy_container_path) as Control
+	if enemy_container:
+		enemy_container.pivot_offset = Vector2(-enemy_container.offset_left, -enemy_container.offset_top)
+		enemy_container.scale = Vector2(scale_factor, scale_factor)
+		
+	var boss_container = get_node_or_null(boss_container_path) as Control
+	if boss_container:
+		boss_container.pivot_offset = Vector2(-boss_container.offset_left, -boss_container.offset_top)
+		boss_container.scale = Vector2(1.09 * scale_factor, 1.09 * scale_factor)
 
 func _exit_combat():
 	if _is_exiting_combat:

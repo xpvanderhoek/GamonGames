@@ -11,21 +11,9 @@
 [ext_resource type="Resource" uid="uid://k1vhjfkad0qa" path="res://scripts/skill_list/skill_resources/steady_hand.tres" id="10_or8jn"]
 [ext_resource type="Resource" uid="uid://80wse1xg4dkb" path="res://scripts/skill_list/skill_resources/stone_guard.tres" id="11_gli5f"]
 [ext_resource type="Texture2D" uid="uid://c3tbae11b3ovt" path="res://scenes/skill_list/Marrow_shards_currency.png" id="12_3tci0"]
+[ext_resource type="FontFile" uid="uid://2rwd85jki8i8" path="res://assets/fonts/CaesarDressing-Regular.ttf" id="12_20qiw"]
 [ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="12_loq5n"]
-[ext_resource type="Texture2D" uid="uid://cxly65sw53pgn" path="res://assets/main_menu/main_menu_background.png" id="12_r8qnw"]
 [ext_resource type="Texture2D" uid="uid://bdl6ds02ccw48" path="res://assets/skill_list_background.png" id="13_20qiw"]
-[ext_resource type="Texture2D" uid="uid://dhh5dly20xx58" path="res://assets/ShopItems/ShopEnvironment/DescriptionPanel.png" id="13_qn87k"]
-[ext_resource type="StyleBox" uid="uid://fg66y1mcxs3y" path="res://assets/button_highlight.tres" id="15_4jjhm"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fh4ca"]
-texture = ExtResource("13_qn87k")
-
-[sub_resource type="Theme" id="Theme_4jjhm"]
-Panel/styles/panel = SubResource("StyleBoxTexture_fh4ca")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3tci0"]
-content_margin_left = 9.0
-bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_20qiw"]
 font_size = 23
@@ -39,7 +27,11 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3tci0"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [node name="skill_list" type="Control" unique_id=1497030253]
+z_index = 999
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,12 +41,14 @@ grow_vertical = 2
 script = ExtResource("1_lvfat")
 skills = Array[ExtResource("2_loq5n")]([ExtResource("3_3tci0"), ExtResource("4_20qiw"), ExtResource("5_r8qnw"), ExtResource("6_qn87k"), ExtResource("8_ed1i2"), ExtResource("9_usirg"), ExtResource("10_or8jn"), ExtResource("11_gli5f")])
 
-[node name="Background" type="TextureRect" parent="." unique_id=1022203630]
-layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 648.0
-texture = ExtResource("12_r8qnw")
-expand_mode = 1
+[node name="Background" type="ColorRect" parent="." unique_id=1022203630]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.352)
 
 [node name="Control" type="Control" parent="." unique_id=2076484213]
 custom_minimum_size = Vector2(1088, 596)
@@ -71,67 +65,19 @@ offset_bottom = 298.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ItemTooltipPanel" type="Panel" parent="Control" unique_id=1108486703]
-self_modulate = Color(0.0700346, 5.4062864e-05, 0.23660174, 1)
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -308.0
-offset_top = -62.000153
-offset_bottom = 62.000153
-grow_horizontal = 0
-grow_vertical = 2
-theme = SubResource("Theme_4jjhm")
-
-[node name="TooltipLabel" type="Label" parent="Control/ItemTooltipPanel" unique_id=295120523]
+[node name="TextureRect" type="TextureRect" parent="Control" unique_id=717815024]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -143.5
-offset_top = -51.0
-offset_right = 143.5
-offset_bottom = 51.0
+offset_left = 220.0
+offset_top = -211.0
+offset_right = 387.408
+offset_bottom = -125.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-vertical_alignment = 1
-autowrap_mode = 3
-
-[node name="QuitButton" type="Button" parent="Control" unique_id=1023925444]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -110.0
-offset_top = -47.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 13
-theme_override_fonts/font = ExtResource("12_loq5n")
-theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_3tci0")
-theme_override_styles/pressed = ExtResource("15_4jjhm")
-theme_override_styles/hover = ExtResource("15_4jjhm")
-theme_override_styles/hover_pressed = ExtResource("15_4jjhm")
-text = "Back"
-alignment = 0
-
-[node name="TextureRect" type="TextureRect" parent="Control" unique_id=717815024]
-layout_mode = 0
-offset_right = 167.40822
-offset_bottom = 86.0
 tooltip_text = "Gain Marrow Shards by defeating enemies"
 texture = ExtResource("12_3tci0")
 expand_mode = 1
@@ -154,6 +100,24 @@ text = "10000"
 label_settings = SubResource("LabelSettings_20qiw")
 autowrap_mode = 2
 
+[node name="Title" type="Label" parent="Control" unique_id=1773897825]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -204.0
+offset_top = 53.0
+offset_right = -6.0
+offset_bottom = 86.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.5729883, 0.5729883, 0.5729883, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("12_20qiw")
+theme_override_font_sizes/font_size = 27
+text = "S K I L L   L I S T"
+horizontal_alignment = 3
+
 [node name="Panel" type="Panel" parent="." unique_id=1672882145]
 layout_mode = 1
 anchors_preset = 8
@@ -164,7 +128,7 @@ anchor_bottom = 0.5
 offset_left = -203.55078
 offset_top = -211.0
 offset_right = 203.55078
-offset_bottom = 160.0
+offset_bottom = 161.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lvfat")
@@ -188,14 +152,8 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/VBoxContainer" unique_id=1558890568]
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
-
-[node name="Title" type="Label" parent="Panel/VBoxContainer" unique_id=1874865007]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Skill List"
-horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=1237664655]
 layout_mode = 2
@@ -222,5 +180,31 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 
-[connection signal="mouse_entered" from="Control/QuitButton" to="." method="_on_quit_button_mouse_entered"]
-[connection signal="pressed" from="Control/QuitButton" to="." method="_on_quit_button_pressed"]
+[node name="QuitButton" type="Button" parent="." unique_id=652074661]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -42.0
+offset_top = -212.0
+offset_right = 41.0
+offset_bottom = -187.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_colors/font_pressed_color = Color(0.80395424, 0.6112818, 0.10585306, 1)
+theme_override_colors/font_hover_color = Color(0.98039216, 0.77254903, 0.29411766, 1)
+theme_override_fonts/font = ExtResource("12_loq5n")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_3tci0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3tci0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3tci0")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_3tci0")
+text = "Back"
+autowrap_trim_flags = 0
+
+[connection signal="mouse_entered" from="QuitButton" to="." method="_on_quit_button_mouse_entered"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]

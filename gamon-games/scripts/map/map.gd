@@ -99,8 +99,8 @@ func create_map():
 	_spawn_room(map_data[MapGenerator.FLOORS-1][middle])
 	
 	var map_width_pixels := MapGenerator.X_DIST * (MapGenerator.MAP_WIDTH - 1)
-	visuals.position.x = (get_viewport_rect().size.x - map_width_pixels) / 2
-	visuals.position.y = get_viewport_rect().size.y / 2
+	visuals.position.x = (1152.0 - map_width_pixels) / 2.0
+	visuals.position.y = 648.0 / 2.0
 
 func unlock_floor(which_floor : int = floors_climbed):
 	for map_room : MapRoom in rooms.get_children():
