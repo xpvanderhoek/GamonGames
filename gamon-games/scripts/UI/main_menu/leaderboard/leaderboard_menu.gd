@@ -43,6 +43,11 @@ const C_TAB_ACTIVE := Color(0.24, 0.17, 0.10, 1.0)
 var current_key: String = "best_level"
 var profile_data: Array = []
 var tab_buttons: Array = []
+var local_name: String = ""
+var cached_data: Dictionary = {}
+
+var http_request: HTTPRequest
+var api_url: String = "http://api.visionot.online/client_api/leaderboard.php"
 
 func _make_stylebox(color: Color, pad_h := 12, pad_v := 8) -> StyleBoxFlat:
 	var s := StyleBoxFlat.new()
@@ -94,38 +99,26 @@ func _ready() -> void:
 	stat_label.add_theme_color_override("font_color", C_TEXT_DIM)
 	stat_label.add_theme_font_size_override("font_size", 13)
 
-	_load_all_profiles()
+	http_request = HTTPRequest.new()
+	add_child(http_request)
+	http_request.request_completed.connect(_on_http_request_completed)
+
+	_load_local_name()
 	_build_tabs()
-	_show_leaderboard(current_key)
+	_fetch_leaderboard(current_key)
 
-func _load_all_profiles() -> void:
-	profile_data.clear()
-	for i in range(1, 4):
-		var data: Dictionary = _load_profile_data(i)
-		if not data.is_empty():
-			profile_data.append(data)
-
-func _load_profile_data(slot: int) -> Dictionary:
-	var paths = [
-		SAVE_DIR + "save_%d.tres" % slot,
-		SAVE_DIR + "leaderboard_%d.tres" % slot,
-	]
-	for path in paths:
-		if FileAccess.file_exists(path):
-			var data = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
-			if data is SaveData:
-				return {
-					"name":                 data.profile_name,
-					"slot":                 slot,
-					"best_level":           data.best_level,
-					"total_runs":           data.total_runs,
-					"total_coins_earned":   data.total_coins_earned,
-					"best_spells_in_deck":  data.best_spells_in_deck,
-					"floors_climbed_best":  data.floors_climbed_best,
-					"combats_fought_total": data.combats_fought_total,
-					"best_speedrun_time":   data.best_speedrun_time,
-				}
-	return {}
+func _load_local_name() -> void:
+	if PlayerStats and typeof(PlayerStats.slot) == TYPE_INT:
+		var paths = [
+			SAVE_DIR + "save_%d.tres" % PlayerStats.slot,
+			SAVE_DIR + "leaderboard_%d.tres" % PlayerStats.slot,
+		]
+		for path in paths:
+			if FileAccess.file_exists(path):
+				var data = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
+				if data and "profile_name" in data:
+					local_name = data.profile_name
+					break
 
 func _build_tabs() -> void:
 	var normal_style := _make_stylebox(C_TAB_BG, 14, 7)
@@ -150,13 +143,58 @@ func _build_tabs() -> void:
 		btn.set_meta("active_style", active_style)
 		tab_container.add_child(btn)
 		tab_buttons.append(btn)
+		
+		# Make the initial tab active visually
+		if category["key"] == current_key:
+			btn.add_theme_stylebox_override("normal", active_style)
 
 func _on_tab_pressed(key: String, pressed_btn: Button) -> void:
+	if current_key == key and not profile_data.is_empty():
+		return # Already on this tab
+		
 	for btn in tab_buttons:
 		var s: StyleBoxFlat = btn.get_meta("active_style") if btn == pressed_btn \
 				else btn.get_meta("normal_style")
 		btn.add_theme_stylebox_override("normal", s)
-	_show_leaderboard(key)
+	_fetch_leaderboard(key)
+
+func _fetch_leaderboard(key: String) -> void:
+	current_key = key
+	if cached_data.has(key):
+		profile_data = cached_data[key]
+		_show_leaderboard()
+		return
+
+	_show_loading_state(key)
+	
+	var url = api_url + "?category=" + key
+	var error = http_request.request(url)
+	if error != OK:
+		_show_error_state("Failed to create HTTP request.")
+
+func _on_http_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	if result != HTTPRequest.RESULT_SUCCESS:
+		_show_error_state("Connection error.")
+		return
+		
+	if response_code != 200:
+		_show_error_state("Server error (Code: %d)" % response_code)
+		return
+		
+	var json = JSON.new()
+	var parse_result = json.parse(body.get_string_from_utf8())
+	if parse_result == OK:
+		var response = json.data
+		if typeof(response) == TYPE_ARRAY:
+			profile_data = response
+			cached_data[current_key] = response
+			_show_leaderboard()
+		elif typeof(response) == TYPE_DICTIONARY and response.has("error"):
+			_show_error_state(response["error"])
+		else:
+			_show_error_state("Invalid data format received.")
+	else:
+		_show_error_state("Failed to parse server response.")
 
 func _add_separator(color: Color = C_DIVIDER) -> void:
 	var sep := ColorRect.new()
@@ -175,9 +213,7 @@ func _make_cell(text: String, min_w: int, color: Color, size: int,
 	lbl.horizontal_alignment = align
 	return lbl
 
-func _show_leaderboard(key: String) -> void:
-	current_key = key
-
+func _show_loading_state(key: String) -> void:
 	var category: Dictionary = {}
 	for c in STAT_CATEGORIES:
 		if c["key"] == key:
@@ -186,6 +222,26 @@ func _show_leaderboard(key: String) -> void:
 
 	stat_label.text = category.get("label", key).to_upper()
 
+	for child in entries_container.get_children():
+		child.queue_free()
+		
+	var lbl := Label.new()
+	lbl.text = "Fetching souls..."
+	lbl.add_theme_color_override("font_color", C_TEXT_DIM)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	entries_container.add_child(lbl)
+
+func _show_error_state(msg: String) -> void:
+	for child in entries_container.get_children():
+		child.queue_free()
+		
+	var lbl := Label.new()
+	lbl.text = msg
+	lbl.add_theme_color_override("font_color", Color(0.9, 0.4, 0.4))
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	entries_container.add_child(lbl)
+
+func _show_leaderboard() -> void:
 	for child in entries_container.get_children():
 		child.queue_free()
 
@@ -209,27 +265,16 @@ func _show_leaderboard(key: String) -> void:
 		entries_container.add_child(lbl)
 		return
 
-	var sorted := profile_data.duplicate()
-	sorted.sort_custom(func(a, b):
-		var val_a = float(a.get(key, 0))
-		var val_b = float(b.get(key, 0))
-		if key == "best_speedrun_time":
-			if val_a <= 0.0 and val_b > 0.0:
-				return false
-			elif val_b <= 0.0 and val_a > 0.0:
-				return true
-			elif val_a <= 0.0 and val_b <= 0.0:
-				return true
-			return val_a < val_b
-		return val_a > val_b)
+	# Data is already sorted by the SQL query
+	var sorted := profile_data
 
 	var medals: Array[String] = ["🥇", "🥈", "🥉"]
-	var active_slot: int = PlayerStats.slot
 
 	for i in range(sorted.size()):
 		var profile = sorted[i]
-		var val: float = float(profile.get(key, 0))
-		var is_active: bool = profile["slot"] == active_slot
+		var val: float = float(profile.get(current_key, 0))
+		var profile_name: String = profile.get("name", "Unknown")
+		var is_active: bool = (profile_name == local_name and local_name != "")
 
 		var bg_color: Color = C_ROW_ACTIVE if is_active \
 				else (C_ROW_ODD if i % 2 == 0 else C_ROW_EVEN)
@@ -246,11 +291,11 @@ func _show_leaderboard(key: String) -> void:
 		var rank_text: String = medals[i] if i < 3 else "#%d" % (i + 1)
 		row.add_child(_make_cell(rank_text, COL_RANK, C_TEXT, FONT_SIZE))
 
-		var display_name: String = profile["name"] + (" ◀" if is_active else "")
+		var display_name: String = profile_name + (" ◀" if is_active else "")
 		var name_color: Color = C_ACCENT if is_active else C_TEXT
 		row.add_child(_make_cell(display_name, COL_NAME, name_color, FONT_SIZE))
 
-		row.add_child(_make_cell(_format_value(val, key), COL_VALUE,
+		row.add_child(_make_cell(_format_value(val, current_key), COL_VALUE,
 				C_VALUE, FONT_SIZE, HORIZONTAL_ALIGNMENT_RIGHT))
 
 		entries_container.add_child(row_bg)
