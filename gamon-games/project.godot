@@ -38,7 +38,7 @@ ColorblindFilter="*res://scripts/globals/colorblind_filter.gd"
 [display]
 
 window/size/mode=2
-window/size/resizable=true
+window/size/resizable=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
