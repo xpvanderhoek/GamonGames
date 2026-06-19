@@ -108,6 +108,8 @@ signal level_changed(new_amount)
 signal marrow_shards_changed(new_amount)
 signal energy_changed(new_amount)
 signal item_added(item: ItemData)
+signal shop_item_hovered(item_data: ItemData)
+signal shop_item_unhovered()
 
 func new_run():
 	randomize()
@@ -195,16 +197,13 @@ func get_stat(buff_type: String):
 	var stat_key := buff_type.to_lower()
 	if stat_key == "hp_max":
 		stat_key = "health"
-	elif stat_key == "defense":
-		stat_key = "defence"
-	elif stat_key == "cooldown":
-		stat_key = "cooldown"
 
-	if not PlayerStats.stats.has(stat_key):
-		print("Unknown stat '%s'" % buff_type)
-		return 0
-
-	var total = float(PlayerStats.stats[stat_key])
+	var total = 0.0
+	if PlayerStats.stats.has(stat_key):
+		total = float(PlayerStats.stats[stat_key])
+	else:
+		if not stat_key in ["cooldown", "speed", "limb_repair"]:
+			print("Unknown stat '%s'" % buff_type)
 	
 	var meta_stats = PlayerStats.get("meta_stats")
 	if meta_stats != null:

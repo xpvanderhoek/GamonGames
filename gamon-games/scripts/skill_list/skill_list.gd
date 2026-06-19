@@ -159,10 +159,29 @@ func _update_item_tooltip_position() -> void:
 	pos.y = clamp(pos.y, 0.0, vp_size.y - tip_size.y)
 	_item_tooltip.global_position = pos
 
-func _on_skill_tooltip_requested(text: String, max_level: int) -> void:
+func _on_skill_tooltip_requested(skill: SkillData) -> void:
 	_ensure_item_tooltip()
-	_item_tooltip_label.text = text + "\nMax lvl: " + str(max_level)
-	_item_tooltip.visible = text.strip_edges() != ""
+	
+	var text = skill.tooltip_text.strip_edges()
+	var formatted_text = text
+	
+	if skill.stat_bonus_per_level > 0:
+		var plain_val = str(skill.stat_bonus_per_level) + "%"
+		var plus_val = "+" + plain_val
+		
+		if text.contains(plus_val):
+			formatted_text = text.replace(plus_val, "[color=#64e09e]" + plus_val + "[/color]")
+		elif text.contains(plain_val):
+			formatted_text = text.replace(plain_val, "[color=#64e09e]" + plain_val + "[/color]")
+			
+		var total_bonus = skill.stat_bonus_per_level * skill.current_level
+		formatted_text += "\n[color=#a0d8ff]Current bonus:[/color] [b][color=#64e09e]+" + str(total_bonus) + "%[/color][/b]"
+	else:
+		if text.contains(" 1 "):
+			formatted_text = text.replace(" 1 ", " [color=#64e09e]1[/color] ")
+	
+	_item_tooltip_label.text = formatted_text + "\nMax lvl: [b][color=#64e09e]" + str(skill.max_level) + "[/color][/b]"
+	_item_tooltip.visible = text != ""
 	_item_tooltip.reset_size()
 	_update_item_tooltip_position()
 

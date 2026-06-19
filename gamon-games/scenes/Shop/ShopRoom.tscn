@@ -34,6 +34,7 @@
 [ext_resource type="Resource" uid="uid://drj8ypf4y6jep" path="res://assets/ShopItems/Resources/Consumables/VipersTongue.tres" id="31_shop_item"]
 [ext_resource type="Resource" uid="uid://bsjm8nf1coqo3" path="res://assets/ShopItems/Resources/WitheredAchillesHeel.tres" id="32_shop_item"]
 [ext_resource type="PackedScene" uid="uid://nwlygbpretr2" path="res://scenes/UI/ShopDialogueUI.tscn" id="34_7l5ap"]
+[ext_resource type="PackedScene" path="res://scenes/UI/PlayerStats.tscn" id="100_mapstats"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_xqf5f"]
 font_size = 432
@@ -150,6 +151,20 @@ text = "0"
 label_settings = SubResource("LabelSettings_xqf5f")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PlayerStats" parent="CanvasLayer/ShopUI" unique_id=-961633963 instance=ExtResource("100_mapstats")]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -209.0
+offset_top = -169.0
+offset_right = -23.0
+offset_bottom = 159.0
+grow_horizontal = 0
+grow_vertical = 2
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=1523504970]
 scroll_scale = Vector2(0.675, 0.675)

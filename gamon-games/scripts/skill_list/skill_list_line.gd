@@ -1,7 +1,7 @@
 extends HBoxContainer
 class_name SkillListLine
 
-signal tooltip_requested(text: String, max_level: int)
+signal tooltip_requested(skill: SkillData)
 signal tooltip_cleared
 signal upgrade_failed
 
@@ -82,13 +82,10 @@ func _on_buy_button_pressed() -> void:
 	print(current_skill.skill_name + " leveled up to " + str(current_skill.current_level))
 
 func _on_buy_button_mouse_entered() -> void:
-	var text := ""
-	if current_skill != null:
-		text = current_skill.tooltip_text.strip_edges()
-	if text == "":
+	if current_skill != null and current_skill.tooltip_text.strip_edges() != "":
+		tooltip_requested.emit(current_skill)
+	else:
 		tooltip_cleared.emit()
-		return
-	tooltip_requested.emit(text, current_skill.max_level)
 
 func _on_buy_button_mouse_exited() -> void:
 	tooltip_cleared.emit()

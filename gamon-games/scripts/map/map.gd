@@ -25,8 +25,6 @@ const PUZZLE_SCENES := [
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 @onready var coin_label: Label = $CanvasLayer/Coins/CoinLabel
 @onready var health_label: Label = $CanvasLayer/Health/Label
-@onready var stats_panel = $CanvasLayer/PlayerStatsPanel
-@onready var stats_button: Button = $CanvasLayer/StatsButton
 
 var map_data : Array[Array]
 var floors_climbed : int
@@ -37,8 +35,6 @@ var dragging := false
 var drag_speed := 1.0
 
 func _ready() -> void:
-	stats_button.pressed.connect(stats_panel.toggle)
-	stats_panel.set_stats(PlayerStats)
 	camera_edge_y = MapGenerator.Y_DIST * (MapGenerator.FLOORS - 1)
 	print(PlayerStats.stats)
 

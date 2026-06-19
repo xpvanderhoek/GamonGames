@@ -213,10 +213,12 @@ func _on_item_hover_started(item_data: ItemData) -> void:
 					shop_item_node = child
 					break
 	_show_item_tooltip(item_data, shop_item_node)
+	RunData.shop_item_hovered.emit(item_data)
 
 func _on_item_hover_ended() -> void:
 	_item_tooltip_item = null
 	_hide_item_tooltip()
+	RunData.shop_item_unhovered.emit()
 
 func _on_item_no_coins_attempted() -> void:
 	_show_random_bark(SHOP_DIALOGUE_NO_COINS_KEY, 4.0)

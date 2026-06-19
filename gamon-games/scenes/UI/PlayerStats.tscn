@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://cvept3u1dyxh4"]
+
+[ext_resource type="Texture2D" uid="uid://tk5bwufxefxi" path="res://assets/map/legends.png" id="1_s1h33"]
+[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="2_jx14c"]
+[ext_resource type="Script" path="res://scripts/UI/PlayerStats.gd" id="3_script"]
+
+[node name="PlayerStats" type="TextureRect" unique_id=1437385985]
+offset_right = 186.0
+offset_bottom = 353.0
+texture = ExtResource("1_s1h33")
+expand_mode = 1
+flip_h = true
+script = ExtResource("3_script")
+
+[node name="Legends" type="VBoxContainer" parent="." unique_id=179155129]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -63.0
+offset_top = -123.0
+offset_right = 57.0
+offset_bottom = 157.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Legends" unique_id=372910767]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 23
+text = "Stats"
+horizontal_alignment = 1
+
+[node name="Health" type="Label" parent="Legends" unique_id=871509901]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Health: 100"
+horizontal_alignment = 1
+
+[node name="Damage" type="Label" parent="Legends" unique_id=1990290801]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Damage: 25"
+horizontal_alignment = 1
+
+[node name="Precision" type="Label" parent="Legends" unique_id=1961486783]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Precision: 5"
+horizontal_alignment = 1
+
+[node name="Luck" type="Label" parent="Legends" unique_id=1268494754]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Luck: 0"
+horizontal_alignment = 1
+
+[node name="Defense" type="Label" parent="Legends" unique_id=484786163]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Defense: 0"
+horizontal_alignment = 1
+
+[node name="EnergyRegen" type="Label" parent="Legends" unique_id=1955637133]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Energy Reg: 1"
+horizontal_alignment = 1
+
+[node name="GoldGain" type="Label" parent="Legends" unique_id=2081691340]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Gold Gain: 1x"
+horizontal_alignment = 1
+
+[node name="DebuffResistance" type="Label" parent="Legends" unique_id=1010101010]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.20784314)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("2_jx14c")
+theme_override_font_sizes/font_size = 17
+text = "Debuff Res: 0%"
+horizontal_alignment = 1
