@@ -39,7 +39,8 @@ func _on_quit_button_pressed() -> void:
 
 func _on_upgrades_button_pressed() -> void:
 	SoundManager.play_click()
-	TransitionManager.change_scene(SKILL_LIST_SCENE)
+	var upgrades = load(SKILL_LIST_SCENE).instantiate()
+	add_child(upgrades)
 
 func _on_save_pressed() -> void:
 	SaveLoad.save_data()

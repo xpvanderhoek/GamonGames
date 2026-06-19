@@ -19,8 +19,8 @@ const SHOP_DIALOGUE_NO_COINS_KEY := "Avarus_no_coins"
 
 @onready var spawn_positions = [$Parallax2D2/Item1, $Parallax2D2/Item2, $Parallax2D2/Item3, $Parallax2D2/Item4, $Parallax2D2/Item5, $Parallax2D2/Item6]
 @onready var parallax_layers = [$Parallax2D, $Parallax2D2]
-@onready var exit_button = [$Parallax2D2/ExitButton/Button]
-@onready var coins: Label = $Parallax2D2/Sprite2D/CoinLabel
+@onready var exit_button = [$CanvasLayer/ShopUI/ExitButton]
+@onready var coins: Label = $CanvasLayer/ShopUI/CoinSprite/CoinLabel
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 var _parallax_offset := Vector2.ZERO
@@ -81,9 +81,18 @@ func _on_shop_chatter_timeout() -> void:
 
 func _process(delta: float):
 	coins.text = str(RunData.coins)
-	var half := get_viewport_rect().size * 0.5
+	var vp_size := get_viewport_rect().size
+	var half := vp_size * 0.5
 	if half.x == 0.0 or half.y == 0.0:
 		return
+
+	var scale_factor = maxf(vp_size.x / 1152.0, vp_size.y / 648.0)
+	scale = Vector2(scale_factor, scale_factor)
+	position = (vp_size - Vector2(1152.0, 648.0) * scale_factor) / 2.0
+
+	if _shop_dialogue_ui != null:
+		_shop_dialogue_ui.scale = Vector2(0.455, 0.455) * scale_factor
+		_shop_dialogue_ui.offset = position + Vector2(93.075, 50.555) * scale_factor
 
 	var mouse := get_viewport().get_mouse_position()
 	var offset := Vector2(
@@ -204,10 +213,12 @@ func _on_item_hover_started(item_data: ItemData) -> void:
 					shop_item_node = child
 					break
 	_show_item_tooltip(item_data, shop_item_node)
+	RunData.shop_item_hovered.emit(item_data)
 
 func _on_item_hover_ended() -> void:
 	_item_tooltip_item = null
 	_hide_item_tooltip()
+	RunData.shop_item_unhovered.emit()
 
 func _on_item_no_coins_attempted() -> void:
 	_show_random_bark(SHOP_DIALOGUE_NO_COINS_KEY, 4.0)

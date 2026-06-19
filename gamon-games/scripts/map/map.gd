@@ -25,8 +25,6 @@ const PUZZLE_SCENES := [
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 @onready var coin_label: Label = $CanvasLayer/Coins/CoinLabel
 @onready var health_label: Label = $CanvasLayer/Health/Label
-@onready var stats_panel = $CanvasLayer/PlayerStatsPanel
-@onready var stats_button: Button = $CanvasLayer/StatsButton
 
 var map_data : Array[Array]
 var floors_climbed : int
@@ -37,8 +35,6 @@ var dragging := false
 var drag_speed := 1.0
 
 func _ready() -> void:
-	stats_button.pressed.connect(stats_panel.toggle)
-	stats_panel.set_stats(PlayerStats)
 	camera_edge_y = MapGenerator.Y_DIST * (MapGenerator.FLOORS - 1)
 	print(PlayerStats.stats)
 
@@ -99,8 +95,8 @@ func create_map():
 	_spawn_room(map_data[MapGenerator.FLOORS-1][middle])
 	
 	var map_width_pixels := MapGenerator.X_DIST * (MapGenerator.MAP_WIDTH - 1)
-	visuals.position.x = (get_viewport_rect().size.x - map_width_pixels) / 2
-	visuals.position.y = get_viewport_rect().size.y / 2
+	visuals.position.x = (1152.0 - map_width_pixels) / 2.0
+	visuals.position.y = 648.0 / 2.0
 
 func unlock_floor(which_floor : int = floors_climbed):
 	for map_room : MapRoom in rooms.get_children():

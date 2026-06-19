@@ -5,6 +5,40 @@ const META_PATH = "user://meta.json"
 
 signal profile_changed
 
+var http_request: HTTPRequest
+
+func _ready() -> void:
+	http_request = HTTPRequest.new()
+	http_request.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(http_request)
+	http_request.request_completed.connect(_on_submit_completed)
+
+func _on_submit_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	if response_code != 200:
+		print("Leaderboard save failed! Code: ", response_code)
+		if body.size() > 0:
+			print("Response: ", body.get_string_from_utf8())
+	else:
+		print("Leaderboard save successful!")
+
+func _submit_online_leaderboard(data) -> void:
+	if not http_request:
+		return
+	var api_url: String = "http://api.visionot.online/client_api/leaderboard.php"
+	var payload: Dictionary = {
+		"name": data.profile_name,
+		"best_level": data.best_level,
+		"total_runs": data.total_runs,
+		"total_coins_earned": data.total_coins_earned,
+		"best_spells_in_deck": data.best_spells_in_deck,
+		"floors_climbed_best": data.floors_climbed_best,
+		"combats_fought_total": data.combats_fought_total,
+		"best_speedrun_time": data.best_speedrun_time
+	}
+	var json = JSON.stringify(payload)
+	var headers = ["Content-Type: application/json"]
+	http_request.request(api_url, headers, HTTPClient.METHOD_POST, json)
+
 func _save_path(slot: int):
 	return SAVE_DIR + "save_%d.tres" % slot
 
@@ -34,6 +68,7 @@ func save_data():
 	data.best_speedrun_time = PlayerStats.best_speedrun_time
 	ResourceSaver.save(data, _save_path(PlayerStats.slot))
 	ResourceSaver.save(data, _leaderboard_path(PlayerStats.slot))
+	_submit_online_leaderboard(data)
 
 func load_data(slot: int):
 	if not FileAccess.file_exists(_save_path(slot)):
