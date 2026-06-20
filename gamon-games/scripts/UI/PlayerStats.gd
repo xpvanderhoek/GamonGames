@@ -1,3 +1,4 @@
+@tool
 extends TextureRect
 
 @onready var health_label = $Legends/Health
@@ -13,15 +14,16 @@ var _item_tooltip: PanelContainer = null
 var _item_tooltip_label: RichTextLabel = null
 
 func _ready() -> void:
-	PlayerStats.stats_changed.connect(_update_stats_from_signal)
-	if not RunData.item_added.is_connected(_on_item_added):
-		RunData.item_added.connect(_on_item_added)
-	if not RunData.shop_item_hovered.is_connected(_on_shop_item_hovered):
-		RunData.shop_item_hovered.connect(_on_shop_item_hovered)
-	if not RunData.shop_item_unhovered.is_connected(_on_shop_item_unhovered):
-		RunData.shop_item_unhovered.connect(_on_shop_item_unhovered)
-	_update_stats()
-	_setup_tooltips()
+	if not Engine.is_editor_hint():
+		PlayerStats.stats_changed.connect(_update_stats_from_signal)
+		if not RunData.item_added.is_connected(_on_item_added):
+			RunData.item_added.connect(_on_item_added)
+		if not RunData.shop_item_hovered.is_connected(_on_shop_item_hovered):
+			RunData.shop_item_hovered.connect(_on_shop_item_hovered)
+		if not RunData.shop_item_unhovered.is_connected(_on_shop_item_unhovered):
+			RunData.shop_item_unhovered.connect(_on_shop_item_unhovered)
+		_update_stats()
+		_setup_tooltips()
 
 func _update_stats_from_signal(_stat_name: String, _val: float) -> void:
 	_update_stats()
@@ -64,7 +66,9 @@ func _reset_highlights() -> void:
 	debuff_res_label.add_theme_color_override("font_color", default_color)
 
 func _process(_delta: float) -> void:
-	_update_item_tooltip_position()
+	if not Engine.is_editor_hint():
+		_update_item_tooltip_position()
+	_adjust_scale()
 
 func _ensure_item_tooltip() -> void:
 	if _item_tooltip != null:
@@ -166,6 +170,8 @@ func _setup_tooltips() -> void:
 	debuff_res_label.mouse_exited.connect(_hide_tooltip)
 
 func _update_stats() -> void:
+	if Engine.is_editor_hint():
+		return
 	health_label.text = "Health: %.0f" % RunData.get_stat("health")
 	damage_label.text = "Damage: %.0f" % RunData.get_stat("damage")
 	precision_label.text = "Precision: %.0f" % RunData.get_stat("precision")
@@ -174,3 +180,25 @@ func _update_stats() -> void:
 	energy_regen_label.text = "Energy Reg: %.0f" % RunData.get_stat("energy_regen")
 	gold_gain_label.text = "Gold Gain: %.1fx" % RunData.get_stat("gold_gain")
 	debuff_res_label.text = "Debuff Res: %.0f%%" % RunData.get_stat("debuff_resistance")
+	call_deferred("_adjust_scale")
+
+func _adjust_scale() -> void:
+	var legends = $Legends
+	legends.scale = Vector2.ONE
+	
+	var min_size = legends.get_minimum_size()
+	var needed_width = max(120.0, min_size.x)
+	var needed_height = max(280.0, min_size.y)
+	
+	var target_size = Vector2(needed_width + 66.0, needed_height + 73.0)
+	
+	self.custom_minimum_size = target_size
+	self.size = target_size
+	
+	legends.anchor_left = 0
+	legends.anchor_right = 0
+	legends.anchor_top = 0
+	legends.anchor_bottom = 0
+	
+	legends.position = Vector2(30.0, 53.5)
+	legends.size = Vector2(needed_width, needed_height)

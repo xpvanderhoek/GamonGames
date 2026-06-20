@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://btbcl61bm4oex"]
 
 [ext_resource type="Script" uid="uid://3nu0u7wcyf0y" path="res://scripts/UI/main_menu/main_menu.gd" id="1_0vw6h"]
-[ext_resource type="Texture2D" uid="uid://behh6gmxwv2vq" path="res://assets/main_menu/main_menu_background.png" id="2_0vw6h"]
-[ext_resource type="Texture2D" uid="uid://dw83tuber51wb" path="res://assets/main_menu/main_menu_logo.png" id="3_7pp57"]
-[ext_resource type="FontFile" uid="uid://dr8r1buo47v6k" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="3_oelhe"]
-[ext_resource type="Texture2D" uid="uid://cgqlqg2y2hdwe" path="res://assets/main_menu/GG_white_text.png" id="4_7pp57"]
+[ext_resource type="Texture2D" uid="uid://cxly65sw53pgn" path="res://assets/main_menu/main_menu_background.png" id="2_0vw6h"]
+[ext_resource type="Texture2D" uid="uid://d0xrcq2ry85ff" path="res://assets/main_menu/main_menu_logo.png" id="3_7pp57"]
+[ext_resource type="FontFile" uid="uid://di2tg0vkqeoyq" path="res://assets/fonts/AlegreyaSans-Bold.ttf" id="3_oelhe"]
+[ext_resource type="Texture2D" uid="uid://ddqn8y7d4kjgr" path="res://assets/main_menu/GG_white_text.png" id="4_7pp57"]
 [ext_resource type="StyleBox" uid="uid://fg66y1mcxs3y" path="res://assets/button_highlight.tres" id="5_oelhe"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0vw6h"]
@@ -74,9 +74,9 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 105.0
-offset_top = -401.0
+offset_top = -373.0
 offset_right = 268.0
-offset_bottom = -135.0
+offset_bottom = -171.0
 grow_vertical = 0
 theme_override_constants/separation = 10
 
@@ -129,22 +129,6 @@ theme_override_styles/hover_pressed = ExtResource("5_oelhe")
 text = "Upgrades"
 alignment = 0
 
-[node name="LeaderboardButton" type="Button" parent="VBoxContainer" unique_id=123456789]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 0.7882353)
-theme_override_constants/outline_size = 13
-theme_override_fonts/font = ExtResource("3_oelhe")
-theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_5jstl")
-theme_override_styles/pressed = ExtResource("5_oelhe")
-theme_override_styles/hover = ExtResource("5_oelhe")
-theme_override_styles/hover_pressed = ExtResource("5_oelhe")
-text = "Leaderboard"
-alignment = 0
-
 [node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=1985840865]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -195,12 +179,9 @@ text = "Profile: Name"
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/UpgradesButton" to="." method="_on_upgrades_button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/UpgradesButton" to="." method="_on_upgrades_button_pressed"]
-[connection signal="mouse_entered" from="VBoxContainer/LeaderboardButton" to="." method="_on_button_hover"]
-[connection signal="pressed" from="VBoxContainer/LeaderboardButton" to="." method="_on_button_click"]
-[connection signal="pressed" from="VBoxContainer/LeaderboardButton" to="." method="_on_leaderboard_button_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/QuitButton" to="." method="_on_button_hover"]
-[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_button_click"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_button_click"]
 [connection signal="mouse_entered" from="ProfileButton" to="." method="_on_button_hover"]
-[connection signal="pressed" from="ProfileButton" to="." method="_on_button_click"]
 [connection signal="pressed" from="ProfileButton" to="." method="_on_profile_button_pressed"]
+[connection signal="pressed" from="ProfileButton" to="." method="_on_button_click"]

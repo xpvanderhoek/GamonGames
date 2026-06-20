@@ -48,14 +48,15 @@ func _create_profile() -> void:
 	enter_name.text = ""
 	enter_name.placeholder_text = "Enter Name"
 	enter_name.visible = true
-	enter_name.grab_focus()
+	enter_name.call_deferred("grab_focus")
 
 func _on_name_focus_exited() -> void:
 	if enter_name.visible:
 		if enter_name.text.strip_edges() != "":
 			_on_name_submitted(enter_name.text, true)
 		else:
-			enter_name.visible = false
+			if not (OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")):
+				enter_name.visible = false
 
 func _on_name_submitted(new_name: String, from_focus_loss: bool) -> void:
 	if not enter_name.visible:
@@ -111,14 +112,15 @@ func _on_delete_pressed() -> void:
 	delete_confirm.clear()
 	delete_confirm.placeholder_text = "Type 'delete'"
 	delete_confirm.visible = true
-	delete_confirm.grab_focus()
+	delete_confirm.call_deferred("grab_focus")
 
 func _on_delete_focus_exited() -> void:
 	if delete_confirm.visible:
 		if delete_confirm.text.strip_edges() != "":
 			_on_delete_submitted(delete_confirm.text, true)
 		else:
-			delete_confirm.visible = false
+			if not (OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")):
+				delete_confirm.visible = false
 
 func _on_delete_submitted(delete_text: String, from_focus_loss: bool) -> void:
 	if not delete_confirm.visible:

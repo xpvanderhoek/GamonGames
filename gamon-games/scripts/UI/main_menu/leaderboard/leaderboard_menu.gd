@@ -44,7 +44,7 @@ var local_name: String = ""
 var cached_data: Dictionary = {}
 
 var http_request: HTTPRequest
-var api_url: String = "http://api.visionot.online/client_api/leaderboard.php"
+var api_url: String = "" # disabled
 
 var loading_timer: Timer
 var loading_dots: int = 0

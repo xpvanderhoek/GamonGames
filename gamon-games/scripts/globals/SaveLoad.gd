@@ -24,7 +24,7 @@ func _on_submit_completed(result: int, response_code: int, headers: PackedString
 func _submit_online_leaderboard(data) -> void:
 	if not http_request:
 		return
-	var api_url: String = "http://api.visionot.online/client_api/leaderboard.php"
+	var api_url: String = "" # disabled
 	var payload: Dictionary = {
 		"name": data.profile_name,
 		"best_level": data.best_level,
