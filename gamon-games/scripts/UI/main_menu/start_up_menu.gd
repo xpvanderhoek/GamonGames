@@ -3,11 +3,11 @@ extends Control
 var is_skip_busy : bool = false
 
 func _ready() -> void:
-	$GamonLogo.visible = false
-	TransitionManager.change_scene(self.get_path())
-	await get_tree().create_timer(0.5).timeout
+	$GamonLogo.modulate.a = 0.0
 	$GamonLogo.visible = true
-	await get_tree().create_timer(4).timeout
+	var tween = create_tween()
+	tween.tween_property($GamonLogo, "modulate:a", 1.0, 1.0)
+	await get_tree().create_timer(4.5).timeout
 	_skip_intro()
 
 func _skip_intro():

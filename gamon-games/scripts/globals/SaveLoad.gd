@@ -13,7 +13,7 @@ func _ready() -> void:
 	add_child(http_request)
 	http_request.request_completed.connect(_on_submit_completed)
 
-func _on_submit_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+func _on_submit_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if response_code != 200:
 		print("Leaderboard save failed! Code: ", response_code)
 		if body.size() > 0:
@@ -136,12 +136,12 @@ func switch_profile(slot: int) -> void:
 	load_data(slot)
 	profile_changed.emit()
 
-func create_profile(slot: int, name: String = "Knight") -> void:
+func create_profile(slot: int, profile_name: String = "Knight") -> void:
 	if PlayerStats.slot != 0:
 		save_data()
 	PlayerStats.slot = slot
 	PlayerStats.reset_stats()
-	PlayerStats.profile_name = name
+	PlayerStats.profile_name = profile_name
 	PlayerStats.reset_tutorials()
 	PlayerStats.marrow_shards = 0
 	PlayerStats.best_level = 0

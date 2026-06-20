@@ -227,7 +227,9 @@ func _get_primary_click_target() -> CombatLimb:
 func _on_area_input_event(viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if is_destroyed:
 		return
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+	var is_click = (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT)
+	var is_touch = (event is InputEventScreenTouch and event.pressed)
+	if is_click or is_touch:
 		var target_limb := _get_primary_click_target()
 		if target_limb != null:
 			limb_clicked.emit(target_limb)

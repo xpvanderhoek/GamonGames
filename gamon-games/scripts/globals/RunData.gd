@@ -30,7 +30,7 @@ func _process(delta: float) -> void:
 		
 	if Settings.data and Settings.data.show_speedrun_timer and run_active:
 		timer_canvas.visible = true
-		var mins = int(current_run_time) / 60
+		var mins = int(current_run_time / 60)
 		var secs = int(current_run_time) % 60
 		var ms = int((current_run_time - int(current_run_time)) * 100)
 		timer_label.text = "%02d:%02d.%02d" % [mins, secs, ms]
@@ -101,6 +101,7 @@ var EXP_PER_LEVEL : Array = [0, 0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2
 
 signal coins_changed(new_amount)
 signal health_changed(new_amount)
+@warning_ignore("unused_signal")
 signal time_remaining_changed(new_amount)
 signal run_time_changed(new_time)
 signal exp_changed(new_amount)
@@ -108,7 +109,9 @@ signal level_changed(new_amount)
 signal marrow_shards_changed(new_amount)
 signal energy_changed(new_amount)
 signal item_added(item: ItemData)
+@warning_ignore("unused_signal")
 signal shop_item_hovered(item_data: ItemData)
+@warning_ignore("unused_signal")
 signal shop_item_unhovered()
 
 func new_run():

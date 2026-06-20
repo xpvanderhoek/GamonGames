@@ -36,19 +36,21 @@ func _setup_transition(transition_type: int = TransitionType.FADE) -> void:
 	var transition_scene_resource = load(transition_paths[transition_type])
 	var new_transition_layer = transition_scene_resource.instantiate()
 
-	get_tree().root.add_child(new_transition_layer)
+	get_tree().root.add_child.call_deferred(new_transition_layer)
 	transition_layer = new_transition_layer
 
 func change_scene(scene_path: String, transition_type: int = TransitionType.FADE) -> void:
 	_setup_transition(transition_type)
-	await get_tree().process_frame
+	if not transition_layer.is_node_ready():
+		await transition_layer.ready
 	await transition_layer.fade_in()
 	get_tree().change_scene_to_file(scene_path)
 	await transition_layer.fade_out()
 
 func transition_combat(enter: bool, combat_path: String = "", transition_type: int = TransitionType.FADE, enemy: Node = null) -> void:
 	_setup_transition(transition_type)
-	await get_tree().process_frame
+	if not transition_layer.is_node_ready():
+		await transition_layer.ready
 	await transition_layer.fade_in()
 	var game = _get_game()
 	if enter and game.has_method("enter_combat"):

@@ -63,7 +63,16 @@ func _find_limbs_recursive(node: Node) -> void:
 			child.limb_destroyed.connect(_on_limb_destroyed)
 			child.mouse_entered_limb.connect(_on_limb_mouse_entered.bind(child))
 			child.mouse_exited_limb.connect(_on_limb_mouse_exited.bind(child))
+			child.limb_clicked.connect(_on_limb_clicked)
 		_find_limbs_recursive(child)
+
+func _on_limb_clicked(limb: CombatLimb) -> void:
+	if block_click_emit or not is_alive:
+		return
+	var target = _highlighted_limb
+	if target == null:
+		target = limb
+	highlighted_limb_clicked.emit(target)
 
 func _process(_delta: float) -> void:
 	_update_limb_tooltip_position()

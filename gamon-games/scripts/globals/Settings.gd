@@ -5,6 +5,7 @@ var data: SettingsData
 var last_settings_tab: int = 0
 
 signal font_settings_changed
+@warning_ignore("unused_signal")
 signal keybinds_changed
 
 const FONT_FAMILIES: Array = [
@@ -91,7 +92,7 @@ func _apply_to_node(node: Node) -> void:
 		if not n.has_meta(&"_orig_font"):
 			n.set_meta(&"_orig_font", n.get_theme_font("normal_font"))
 
-		var orig_font: Variant = n.get_meta(&"_orig_font")
+		var _orig_font: Variant = n.get_meta(&"_orig_font")
 		var bold_font   := get_bold_font()
 		var medium_font := get_medium_font()
 		n.add_theme_font_override("normal_font",  medium_font)

@@ -16,6 +16,7 @@ var knows_puzzles := {
 }
 
 signal stats_changed(stat_name: String, new_value: float)
+@warning_ignore("unused_signal")
 signal upgrade_completed(stat_name: String, level: int)
 
 var marrow_shards : int = 0

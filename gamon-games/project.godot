@@ -13,7 +13,7 @@ config_version=5
 config/name="Curefinder"
 run/main_scene="uid://bede4rgyc4b4w"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="uid://cwp4d5bjoxefw"
+config/icon="res://icon.svg"
 
 [audio]
 
@@ -123,3 +123,4 @@ left_click={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+textures/vram_compression/import_etc2_astc=true

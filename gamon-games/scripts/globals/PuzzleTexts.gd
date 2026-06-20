@@ -1,3 +1,5 @@
+extends Node
+
 const PUZZLES := {
 	"slide": {
 		"NL": {
